@@ -3,9 +3,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
+        jcenter { // Warning: this repository is going to shut down soon
+            content {
+                includeGroup("org.jetbrains.kotlinx") // Only available in JCenter
+            }
+        }
     }
 }
 rootProject.name = "Konstellation"
 include ':konstellation'
-include ':konstellationdemo'
+include ':konstellation-demo'
