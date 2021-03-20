@@ -4,10 +4,13 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.gabrieldrn.konstellation.KonstellationCanvas
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
 class MainActivity : AppCompatActivity() {
@@ -16,12 +19,27 @@ class MainActivity : AppCompatActivity() {
         setContent {
             KonstellationTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(text = "Konstellation")
+                            }
+                        )
+                    }
+                ) {
+                    Surface(color = MaterialTheme.colors.background) {
+                        KonstellationCanvas()
+                    }
                 }
             }
         }
     }
+}
+
+@Composable
+fun Title() {
+    Text("Konstellation")
 }
 
 @Composable
