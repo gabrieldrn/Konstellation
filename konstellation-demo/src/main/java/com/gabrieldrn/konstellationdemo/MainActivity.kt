@@ -1,36 +1,87 @@
 package com.gabrieldrn.konstellationdemo
 
+import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Slider
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.gabrieldrn.konstellation.KonstellationCanvas
+import androidx.compose.ui.unit.dp
+import com.gabrieldrn.konstellation.core.plotting.KonstellationCanvas
+import com.gabrieldrn.konstellation.core.plotting.Vertex
+import com.gabrieldrn.konstellation.style.TextDrawStyle
+import com.gabrieldrn.konstellation.util.randomDataSet
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
+import kotlin.math.PI
+import kotlin.math.sin
+
+private var textStyle = TextDrawStyle()
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            textStyle = TextDrawStyle(
+                resources.getFont(R.font.space_mono_regular)
+            )
+        }
         setContent {
             KonstellationTheme {
-                // A surface container using the 'background' color from the theme
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = {
-                                Text(text = "Konstellation")
-                            }
-                        )
-                    }
-                ) {
-                    Surface(color = MaterialTheme.colors.background) {
-                        KonstellationCanvas()
-                    }
+                Content()
+            }
+        }
+    }
+}
+
+@Composable
+fun Content() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "Konstellation demo")
+                },
+                elevation = 0.dp
+            )
+        }
+    ) {
+        var points by rememberSaveable { mutableStateOf(randomDataSet()) }
+        var precision by rememberSaveable { mutableStateOf(50f) }
+        //ChartContent(points = points) { points = it }
+        FunctionChartContent(precision = precision) { precision = it }
+    }
+}
+
+@Composable
+fun ChartContent(points: Array<Vertex>, onDataSetChange: (Array<Vertex>) -> Unit) {
+    Surface(color = MaterialTheme.colors.background) {
+        Column(Modifier.fillMaxSize()) {
+            Row(Modifier.weight(1f)) {
+                KonstellationCanvas(points)
+            }
+            Row(Modifier.padding(8.dp)) {
+                Button(onClick = {
+                    onDataSetChange(randomDataSet())
+                }, modifier = Modifier.fillMaxWidth()) {
+                    Text(text = "NEW DATASET")
                 }
             }
         }
@@ -38,19 +89,32 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun Title() {
-    Text("Konstellation")
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun FunctionChartContent(precision: Float, onPrecisionChange: (Float) -> Unit) {
+    Surface(color = MaterialTheme.colors.background) {
+        Column(Modifier.fillMaxSize()) {
+            Row(Modifier.weight(1f)) {
+                KonstellationCanvas(precision = precision.toInt(), textStyle = textStyle) { size, x ->
+                    (sin(x * (2f * PI / size.width)) * (size.height / 2) + (size.height / 2)).toFloat()
+                }
+            }
+            Row(Modifier.padding(8.dp)) {
+                Column {
+                    Text(text = "Precision: $precision")
+                    Slider(
+                        value = precision,
+                        onValueChange = onPrecisionChange,
+                        valueRange = 5f..1000f
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     KonstellationTheme {
-        Greeting("Android")
+        Content()
     }
 }
