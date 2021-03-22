@@ -7,7 +7,7 @@ import kotlin.math.abs
 
 /**
  * Given two ranges A and B and a point at a position P1 inside A, this function will, from B,
- * return a position P2 which value relative to the value of P1
+ * return a position P2 which value is relative to the value of P1.
  *
  * Example:
  *
