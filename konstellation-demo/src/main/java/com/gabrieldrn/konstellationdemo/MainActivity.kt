@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.plotting.KonstellationCanvas
 import com.gabrieldrn.konstellation.core.plotting.Vertex
+import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 import com.gabrieldrn.konstellation.util.randomDataSet
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
@@ -64,7 +65,7 @@ fun Content() {
         }
     ) {
         var points by rememberSaveable { mutableStateOf(randomDataSet()) }
-        var precision by rememberSaveable { mutableStateOf(50f) }
+        var precision by rememberSaveable { mutableStateOf(1f) }
         //ChartContent(points = points) { points = it }
         FunctionChartContent(precision = precision) { precision = it }
     }
@@ -90,21 +91,27 @@ fun ChartContent(points: Array<Vertex>, onDataSetChange: (Array<Vertex>) -> Unit
 
 @Composable
 fun FunctionChartContent(precision: Float, onPrecisionChange: (Float) -> Unit) {
+    val primary = MaterialTheme.colors.primary
     Surface(color = MaterialTheme.colors.background) {
         Column(Modifier.fillMaxSize()) {
             Row(Modifier.weight(1f)) {
-                KonstellationCanvas(precision = precision.toInt(), textStyle = textStyle) { size, x ->
-                    (sin(x * (2f * PI / size.width)) * (size.height / 2) + (size.height / 2)).toFloat()
-                }
+                KonstellationCanvas(
+                    precision = precision.toInt(),
+                    drawStyle = LineDrawStyle(color = primary),
+                    textStyle = textStyle.copy(color = primary),
+                    xRange = -PI.toFloat()..PI.toFloat(),
+                    function = { sin(it) }
+                )
             }
             Row(Modifier.padding(8.dp)) {
                 Column {
-                    Text(text = "Precision: $precision")
-                    Slider(
-                        value = precision,
-                        onValueChange = onPrecisionChange,
-                        valueRange = 5f..1000f
-                    )
+//                    Text(text = "Precision: $precision")
+//                    Slider(
+//                        value = precision,
+//                        onValueChange = onPrecisionChange,
+//                        steps = 5,
+//                        valueRange = 5f..100f
+//                    )
                 }
             }
         }

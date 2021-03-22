@@ -34,9 +34,9 @@ fun KonstellationCanvas(
 ) {
     val m = modifier.padding(padding).apply { if (doFillMaxSize) fillMaxSize() }
     //DataSetPlotter(points = points, drawStyle = drawStyle, modifier = m)
-    FunctionPlotter(m, drawStyle, textStyle) { size, x ->
-        (sin(x * (2f * PI / size.width)) * (size.height / 2)  + (size.height / 2)).toFloat()
-    }
+//    FunctionPlotter(m, drawStyle, textStyle) { size, x ->
+//        (sin(x * (2f * PI / size.width)) * (size.height / 2)  + (size.height / 2)).toFloat()
+//    }
 }
 
 @Composable
@@ -47,17 +47,19 @@ fun KonstellationCanvas(
     precision: Int = 10,
     padding: Dp = 12.dp,
     doFillMaxSize: Boolean = true,
-    function: (size: Size, x: Int) -> Float
+    xRange: ClosedFloatingPointRange<Float> = 0f..1f,
+    function: (x: Float) -> Float
 ) {
     val m = modifier.padding(padding).apply { if (doFillMaxSize) fillMaxSize() }
-    //DataSetPlotter(points = points, drawStyle = drawStyle, modifier = m)
-    FunctionPlotter(m, drawStyle, textStyle, precision = precision, function = function)
+    FunctionPlotter(m, drawStyle, textStyle, precision = precision, dataXRange = xRange, function = function)
 }
 
 @Preview
 @Composable
 fun CanvasPreview() {
     Surface {
-        KonstellationCanvas(randomDataSet())
+        KonstellationCanvas(xRange = -PI.toFloat()..PI.toFloat()) {
+            sin(2 * it)
+        }
     }
 }

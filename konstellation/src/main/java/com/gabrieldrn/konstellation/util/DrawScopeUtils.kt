@@ -2,7 +2,6 @@ package com.gabrieldrn.konstellation.util
 
 import android.graphics.Paint
 import android.graphics.Typeface
-import androidx.compose.material.Typography
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -32,18 +31,20 @@ fun DrawScope.drawMiddleVerticalLine(color: Color = Color.Gray) =
  * Draws a text into the current DrawScope
  */
 fun DrawScope.drawText(
-    offset: Offset,
+    point: Offset,
+    offsetX: Float = 0f,
+    offsetY: Float = 0f,
     text: String,
     textAlign: Paint.Align = Paint.Align.CENTER,
     textSize: Float = 32f,
     typeface: Typeface,
-    color: Int = android.graphics.Color.RED
+    color: Int = android.graphics.Color.GRAY
 ) {
     drawIntoCanvas {
         it.nativeCanvas.drawText(
             text,
-            offset.x,
-            offset.y,
+            point.x + offsetX,
+            point.y + offsetY,
             Paint().apply {
                 this.textAlign = textAlign
                 this.textSize = textSize
