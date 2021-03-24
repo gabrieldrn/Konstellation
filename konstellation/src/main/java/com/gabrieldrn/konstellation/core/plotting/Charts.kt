@@ -2,117 +2,98 @@ package com.gabrieldrn.konstellation.core.plotting
 
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.data.convertCanvasXToDataX
-import com.gabrieldrn.konstellation.core.data.offsetsFromPoints
+import com.gabrieldrn.konstellation.core.data.createOffsets
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 import com.gabrieldrn.konstellation.util.drawFrame
+import com.gabrieldrn.konstellation.util.drawLines
 import com.gabrieldrn.konstellation.util.drawMiddleHorizontalLine
 import com.gabrieldrn.konstellation.util.drawMiddleVerticalLine
+import com.gabrieldrn.konstellation.util.drawMinMaxAxisValues
 import com.gabrieldrn.konstellation.util.drawText
 import com.gabrieldrn.konstellation.util.toInt
 
 /**
- * Composable responsible of plotting points and draw axis.
+ * Composable responsible of plotting lines from a dataset and draw axis.
  */
 @Composable
-internal fun DataSetPlotter(
-    dataSet: Collection<Vertex>,
-    drawStyle: LineDrawStyle,
-    modifier: Modifier = Modifier
+fun LinePlotter(
+    dataSet: Collection<Point>,
+    modifier: Modifier = Modifier,
+    chartName: String = "",
+    lineStyle: LineDrawStyle,
+    textStyle: TextDrawStyle,
 ) {
-    Column(modifier = modifier) {
-        Row(modifier = Modifier.weight(1f)) {
-            Column(
-                Modifier
-                    .width(100.dp)
-                    .background(Color.Gray)
-            ) {}
-            Canvas(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxSize()
-            ) {
-                drawPoints(
-                    points = offsetsFromPoints(dataSet),
-                    pointMode = PointMode.Polygon,
-                    color = drawStyle.color,
-                    strokeWidth = drawStyle.strokeWidth
-                )
-            }
-        }
-        Row(
-            Modifier
-                .height(50.dp)
-                .fillMaxWidth()
-        ) {}
+    Canvas(
+        modifier
+            .padding(16.dp)
+            .fillMaxSize()
+    ) {
+        drawFrame()
+        drawMiddleHorizontalLine()
+        drawMiddleVerticalLine()
+        drawLines(dataSet.createOffsets(this, dataSet.yMin..dataSet.yMax), lineStyle)
+        drawMinMaxAxisValues(dataSet, textStyle)
     }
 }
 
 /**
- * Composable plotting a function.
+ * Composable responsible of plotting points from a function and draw axis.
  */
 @Composable
 fun FunctionPlotter(
     modifier: Modifier = Modifier,
+    chartName: String = "",
     lineStyle: LineDrawStyle,
     textStyle: TextDrawStyle,
-    precision: Int = 1,
+    pointSpacing: Int = 1,
     dataXRange: ClosedFloatingPointRange<Float>,
+    dataYRange: ClosedFloatingPointRange<Float>,
     function: (x: Float) -> Float
 ) {
-    val vertex = mutableListOf<Vertex>()
-    fun addPoint(x: Float, y: Float) = vertex.add(x by y)
-    Canvas(modifier.fillMaxSize()) {
+    Canvas(
+        modifier
+            .padding(16.dp)
+            .padding(top = if (chartName.isNotEmpty()) 16.dp else 0.dp)
+            .fillMaxSize()
+    ) {
+        val rawPoints = mutableListOf<Point>()
+        fun addPoint(x: Float, y: Float) = rawPoints.add(x by y)
+        (0..size.width.toInt() step pointSpacing.coerceAtLeast(1)).forEach {
+            addPoint(it.toFloat(), function(convertCanvasXToDataX(it, dataXRange)))
+        }
+        addPoint(size.width, function(dataXRange.endInclusive))
+
+        val points = rawPoints.createOffsets(this, dataYRange).toList()
+
+        drawText(
+            Offset(size.width / 2, 0f),
+            text = chartName,
+            offsetY = -25f,
+            textAlign = Paint.Align.CENTER,
+            textSize = 50f,
+            typeface = textStyle.typeface,
+            color = textStyle.color.toInt()
+        )
         drawFrame()
         drawMiddleHorizontalLine()
         drawMiddleVerticalLine()
+        drawLines(points, lineStyle)
+        //drawLabelPoints(points, textStyle)
 
-        (0..size.width.toInt() step precision).forEach {
-            addPoint(it.toFloat(), function(convertCanvasXToDataX(it, dataXRange)))
-        }
-        //addPoint(size.width, function(dataXRange.endInclusive))
-
-        val points = offsetsFromPoints(vertex)
-
-        drawPoints(
-            points = points,
-            strokeWidth = lineStyle.strokeWidth,
-            pointMode = PointMode.Polygon,
-            color = lineStyle.color
-        )
-//        points.forEach {
-//            drawText(it, 10f, -10f, text = "${it.y}", textAlign = Paint.Align.LEFT, typeface = textStyle.typeface)
-//        }
-        val yMax = vertex.map { it.y }.maxOrNull() ?: 0f
-        val yMin = vertex.map { it.y }.minOrNull() ?: 0f
-        drawText(
-            Offset(0f, 0f),
-            offsetY = 25f,
-            text = yMin.toString(),
-            textAlign = Paint.Align.LEFT,
-            typeface = textStyle.typeface,
-            color = textStyle.color.toInt()
-        )
-        drawText(
-            Offset(0f, size.height),
-            text = yMax.toString(),
-            textAlign = Paint.Align.LEFT,
-            typeface = textStyle.typeface,
-            color = textStyle.color.toInt()
+        drawMinMaxAxisValues(
+            dataXRange.start,
+            dataXRange.endInclusive,
+            dataYRange.start,
+            dataYRange.endInclusive,
+            textStyle
         )
     }
 }

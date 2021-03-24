@@ -1,6 +1,6 @@
 package com.gabrieldrn.konstellation.util
 
-import com.gabrieldrn.konstellation.core.plotting.Vertex
+import com.gabrieldrn.konstellation.core.plotting.Point
 import com.gabrieldrn.konstellation.core.plotting.by
 import kotlin.random.Random
 
@@ -15,7 +15,7 @@ val samplePoints = arrayOf(
 /**
  * Generates a random data set of 25 points with a y value between `0f` and `1f`.
  */
-fun randomDataSet() = mutableListOf<Vertex>().apply {
+fun randomDataSet() = mutableListOf<Point>().apply {
     repeat(25) {
         add(it.toFloat() by Random.nextFloat())
     }

@@ -1,35 +1,30 @@
 package com.gabrieldrn.konstellationdemo
 
-import android.graphics.Typeface
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Slider
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.gabrieldrn.konstellation.core.plotting.KonstellationCanvas
-import com.gabrieldrn.konstellation.core.plotting.Vertex
+import androidx.core.content.res.ResourcesCompat
+import com.gabrieldrn.konstellation.core.plotting.LinePlotter
+import com.gabrieldrn.konstellation.core.plotting.FunctionPlotter
+import com.gabrieldrn.konstellation.core.plotting.Point
+import com.gabrieldrn.konstellation.core.plotting.by
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
-import com.gabrieldrn.konstellation.util.randomDataSet
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlin.math.PI
 import kotlin.math.sin
@@ -39,10 +34,8 @@ private var textStyle = TextDrawStyle()
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            textStyle = TextDrawStyle(
-                resources.getFont(R.font.space_mono_regular)
-            )
+        ResourcesCompat.getFont(this, R.font.space_mono_regular)?.let {
+            textStyle = textStyle.copy(typeface = it)
         }
         setContent {
             KonstellationTheme {
@@ -64,56 +57,64 @@ fun Content() {
             )
         }
     ) {
-        var points by rememberSaveable { mutableStateOf(randomDataSet()) }
-        var precision by rememberSaveable { mutableStateOf(1f) }
-        //ChartContent(points = points) { points = it }
-        FunctionChartContent(precision = precision) { precision = it }
+//        Column {
+//            TabRow(selectedTabIndex = 0, modifier = Modifier.fillMaxWidth()) {
+//                Tab(selected = true, onClick = { /*TODO*/ }) {
+//                    Text(text = "Line plotter")
+//                }
+//                Tab(selected = false, onClick = { /*TODO*/ }) {
+//                    Text(text = "Function plotter")
+//                }
+//            }
+//        }
+//
+//        val points = listOf(
+//            -10f by -10f,
+//            -5f by 0f,
+//            0f by 30f,
+//            5f by 30f,
+//            10f by 25f
+//        )
+//        ChartContent(points = points)
+
+        FunctionChartContent()
     }
 }
 
 @Composable
-fun ChartContent(points: Array<Vertex>, onDataSetChange: (Array<Vertex>) -> Unit) {
-    Surface(color = MaterialTheme.colors.background) {
-        Column(Modifier.fillMaxSize()) {
-            Row(Modifier.weight(1f)) {
-                KonstellationCanvas(points)
-            }
-            Row(Modifier.padding(8.dp)) {
-                Button(onClick = {
-                    onDataSetChange(randomDataSet())
-                }, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = "NEW DATASET")
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun FunctionChartContent(precision: Float, onPrecisionChange: (Float) -> Unit) {
+fun ChartContent(points: Collection<Point>) {
     val primary = MaterialTheme.colors.primary
     Surface(color = MaterialTheme.colors.background) {
-        Column(Modifier.fillMaxSize()) {
-            Row(Modifier.weight(1f)) {
-                KonstellationCanvas(
-                    precision = precision.toInt(),
-                    drawStyle = LineDrawStyle(color = primary),
-                    textStyle = textStyle.copy(color = primary),
-                    xRange = -PI.toFloat()..PI.toFloat(),
-                    function = { sin(it) }
-                )
-            }
-            Row(Modifier.padding(8.dp)) {
-                Column {
-//                    Text(text = "Precision: $precision")
-//                    Slider(
-//                        value = precision,
-//                        onValueChange = onPrecisionChange,
-//                        steps = 5,
-//                        valueRange = 5f..100f
-//                    )
-                }
-            }
+        LinePlotter(
+            dataSet = points,
+            lineStyle = LineDrawStyle(color = primary, strokeWidth = 2f),
+            textStyle = textStyle.copy(color = primary),
+        )
+    }
+}
+
+@Composable
+fun FunctionChartContent() {
+    val primary = MaterialTheme.colors.primary
+    val infiniteTransition = rememberInfiniteTransition()
+    val m by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 20f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(4000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    Surface(color = MaterialTheme.colors.background) {
+        FunctionPlotter(
+            chartName = "f(x) = sin(x)",
+            pointSpacing = 5,
+            lineStyle = LineDrawStyle(color = primary, strokeWidth = 5f),
+            textStyle = textStyle.copy(color = primary),
+            dataXRange = -PI.toFloat()..PI.toFloat(),
+            dataYRange = -m * 1f..m * 1f
+        ) {
+            sin(it)
         }
     }
 }
