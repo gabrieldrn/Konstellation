@@ -68,16 +68,16 @@ fun Content() {
 //            }
 //        }
 //
-//        val points = listOf(
-//            -10f by -10f,
-//            -5f by 0f,
-//            0f by 30f,
-//            5f by 30f,
-//            10f by 25f
-//        )
-//        ChartContent(points = points)
+        val points = listOf(
+            -10f by -10f,
+            -5f by 0f,
+            0f by 30f,
+            5f by 30f,
+            10f by 25f
+        )
+        ChartContent(points = points)
 
-        FunctionChartContent()
+//        FunctionChartContent()
     }
 }
 
@@ -96,15 +96,15 @@ fun ChartContent(points: Collection<Point>) {
 @Composable
 fun FunctionChartContent() {
     val primary = MaterialTheme.colors.primary
-    val infiniteTransition = rememberInfiniteTransition()
-    val m by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 20f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(4000, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        )
-    )
+//    val infiniteTransition = rememberInfiniteTransition()
+//    val m by infiniteTransition.animateFloat(
+//        initialValue = 1f,
+//        targetValue = 20f,
+//        animationSpec = infiniteRepeatable(
+//            animation = tween(4000, easing = FastOutSlowInEasing),
+//            repeatMode = RepeatMode.Reverse
+//        )
+//    )
     Surface(color = MaterialTheme.colors.background) {
         FunctionPlotter(
             chartName = "f(x) = sin(x)",
@@ -112,7 +112,7 @@ fun FunctionChartContent() {
             lineStyle = LineDrawStyle(color = primary, strokeWidth = 5f),
             textStyle = textStyle.copy(color = primary),
             dataXRange = -PI.toFloat()..PI.toFloat(),
-            dataYRange = -m * 1f..m * 1f
+            dataYRange = -1f..1f
         ) {
             sin(it)
         }

@@ -39,7 +39,7 @@ fun LinePlotter(
         drawFrame()
         drawMiddleHorizontalLine()
         drawMiddleVerticalLine()
-        drawLines(dataSet.createOffsets(this, dataSet.yMin..dataSet.yMax), lineStyle)
+        drawLines(dataSet.createOffsets(this), lineStyle)
         drawMinMaxAxisValues(dataSet, textStyle)
     }
 }

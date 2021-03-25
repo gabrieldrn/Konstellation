@@ -4,6 +4,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.gabrieldrn.konstellation.core.plotting.Point
 import com.gabrieldrn.konstellation.core.plotting.xMax
+import com.gabrieldrn.konstellation.core.plotting.xMin
+import com.gabrieldrn.konstellation.core.plotting.xRange
 import com.gabrieldrn.konstellation.core.plotting.yRange
 import kotlin.math.abs
 
@@ -22,36 +24,34 @@ import kotlin.math.abs
  *
  * Given a range A [[0.0; 500.0]] and a range B [[0.0;1.0]], if P1 = 250 then P2 = 0.5
  */
-internal fun convertPointRanges(
-    initRange: ClosedRange<Float>,
-    targetRange: ClosedRange<Float>,
+internal fun ClosedRange<Float>.convertPointToRange(
     initPoint: Float,
+    targetRange: ClosedRange<Float>
 ): Float {
-    require(initPoint in initRange) {
+    require(initPoint in this) {
         "Initial point must be within the bounds of the initial range"
     }
     val offsetRange = if (targetRange.start < 0.0) abs(targetRange.start) else 0f
     return (((targetRange.endInclusive + offsetRange) - (targetRange.start + offsetRange))
-            * (initPoint - initRange.start) / (initRange.endInclusive - initRange.start)
+            * (initPoint - start) / (endInclusive - start)
             ) - offsetRange
 }
 
 /**
- * TODO FIX KDOC
- * Converts a collection of [Point] to a list of [Offset]s placed relatively by the current canvas
- * dimensions.
+ * TODO KDOC
  */
-internal fun Collection<Point>.createOffsets(drawScope: DrawScope, yRange: ClosedFloatingPointRange<Float>): Collection<Point> {
-    val canvasYRange = drawScope.size.height..0f //Inversion de l'axe Y (norme informatique).
-    //Les attributs d'extention de Collection<Point> peuvent peut-être impacter la vitesse de
-    //calcul. A vérifier.
+internal fun Collection<Point>.createOffsets(
+    drawScope: DrawScope,
+    yRange: ClosedFloatingPointRange<Float> = this.yRange
+): Collection<Point> {
+    val canvasYRange = drawScope.size.height..0f //Inverting to draw from bottom to top
+    val canvasXRange = 0f..drawScope.size.width
     return map {
         it.copy(
             y = -it.y,
             offset = Offset(
-                x = (it.x / this.xMax) * drawScope.size.width,  //TODO Ne Fonctionne pour LinePlotter
-                y = convertPointRanges(yRange, canvasYRange, it.y) + drawScope.size.height,
-//            y = ((yMax - it.y) * size.height) / yMax,
+                x = xRange.convertPointToRange(it.x, canvasXRange),
+                y = yRange.convertPointToRange(it.y, canvasYRange) + drawScope.size.height,
             )
         )
     }
@@ -72,4 +72,4 @@ internal fun Collection<Point>.createOffsets(drawScope: DrawScope, yRange: Close
 internal fun DrawScope.convertCanvasXToDataX(
     canvasPos: Int,
     range: ClosedFloatingPointRange<Float>
-) = convertPointRanges(0f..size.width, range, canvasPos.toFloat())
+) = (0f..size.width).convertPointToRange(canvasPos.toFloat(), range)
