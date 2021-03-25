@@ -2,7 +2,7 @@
 
 A plotting library based on Jetpack Compose.
 
-This library is still a work in progress and is being actively developed. Here's what it can draw so far:
+This library is still a work in progress and is being actively worked on. Here's what it can draw so far:
 
-![device-2021-03-24-232450](https://user-images.githubusercontent.com/22205373/112414292-33934680-8cf8-11eb-9f23-3a95b83b19ae.png)
+![device-2021-03-24-232450](https://user-images.githubusercontent.com/22205373/112414609-b5836f80-8cf8-11eb-9dd3-ab7c101207d9.png)
 
