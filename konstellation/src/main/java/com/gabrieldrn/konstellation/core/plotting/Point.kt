@@ -8,17 +8,68 @@ typealias Dataset = Collection<Point>
  * A class representing a point in a chart.
  */
 data class Point(
+
+    /**
+     * X point from the data set.
+     */
     var x: Float,
+
+    /**
+     * Y point from the data set.
+     */
     var y: Float,
-    var offset: Offset = Offset(0f, 0f),
-)
 
-val Collection<Point>.offsets get() = map { it.offset }
-val Collection<Point>.xMax get() = map { it.x }.maxOrNull() ?: 0f
-val Collection<Point>.xMin get() = map { it.x }.minOrNull() ?: 0f
-val Collection<Point>.yMax get() = map { it.y }.maxOrNull() ?: 0f
-val Collection<Point>.yMin get() = map { it.y }.minOrNull() ?: 0f
-val Collection<Point>.xRange get() = xMin..xMax
-val Collection<Point>.yRange get() = yMin..yMax
+    /**
+     * Offset corresponding to [x] and [y] into the related chart. This attribute is managed by
+     * Konstellation.
+     */
+    internal var offset: Offset = Offset(0f, 0f),
+) {
+    override fun toString() = "[($x;$y), $offset]"
+}
 
-infix fun Float.by(that: Float): Point = Point(this, that)
+/**
+ * Creates a [Point] from this (as X value) and [that] (as Y value).
+ */
+infix fun Float.by(that: Float) = Point(this, that)
+
+/**
+ * Converts a collection Float pairs to a list of [Point]s, assuming that the first element  is X
+ * and the second is Y.
+ */
+fun Collection<Pair<Float, Float>>.toPoints() = map { it.first by it.second }
+
+/**
+ * A list of all the [Offset]s of every [Point] of this list
+ */
+internal val Collection<Point>.offsets get() = map { it.offset }
+
+/**
+ * The highest X ([Point.x]) value of all the [Point]s from the current list.
+ */
+internal val Collection<Point>.xMax get() = maxByOrNull { it.x }?.x ?: 0f
+
+/**
+ * The highest Y ([Point.y]) value of all the [Point]s from the current list.
+ */
+internal val Collection<Point>.xMin get() = minByOrNull { it.x }?.x ?: 0f
+
+/**
+ * The lowest X ([Point.x]) value of all the [Point]s from the current list.
+ */
+internal val Collection<Point>.yMax get() = maxByOrNull { it.y }?.y ?: 0f
+
+/**
+ * The lowest X ([Point.x]) value of all the [Point]s from the current list.
+ */
+internal val Collection<Point>.yMin get() = minByOrNull { it.y }?.y ?: 0f
+
+/**
+ * A range from [xMin] to [xMax].
+ */
+internal val Collection<Point>.xRange get() = xMin..xMax
+
+/**
+ * A range from [yMin] to [yMax].
+ */
+internal val Collection<Point>.yRange get() = yMin..yMax

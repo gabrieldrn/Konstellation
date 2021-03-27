@@ -97,9 +97,9 @@ fun FunctionChartContent() {
 //    val infiniteTransition = rememberInfiniteTransition()
 //    val m by infiniteTransition.animateFloat(
 //        initialValue = 1f,
-//        targetValue = 20f,
+//        targetValue = 5f,
 //        animationSpec = infiniteRepeatable(
-//            animation = tween(4000, easing = FastOutSlowInEasing),
+//            animation = tween(3000, easing = FastOutSlowInEasing),
 //            repeatMode = RepeatMode.Reverse
 //        )
 //    )
@@ -109,8 +109,8 @@ fun FunctionChartContent() {
             pointSpacing = 5,
             lineStyle = LineDrawStyle(color = primary, strokeWidth = 5f),
             textStyle = textStyle.copy(color = primary),
-            dataXRange = -2 * PI.toFloat()..2 * PI.toFloat(),
-            dataYRange = -2f..2f
+            dataXRange = -PI.toFloat()..PI.toFloat(),
+            dataYRange = -1f..1f
         ) {
             sin(it)
         }
