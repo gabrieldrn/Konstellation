@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.util
+package com.gabrieldrn.konstellation.core.plotting
 
 import android.graphics.Paint
 import android.graphics.Typeface
@@ -8,14 +8,10 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
-import com.gabrieldrn.konstellation.core.plotting.Dataset
-import com.gabrieldrn.konstellation.core.plotting.Point
-import com.gabrieldrn.konstellation.core.plotting.xMax
-import com.gabrieldrn.konstellation.core.plotting.xMin
-import com.gabrieldrn.konstellation.core.plotting.yMax
-import com.gabrieldrn.konstellation.core.plotting.yMin
+import com.gabrieldrn.konstellation.core.data.createOffset
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
+import com.gabrieldrn.konstellation.util.toInt
 
 internal fun DrawScope.drawLines(dataset: Dataset, lineStyle: LineDrawStyle) {
     if (dataset.isEmpty()) return
@@ -56,6 +52,29 @@ internal fun DrawScope.drawMiddleHorizontalLine(color: Color = Color.Gray) =
  */
 internal fun DrawScope.drawMiddleVerticalLine(color: Color = Color.Gray) =
     drawLine(color, Offset(size.width / 2, 0f), Offset(size.width / 2, size.height - 1))
+
+internal fun DrawScope.drawZeroLines(
+    datasetXRange: ClosedRange<Float>,
+    datasetYRange: ClosedRange<Float>,
+    color: Color = Color.Gray,
+    horizontalLine: Boolean = true,
+    verticalLine: Boolean = true,
+) {
+    if (0f in datasetXRange && 0f in datasetYRange) {
+        val zero = 0f by 0f
+        zero.createOffset(this, datasetXRange, datasetYRange)
+        if (verticalLine) drawLine(
+            color,
+            Offset(zero.offset.x, size.height),
+            Offset(zero.offset.x, 0f)
+        )
+        if (horizontalLine) drawLine(
+            color,
+            Offset(0f, zero.offset.y),
+            Offset(size.width, zero.offset.y)
+        )
+    }
+}
 
 internal fun DrawScope.drawMinMaxAxisValues(
     xMin: Number,
@@ -119,10 +138,25 @@ internal fun DrawScope.drawLabelPoints(
     }
 }
 
+internal fun DrawScope.drawChartTitle(
+    chartName: String,
+    textStyle: TextDrawStyle
+) {
+    drawText(
+        Offset(size.width / 2, 0f),
+        text = chartName,
+        offsetY = -25f,
+        textAlign = Paint.Align.CENTER,
+        textSize = 50f,
+        typeface = textStyle.typeface,
+        color = textStyle.color.toInt()
+    )
+}
+
 /**
  * Draws a text into the current DrawScope.
  */
-fun DrawScope.drawText(
+internal fun DrawScope.drawText(
     point: Offset,
     offsetX: Float = 0f,
     offsetY: Float = 0f,

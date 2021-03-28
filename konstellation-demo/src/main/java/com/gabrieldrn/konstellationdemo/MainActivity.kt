@@ -56,6 +56,13 @@ private val points = listOf(
     10f by 25f
 )
 
+private val points2 = listOf(
+    10f by 10f,
+    20f by 20f,
+    30f by 30f,
+)
+
+
 @Composable
 fun Content() {
     Scaffold(
@@ -85,6 +92,7 @@ fun ChartContent() {
     Surface(color = MaterialTheme.colors.background) {
         LinePlotter(
             dataSet = points,
+            chartName = "Line chart",
             lineStyle = LineDrawStyle(color = primary, strokeWidth = 5f),
             textStyle = textStyle.copy(color = primary),
         )

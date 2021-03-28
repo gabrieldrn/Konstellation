@@ -8,9 +8,8 @@ import com.gabrieldrn.konstellation.core.plotting.yRange
 import kotlin.math.abs
 
 /**
- * Converts a point a range A to a point in a target range B. More precisely, given two ranges A and
- * B and a point at a position P1 inside A, this function will, from B, return a position P2 which
- * value is relative to the value of P1.
+ * Converts a value from a range to another value based on another range, so as they are equivalent
+ * between the two ranges.
  *
  * Example:
  *
@@ -21,50 +20,60 @@ import kotlin.math.abs
  *  0.0    P2 = 0.5     1.0
  * ```
  *
- * Given a range A [[0.0; 500.0]] and a range B [[0.0;1.0]], if P1 = 250 then P2 = 0.5
+ * Given a range A [[0.0; 500.0]] and a range B [[0.0;1.0]], if P1 = 250 then P2 = 0.5.
  *
- * @receiver The initial range.
- * @param initPoint The point to convert.
- * @param targetRange The targeted range.
- * @return The point converted into the targeted range.
+ * @receiver The initial value into, must be bounded into [fromRange].
+ * @param fromRange Initial range of the receiver.
+ * @param toRange Targeted range.
+ * @return The value converted with the targeted range.
  */
-internal fun ClosedRange<Float>.convertPointToRange(
-    initPoint: Float,
-    targetRange: ClosedRange<Float>
+internal fun Float.convertFromRanges(
+    fromRange: ClosedRange<Float>,
+    toRange: ClosedRange<Float>
 ): Float {
-    require(initPoint in this) {
-        "Initial point must be within the bounds of the initial range"
+    require(this in fromRange) {
+        "Initial point must be within the bounds of his range"
     }
-    val offsetRange = if (targetRange.start < 0.0) abs(targetRange.start) else 0f
-    return (((targetRange.endInclusive + offsetRange) - (targetRange.start + offsetRange))
-            * (initPoint - start) / (endInclusive - start)
+    val offsetRange = if (toRange.start < 0.0) abs(toRange.start) else 0f
+    return (((toRange.endInclusive + offsetRange) - (toRange.start + offsetRange))
+            * (this - fromRange.start) / (fromRange.endInclusive - fromRange.start)
             ) - offsetRange
 }
 
 /**
  * Sets all the offsets in each [Point] of the receiving collection, based on the bounds of the
- * passed [drawScope]. A specific Y range can be given with [yRange].
+ * passed [drawScope]. A specific Y range can be given with [dataSetYRange].
  *
  * @receiver The current collection of point within which to establish the offsets.
  * @param drawScope The draw scope of the chart in which drawing the future offsets.
- * @param yRange (optional) A specific range of values on the Y axis to consider instead of the
- * Y range of the receiving collection.
+ * @param dataSetYRange (optional) A specific range of values on the Y axis to consider instead of
+ * the Y range of the receiving collection.
  */
 internal fun Collection<Point>.createOffsets(
     drawScope: DrawScope,
-    yRange: ClosedRange<Float> = this.yRange
-): Collection<Point> {
+    dataSetYRange: ClosedRange<Float> = this.yRange
+) {
     val canvasYRange = drawScope.size.height..0f //Inverting to draw from bottom to top
     val canvasXRange = 0f..drawScope.size.width
-    return map {
-        it.copy(
-            y = -it.y,
-            offset = Offset(
-                x = xRange.convertPointToRange(it.x, canvasXRange),
-                y = yRange.convertPointToRange(it.y, canvasYRange) + drawScope.size.height,
-            )
+    forEach {
+        it.offset = Offset(
+            x = it.x.convertFromRanges(xRange, canvasXRange),
+            y = it.y.convertFromRanges(dataSetYRange, canvasYRange) + drawScope.size.height,
         )
     }
+}
+
+internal fun Point.createOffset(
+    drawScope: DrawScope,
+    datasetXRange: ClosedRange<Float>,
+    datasetYRange: ClosedRange<Float>
+) {
+    val canvasYRange = drawScope.size.height..0f //Inverting to draw from bottom to top
+    val canvasXRange = 0f..drawScope.size.width
+    offset = Offset(
+        x = x.convertFromRanges(datasetXRange, canvasXRange),
+        y = y.convertFromRanges(datasetYRange, canvasYRange) + drawScope.size.height,
+    )
 }
 
 /**
@@ -82,4 +91,4 @@ internal fun Collection<Point>.createOffsets(
 internal fun DrawScope.convertCanvasXToDataX(
     canvasPos: Int,
     range: ClosedRange<Float>
-) = (0f..size.width).convertPointToRange(canvasPos.toFloat(), range)
+) = canvasPos.toFloat().convertFromRanges(0f..size.width, range)
