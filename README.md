@@ -4,5 +4,5 @@ A plotting library based on Jetpack Compose.
 
 This library is still a work in progress and is being actively worked on. Here's what it can draw so far:
 
-![device-2021-03-24-232450](https://user-images.githubusercontent.com/22205373/112414609-b5836f80-8cf8-11eb-9dd3-ab7c101207d9.png)
+![device-2021-03-28-191546_framed](https://user-images.githubusercontent.com/22205373/112771599-93d8ff80-8ffa-11eb-8375-ebc116ad85bc.png)
 
