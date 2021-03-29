@@ -31,9 +31,9 @@ internal fun Float.convertFromRanges(
     fromRange: ClosedRange<Float>,
     toRange: ClosedRange<Float>
 ): Float {
-    require(this in fromRange) {
-        "Initial point must be within the bounds of his range"
-    }
+//    require(this in fromRange) {
+//        "The point must be within the bounds of his range"
+//    }
     val offsetRange = if (toRange.start < 0.0) abs(toRange.start) else 0f
     return (((toRange.endInclusive + offsetRange) - (toRange.start + offsetRange))
             * (this - fromRange.start) / (fromRange.endInclusive - fromRange.start)

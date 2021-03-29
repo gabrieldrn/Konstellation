@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.data.convertCanvasXToDataX
 import com.gabrieldrn.konstellation.core.data.createOffsets
@@ -32,7 +33,14 @@ fun LinePlotter(
         drawChartTitle(chartName, textStyle)
         drawFrame()
         drawZeroLines(dataSet.xRange, dataSet.yRange)
-        drawLines(dataSet, lineStyle)
+        clipRect(
+            -1.dp.toPx(),
+            -1.dp.toPx(),
+            size.width + 1.dp.toPx(),
+            size.height + 1.dp.toPx()
+        ) {
+            drawLines(dataSet, lineStyle)
+        }
         drawMinMaxAxisValues(dataSet, textStyle)
     }
 }
@@ -69,7 +77,15 @@ fun FunctionPlotter(
         drawChartTitle(chartName, textStyle)
         drawFrame()
         drawZeroLines(dataXRange, dataYRange)
-        drawLines(points, lineStyle)
+
+        clipRect(
+            -1.dp.toPx(),
+            -1.dp.toPx(),
+            size.width + 1.dp.toPx(),
+            size.height + 1.dp.toPx()
+        ) {
+            drawLines(points, lineStyle)
+        }
 
         drawMinMaxAxisValues(
             dataXRange.start,

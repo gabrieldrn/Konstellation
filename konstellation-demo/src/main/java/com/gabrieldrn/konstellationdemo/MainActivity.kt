@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -30,6 +31,8 @@ import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.exp
 import kotlin.math.sin
 
 private var textStyle = TextDrawStyle()
@@ -93,7 +96,7 @@ fun ChartContent() {
         LinePlotter(
             dataSet = points,
             chartName = "Line chart",
-            lineStyle = LineDrawStyle(color = primary, strokeWidth = 5f),
+            lineStyle = LineDrawStyle(color = primary),
             textStyle = textStyle.copy(color = primary),
         )
     }
@@ -102,23 +105,23 @@ fun ChartContent() {
 @Composable
 fun FunctionChartContent() {
     val primary = MaterialTheme.colors.primary
-//    val infiniteTransition = rememberInfiniteTransition()
-//    val m by infiniteTransition.animateFloat(
-//        initialValue = 1f,
-//        targetValue = 5f,
-//        animationSpec = infiniteRepeatable(
-//            animation = tween(3000, easing = FastOutSlowInEasing),
-//            repeatMode = RepeatMode.Reverse
-//        )
-//    )
+    val infiniteTransition = rememberInfiniteTransition()
+    val m by infiniteTransition.animateFloat(
+        initialValue = -PI.toFloat(),
+        targetValue = PI.toFloat(),
+        animationSpec = infiniteRepeatable(
+            animation = tween(3000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        )
+    )
     Surface(color = MaterialTheme.colors.background) {
         FunctionPlotter(
             chartName = "f(x) = sin(x)",
             pointSpacing = 5,
-            lineStyle = LineDrawStyle(color = primary, strokeWidth = 5f),
+            lineStyle = LineDrawStyle(color = primary),
             textStyle = textStyle.copy(color = primary),
-            dataXRange = -PI.toFloat()..PI.toFloat(),
-            dataYRange = -1f..1f
+            dataXRange = -PI.toFloat() + m..PI.toFloat() + m,
+            dataYRange = -2f..2f
         ) {
             sin(it)
         }

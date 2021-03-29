@@ -8,24 +8,40 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.unit.dp
+import com.gabrieldrn.konstellation.core.data.convertFromRanges
 import com.gabrieldrn.konstellation.core.data.createOffset
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 import com.gabrieldrn.konstellation.util.toInt
 
+/**
+ * Draws a line between the given points using the given style. The line is stroked.
+ */
+internal fun DrawScope.drawLine(
+    start: Offset,
+    end: Offset,
+    lineStyle: LineDrawStyle = LineDrawStyle()
+) {
+    drawLine(
+        color = lineStyle.color,
+        strokeWidth = lineStyle.strokeWidth.toPx(),
+        cap = lineStyle.cap,
+        start = start,
+        end = end
+    )
+}
+
+/**
+ * Draws a series of stroked lines from a dataset, using the given style.
+ */
 internal fun DrawScope.drawLines(dataset: Dataset, lineStyle: LineDrawStyle) {
     if (dataset.isEmpty()) return
     var previous = dataset.first().offset
     val d = dataset.iterator()
     while (d.hasNext()) {
         d.next().let {
-            drawLine(
-                color = lineStyle.color,
-                strokeWidth = lineStyle.strokeWidth,
-                cap = StrokeCap.Round,
-                start = previous,
-                end = it.offset
-            )
+            drawLine(previous, it.offset, lineStyle)
             previous = it.offset
         }
     }
@@ -34,11 +50,17 @@ internal fun DrawScope.drawLines(dataset: Dataset, lineStyle: LineDrawStyle) {
 /**
  * Draws lines along canvas bounds.
  */
-internal fun DrawScope.drawFrame(color: Color = Color.Gray) {
-    drawLine(color, Offset(0f, 0f), Offset(size.width, 0f))
-    drawLine(color, Offset(size.width, 0f), Offset(size.width, size.height))
-    drawLine(color, Offset(0f, 0f), Offset(0f, size.height))
-    drawLine(color, Offset(0f, size.height), Offset(size.width, size.height))
+internal fun DrawScope.drawFrame(
+    lineStyle: LineDrawStyle = LineDrawStyle(
+        color = Color.LightGray,
+        strokeWidth = 1.5f.dp,
+        cap = StrokeCap.Square,
+    )
+) {
+    drawLine(Offset(0f, 0f), Offset(size.width, 0f), lineStyle)
+    drawLine(Offset(size.width, 0f),Offset(size.width, size.height), lineStyle)
+    drawLine(Offset(0f, 0f),Offset(0f, size.height), lineStyle)
+    drawLine(Offset(0f, size.height),Offset(size.width, size.height), lineStyle)
 }
 
 /**
@@ -53,26 +75,29 @@ internal fun DrawScope.drawMiddleHorizontalLine(color: Color = Color.Gray) =
 internal fun DrawScope.drawMiddleVerticalLine(color: Color = Color.Gray) =
     drawLine(color, Offset(size.width / 2, 0f), Offset(size.width / 2, size.height - 1))
 
+/**
+ * Draws the 0-axis inside the chart.
+ */
 internal fun DrawScope.drawZeroLines(
     datasetXRange: ClosedRange<Float>,
     datasetYRange: ClosedRange<Float>,
-    color: Color = Color.Gray,
     horizontalLine: Boolean = true,
     verticalLine: Boolean = true,
+    lineStyle: LineDrawStyle = LineDrawStyle(
+        color = Color.LightGray,
+        strokeWidth = 1.5f.dp,
+        cap = StrokeCap.Square,
+    )
 ) {
-    if (0f in datasetXRange && 0f in datasetYRange) {
-        val zero = 0f by 0f
-        zero.createOffset(this, datasetXRange, datasetYRange)
-        if (verticalLine) drawLine(
-            color,
-            Offset(zero.offset.x, size.height),
-            Offset(zero.offset.x, 0f)
-        )
-        if (horizontalLine) drawLine(
-            color,
-            Offset(0f, zero.offset.y),
-            Offset(size.width, zero.offset.y)
-        )
+    var zero: Float
+
+    if (horizontalLine && 0f in datasetYRange) {
+        zero = 0f.convertFromRanges(datasetYRange, size.height..0f) + size.height
+        drawLine(Offset(0f, zero), Offset(size.width, zero), lineStyle)
+    }
+    if (verticalLine && 0f in datasetXRange) {
+        zero = 0f.convertFromRanges(datasetXRange, 0f..size.width)
+        drawLine(Offset(zero, 0f), Offset(zero, size.height), lineStyle)
     }
 }
 
