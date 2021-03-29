@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.data.convertCanvasXToDataX
 import com.gabrieldrn.konstellation.core.data.createOffsets
 import com.gabrieldrn.konstellation.style.LineDrawStyle
+import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 
 /**
@@ -17,30 +18,17 @@ import com.gabrieldrn.konstellation.style.TextDrawStyle
  */
 @Composable
 fun LinePlotter(
-    dataSet: Collection<Point>,
+    dataSet: Dataset,
     modifier: Modifier = Modifier,
-    chartName: String = "",
-    lineStyle: LineDrawStyle,
-    textStyle: TextDrawStyle,
+    lineStyle: LineDrawStyle = LineDrawStyle(),
+    pointStyle: PointDrawStyle = PointDrawStyle(),
+    textStyle: TextDrawStyle = TextDrawStyle(),
 ) {
-    Canvas(
-        modifier
-            .padding(16.dp)
-            .padding(top = if (chartName.isNotEmpty()) 16.dp else 0.dp)
-            .fillMaxSize()
-    ) {
+    Canvas(modifier.padding(16.dp).fillMaxSize()) {
         dataSet.createOffsets(this)
-        drawChartTitle(chartName, textStyle)
         drawFrame()
         drawZeroLines(dataSet.xRange, dataSet.yRange)
-        clipRect(
-            -1.dp.toPx(),
-            -1.dp.toPx(),
-            size.width + 1.dp.toPx(),
-            size.height + 1.dp.toPx()
-        ) {
-            drawLines(dataSet, lineStyle)
-        }
+        drawLines(dataSet, lineStyle, pointStyle, drawPoints = true)
         drawMinMaxAxisValues(dataSet, textStyle)
     }
 }
@@ -51,9 +39,9 @@ fun LinePlotter(
 @Composable
 fun FunctionPlotter(
     modifier: Modifier = Modifier,
-    chartName: String = "",
-    lineStyle: LineDrawStyle,
-    textStyle: TextDrawStyle,
+    lineStyle: LineDrawStyle = LineDrawStyle(),
+    pointStyle: PointDrawStyle = PointDrawStyle(),
+    textStyle: TextDrawStyle = TextDrawStyle(),
     pointSpacing: Int = 1,
     dataXRange: ClosedFloatingPointRange<Float>,
     dataYRange: ClosedFloatingPointRange<Float>,
@@ -62,7 +50,6 @@ fun FunctionPlotter(
     Canvas(
         modifier
             .padding(16.dp)
-            .padding(top = if (chartName.isNotEmpty()) 16.dp else 0.dp)
             .fillMaxSize()
     ) {
         val points = mutableListOf<Point>()
@@ -74,19 +61,9 @@ fun FunctionPlotter(
 
         points.createOffsets(this, dataYRange)
 
-        drawChartTitle(chartName, textStyle)
         drawFrame()
         drawZeroLines(dataXRange, dataYRange)
-
-        clipRect(
-            -1.dp.toPx(),
-            -1.dp.toPx(),
-            size.width + 1.dp.toPx(),
-            size.height + 1.dp.toPx()
-        ) {
-            drawLines(points, lineStyle)
-        }
-
+        drawLines(points, lineStyle, pointStyle, false)
         drawMinMaxAxisValues(
             dataXRange.start,
             dataXRange.endInclusive,

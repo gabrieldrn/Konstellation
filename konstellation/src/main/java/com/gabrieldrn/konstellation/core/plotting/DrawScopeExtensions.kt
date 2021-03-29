@@ -6,45 +6,75 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.data.convertFromRanges
-import com.gabrieldrn.konstellation.core.data.createOffset
 import com.gabrieldrn.konstellation.style.LineDrawStyle
+import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 import com.gabrieldrn.konstellation.util.toInt
+
+/**
+ * Draws a line between the given offsets using the given style. The line is stroked.
+ */
+internal fun DrawScope.drawLine(
+    start: Offset, end: Offset,
+    lineStyle: LineDrawStyle = LineDrawStyle()
+) = drawLine(
+    color = lineStyle.color,
+    strokeWidth = lineStyle.strokeWidth.toPx(),
+    cap = lineStyle.cap,
+    start = start,
+    end = end
+)
 
 /**
  * Draws a line between the given points using the given style. The line is stroked.
  */
 internal fun DrawScope.drawLine(
-    start: Offset,
-    end: Offset,
+    start: Point, end: Point,
     lineStyle: LineDrawStyle = LineDrawStyle()
-) {
-    drawLine(
-        color = lineStyle.color,
-        strokeWidth = lineStyle.strokeWidth.toPx(),
-        cap = lineStyle.cap,
-        start = start,
-        end = end
-    )
-}
+) = drawLine(start.offset, end.offset, lineStyle)
 
 /**
  * Draws a series of stroked lines from a dataset, using the given style.
  */
-internal fun DrawScope.drawLines(dataset: Dataset, lineStyle: LineDrawStyle) {
+internal fun DrawScope.drawLines(
+    dataset: Dataset,
+    lineStyle: LineDrawStyle,
+    pointStyle: PointDrawStyle,
+    drawPoints: Boolean = false,
+) {
     if (dataset.isEmpty()) return
-    var previous = dataset.first().offset
+    var previous = dataset.first()
     val d = dataset.iterator()
     while (d.hasNext()) {
         d.next().let {
-            drawLine(previous, it.offset, lineStyle)
-            previous = it.offset
+            clipRect(
+                -1.dp.toPx(),
+                -1.dp.toPx(),
+                size.width + 1.dp.toPx(),
+                size.height + 1.dp.toPx()
+            ) {
+                drawLine(previous, it, lineStyle)
+            }
+            if (drawPoints) drawPoint(it, pointStyle)
+            previous = it
         }
     }
+}
+
+/**
+ * Draws a circle representing a point of the dataset
+ */
+internal fun DrawScope.drawPoint(point: Point, style: PointDrawStyle) {
+    drawCircle(center = point.offset, color = style.color, radius = style.radius.toPx())
+}
+
+internal fun DrawScope.drawPoints(dataset: Dataset, style: PointDrawStyle) {
+    dataset.forEach { drawPoint(it, style) }
 }
 
 /**
@@ -58,9 +88,9 @@ internal fun DrawScope.drawFrame(
     )
 ) {
     drawLine(Offset(0f, 0f), Offset(size.width, 0f), lineStyle)
-    drawLine(Offset(size.width, 0f),Offset(size.width, size.height), lineStyle)
-    drawLine(Offset(0f, 0f),Offset(0f, size.height), lineStyle)
-    drawLine(Offset(0f, size.height),Offset(size.width, size.height), lineStyle)
+    drawLine(Offset(size.width, 0f), Offset(size.width, size.height), lineStyle)
+    drawLine(Offset(0f, 0f), Offset(0f, size.height), lineStyle)
+    drawLine(Offset(0f, size.height), Offset(size.width, size.height), lineStyle)
 }
 
 /**
@@ -102,10 +132,8 @@ internal fun DrawScope.drawZeroLines(
 }
 
 internal fun DrawScope.drawMinMaxAxisValues(
-    xMin: Number,
-    xMax: Number,
-    yMin: Number,
-    yMax: Number,
+    xMin: Number, xMax: Number,
+    yMin: Number, yMax: Number,
     textStyle: TextDrawStyle
 ) {
     drawText(
@@ -163,21 +191,6 @@ internal fun DrawScope.drawLabelPoints(
     }
 }
 
-internal fun DrawScope.drawChartTitle(
-    chartName: String,
-    textStyle: TextDrawStyle
-) {
-    drawText(
-        Offset(size.width / 2, 0f),
-        text = chartName,
-        offsetY = -25f,
-        textAlign = Paint.Align.CENTER,
-        textSize = 50f,
-        typeface = textStyle.typeface,
-        color = textStyle.color.toInt()
-    )
-}
-
 /**
  * Draws a text into the current DrawScope.
  */
@@ -190,19 +203,17 @@ internal fun DrawScope.drawText(
     textSize: Float = 32f,
     typeface: Typeface,
     color: Int = android.graphics.Color.GRAY
-) {
-    drawIntoCanvas {
-        it.nativeCanvas.drawText(
-            text,
-            point.x + offsetX,
-            point.y + offsetY,
-            Paint().apply {
-                this.textAlign = textAlign
-                this.textSize = textSize
-                this.color = color
-                this.typeface = typeface
-                flags = Paint.ANTI_ALIAS_FLAG
-            }
-        )
-    }
+) = drawIntoCanvas {
+    it.nativeCanvas.drawText(
+        text,
+        point.x + offsetX,
+        point.y + offsetY,
+        Paint().apply {
+            this.textAlign = textAlign
+            this.textSize = textSize
+            this.color = color
+            this.typeface = typeface
+            flags = Paint.ANTI_ALIAS_FLAG
+        }
+    )
 }

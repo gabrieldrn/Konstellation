@@ -4,6 +4,6 @@ import android.graphics.Typeface
 import androidx.compose.ui.graphics.Color
 
 data class TextDrawStyle(
+    override var color: Color = Color.Black,
     var typeface: Typeface = Typeface.DEFAULT,
-    var color: Color = Color.Black
 ) : DrawStyle //Useful ?

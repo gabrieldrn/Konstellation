@@ -3,7 +3,6 @@ package com.gabrieldrn.konstellationdemo
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -25,14 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import com.gabrieldrn.konstellation.core.plotting.LinePlotter
 import com.gabrieldrn.konstellation.core.plotting.FunctionPlotter
-import com.gabrieldrn.konstellation.core.plotting.Point
 import com.gabrieldrn.konstellation.core.plotting.by
 import com.gabrieldrn.konstellation.style.LineDrawStyle
+import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.exp
 import kotlin.math.sin
 
 private var textStyle = TextDrawStyle()
@@ -80,31 +77,44 @@ fun Content() {
     ) {
         Column {
             Row(Modifier.weight(1f)) {
-                ChartContent()
+                LineChart()
             }
             Row(Modifier.weight(1f)) {
-                FunctionChartContent()
+                FunctionChart()
             }
         }
     }
 }
 
 @Composable
-fun ChartContent() {
-    val primary = MaterialTheme.colors.primary
+fun LineChart() {
     Surface(color = MaterialTheme.colors.background) {
         LinePlotter(
             dataSet = points,
-            chartName = "Line chart",
-            lineStyle = LineDrawStyle(color = primary),
-            textStyle = textStyle.copy(color = primary),
+            lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
+            pointStyle = PointDrawStyle(color = MaterialTheme.colors.primary),
+            textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
         )
     }
 }
 
 @Composable
-fun FunctionChartContent() {
-    val primary = MaterialTheme.colors.primary
+fun FunctionChart() {
+    Surface(color = MaterialTheme.colors.background) {
+        FunctionPlotter(
+            pointSpacing = 5,
+            lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
+            textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
+            dataXRange = -PI.toFloat()..PI.toFloat(),
+            dataYRange = -2f..2f
+        ) {
+            sin(it)
+        }
+    }
+}
+
+@Composable
+fun AnimatedFunctionChart() {
     val infiniteTransition = rememberInfiniteTransition()
     val m by infiniteTransition.animateFloat(
         initialValue = -PI.toFloat(),
@@ -116,10 +126,9 @@ fun FunctionChartContent() {
     )
     Surface(color = MaterialTheme.colors.background) {
         FunctionPlotter(
-            chartName = "f(x) = sin(x)",
             pointSpacing = 5,
-            lineStyle = LineDrawStyle(color = primary),
-            textStyle = textStyle.copy(color = primary),
+            lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
+            textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
             dataXRange = -PI.toFloat() + m..PI.toFloat() + m,
             dataYRange = -2f..2f
         ) {

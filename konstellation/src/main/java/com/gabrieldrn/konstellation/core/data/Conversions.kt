@@ -2,6 +2,7 @@ package com.gabrieldrn.konstellation.core.data
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import com.gabrieldrn.konstellation.core.plotting.Dataset
 import com.gabrieldrn.konstellation.core.plotting.Point
 import com.gabrieldrn.konstellation.core.plotting.xRange
 import com.gabrieldrn.konstellation.core.plotting.yRange
@@ -49,7 +50,7 @@ internal fun Float.convertFromRanges(
  * @param dataSetYRange (optional) A specific range of values on the Y axis to consider instead of
  * the Y range of the receiving collection.
  */
-internal fun Collection<Point>.createOffsets(
+internal fun Dataset.createOffsets(
     drawScope: DrawScope,
     dataSetYRange: ClosedRange<Float> = this.yRange
 ) {

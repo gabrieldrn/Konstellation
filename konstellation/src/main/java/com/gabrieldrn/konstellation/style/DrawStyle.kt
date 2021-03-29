@@ -1,3 +1,7 @@
 package com.gabrieldrn.konstellation.style
 
-interface DrawStyle
+import androidx.compose.ui.graphics.Color
+
+interface DrawStyle {
+    val color: Color
+}
