@@ -29,7 +29,7 @@ fun SinChart() {
             dataXRange = -PI.toFloat() + m..PI.toFloat() + m,
             dataYRange = -2f..2f
         ) {
-            sin(it) //<- Your function f(x) where [is] is x.
+            sin(it) //<- Your function f(x) where [it] is x.
         }
     }
 }
