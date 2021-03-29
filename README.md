@@ -6,11 +6,11 @@ A plotting library based on Jetpack Compose.
 
 ![device-2021-03-28-191546_framed](https://user-images.githubusercontent.com/22205373/112771599-93d8ff80-8ffa-11eb-8375-ebc116ad85bc.png)
 
-## Usage example
+## Usage example of a function chart
 
 ```Kotlin
 @Composable
-fun FunctionChartContent() {
+fun SinChart() {
     val infiniteTransition = rememberInfiniteTransition()
     val m by infiniteTransition.animateFloat(
         initialValue = -PI.toFloat(),
@@ -21,15 +21,15 @@ fun FunctionChartContent() {
         )
     )
     Surface(color = MaterialTheme.colors.background) {
-        FunctionPlotter(
+        FunctionPlotter( //<- Composable provided by Konstellation
             chartName = "f(x) = sin(x)",
-            pointSpacing = 5,
+            pointSpacing = 5, //The lower the spacing, the higher the accuracy of the drawing.
             lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
-            textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
+            textStyle = TextDrawStyle(color = MaterialTheme.colors.primary),
             dataXRange = -PI.toFloat() + m..PI.toFloat() + m,
             dataYRange = -2f..2f
         ) {
-            sin(it)
+            sin(it) //<- Your function f(x) where [is] is x.
         }
     }
 }
