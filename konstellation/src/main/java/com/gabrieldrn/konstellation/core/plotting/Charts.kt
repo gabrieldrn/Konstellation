@@ -1,10 +1,17 @@
 package com.gabrieldrn.konstellation.core.plotting
 
+import android.view.MotionEvent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.data.convertCanvasXToDataX
 import com.gabrieldrn.konstellation.core.data.createOffsets
@@ -22,13 +29,40 @@ fun LinePlotter(
     lineStyle: LineDrawStyle = LineDrawStyle(),
     pointStyle: PointDrawStyle = PointDrawStyle(),
     textStyle: TextDrawStyle = TextDrawStyle(),
+    dataYRange: ClosedFloatingPointRange<Float>,
 ) {
-    Canvas(modifier.padding(16.dp).fillMaxSize()) {
-        dataSet.createOffsets(this)
+    var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
+    val pointerListener: (MotionEvent) -> Boolean = {
+        when (it.action) {
+            MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+                highlightedValue = dataSet.nearestPointByX(it.x)
+                true
+            }
+            else -> false
+        }
+    }
+    val highlightPointStyle = pointStyle.copy(radius = 7.dp)
+
+    Canvas(
+        modifier
+            .padding(16.dp)
+            .fillMaxSize()
+            .pointerInteropFilter(null, pointerListener)
+    ) {
+        dataSet.createOffsets(this, dataYRange)
         drawFrame()
-        drawZeroLines(dataSet.xRange, dataSet.yRange)
+        drawZeroLines(dataSet.xRange, dataYRange)
         drawLines(dataSet, lineStyle, pointStyle, drawPoints = true)
-        drawMinMaxAxisValues(dataSet, textStyle)
+        highlightedValue?.let {
+            highlightPoint(it, highlightPointStyle, textStyle)
+        }
+        drawMinMaxAxisValues(
+            dataSet.xMin,
+            dataSet.xMax,
+            dataYRange.start,
+            dataYRange.endInclusive,
+            textStyle
+        )
     }
 }
 
@@ -70,5 +104,13 @@ fun FunctionPlotter(
             dataYRange.endInclusive,
             textStyle
         )
+    }
+}
+
+internal class OffsetComparable : Comparator<Offset> {
+    override fun compare(o1: Offset?, o2: Offset?): Int {
+        requireNotNull(o1)
+        requireNotNull(o2)
+        return o1.x.compareTo(o2.x)
     }
 }

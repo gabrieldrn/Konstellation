@@ -25,6 +25,9 @@ import androidx.core.content.res.ResourcesCompat
 import com.gabrieldrn.konstellation.core.plotting.LinePlotter
 import com.gabrieldrn.konstellation.core.plotting.FunctionPlotter
 import com.gabrieldrn.konstellation.core.plotting.by
+import com.gabrieldrn.konstellation.core.plotting.datasetOf
+import com.gabrieldrn.konstellation.core.plotting.yMax
+import com.gabrieldrn.konstellation.core.plotting.yMin
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
@@ -48,15 +51,19 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-private val points = listOf(
+private val points = datasetOf(
     -10f by -10f,
     -5f by 0f,
     0f by 30f,
     5f by 30f,
-    10f by 25f
+    10f by 25f,
+    15f by 35f,
+    20f by 5f,
+    25f by -5f,
+    30f by 0f,
 )
 
-private val points2 = listOf(
+private val points2 = datasetOf(
     10f by 10f,
     20f by 20f,
     30f by 30f,
@@ -94,6 +101,7 @@ fun LineChart() {
             lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
             pointStyle = PointDrawStyle(color = MaterialTheme.colors.primary),
             textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
+            dataYRange = points.yMin - 10f..points.yMax + 10f
         )
     }
 }

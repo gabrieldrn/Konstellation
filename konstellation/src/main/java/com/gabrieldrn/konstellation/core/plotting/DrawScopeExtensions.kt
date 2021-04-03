@@ -175,6 +175,22 @@ internal fun DrawScope.drawMinMaxAxisValues(
     drawMinMaxAxisValues(xMin, xMax, yMin, yMax, textStyle)
 }
 
+internal fun DrawScope.highlightPoint(
+    point: Point,
+    highlightPointStyle: PointDrawStyle,
+    textStyle: TextDrawStyle
+) {
+    drawPoint(point, highlightPointStyle)
+    drawText(
+        point.offset,
+        0f,
+        -25f,
+        text = "${point.y}",
+        textAlign = Paint.Align.CENTER,
+        typeface = textStyle.typeface
+    )
+}
+
 internal fun DrawScope.drawLabelPoints(
     dataset: Dataset, textStyle: TextDrawStyle,
     onDrawPointLabel: (point: Point) -> String = { "${it.y}" }
