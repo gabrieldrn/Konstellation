@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.data.convertCanvasXToDataX
@@ -20,16 +20,18 @@ import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 
 /**
+ * Lambda invoked when a point needs to be highlighted.
+ */
+val highlight: DrawScope.(Point, PointDrawStyle, TextDrawStyle) -> Unit = DrawScope::highlightPoint
+
+/**
  * Composable responsible of plotting lines from a dataset and draw axis.
  */
 @Composable
 fun LinePlotter(
     dataSet: Dataset,
     modifier: Modifier = Modifier,
-    lineStyle: LineDrawStyle = LineDrawStyle(),
-    pointStyle: PointDrawStyle = PointDrawStyle(),
-    textStyle: TextDrawStyle = TextDrawStyle(),
-    dataYRange: ClosedFloatingPointRange<Float>,
+    properties: LineChartProperties = LineChartProperties()
 ) {
     var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
     val pointerListener: (MotionEvent) -> Boolean = {
@@ -41,7 +43,6 @@ fun LinePlotter(
             else -> false
         }
     }
-    val highlightPointStyle = pointStyle.copy(radius = 7.dp)
 
     Canvas(
         modifier
@@ -49,20 +50,22 @@ fun LinePlotter(
             .fillMaxSize()
             .pointerInteropFilter(null, pointerListener)
     ) {
-        dataSet.createOffsets(this, dataYRange)
         drawFrame()
-        drawZeroLines(dataSet.xRange, dataYRange)
-        drawLines(dataSet, lineStyle, pointStyle, drawPoints = true)
-        highlightedValue?.let {
-            highlightPoint(it, highlightPointStyle, textStyle)
+        with(properties) {
+            dataSet.createOffsets(this@Canvas, dataYRange ?: dataSet.yRange)
+            drawZeroLines(dataSet.xRange, dataYRange ?: dataSet.yRange)
+            drawLines(dataSet, lineStyle, pointStyle, drawPoints = true)
+            highlightedValue?.let {
+                highlight(this@Canvas, it, highlightPointStyle, highlightTextStyle)
+            }
+            drawMinMaxAxisValues(
+                dataSet.xMin,
+                dataSet.xMax,
+                dataYRange?.start ?: dataSet.yMin,
+                dataYRange?.endInclusive ?: dataSet.yMax,
+                textStyle
+            )
         }
-        drawMinMaxAxisValues(
-            dataSet.xMin,
-            dataSet.xMax,
-            dataYRange.start,
-            dataYRange.endInclusive,
-            textStyle
-        )
     }
 }
 
@@ -104,13 +107,5 @@ fun FunctionPlotter(
             dataYRange.endInclusive,
             textStyle
         )
-    }
-}
-
-internal class OffsetComparable : Comparator<Offset> {
-    override fun compare(o1: Offset?, o2: Offset?): Int {
-        requireNotNull(o1)
-        requireNotNull(o2)
-        return o1.x.compareTo(o2.x)
     }
 }

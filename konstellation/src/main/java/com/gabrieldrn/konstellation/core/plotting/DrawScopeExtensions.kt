@@ -138,34 +138,23 @@ internal fun DrawScope.drawMinMaxAxisValues(
 ) {
     drawText(
         Offset(0f, size.height),
-        offsetY = 25f,
         text = xMin.toString(),
-        textAlign = Paint.Align.LEFT,
-        typeface = textStyle.typeface,
-        color = textStyle.color.toInt()
+        style = textStyle.copy(offsetY = 25f)
     )
     drawText(
         Offset(size.width, size.height),
-        offsetY = 25f,
         text = xMax.toString(),
-        textAlign = Paint.Align.RIGHT,
-        typeface = textStyle.typeface,
-        color = textStyle.color.toInt()
+        style = textStyle.copy(textAlign = Paint.Align.RIGHT, offsetY = 25f)
     )
     drawText(
         Offset(0f, size.height),
         text = yMin.toString(),
-        textAlign = Paint.Align.LEFT,
-        typeface = textStyle.typeface,
-        color = textStyle.color.toInt()
+        style = textStyle
     )
     drawText(
         Offset(0f, 0f),
-        offsetY = 25f,
         text = yMax.toString(),
-        textAlign = Paint.Align.LEFT,
-        typeface = textStyle.typeface,
-        color = textStyle.color.toInt()
+        style = textStyle.copy(offsetY = 25f)
     )
 }
 
@@ -175,19 +164,21 @@ internal fun DrawScope.drawMinMaxAxisValues(
     drawMinMaxAxisValues(xMin, xMax, yMin, yMax, textStyle)
 }
 
+/**
+ * Highlights a given [point] in the chart by drawing another circle styled with
+ * [highlightPointStyle] in front of it and a text showing its value on top, styled with
+ * [highlightTextStyle].
+ */
 internal fun DrawScope.highlightPoint(
     point: Point,
     highlightPointStyle: PointDrawStyle,
-    textStyle: TextDrawStyle
+    highlightTextStyle: TextDrawStyle
 ) {
     drawPoint(point, highlightPointStyle)
     drawText(
         point.offset,
-        0f,
-        -25f,
         text = "${point.y}",
-        textAlign = Paint.Align.CENTER,
-        typeface = textStyle.typeface
+        style = highlightTextStyle
     )
 }
 
@@ -198,11 +189,8 @@ internal fun DrawScope.drawLabelPoints(
     dataset.forEach {
         drawText(
             it.offset,
-            10f,
-            -10f,
             text = onDrawPointLabel(it),
-            textAlign = Paint.Align.LEFT,
-            typeface = textStyle.typeface
+            style = textStyle
         )
     }
 }
@@ -212,23 +200,18 @@ internal fun DrawScope.drawLabelPoints(
  */
 internal fun DrawScope.drawText(
     point: Offset,
-    offsetX: Float = 0f,
-    offsetY: Float = 0f,
     text: String,
-    textAlign: Paint.Align = Paint.Align.CENTER,
-    textSize: Float = 32f,
-    typeface: Typeface,
-    color: Int = android.graphics.Color.GRAY
+    style: TextDrawStyle = TextDrawStyle()
 ) = drawIntoCanvas {
     it.nativeCanvas.drawText(
         text,
-        point.x + offsetX,
-        point.y + offsetY,
+        point.x + style.offsetX,
+        point.y + style.offsetY,
         Paint().apply {
-            this.textAlign = textAlign
-            this.textSize = textSize
-            this.color = color
-            this.typeface = typeface
+            textAlign = style.textAlign
+            textSize = style.textSize
+            color = style.color.toInt()
+            typeface = style.typeface
             flags = Paint.ANTI_ALIAS_FLAG
         }
     )

@@ -1,5 +1,6 @@
 package com.gabrieldrn.konstellationdemo
 
+import android.graphics.Paint
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,19 +12,26 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
+import androidx.compose.material.Switch
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import com.gabrieldrn.konstellation.core.plotting.LinePlotter
 import com.gabrieldrn.konstellation.core.plotting.FunctionPlotter
+import com.gabrieldrn.konstellation.core.plotting.LineChartProperties
 import com.gabrieldrn.konstellation.core.plotting.by
 import com.gabrieldrn.konstellation.core.plotting.datasetOf
 import com.gabrieldrn.konstellation.core.plotting.yMax
@@ -36,20 +44,6 @@ import kotlin.math.PI
 import kotlin.math.sin
 
 private var textStyle = TextDrawStyle()
-
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        ResourcesCompat.getFont(this, R.font.space_mono_regular)?.let {
-            textStyle = textStyle.copy(typeface = it)
-        }
-        setContent {
-            KonstellationTheme {
-                Content()
-            }
-        }
-    }
-}
 
 private val points = datasetOf(
     -10f by -10f,
@@ -69,6 +63,19 @@ private val points2 = datasetOf(
     30f by 30f,
 )
 
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ResourcesCompat.getFont(this, R.font.space_mono_regular)?.let {
+            textStyle = textStyle.copy(typeface = it)
+        }
+        setContent {
+            KonstellationTheme {
+                Content()
+            }
+        }
+    }
+}
 
 @Composable
 fun Content() {
@@ -87,7 +94,8 @@ fun Content() {
                 LineChart()
             }
             Row(Modifier.weight(1f)) {
-                FunctionChart()
+                AnimatedFunctionChart()
+//                FunctionChart()
             }
         }
     }
@@ -96,12 +104,24 @@ fun Content() {
 @Composable
 fun LineChart() {
     Surface(color = MaterialTheme.colors.background) {
-        LinePlotter(
-            dataSet = points,
+        val chartProperties = LineChartProperties(
             lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
             pointStyle = PointDrawStyle(color = MaterialTheme.colors.primary),
             textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
+            highlightPointStyle = PointDrawStyle(
+                color = MaterialTheme.colors.primary, radius = 6.dp
+            ),
+            highlightTextStyle = textStyle.copy(
+                color = MaterialTheme.colors.primary,
+                textAlign = Paint.Align.CENTER,
+                offsetY = -25f
+            ),
             dataYRange = points.yMin - 10f..points.yMax + 10f
+        )
+
+        LinePlotter(
+            dataSet = points,
+            properties = chartProperties
         )
     }
 }
@@ -123,6 +143,7 @@ fun FunctionChart() {
 
 @Composable
 fun AnimatedFunctionChart() {
+    var animate by rememberSaveable { mutableStateOf(false) }
     val infiniteTransition = rememberInfiniteTransition()
     val m by infiniteTransition.animateFloat(
         initialValue = -PI.toFloat(),
@@ -132,15 +153,27 @@ fun AnimatedFunctionChart() {
             repeatMode = RepeatMode.Restart
         )
     )
-    Surface(color = MaterialTheme.colors.background) {
-        FunctionPlotter(
-            pointSpacing = 5,
-            lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
-            textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
-            dataXRange = -PI.toFloat() + m..PI.toFloat() + m,
-            dataYRange = -2f..2f
+    Column {
+        Surface(Modifier.weight(1f), color = MaterialTheme.colors.background) {
+            FunctionPlotter(
+                pointSpacing = 5,
+                lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
+                textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
+                dataXRange = if (animate) {
+                    -PI.toFloat() + m..PI.toFloat() + m
+                } else -PI.toFloat()..PI.toFloat(),
+                dataYRange = -2f..2f
+            ) {
+                sin(it)
+            }
+        }
+        Row(
+            Modifier
+                .padding(bottom = 16.dp)
+                .align(Alignment.CenterHorizontally)
         ) {
-            sin(it)
+            Switch(checked = animate, onCheckedChange = { animate = it })
+            Text(text = "Animate", Modifier.padding(start = 8.dp))
         }
     }
 }
