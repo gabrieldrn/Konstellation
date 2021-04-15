@@ -39,6 +39,7 @@ import com.gabrieldrn.konstellation.core.plotting.yMin
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
+import com.gabrieldrn.konstellation.util.randomDataSet
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlin.math.PI
 import kotlin.math.sin
@@ -104,6 +105,7 @@ fun Content() {
 @Composable
 fun LineChart() {
     Surface(color = MaterialTheme.colors.background) {
+        val points = randomDataSet()
         val chartProperties = LineChartProperties(
             lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
             pointStyle = PointDrawStyle(color = MaterialTheme.colors.primary),
@@ -116,7 +118,7 @@ fun LineChart() {
                 textAlign = Paint.Align.CENTER,
                 offsetY = -25f
             ),
-            dataYRange = points.yMin - 10f..points.yMax + 10f
+            dataYRange = points.yMin - 1f..points.yMax + 1f
         )
 
         LinePlotter(

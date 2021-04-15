@@ -1,7 +1,6 @@
 package com.gabrieldrn.konstellation.core.plotting
 
 import android.graphics.Paint
-import android.graphics.Typeface
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -69,7 +68,7 @@ internal fun DrawScope.drawLines(
 /**
  * Draws a circle representing a point of the dataset
  */
-internal fun DrawScope.drawPoint(point: Point, style: PointDrawStyle) {
+internal fun DrawScope.drawPoint(point: Point, style: PointDrawStyle = PointDrawStyle()) {
     drawCircle(center = point.offset, color = style.color, radius = style.radius.toPx())
 }
 

@@ -7,6 +7,9 @@ import com.gabrieldrn.konstellation.core.plotting.Point
 import com.gabrieldrn.konstellation.core.plotting.xRange
 import com.gabrieldrn.konstellation.core.plotting.yRange
 import kotlin.math.abs
+import kotlin.math.ceil
+import kotlin.math.log10
+import kotlin.math.pow
 
 /**
  * Converts a value from a range to another value based on another range, so as they are equivalent
@@ -35,10 +38,31 @@ internal fun Float.convertFromRanges(
 //    require(this in fromRange) {
 //        "The point must be within the bounds of his range"
 //    }
-    val offsetRange = if (toRange.start < 0.0) abs(toRange.start) else 0f
+    val offsetRange = if (toRange.start < 0f) abs(toRange.start) else 0f
     return (((toRange.endInclusive + offsetRange) - (toRange.start + offsetRange))
             * (this - fromRange.start) / (fromRange.endInclusive - fromRange.start)
             ) - offsetRange
+}
+
+/**
+ * Considering an axis scale based on the receiving range with a number of [tickCount] ticks, this
+ * function returns the division between each tick.
+ *
+ * Example:
+ * Given a range of 0 to 40 and a tick count of 5, the tick division will be 10.
+ * ```
+ * |-----|-----|-----|-----|
+ * 0     10    20    30    40
+ * ```
+ *
+ * @receiver The range from which calculate ticks division.
+ * @param tickCount A desired number of ticks. 5 by default.
+ * @return The division between each tick.
+ */
+internal fun ClosedFloatingPointRange<Float>.getTickDivision(tickCount: Int = 5): Float {
+    val rawTickRange = (endInclusive - start) / (tickCount - 1)
+    val pow10x = 10f.pow(ceil(log10(rawTickRange) - 1))
+    return ceil(rawTickRange / pow10x) * pow10x
 }
 
 /**

@@ -4,6 +4,9 @@ import androidx.compose.ui.geometry.Offset
 import java.io.Serializable
 import kotlin.math.abs
 
+/**
+ * Convenience type alias for a set of [Point]s.
+ */
 typealias Dataset = Collection<Point>
 
 /**

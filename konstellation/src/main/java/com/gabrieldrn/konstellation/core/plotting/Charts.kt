@@ -58,13 +58,16 @@ fun LinePlotter(
             highlightedValue?.let {
                 highlight(this@Canvas, it, highlightPointStyle, highlightTextStyle)
             }
-            drawMinMaxAxisValues(
-                dataSet.xMin,
-                dataSet.xMax,
-                dataYRange?.start ?: dataSet.yMin,
-                dataYRange?.endInclusive ?: dataSet.yMax,
-                textStyle
-            )
+
+            drawScaledXAxis(dataXRange ?: dataSet.xRange, xAxisDrawStyle)
+
+//            drawMinMaxAxisValues(
+//                dataSet.xMin,
+//                dataSet.xMax,
+//                dataYRange?.start ?: dataSet.yMin,
+//                dataYRange?.endInclusive ?: dataSet.yMax,
+//                textStyle
+//            )
         }
     }
 }

@@ -3,6 +3,7 @@ package com.gabrieldrn.konstellation.util
 import com.gabrieldrn.konstellation.core.plotting.Point
 import com.gabrieldrn.konstellation.core.plotting.by
 import kotlin.random.Random
+import kotlin.random.nextInt
 
 val samplePoints = arrayOf(
     0f by 0f,
@@ -16,7 +17,7 @@ val samplePoints = arrayOf(
  * Generates a random data set of 25 points with a y value between `0f` and `1f`.
  */
 fun randomDataSet() = mutableListOf<Point>().apply {
-    repeat(25) {
-        add(it.toFloat() by Random.nextFloat())
+    repeat(26) {
+        add(it.toFloat() by Random.nextInt(-10..10).toFloat())
     }
-}.toTypedArray()
+}
