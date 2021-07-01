@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.pointerInteropFilter
@@ -27,6 +28,7 @@ val highlight: DrawScope.(Point, PointDrawStyle, TextDrawStyle) -> Unit = DrawSc
 /**
  * Composable responsible of plotting lines from a dataset and draw axis.
  */
+@ExperimentalComposeUiApi
 @Composable
 fun LinePlotter(
     dataSet: Dataset,
@@ -53,6 +55,7 @@ fun LinePlotter(
         drawFrame()
         with(properties) {
             dataSet.createOffsets(this@Canvas, dataYRange ?: dataSet.yRange)
+            //TODO Place points based on dataXRange (eg. X range = -25..25 but dataset = -9..12)
             drawZeroLines(dataSet.xRange, dataYRange ?: dataSet.yRange)
             drawLines(dataSet, lineStyle, pointStyle, drawPoints = true)
             highlightedValue?.let {
@@ -60,14 +63,6 @@ fun LinePlotter(
             }
 
             drawScaledXAxis(dataXRange ?: dataSet.xRange, xAxisDrawStyle)
-
-//            drawMinMaxAxisValues(
-//                dataSet.xMin,
-//                dataSet.xMax,
-//                dataYRange?.start ?: dataSet.yMin,
-//                dataYRange?.endInclusive ?: dataSet.yMax,
-//                textStyle
-//            )
         }
     }
 }

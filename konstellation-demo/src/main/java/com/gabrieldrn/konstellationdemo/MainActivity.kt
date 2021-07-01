@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +41,7 @@ import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 import com.gabrieldrn.konstellation.util.randomDataSet
+import com.gabrieldrn.konstellation.util.samplePoints
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlin.math.PI
 import kotlin.math.sin
@@ -65,6 +67,7 @@ private val points2 = datasetOf(
 )
 
 class MainActivity : AppCompatActivity() {
+    @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ResourcesCompat.getFont(this, R.font.space_mono_regular)?.let {
@@ -78,6 +81,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+@ExperimentalComposeUiApi
 @Composable
 fun Content() {
     Scaffold(
@@ -102,6 +106,7 @@ fun Content() {
     }
 }
 
+@ExperimentalComposeUiApi
 @Composable
 fun LineChart() {
     Surface(color = MaterialTheme.colors.background) {
@@ -118,6 +123,7 @@ fun LineChart() {
                 textAlign = Paint.Align.CENTER,
                 offsetY = -25f
             ),
+//            dataXRange = -25f..25f,
             dataYRange = points.yMin - 1f..points.yMax + 1f
         )
 
@@ -180,6 +186,7 @@ fun AnimatedFunctionChart() {
     }
 }
 
+@ExperimentalComposeUiApi
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
