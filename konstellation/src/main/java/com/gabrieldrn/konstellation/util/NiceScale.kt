@@ -8,8 +8,6 @@ import kotlin.math.pow
 /**
  * This class computes the human-readable numbers for chart labels. After [compute] is executed,
  * the values [tickSpacing], [range], [niceMin], [niceMax] will be updated.
- * The algorithm used here is from the book "Graphics Gems, Volume 1" by Andrew S. Glassner,
- * chapter "Nice numbers for graph labels" page 61.
  *
  * @param minPoint Minimum data point on the axis.
  * @param maxPoint Maximum data point on the axis.
@@ -51,7 +49,7 @@ class NiceScale(var minPoint: Float, var maxPoint: Float, var maxTicks: Int = 5)
      */
     private fun niceNum(range: Float, round: Boolean): Float {
         val exponent = floor(log10(range)) //nice, rounded fraction
-        val fraction = range / 10F.pow(exponent) //exponent of range
+        val fraction = range / 10f.pow(exponent) //exponent of range
         val niceFraction = if (round) { //fractional part of range
             when {
                 fraction < 1.5f -> 1.0f

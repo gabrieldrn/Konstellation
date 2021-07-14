@@ -123,7 +123,7 @@ fun LineChart() {
                 textAlign = Paint.Align.CENTER,
                 offsetY = -25f
             ),
-//            dataXRange = -25f..25f,
+            dataXRange = -20f..20f,
             dataYRange = points.yMin - 1f..points.yMax + 1f
         )
 
@@ -167,9 +167,7 @@ fun AnimatedFunctionChart() {
                 pointSpacing = 5,
                 lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
                 textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
-                dataXRange = if (animate) {
-                    -PI.toFloat() + m..PI.toFloat() + m
-                } else -PI.toFloat()..PI.toFloat(),
+                dataXRange = -PI.toFloat() + (if (animate) m else 0f)..PI.toFloat() + (if (animate) m else 0f),
                 dataYRange = -2f..2f
             ) {
                 sin(it)

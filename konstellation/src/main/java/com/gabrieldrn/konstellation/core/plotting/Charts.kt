@@ -54,8 +54,11 @@ fun LinePlotter(
     ) {
         drawFrame()
         with(properties) {
-            dataSet.createOffsets(this@Canvas, dataYRange ?: dataSet.yRange)
-            //TODO Place points based on dataXRange (eg. X range = -25..25 but dataset = -9..12)
+            dataSet.createOffsets(
+                drawScope = this@Canvas,
+                dataSetXRange = dataXRange ?: dataSet.xRange,
+                dataSetYRange = dataYRange ?: dataSet.yRange
+            )
             drawZeroLines(dataSet.xRange, dataYRange ?: dataSet.yRange)
             drawLines(dataSet, lineStyle, pointStyle, drawPoints = true)
             highlightedValue?.let {
@@ -93,7 +96,7 @@ fun FunctionPlotter(
         }
         addPoint(size.width, function(dataXRange.endInclusive))
 
-        points.createOffsets(this, dataYRange)
+        points.createOffsets(this, dataSetYRange = dataYRange)
 
         drawFrame()
         drawZeroLines(dataXRange, dataYRange)

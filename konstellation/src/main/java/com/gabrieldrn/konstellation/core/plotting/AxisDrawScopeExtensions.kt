@@ -19,8 +19,7 @@ internal fun DrawScope.drawScaledXAxis(
     axisDrawStyle: AxisDrawStyle = AxisDrawStyle()
 ) {
     //Axis scale computation
-    val scaleCalc = NiceScale(xRange.start, xRange.endInclusive, 7)
-    Log.d("X AXIS", scaleCalc.toString())
+    val scaleCalc = NiceScale(xRange.start, xRange.endInclusive, 10)
 
     //Initial drawing point : bottom left
     var zo = Offset(0f, size.height)
@@ -43,8 +42,10 @@ internal fun DrawScope.drawScaledXAxis(
 
     //Labels drawing
     while (tickValue <= scaleCalc.niceMax) {
-        drawTick(zo, axisDrawStyle.tickLineStyle)
-        drawTickLabel(Offset(zo.x, zo.y), tickValue.toString(), axisDrawStyle.tickTextStyle)
+        if (tickValue in xRange) {
+            drawTick(zo, axisDrawStyle.tickLineStyle)
+            drawTickLabel(Offset(zo.x, zo.y), tickValue.toString(), axisDrawStyle.tickTextStyle)
+        }
         zo += tickSpacingOffset
         tickValue += scaleCalc.tickSpacing
     }

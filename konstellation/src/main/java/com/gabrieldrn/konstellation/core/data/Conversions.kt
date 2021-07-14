@@ -46,56 +46,26 @@ internal fun Float.convertFromRanges(
 }
 
 /**
- * Considering an axis scale based on the receiving range with a number of [tickCount] ticks, this
- * function returns the division between each tick.
- *
- * Examples:
- * Given a range of 0 to 40 and a tick count of 5, the tick division will be 10.
- * ```
- * |-----|-----|-----|-----|
- * 0     10    20    30    40
- * ```
- * Given a range of 0 to 25 and a tick count of 5, the tick division will be 5.
- * ```
- * |-----|-----|-----|-----|
- * 0                       25
- * ```
- *
- * @receiver The range from which calculate ticks division.
- * @param tickCount A desired number of ticks. 5 by default.
- * @return The division between each tick.
- */
-internal fun ClosedFloatingPointRange<Float>.getTickDivision(tickCount: Int = 5): Float {
-    val rawTickRange = (endInclusive - start) / (tickCount - 1)
-    val pow10x = 10f.pow(ceil(log10(rawTickRange) - 1))
-    return ceil(rawTickRange / pow10x) * pow10x
-}
-
-internal fun Float.roundToNextSignificant() : Float {
-    if (this == 0f) return 0f
-    val magnitude = 10f.pow(1 - ceil(log10(this)).toInt())
-    val shifted = (this * magnitude).roundToLong()
-    return shifted / magnitude
-}
-
-/**
  * Sets all the offsets in each [Point] of the receiving collection, based on the bounds of the
- * passed [drawScope]. A specific Y range can be given with [dataSetYRange].
+ * passed [drawScope]. A specific ranges can be given with [dataSetXRange] and [dataSetYRange].
  *
  * @receiver The current collection of point within which to establish the offsets.
  * @param drawScope The draw scope of the chart in which drawing the future offsets.
+ * @param dataSetXRange (optional) A specific range of values on the X axis to consider instead of
+ * the X range of the receiving collection.
  * @param dataSetYRange (optional) A specific range of values on the Y axis to consider instead of
  * the Y range of the receiving collection.
  */
 internal fun Dataset.createOffsets(
     drawScope: DrawScope,
+    dataSetXRange: ClosedRange<Float> = this.xRange,
     dataSetYRange: ClosedRange<Float> = this.yRange
 ) {
     val canvasYRange = drawScope.size.height..0f //Inverting to draw from bottom to top
     val canvasXRange = 0f..drawScope.size.width
     forEach {
         it.offset = Offset(
-            x = it.x.convertFromRanges(xRange, canvasXRange),
+            x = it.x.convertFromRanges(dataSetXRange, canvasXRange),
             y = it.y.convertFromRanges(dataSetYRange, canvasYRange) + drawScope.size.height,
         )
     }
