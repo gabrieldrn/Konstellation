@@ -1,7 +1,6 @@
 package com.gabrieldrn.konstellation.core.plotting
 
 import android.graphics.Paint
-import android.util.Log
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope

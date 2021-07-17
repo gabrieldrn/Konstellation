@@ -46,6 +46,9 @@ fun LinePlotter(
         }
     }
 
+    val xRange = properties.dataXRange ?: dataSet.xRange
+    val yRange = properties.dataYRange ?: dataSet.yRange
+
     Canvas(
         modifier
             .padding(16.dp)
@@ -56,16 +59,16 @@ fun LinePlotter(
         with(properties) {
             dataSet.createOffsets(
                 drawScope = this@Canvas,
-                dataSetXRange = dataXRange ?: dataSet.xRange,
-                dataSetYRange = dataYRange ?: dataSet.yRange
+                dataSetXRange = xRange,
+                dataSetYRange = yRange
             )
-            drawZeroLines(dataSet.xRange, dataYRange ?: dataSet.yRange)
+            drawZeroLines(xRange, yRange)
             drawLines(dataSet, lineStyle, pointStyle, drawPoints = true)
             highlightedValue?.let {
                 highlight(this@Canvas, it, highlightPointStyle, highlightTextStyle)
             }
 
-            drawScaledXAxis(dataXRange ?: dataSet.xRange, xAxisDrawStyle)
+            drawScaledXAxis(xRange, xAxisDrawStyle)
         }
     }
 }
