@@ -12,5 +12,5 @@ data class LineChartProperties(
     var highlightTextStyle: TextDrawStyle = TextDrawStyle(),
     override var dataXRange: ClosedFloatingPointRange<Float>? = null,
     override var dataYRange: ClosedFloatingPointRange<Float>? = null,
-    override val axes: Set<ChartAxis> = setOf(ChartAxis.XBottom())
+    override var axes: Set<ChartAxis> = setOf(xBottom, yLeft)
 ) : ChartProperties

@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
  * @param cap Line ending style. See [StrokeCap].
  */
 data class LineDrawStyle(
-    override val color: Color = Color.Black,
-    val strokeWidth: Dp = 1.5f.dp,
-    val cap: StrokeCap = StrokeCap.Round
+    override var color: Color = Color.Black,
+    var strokeWidth: Dp = 1.5f.dp,
+    var cap: StrokeCap = StrokeCap.Round
 ) : DrawStyle

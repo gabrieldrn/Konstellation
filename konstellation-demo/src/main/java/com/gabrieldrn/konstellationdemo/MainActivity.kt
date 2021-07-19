@@ -31,9 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import com.gabrieldrn.konstellation.core.plotting.*
-import com.gabrieldrn.konstellation.style.LineDrawStyle
-import com.gabrieldrn.konstellation.style.PointDrawStyle
-import com.gabrieldrn.konstellation.style.TextDrawStyle
+import com.gabrieldrn.konstellation.style.*
 import com.gabrieldrn.konstellation.util.randomDataSet
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlin.math.PI
@@ -104,6 +102,7 @@ fun Content() {
 fun LineChart() {
     Surface(color = MaterialTheme.colors.background) {
         val points = randomDataSet()
+        val axisColor = MaterialTheme.colors.onBackground
         val chartProperties = LineChartProperties(
             lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
             pointStyle = PointDrawStyle(color = MaterialTheme.colors.primary),
@@ -116,9 +115,14 @@ fun LineChart() {
                 textAlign = Paint.Align.CENTER,
                 offsetY = -25f
             ),
-//            dataXRange = 0f..40f,
-//            dataYRange = 0f..40f,
-            axes = setOf(ChartAxis.XBottom(), ChartAxis.XTop(), ChartAxis.YLeft(), ChartAxis.YRight())
+            dataXRange = -15f..15f,
+            dataYRange = -20f..20f,
+            axes = setOf(
+                xBottom.apply { style.setColor(axisColor) },
+                xTop.apply { style.setColor(axisColor) },
+                yLeft.apply { style.setColor(axisColor) },
+                yRight.apply { style.setColor(axisColor) },
+            )
         )
 
         LinePlotter(

@@ -21,8 +21,8 @@ internal fun DrawScope.drawScaledAxis(
 
     properties.axes.forEach { axis ->
         range = when (axis.axis) {
-            ChartAxis.Axis.X_TOP, ChartAxis.Axis.X_BOTTOM -> properties.dataXRange ?: dataSet.xRange
-            ChartAxis.Axis.Y_LEFT, ChartAxis.Axis.Y_RIGHT -> properties.dataYRange ?: dataSet.yRange
+            Axis.X_TOP, Axis.X_BOTTOM -> properties.dataXRange ?: dataSet.xRange
+            Axis.Y_LEFT, Axis.Y_RIGHT -> properties.dataYRange ?: dataSet.yRange
         }
 
         //Axis scale computation
@@ -31,17 +31,17 @@ internal fun DrawScope.drawScaledAxis(
         //Axis line offsets
         //lineStart = initial drawing point
         when (axis.axis) {
-            ChartAxis.Axis.X_TOP -> Offset(0f, 0f) to Offset(size.width, 0f)
-            ChartAxis.Axis.X_BOTTOM -> Offset(0f, size.height) to Offset(size.width, size.height)
-            ChartAxis.Axis.Y_LEFT -> Offset(0f, size.height) to Offset(0f, 0f)
-            ChartAxis.Axis.Y_RIGHT -> Offset(size.width, size.height) to Offset(size.width, 0f)
+            Axis.X_TOP -> Offset(0f, 0f) to Offset(size.width, 0f)
+            Axis.X_BOTTOM -> Offset(0f, size.height) to Offset(size.width, size.height)
+            Axis.Y_LEFT -> Offset(0f, size.height) to Offset(0f, 0f)
+            Axis.Y_RIGHT -> Offset(size.width, size.height) to Offset(size.width, 0f)
         }.run { lineStart = first; lineEnd = second }
 
         //Axis line
         drawLine(lineStart, lineEnd, axis.style.axisLineStyle)
 
         val startEndOffsetSpace = when (axis.axis) {
-            ChartAxis.Axis.X_TOP, ChartAxis.Axis.X_BOTTOM -> size.width
+            Axis.X_TOP, Axis.X_BOTTOM -> size.width
             else -> size.height
         }
         //Space between left canvas border and left chart "window" depending on chart values
@@ -53,7 +53,7 @@ internal fun DrawScope.drawScaledAxis(
         //Space between each tick
         val tickSpacing = (startEndOffsetSpace + startOffset + endOffset) / (tickCount - 1)
         val tickSpacingOffset = when (axis.axis) {
-            ChartAxis.Axis.X_TOP, ChartAxis.Axis.X_BOTTOM -> Offset(tickSpacing, 0f)
+            Axis.X_TOP, Axis.X_BOTTOM -> Offset(tickSpacing, 0f)
             else -> Offset(0f, -tickSpacing)
         }
         //Potential shift of the initial drawing point on the left if offset != 0
@@ -82,11 +82,11 @@ internal fun DrawScope.drawTick(
 ) {
     drawLine(
         start = when (axis.axis) {
-            ChartAxis.Axis.X_TOP, ChartAxis.Axis.X_BOTTOM -> Offset(center.x, center.y - 10f)
+            Axis.X_TOP, Axis.X_BOTTOM -> Offset(center.x, center.y - 10f)
             else -> Offset(center.x - 10f, center.y)
         },
         end = when (axis.axis) {
-            ChartAxis.Axis.X_TOP, ChartAxis.Axis.X_BOTTOM -> Offset(center.x, center.y + 10f)
+            Axis.X_TOP, Axis.X_BOTTOM -> Offset(center.x, center.y + 10f)
             else -> Offset(center.x + 10f, center.y)
         },
         lineStyle = axis.style.tickLineStyle.copy(cap = StrokeCap.Square)
@@ -109,13 +109,13 @@ internal fun DrawScope.drawTickLabel(
         flags = Paint.ANTI_ALIAS_FLAG
     }
     val xMetricsOffset = when (axis.axis) {
-        ChartAxis.Axis.Y_LEFT -> -20f
-        ChartAxis.Axis.Y_RIGHT -> 20f
+        Axis.Y_LEFT -> -20f
+        Axis.Y_RIGHT -> 20f
         else -> 0f
     }
     val yMetricsOffset = when (axis.axis) {
-        ChartAxis.Axis.X_BOTTOM -> paint.fontMetrics.descent - paint.fontMetrics.ascent
-        ChartAxis.Axis.X_TOP -> -(paint.fontMetrics.bottom + paint.fontMetrics.descent)
+        Axis.X_BOTTOM -> paint.fontMetrics.descent - paint.fontMetrics.ascent
+        Axis.X_TOP -> -(paint.fontMetrics.bottom + paint.fontMetrics.descent)
         else -> -((paint.fontMetrics.ascent + paint.fontMetrics.descent) / 2)
     }
     it.nativeCanvas.drawText(
