@@ -51,11 +51,12 @@ internal fun DrawScope.drawLines(
     val d = dataset.iterator()
     while (d.hasNext()) {
         d.next().let {
+            val linesClipSpace = 1.dp.toPx()
             clipRect(
-                -1.dp.toPx(),
-                -1.dp.toPx(),
-                size.width + 1.dp.toPx(),
-                size.height + 1.dp.toPx()
+                -linesClipSpace,
+                -linesClipSpace,
+                size.width + linesClipSpace,
+                size.height + linesClipSpace
             ) {
                 drawLine(previous, it, lineStyle)
             }

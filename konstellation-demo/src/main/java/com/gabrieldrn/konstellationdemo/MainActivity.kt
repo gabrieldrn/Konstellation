@@ -30,18 +30,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
-import com.gabrieldrn.konstellation.core.plotting.LinePlotter
-import com.gabrieldrn.konstellation.core.plotting.FunctionPlotter
-import com.gabrieldrn.konstellation.core.plotting.LineChartProperties
-import com.gabrieldrn.konstellation.core.plotting.by
-import com.gabrieldrn.konstellation.core.plotting.datasetOf
-import com.gabrieldrn.konstellation.core.plotting.yMax
-import com.gabrieldrn.konstellation.core.plotting.yMin
+import com.gabrieldrn.konstellation.core.plotting.*
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 import com.gabrieldrn.konstellation.util.randomDataSet
-import com.gabrieldrn.konstellation.util.samplePoints
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlin.math.PI
 import kotlin.math.sin
@@ -123,8 +116,9 @@ fun LineChart() {
                 textAlign = Paint.Align.CENTER,
                 offsetY = -25f
             ),
-            dataXRange = -20f..20f,
-            dataYRange = points.yMin - 1f..points.yMax + 1f
+//            dataXRange = 0f..40f,
+//            dataYRange = 0f..40f,
+            axes = setOf(ChartAxis.XBottom(), ChartAxis.XTop(), ChartAxis.YLeft(), ChartAxis.YRight())
         )
 
         LinePlotter(

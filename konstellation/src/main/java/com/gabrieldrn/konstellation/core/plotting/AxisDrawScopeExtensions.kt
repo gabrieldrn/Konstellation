@@ -6,47 +6,70 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
-import com.gabrieldrn.konstellation.style.AxisDrawStyle
-import com.gabrieldrn.konstellation.style.LineDrawStyle
-import com.gabrieldrn.konstellation.style.TextDrawStyle
 import com.gabrieldrn.konstellation.util.NiceScale
 import com.gabrieldrn.konstellation.util.rawRange
 import com.gabrieldrn.konstellation.util.toInt
 
-internal fun DrawScope.drawScaledXAxis(
-    xRange: ClosedFloatingPointRange<Float>,
-    axisDrawStyle: AxisDrawStyle = AxisDrawStyle()
+internal fun DrawScope.drawScaledAxis(
+    properties: ChartProperties,
+    dataSet: Dataset
 ) {
-    //Axis scale computation
-    val scaleCalc = NiceScale(xRange.start, xRange.endInclusive, 10)
+    var range: ClosedFloatingPointRange<Float>
+    var scaleCalc: NiceScale
+    var lineStart: Offset
+    var lineEnd: Offset
 
-    //Initial drawing point : bottom left
-    var zo = Offset(0f, size.height)
-
-    //Axis line
-    drawLine(zo, Offset(size.width, size.height), axisDrawStyle.axisLineStyle)
-
-    //Space between left canvas border and left chart "window" depending on chart values
-    val leftOffset = (size.width * (xRange.start - scaleCalc.niceMin)) / xRange.rawRange
-    //Space between right chart "window" and right canvas border depending on chart values
-    val rightOffset = (size.width * (scaleCalc.niceMax - xRange.endInclusive)) / xRange.rawRange
-    //Number of ticks
-    val tickCount = (scaleCalc.niceMax - scaleCalc.niceMin) / scaleCalc.tickSpacing + 1
-    //Space between each tick
-    val tickSpacingOffset = Offset((size.width + leftOffset + rightOffset) / (tickCount - 1), 0f)
-    //Potential shift of the initial drawing point on the left if offset != 0
-    zo -= Offset(leftOffset, 0f)
-    //First tick label value
-    var tickValue = scaleCalc.niceMin
-
-    //Labels drawing
-    while (tickValue <= scaleCalc.niceMax) {
-        if (tickValue in xRange) {
-            drawTick(zo, axisDrawStyle.tickLineStyle)
-            drawTickLabel(Offset(zo.x, zo.y), tickValue.toString(), axisDrawStyle.tickTextStyle)
+    properties.axes.forEach { axis ->
+        range = when (axis.axis) {
+            ChartAxis.Axis.X_TOP, ChartAxis.Axis.X_BOTTOM -> properties.dataXRange ?: dataSet.xRange
+            ChartAxis.Axis.Y_LEFT, ChartAxis.Axis.Y_RIGHT -> properties.dataYRange ?: dataSet.yRange
         }
-        zo += tickSpacingOffset
-        tickValue += scaleCalc.tickSpacing
+
+        //Axis scale computation
+        scaleCalc = NiceScale(range, axis.tickCount)
+
+        //Axis line offsets
+        //lineStart = initial drawing point
+        when (axis.axis) {
+            ChartAxis.Axis.X_TOP -> Offset(0f, 0f) to Offset(size.width, 0f)
+            ChartAxis.Axis.X_BOTTOM -> Offset(0f, size.height) to Offset(size.width, size.height)
+            ChartAxis.Axis.Y_LEFT -> Offset(0f, size.height) to Offset(0f, 0f)
+            ChartAxis.Axis.Y_RIGHT -> Offset(size.width, size.height) to Offset(size.width, 0f)
+        }.run { lineStart = first; lineEnd = second }
+
+        //Axis line
+        drawLine(lineStart, lineEnd, axis.style.axisLineStyle)
+
+        val startEndOffsetSpace = when (axis.axis) {
+            ChartAxis.Axis.X_TOP, ChartAxis.Axis.X_BOTTOM -> size.width
+            else -> size.height
+        }
+        //Space between left canvas border and left chart "window" depending on chart values
+        val startOffset = (startEndOffsetSpace * (range.start - scaleCalc.niceMin))/ range.rawRange
+        //Space between right chart "window" and right canvas border depending on chart values
+        val endOffset = (startEndOffsetSpace * (scaleCalc.niceMax - range.endInclusive)) / range.rawRange
+        //Number of ticks
+        val tickCount = (scaleCalc.niceMax - scaleCalc.niceMin) / scaleCalc.tickSpacing + 1
+        //Space between each tick
+        val tickSpacing = (startEndOffsetSpace + startOffset + endOffset) / (tickCount - 1)
+        val tickSpacingOffset = when (axis.axis) {
+            ChartAxis.Axis.X_TOP, ChartAxis.Axis.X_BOTTOM -> Offset(tickSpacing, 0f)
+            else -> Offset(0f, -tickSpacing)
+        }
+        //Potential shift of the initial drawing point on the left if offset != 0
+        lineStart -= Offset(startOffset, 0f)
+        //First tick label value
+        var tickValue = scaleCalc.niceMin
+
+        //Labels drawing
+        while (tickValue <= scaleCalc.niceMax) {
+            if (tickValue in range) {
+                drawTick(lineStart, axis)
+                drawTickLabel(Offset(lineStart.x, lineStart.y), axis, tickValue.toString())
+            }
+            lineStart += tickSpacingOffset
+            tickValue += scaleCalc.tickSpacing
+        }
     }
 }
 
@@ -55,12 +78,18 @@ internal fun DrawScope.drawScaledXAxis(
  */
 internal fun DrawScope.drawTick(
     center: Offset,
-    tickLineStyle: LineDrawStyle = LineDrawStyle()
+    axis: ChartAxis
 ) {
     drawLine(
-        start = Offset(center.x, center.y - 10f),
-        end = Offset(center.x, center.y + 10f),
-        lineStyle = tickLineStyle.copy(cap = StrokeCap.Square)
+        start = when (axis.axis) {
+            ChartAxis.Axis.X_TOP, ChartAxis.Axis.X_BOTTOM -> Offset(center.x, center.y - 10f)
+            else -> Offset(center.x - 10f, center.y)
+        },
+        end = when (axis.axis) {
+            ChartAxis.Axis.X_TOP, ChartAxis.Axis.X_BOTTOM -> Offset(center.x, center.y + 10f)
+            else -> Offset(center.x + 10f, center.y)
+        },
+        lineStyle = axis.style.tickLineStyle.copy(cap = StrokeCap.Square)
     )
 }
 
@@ -69,20 +98,30 @@ internal fun DrawScope.drawTick(
  */
 internal fun DrawScope.drawTickLabel(
     point: Offset,
-    text: String,
-    style: TextDrawStyle = TextDrawStyle()
+    axis: ChartAxis,
+    text: String
 ) = drawIntoCanvas {
     val paint = Paint().apply {
-        textAlign = style.textAlign
-        textSize = style.textSize
-        color = style.color.toInt()
-        typeface = style.typeface
+        textAlign = axis.style.tickTextStyle.textAlign
+        textSize = axis.style.tickTextStyle.textSize
+        color = axis.style.tickTextStyle.color.toInt()
+        typeface = axis.style.tickTextStyle.typeface
         flags = Paint.ANTI_ALIAS_FLAG
+    }
+    val xMetricsOffset = when (axis.axis) {
+        ChartAxis.Axis.Y_LEFT -> -20f
+        ChartAxis.Axis.Y_RIGHT -> 20f
+        else -> 0f
+    }
+    val yMetricsOffset = when (axis.axis) {
+        ChartAxis.Axis.X_BOTTOM -> paint.fontMetrics.descent - paint.fontMetrics.ascent
+        ChartAxis.Axis.X_TOP -> -(paint.fontMetrics.bottom + paint.fontMetrics.descent)
+        else -> -((paint.fontMetrics.ascent + paint.fontMetrics.descent) / 2)
     }
     it.nativeCanvas.drawText(
         text,
-        point.x + style.offsetX,
-        (point.y + style.offsetY) + (paint.fontMetrics.descent - paint.fontMetrics.ascent),
+        (point.x + axis.style.tickTextStyle.offsetX) + xMetricsOffset,
+        (point.y + axis.style.tickTextStyle.offsetY) + yMetricsOffset,
         paint
     )
 }

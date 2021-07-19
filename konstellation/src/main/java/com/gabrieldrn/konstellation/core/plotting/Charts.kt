@@ -51,7 +51,7 @@ fun LinePlotter(
 
     Canvas(
         modifier
-            .padding(16.dp)
+            .padding(32.dp)
             .fillMaxSize()
             .pointerInteropFilter(null, pointerListener)
     ) {
@@ -67,8 +67,7 @@ fun LinePlotter(
             highlightedValue?.let {
                 highlight(this@Canvas, it, highlightPointStyle, highlightTextStyle)
             }
-
-            drawScaledXAxis(xRange, xAxisDrawStyle)
+            drawScaledAxis(this, dataSet)
         }
     }
 }

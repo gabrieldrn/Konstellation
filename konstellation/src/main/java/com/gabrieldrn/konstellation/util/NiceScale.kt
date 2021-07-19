@@ -7,17 +7,16 @@ import kotlin.math.pow
 
 /**
  * This class computes the human-readable numbers for chart labels. After [compute] is executed,
- * the values [tickSpacing], [range], [niceMin], [niceMax] will be updated.
+ * the values [tickSpacing], [axisRange], [niceMin], [niceMax] will be updated.
  *
- * @param minPoint Minimum data point on the axis.
- * @param maxPoint Maximum data point on the axis.
+ * @param dataRange Range of the data to compute tickers from.
  * @param maxTicks (Optional) Number of desired ticks. Default = 5
  */
-class NiceScale(var minPoint: Float, var maxPoint: Float, var maxTicks: Int = 5) {
+class NiceScale(private val dataRange: ClosedFloatingPointRange<Float>, var maxTicks: Int = 5) {
 
     var tickSpacing = 0f
         private set
-    var range = 0f
+    var axisRange = 0f
         private set
     var niceMin = 0f
         private set
@@ -33,10 +32,10 @@ class NiceScale(var minPoint: Float, var maxPoint: Float, var maxTicks: Int = 5)
      * axis.
      */
     fun compute() {
-        range = niceNum(maxPoint - minPoint, false)
-        tickSpacing = niceNum(range / (maxTicks - 1), true)
-        niceMin = floor(minPoint / tickSpacing) * tickSpacing
-        niceMax = ceil(maxPoint / tickSpacing) * tickSpacing
+        axisRange = niceNum(dataRange.endInclusive - dataRange.start, false)
+        tickSpacing = niceNum(axisRange / (maxTicks - 1), true)
+        niceMin = floor(dataRange.start / tickSpacing) * tickSpacing
+        niceMax = ceil(dataRange.endInclusive / tickSpacing) * tickSpacing
     }
 
     /**
@@ -70,7 +69,7 @@ class NiceScale(var minPoint: Float, var maxPoint: Float, var maxTicks: Int = 5)
 
     override fun toString(): String {
         return "Tick spacing = $tickSpacing\n" +
-                "Range = $range\n" +
+                "Range = $axisRange\n" +
                 "nice min = $niceMin\n" +
                 "nice max = $niceMax"
     }
