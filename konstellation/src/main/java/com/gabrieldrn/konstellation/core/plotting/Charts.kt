@@ -36,6 +36,7 @@ fun LinePlotter(
     properties: LineChartProperties = LineChartProperties()
 ) {
     var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
+    highlightedValue = null
     val pointerListener: (MotionEvent) -> Boolean = {
         when (it.action) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
@@ -51,7 +52,7 @@ fun LinePlotter(
 
     Canvas(
         modifier
-            .padding(32.dp)
+            .padding(36.dp)
             .fillMaxSize()
             .pointerInteropFilter(null, pointerListener)
     ) {

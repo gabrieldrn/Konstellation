@@ -57,10 +57,12 @@ internal fun DrawScope.drawScaledAxis(
             else -> Offset(0f, -tickSpacing)
         }
         //Potential shift of the initial drawing point on the left if offset != 0
-        lineStart -= Offset(startOffset, 0f)
+        lineStart += when (axis.axis) {
+            Axis.X_TOP, Axis.X_BOTTOM -> -Offset(startOffset, 0f)
+            else -> Offset(0f, startOffset)
+        }
         //First tick label value
         var tickValue = scaleCalc.niceMin
-
         //Labels drawing
         while (tickValue <= scaleCalc.niceMax) {
             if (tickValue in range) {

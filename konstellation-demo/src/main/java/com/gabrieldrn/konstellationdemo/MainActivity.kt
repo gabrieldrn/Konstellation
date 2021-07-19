@@ -115,14 +115,14 @@ fun LineChart() {
                 textAlign = Paint.Align.CENTER,
                 offsetY = -25f
             ),
-            dataXRange = -15f..15f,
+            dataXRange = -20f..20f,
             dataYRange = -20f..20f,
             axes = setOf(
                 xBottom.apply { style.setColor(axisColor) },
                 xTop.apply { style.setColor(axisColor) },
                 yLeft.apply { style.setColor(axisColor) },
                 yRight.apply { style.setColor(axisColor) },
-            )
+            ),
         )
 
         LinePlotter(
