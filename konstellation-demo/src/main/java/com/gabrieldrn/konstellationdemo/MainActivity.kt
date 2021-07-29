@@ -33,30 +33,12 @@ import kotlin.math.sin
 
 private var textStyle = TextDrawStyle()
 
-private val points = datasetOf(
-    -10f by -10f,
-    -5f by 0f,
-    0f by 30f,
-    5f by 30f,
-    10f by 25f,
-    15f by 35f,
-    20f by 5f,
-    25f by -5f,
-    30f by 0f,
-)
-
-private val points2 = datasetOf(
-    10f by 10f,
-    20f by 20f,
-    30f by 30f,
-)
-
 class MainActivity : AppCompatActivity() {
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ResourcesCompat.getFont(this, R.font.space_mono_regular)?.let {
-            textStyle = textStyle.copy(typeface = it)
+            textStyle.typeface = it
         }
         setContent {
             KonstellationTheme {
@@ -151,49 +133,64 @@ fun Content() {
 @ExperimentalComposeUiApi
 @Composable
 fun LineChart() {
-    Surface(color = MaterialTheme.colors.background) {
-        val points = randomDataSet()
-        val axisColor = MaterialTheme.colors.onBackground
-        val chartProperties = LineChartProperties(
-            lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
-            pointStyle = PointDrawStyle(color = MaterialTheme.colors.primary),
-            textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
-            highlightPointStyle = PointDrawStyle(
-                color = MaterialTheme.colors.primary, radius = 6.dp
-            ),
-            highlightTextStyle = textStyle.copy(
-                color = MaterialTheme.colors.primary,
-                textAlign = Paint.Align.CENTER,
-                offsetY = -25f
-            ),
-            dataXRange = -15f..15f,
-            dataYRange = -15f..15f,
-            axes = setOf(
-                xBottom.apply { style.setColor(axisColor) },
-                xTop.apply { style.setColor(axisColor) },
-                yLeft.apply { style.setColor(axisColor) },
-                yRight.apply { style.setColor(axisColor) },
-            ),
-        )
+    var points by rememberSaveable { mutableStateOf(randomDataSet()) }
+    var xRange by remember { mutableStateOf(15f) }
+    var yRange by remember { mutableStateOf(15f) }
+    val axisColor = MaterialTheme.colors.onBackground
+    val chartProperties = LineChartProperties(
+        lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
+        pointStyle = PointDrawStyle(color = MaterialTheme.colors.primary),
+        textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
+        highlightPointStyle = PointDrawStyle(
+            color = MaterialTheme.colors.primary, radius = 6.dp
+        ),
+        highlightTextStyle = textStyle.copy(
+            color = MaterialTheme.colors.primary,
+            textAlign = Paint.Align.CENTER,
+            offsetY = -25f
+        ),
+        dataXRange = -xRange..xRange,
+        dataYRange = -yRange..yRange,
+        axes = setOf(
+            xBottom.apply { style.setColor(axisColor) },
+            xTop.apply { style.setColor(axisColor) },
+            yLeft.apply { style.setColor(axisColor) },
+            yRight.apply { style.setColor(axisColor) },
+        ),
+    )
 
-        LinePlotter(
-            dataSet = points,
-            properties = chartProperties
-        )
-    }
-}
+    chartProperties.setAxisTypeface(textStyle.typeface)
 
-@Composable
-fun FunctionChart() {
-    Surface(color = MaterialTheme.colors.background) {
-        FunctionPlotter(
-            pointSpacing = 5,
-            lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
-            textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
-            dataXRange = -PI.toFloat()..PI.toFloat(),
-            dataYRange = -2f..2f
+    Column {
+        Row {
+            Surface(color = MaterialTheme.colors.background) {
+                LinePlotter(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(.5f),
+                    dataSet = points,
+                    properties = chartProperties
+                )
+            }
+        }
+        Row(Modifier.padding(horizontal = 16.dp)) {
+            Slider(value = xRange, valueRange = 1f..25f, onValueChange = { xRange = it })
+        }
+        Row(
+            Modifier
+                .padding(horizontal = 16.dp)
+                .padding(top = 16.dp)
         ) {
-            sin(it)
+            Slider(value = yRange, valueRange = 1f..25f, onValueChange = { yRange = it })
+        }
+        Row(
+            Modifier
+                .padding(top = 16.dp)
+                .align(Alignment.CenterHorizontally)
+        ) {
+            Button(onClick = { points = randomDataSet() }, content = {
+                Text(text = "New dataset")
+            })
         }
     }
 }

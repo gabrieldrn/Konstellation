@@ -52,8 +52,7 @@ fun LinePlotter(
 
     Canvas(
         modifier
-            .padding(36.dp)
-            .fillMaxSize()
+            .padding(44.dp)
             .pointerInteropFilter(null, pointerListener)
     ) {
         drawFrame()

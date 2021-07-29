@@ -1,5 +1,6 @@
 package com.gabrieldrn.konstellation.core.plotting
 
+import android.graphics.Typeface
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
@@ -14,3 +15,7 @@ data class LineChartProperties(
     override var dataYRange: ClosedFloatingPointRange<Float>? = null,
     override var axes: Set<ChartAxis> = setOf(xBottom, yLeft)
 ) : ChartProperties
+
+fun LineChartProperties.setAxisTypeface(typeface: Typeface) {
+    axes.forEach { it.style.tickTextStyle.typeface = typeface }
+}
