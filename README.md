@@ -4,7 +4,10 @@ A plotting library based on Jetpack Compose.
 
 **This library is still a work in progress and is being actively worked on. Here's what it can draw so far:**
 
-![device-2021-07-19-001000_framed](https://user-images.githubusercontent.com/22205373/126101647-bf0dfd71-02ec-4e53-ba6a-3b3b0b08c7c8.png)
+![device-2021-07-29-135350_framed](https://user-images.githubusercontent.com/22205373/127541506-b96a68c2-2c2c-449e-8167-e0627ac07dcc.png)
+
+![device-2021-07-29-135542_framed](https://user-images.githubusercontent.com/22205373/127541600-9cb6f9f0-eacd-47ef-ae57-9d47a707f500.png)
+
 
 ## Usage example of a function chart
 
