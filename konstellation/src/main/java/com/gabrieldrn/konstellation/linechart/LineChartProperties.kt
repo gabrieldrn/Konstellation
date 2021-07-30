@@ -1,6 +1,10 @@
-package com.gabrieldrn.konstellation.core.plotting
+package com.gabrieldrn.konstellation.linechart
 
 import android.graphics.Typeface
+import com.gabrieldrn.konstellation.core.plotting.ChartAxis
+import com.gabrieldrn.konstellation.core.plotting.ChartProperties
+import com.gabrieldrn.konstellation.core.plotting.xBottom
+import com.gabrieldrn.konstellation.core.plotting.yLeft
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle

@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.util
+package com.gabrieldrn.konstellation.core.plotting
 
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -12,7 +12,7 @@ import kotlin.math.pow
  * @param dataRange Range of the data to compute tickers from.
  * @param maxTicks (Optional) Number of desired ticks. Default = 5
  */
-class NiceScale(private val dataRange: ClosedFloatingPointRange<Float>, var maxTicks: Int = 5) {
+class NiceScale(var dataRange: ClosedFloatingPointRange<Float>, var maxTicks: Int = 5) {
 
     var tickSpacing = 0f
         private set
