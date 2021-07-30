@@ -10,6 +10,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -19,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -82,14 +84,22 @@ fun Content() {
         gesturesEnabled = false,
         drawerContent = {
             Column(Modifier.fillMaxSize()) {
+                Image(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = null
+                )
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
-                    text = "Konstellation demo",
+                    text = "DEMO APP",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.h6
                 )
+                DemoContent.values().forEach { drawerChartButtonFactory(it) }
                 Button(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
@@ -97,7 +107,6 @@ fun Content() {
                     onClick = { scope.launch { drawerState.close() } },
                     content = { Text("CLOSE DRAWER") }
                 )
-                DemoContent.values().forEach { drawerChartButtonFactory(it) }
             }
         },
         content = {
@@ -169,25 +178,34 @@ fun LineChart() {
                 )
             }
         }
-        Row(Modifier.padding(horizontal = 16.dp)) {
-            Slider(value = xRange, valueRange = 1f..25f, onValueChange = { xRange = it })
-        }
-        Row(
-            Modifier
-                .padding(horizontal = 16.dp)
+        Text(
+            modifier = Modifier
                 .padding(top = 16.dp)
-        ) {
-            Slider(value = yRange, valueRange = 1f..25f, onValueChange = { yRange = it })
-        }
-        Row(
-            Modifier
+                .align(Alignment.CenterHorizontally),
+            text = "X range"
+        )
+        Slider(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            value = xRange,
+            valueRange = 1f..25f,
+            onValueChange = { xRange = it })
+        Text(
+            modifier = Modifier
                 .padding(top = 16.dp)
-                .align(Alignment.CenterHorizontally)
-        ) {
-            Button(onClick = { points = randomDataSet() }, content = {
+                .align(Alignment.CenterHorizontally),
+            text = "Y range"
+        )
+        Slider(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            value = yRange,
+            valueRange = 1f..25f,
+            onValueChange = { yRange = it })
+        Button(modifier = Modifier
+            .padding(top = 16.dp)
+            .align(Alignment.CenterHorizontally),
+            onClick = { points = randomDataSet() }, content = {
                 Text(text = "NEW DATASET")
             })
-        }
     }
 }
 
