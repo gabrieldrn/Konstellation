@@ -72,7 +72,7 @@ fun Content() {
                     drawerState.close()
                 }
             },
-            content = { Text(it.chartName) }
+            content = { Text(it.chartName.uppercase()) }
         )
     }
 
@@ -95,7 +95,7 @@ fun Content() {
                         .align(Alignment.CenterHorizontally)
                         .padding(top = 16.dp),
                     onClick = { scope.launch { drawerState.close() } },
-                    content = { Text("Close Drawer") }
+                    content = { Text("CLOSE DRAWER") }
                 )
                 DemoContent.values().forEach { drawerChartButtonFactory(it) }
             }
@@ -115,14 +115,10 @@ fun Content() {
                     )
                 }
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Row(Modifier.weight(1f)) {
-                        when (contentState) {
-                            DemoContent.LINE -> LineChart()
-                            DemoContent.FUNCTION -> AnimatedFunctionChart()
-                        }
+                Box(Modifier.fillMaxSize()) {
+                    when (contentState) {
+                        DemoContent.LINE -> LineChart()
+                        DemoContent.FUNCTION -> AnimatedFunctionChart()
                     }
                 }
             }
@@ -189,7 +185,7 @@ fun LineChart() {
                 .align(Alignment.CenterHorizontally)
         ) {
             Button(onClick = { points = randomDataSet() }, content = {
-                Text(text = "New dataset")
+                Text(text = "NEW DATASET")
             })
         }
     }

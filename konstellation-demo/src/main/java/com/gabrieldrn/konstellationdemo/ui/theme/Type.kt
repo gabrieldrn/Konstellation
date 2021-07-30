@@ -26,9 +26,8 @@ val Typography = Typography(
         fontSize = 16.sp
     ),
     button = TextStyle(
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        letterSpacing = 0.25f.em
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp
     ),
     /*
     caption = TextStyle(

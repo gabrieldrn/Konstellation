@@ -5,7 +5,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
@@ -48,20 +47,18 @@ internal fun DrawScope.drawLines(
 ) {
     if (dataset.isEmpty()) return
     var previous = dataset.first()
-    val d = dataset.iterator()
+    var d = dataset.iterator()
+
     while (d.hasNext()) {
         d.next().let {
-            val linesClipSpace = 1.dp.toPx()
-            clipRect(
-                -linesClipSpace,
-                -linesClipSpace,
-                size.width + linesClipSpace,
-                size.height + linesClipSpace
-            ) {
-                drawLine(previous, it, lineStyle)
-            }
-            if (drawPoints) drawPoint(it, pointStyle)
+            drawLine(previous, it, lineStyle)
             previous = it
+        }
+    }
+    d = dataset.iterator()
+    if (drawPoints) {
+        while (d.hasNext()) {
+            drawPoint(d.next(), pointStyle)
         }
     }
 }

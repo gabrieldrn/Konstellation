@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.data.convertCanvasXToDataX
@@ -36,7 +37,6 @@ fun LinePlotter(
     properties: LineChartProperties = LineChartProperties()
 ) {
     var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
-    highlightedValue = null
     val pointerListener: (MotionEvent) -> Boolean = {
         when (it.action) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
@@ -56,16 +56,20 @@ fun LinePlotter(
             .pointerInteropFilter(null, pointerListener)
     ) {
         drawFrame()
+
+        dataSet.createOffsets(
+            drawScope = this,
+            dataSetXRange = xRange,
+            dataSetYRange = yRange
+        )
+
         with(properties) {
-            dataSet.createOffsets(
-                drawScope = this@Canvas,
-                dataSetXRange = xRange,
-                dataSetYRange = yRange
-            )
             drawZeroLines(xRange, yRange)
-            drawLines(dataSet, lineStyle, pointStyle, drawPoints = true)
-            highlightedValue?.let {
-                highlight(this@Canvas, it, highlightPointStyle, highlightTextStyle)
+            clipRect(0f, 0f, size.width, size.height) {
+                drawLines(dataSet, lineStyle, pointStyle, drawPoints = true)
+                highlightedValue?.let {
+                    highlight(this@Canvas, it, highlightPointStyle, highlightTextStyle)
+                }
             }
             drawScaledAxis(this, dataSet)
         }
