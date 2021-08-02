@@ -12,6 +12,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
+import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.data.createOffsets
@@ -36,10 +37,17 @@ fun LineChart(
     properties: LineChartProperties = LineChartProperties()
 ) {
     var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
+    //Mandatory: Used to make the chart the only consumer of touch event within it.
+    val disallowInterceptTouchEvent = RequestDisallowInterceptTouchEvent()
     val pointerListener: (MotionEvent) -> Boolean = {
         when (it.action) {
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+                disallowInterceptTouchEvent(true)
                 highlightedValue = dataSet.nearestPointByX(it.x)
+                true
+            }
+            MotionEvent.ACTION_UP -> {
+                disallowInterceptTouchEvent(false)
                 true
             }
             else -> false
@@ -52,7 +60,7 @@ fun LineChart(
     Canvas(
         modifier
             .padding(44.dp)
-            .pointerInteropFilter(null, pointerListener)
+            .pointerInteropFilter(disallowInterceptTouchEvent, pointerListener)
     ) {
         drawFrame()
 

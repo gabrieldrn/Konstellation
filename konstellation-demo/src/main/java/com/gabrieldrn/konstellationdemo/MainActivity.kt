@@ -10,17 +10,19 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +41,7 @@ import kotlin.math.sin
 private var textStyle = TextDrawStyle()
 
 class MainActivity : AppCompatActivity() {
+    @ExperimentalMaterialApi
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,84 +61,57 @@ enum class DemoContent(val chartName: String) {
     FUNCTION("Function chart")
 }
 
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Composable
 fun Content() {
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-    var contentState by rememberSaveable { mutableStateOf(DemoContent.values().first()) }
+    var contentSelection by rememberSaveable { mutableStateOf(DemoContent.values().first()) }
     val scope = rememberCoroutineScope()
-    // Lambda creating
-    val drawerChartButtonFactory: @Composable ColumnScope.(chart: DemoContent) -> Unit = {
-        TextButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp)
-                .padding(top = 8.dp),
-            onClick = {
-                scope.launch {
-                    contentState = it
-                    drawerState.close()
-                }
-            },
-            content = { Text(it.chartName.uppercase()) }
-        )
-    }
 
-    ModalDrawer(
-        drawerState = drawerState,
-        //Gestures avoid highlighting of values in charts
-        gesturesEnabled = false,
-        drawerContent = {
-            Column(Modifier.fillMaxSize()) {
-                Image(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = null
-                )
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    text = "DEMO APP",
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.h6
-                )
-                DemoContent.values().forEach { drawerChartButtonFactory(it) }
-                Button(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(top = 16.dp),
-                    onClick = { scope.launch { drawerState.close() } },
-                    content = { Text("CLOSE DRAWER") }
-                )
-            }
-        },
-        content = {
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = {
-                            Text(text = contentState.chartName)
-                        },
-                        navigationIcon = {
-                            IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                                Icon(Icons.Filled.Menu, contentDescription = null)
-                            }
+    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
+    LaunchedEffect(scaffoldState) {
+        scaffoldState.conceal()
+    }
+    BackdropScaffold(
+        scaffoldState = scaffoldState,
+        appBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "Konstellation")
+                },
+                navigationIcon = {
+                    if (scaffoldState.isConcealed) {
+                        IconButton(onClick = { scope.launch { scaffoldState.reveal() } }) {
+                            Icon(Icons.Default.Menu, contentDescription = null)
                         }
+                    } else {
+                        IconButton(onClick = { scope.launch { scaffoldState.conceal() } }) {
+                            Icon(Icons.Default.Close, contentDescription = null)
+                        }
+                    }
+                },
+                elevation = 0.dp,
+            )
+        }, backLayerContent = {
+            LazyColumn {
+                items(DemoContent.values()) { item ->
+                    ListItem(
+                        modifier = Modifier.clickable {
+                            contentSelection = item
+                            scope.launch { scaffoldState.conceal() }
+                        },
+                        text = { Text(text = item.chartName) },
                     )
                 }
-            ) {
-                Box(Modifier.fillMaxSize()) {
-                    when (contentState) {
-                        DemoContent.LINE -> LineChartComp()
-                        DemoContent.FUNCTION -> AnimatedFunctionChart()
-                    }
+            }
+        }, frontLayerContent = {
+            Box(Modifier.fillMaxSize()) {
+                when (contentSelection) {
+                    DemoContent.LINE -> LineChartComp()
+                    DemoContent.FUNCTION -> AnimatedFunctionChart()
                 }
             }
-        }
-    )
+        })
 }
 
 @ExperimentalComposeUiApi
@@ -170,17 +146,21 @@ fun LineChartComp() {
     chartProperties.setAxisTypeface(textStyle.typeface)
 
     Column {
-        Row {
-            Surface(color = MaterialTheme.colors.background) {
-                LineChart(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(.5f),
-                    dataSet = points,
-                    properties = chartProperties
-                )
-            }
-        }
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+            text = DemoContent.LINE.chartName,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.h6
+        )
+        LineChart(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(.5f),
+            dataSet = points,
+            properties = chartProperties
+        )
         Text(
             modifier = Modifier
                 .padding(top = 16.dp)
@@ -247,6 +227,7 @@ fun AnimatedFunctionChart() {
     }
 }
 
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Preview(showBackground = true)
 @Composable
