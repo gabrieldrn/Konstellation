@@ -26,6 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import com.gabrieldrn.konstellation.core.plotting.*
+import com.gabrieldrn.konstellation.linechart.LineChart
+import com.gabrieldrn.konstellation.linechart.LineChartProperties
+import com.gabrieldrn.konstellation.linechart.setAxisTypeface
 import com.gabrieldrn.konstellation.style.*
 import com.gabrieldrn.konstellation.util.randomDataSet
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
@@ -126,7 +129,7 @@ fun Content() {
             ) {
                 Box(Modifier.fillMaxSize()) {
                     when (contentState) {
-                        DemoContent.LINE -> LineChart()
+                        DemoContent.LINE -> LineChartComp()
                         DemoContent.FUNCTION -> AnimatedFunctionChart()
                     }
                 }
@@ -137,7 +140,7 @@ fun Content() {
 
 @ExperimentalComposeUiApi
 @Composable
-fun LineChart() {
+fun LineChartComp() {
     var points by rememberSaveable { mutableStateOf(randomDataSet()) }
     var xRange by remember { mutableStateOf(15f) }
     var yRange by remember { mutableStateOf(15f) }
@@ -169,7 +172,7 @@ fun LineChart() {
     Column {
         Row {
             Surface(color = MaterialTheme.colors.background) {
-                LinePlotter(
+                LineChart(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(.5f),

@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.core.plotting
+package com.gabrieldrn.konstellation.linechart
 
 import android.graphics.Paint
 import androidx.compose.ui.geometry.Offset
@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.data.convertFromRanges
+import com.gabrieldrn.konstellation.core.plotting.*
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
@@ -89,18 +90,6 @@ internal fun DrawScope.drawFrame(
     drawLine(Offset(0f, 0f), Offset(0f, size.height), lineStyle)
     drawLine(Offset(0f, size.height), Offset(size.width, size.height), lineStyle)
 }
-
-/**
- * Draws a horizontal line at the middle of the canvas.
- */
-internal fun DrawScope.drawMiddleHorizontalLine(color: Color = Color.Gray) =
-    drawLine(color, Offset(0f, size.height / 2), Offset(size.width - 1, size.height / 2))
-
-/**
- * Draws a vertical line at the middle of the canvas.
- */
-internal fun DrawScope.drawMiddleVerticalLine(color: Color = Color.Gray) =
-    drawLine(color, Offset(size.width / 2, 0f), Offset(size.width / 2, size.height - 1))
 
 /**
  * Draws the 0-axis inside the chart.
