@@ -23,11 +23,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import com.gabrieldrn.konstellation.core.plotting.*
+import com.gabrieldrn.konstellation.style.highlight.HighlightPosition
 import com.gabrieldrn.konstellation.linechart.LineChart
 import com.gabrieldrn.konstellation.linechart.LineChartProperties
 import com.gabrieldrn.konstellation.linechart.setAxisTypeface
@@ -91,6 +93,7 @@ fun Content() {
                     }
                 },
                 elevation = 0.dp,
+                backgroundColor = Color.Transparent
             )
         }, backLayerContent = {
             LazyColumn {
@@ -126,7 +129,7 @@ fun LineChartComp() {
         pointStyle = PointDrawStyle(color = MaterialTheme.colors.primary),
         textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
         highlightPointStyle = PointDrawStyle(
-            color = MaterialTheme.colors.primary, radius = 6.dp
+            color = MaterialTheme.colors.primary.copy(alpha = 0.3f), radius = 6.dp
         ),
         highlightTextStyle = textStyle.copy(
             color = MaterialTheme.colors.primary,
@@ -159,7 +162,15 @@ fun LineChartComp() {
                 .fillMaxWidth()
                 .fillMaxHeight(.5f),
             dataSet = points,
-            properties = chartProperties
+            properties = chartProperties,
+            highlightPosition = HighlightPosition.TOP,
+            highlightContent = {
+                Text(
+                    modifier = Modifier.padding(12.dp),
+                    text = "${it.x};${it.y}",
+                    style = MaterialTheme.typography.body2
+                )
+            }
         )
         Text(
             modifier = Modifier

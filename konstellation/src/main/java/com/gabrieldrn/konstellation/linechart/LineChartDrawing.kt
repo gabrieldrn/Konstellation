@@ -3,6 +3,7 @@ package com.gabrieldrn.konstellation.linechart
 import android.graphics.Paint
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
@@ -161,10 +162,13 @@ internal fun DrawScope.highlightPoint(
     highlightTextStyle: TextDrawStyle
 ) {
     drawPoint(point, highlightPointStyle)
-    drawText(
-        point.offset,
-        text = "${point.y}",
-        style = highlightTextStyle
+    drawLine(
+            color = highlightPointStyle.color,
+            strokeWidth = highlightPointStyle.radius.toPx() / 2,
+            cap = StrokeCap.Square,
+            start = Offset(point.offset.x, 0f),
+            end = Offset(point.offset.x, size.height),
+            pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f))
     )
 }
 
