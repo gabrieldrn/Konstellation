@@ -31,6 +31,10 @@ data class Point(
     internal var offset: Offset = Offset(0f, 0f),
 
 ): Serializable {
+
+    val xPos get() = offset.x
+    val yPos get() = offset.y
+
     override fun toString() = "[($x;$y), $offset]"
 }
 

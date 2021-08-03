@@ -34,6 +34,7 @@ import com.gabrieldrn.konstellation.linechart.LineChart
 import com.gabrieldrn.konstellation.linechart.LineChartProperties
 import com.gabrieldrn.konstellation.linechart.setAxisTypeface
 import com.gabrieldrn.konstellation.style.*
+import com.gabrieldrn.konstellation.style.highlight.RoundedCardHighlightPopup
 import com.gabrieldrn.konstellation.util.randomDataSet
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlinx.coroutines.launch
@@ -136,6 +137,7 @@ fun LineChartComp() {
             textAlign = Paint.Align.CENTER,
             offsetY = -25f
         ),
+        chartPaddingValues = PaddingValues(44.dp),
         dataXRange = -xRange..xRange,
         dataYRange = -yRange..yRange,
         axes = setOf(
@@ -165,11 +167,14 @@ fun LineChartComp() {
             properties = chartProperties,
             highlightPosition = HighlightPosition.TOP,
             highlightContent = {
-                Text(
-                    modifier = Modifier.padding(12.dp),
-                    text = "${it.x};${it.y}",
-                    style = MaterialTheme.typography.body2
-                )
+                RoundedCardHighlightPopup {
+                    Text(
+                        modifier = Modifier.padding(8.dp).align(Alignment.Center),
+                        text = "${it.x};${it.y}",
+                        style = MaterialTheme.typography.body2,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         )
         Text(

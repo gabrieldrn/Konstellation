@@ -2,31 +2,26 @@ package com.gabrieldrn.konstellation.linechart
 
 import android.view.MotionEvent
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CutCornerShape
-import androidx.compose.material.Card
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.*
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.core.data.createOffsets
 import com.gabrieldrn.konstellation.core.drawing.*
 import com.gabrieldrn.konstellation.core.plotting.*
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
-import com.gabrieldrn.konstellation.style.highlight.HighlightPopupShape
+import com.gabrieldrn.konstellation.style.highlight.HighlightPopup
+import com.gabrieldrn.konstellation.style.highlight.HighlightPopupScope
 import com.gabrieldrn.konstellation.style.highlight.HighlightPosition
 
 /**
@@ -43,8 +38,8 @@ fun LineChart(
     dataSet: Dataset,
     modifier: Modifier = Modifier,
     properties: LineChartProperties = LineChartProperties(),
-    highlightPosition: HighlightPosition = HighlightPosition.CENTER,
-    highlightContent : (@Composable BoxScope.(Point) -> Unit)? = null
+    highlightPosition: HighlightPosition = HighlightPosition.POINT,
+    highlightContent: (@Composable HighlightPopupScope.(Point) -> Unit)? = null
 ) {
     var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
     //Mandatory: Used to make the chart as the only consumer of touch events within the tree.
@@ -65,17 +60,14 @@ fun LineChart(
         }
     }
 
-    val chartPadding = 44.dp
-    val chartPaddingPx = LocalDensity.current.run { chartPadding.toPx() }.toInt()
-
     val xRange = properties.dataXRange ?: dataSet.xRange
     val yRange = properties.dataYRange ?: dataSet.yRange
 
     Box(Modifier.clip(CutCornerShape(0.dp))) {
         Canvas(
             modifier
-                    .padding(chartPadding)
-                    .pointerInteropFilter(disallowInterceptTouchEvent, pointerListener)
+                .padding(properties.chartPaddingValues)
+                .pointerInteropFilter(disallowInterceptTouchEvent, pointerListener)
         ) {
             drawFrame()
 
@@ -99,47 +91,14 @@ fun LineChart(
 
         highlightedValue?.let {
             if (highlightContent != null) {
-                HighlightPopup(it, highlightPosition, chartPaddingPx, highlightContent)
+                HighlightPopupScope(
+                    it, highlightPosition, properties.chartPaddingValues
+                ).apply {
+                    ComputePaddings()
+                }.HighlightPopup { point ->
+                    highlightContent(point)
+                }
             }
         }
-    }
-}
-
-@Composable
-fun HighlightPopup(
-    point: Point,
-    position: HighlightPosition,
-    chartPadding: Int,
-    content: @Composable BoxScope.(Point) -> Unit
-) {
-    fun getPlacementOffset(p: Placeable) = when (position) {
-        HighlightPosition.TOP -> -IntOffset(p.width / 2, point.offset.y.toInt() + chartPadding)
-        HighlightPosition.CENTER -> -IntOffset(p.width / 2, p.height)
-        else -> IntOffset(0, 0) //TODO Implement placement of other positions
-    }
-
-    val popupLayoutModifier: MeasureScope.(Measurable, Constraints) -> MeasureResult = { m, c ->
-        val placeable = m.measure(c)
-        layout(placeable.width, placeable.height) {
-            placeable.placeRelative(getPlacementOffset(placeable))
-        }
-    }
-
-    val popupPositioner: Density.() -> IntOffset = {
-        IntOffset(
-            point.offset.x.toInt() + chartPadding, point.offset.y.toInt() + chartPadding
-        )
-    }
-
-    Box(Modifier.layout(popupLayoutModifier)) {
-        //TODO Make this Card customizable by the user.
-        Card(Modifier
-                .offset(popupPositioner)
-                .padding(4.dp),
-            backgroundColor = Color.White,
-            shape = HighlightPopupShape(),
-            elevation = 4.dp,
-            content = { content(point) }
-        )
     }
 }

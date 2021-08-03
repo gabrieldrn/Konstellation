@@ -1,6 +1,8 @@
 package com.gabrieldrn.konstellation.linechart
 
 import android.graphics.Typeface
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.plotting.ChartAxis
 import com.gabrieldrn.konstellation.core.plotting.ChartProperties
 import com.gabrieldrn.konstellation.core.plotting.xBottom
@@ -15,6 +17,7 @@ data class LineChartProperties(
     var textStyle: TextDrawStyle = TextDrawStyle(),
     var highlightPointStyle: PointDrawStyle = PointDrawStyle(),
     var highlightTextStyle: TextDrawStyle = TextDrawStyle(),
+    var chartPaddingValues: PaddingValues = PaddingValues(0.dp),
     override var dataXRange: ClosedFloatingPointRange<Float>? = null,
     override var dataYRange: ClosedFloatingPointRange<Float>? = null,
     override var axes: Set<ChartAxis> = setOf(xBottom, yLeft)

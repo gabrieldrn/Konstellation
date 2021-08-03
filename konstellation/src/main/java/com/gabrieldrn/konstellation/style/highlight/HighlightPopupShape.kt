@@ -14,54 +14,65 @@ import androidx.compose.ui.unit.dp
  * TODO Arrows + coerce min width/height with arrow size.
  * TODO Make this shape customizable.
  */
-class HighlightPopupShape : Shape {
+class HighlightPopupShape(
+    private val position: HighlightPosition
+) : Shape {
+
+    var cornersRadius = 24f.dp
+    var arrowSize = 8f.dp
+
+    val suggestedMinWidth
+        get() = if (position.isVertical) arrowSize * 2 else 0.dp
+
+    val suggestedMinHeight
+        get() = if (position.isHorizontal) arrowSize * 2 else 0.dp
 
     override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,
         density: Density
     ) = Outline.Generic(Path().apply {
-        val arcCornerRadius = with(density) {
-            24f.dp
+        val cornerRadiusPx = with(density) {
+            cornersRadius
                 .toPx()
                 .coerceAtMost(size.height / 2)
                 .coerceAtMost(size.width / 2)
         }
-        val arrowSize = with(density) { 8.dp.toPx() }
+        val arrowSizePx = with(density) { arrowSize.toPx() }
         reset()
         // Top left
         arcTo(
             rect = Rect(
                 left = 0f,
                 top = 0f,
-                right = arcCornerRadius * 2,
-                bottom = arcCornerRadius * 2
+                right = cornerRadiusPx * 2,
+                bottom = cornerRadiusPx * 2
             ),
             startAngleDegrees = 180f,
             sweepAngleDegrees = 90f,
             forceMoveTo = false
         )
         // Top
-        lineTo(size.width - arcCornerRadius, 0f)
+        lineTo(size.width - cornerRadiusPx, 0f)
         // Top right
         arcTo(
             rect = Rect(
-                left = size.width - arcCornerRadius * 2,
+                left = size.width - cornerRadiusPx * 2,
                 top = 0f,
                 right = size.width,
-                bottom = arcCornerRadius * 2
+                bottom = cornerRadiusPx * 2
             ),
             startAngleDegrees = 270f,
             sweepAngleDegrees = 90f,
             forceMoveTo = false
         )
         // Right
-        lineTo(size.width, size.height - arcCornerRadius)
+        lineTo(size.width, size.height - cornerRadiusPx)
         // Bottom right
         arcTo(
             rect = Rect(
-                left = size.width - arcCornerRadius * 2,
-                top = size.height - arcCornerRadius * 2,
+                left = size.width - cornerRadiusPx * 2,
+                top = size.height - cornerRadiusPx * 2,
                 right = size.width,
                 bottom = size.height
             ),
@@ -70,16 +81,18 @@ class HighlightPopupShape : Shape {
             forceMoveTo = false
         )
         // Bottom arrow
-        lineTo((size.width / 2) + arrowSize, size.height)
-        lineTo(size.width / 2, size.height + arrowSize)
-        lineTo((size.width / 2) - arrowSize, size.height)
-        lineTo(arcCornerRadius, size.height)
+        if (position in arrayOf(HighlightPosition.POINT, HighlightPosition.TOP)) {
+            lineTo((size.width / 2) + arrowSizePx, size.height)
+            lineTo(size.width / 2, size.height + arrowSizePx)
+            lineTo((size.width / 2) - arrowSizePx, size.height)
+        }
+        lineTo(cornerRadiusPx, size.height)
         // Bottom left
         arcTo(
             rect = Rect(
                 left = 0f,
-                top = size.height - arcCornerRadius * 2,
-                right = arcCornerRadius * 2,
+                top = size.height - cornerRadiusPx * 2,
+                right = cornerRadiusPx * 2,
                 bottom = size.height
             ),
             startAngleDegrees = 90f,
@@ -87,6 +100,6 @@ class HighlightPopupShape : Shape {
             forceMoveTo = false
         )
         // Left
-        lineTo(0f, arcCornerRadius)
+        lineTo(0f, cornerRadiusPx)
     })
 }
