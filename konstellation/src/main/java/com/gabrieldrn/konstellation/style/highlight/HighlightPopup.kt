@@ -17,17 +17,13 @@ class HighlightPopupScope(
     val chartPaddings: PaddingValues
 ) {
     internal var paddingTop = 0
-    internal var paddingBottom = 0
     internal var paddingStart = 0
-    internal var paddingEnd = 0
 
     @Composable
     internal fun ComputePaddings() {
         LocalDensity.current.run {
             paddingTop = chartPaddings.calculateTopPadding().toPx().toInt()
-            paddingBottom = chartPaddings.calculateBottomPadding().toPx().toInt()
             paddingStart = chartPaddings.calculateStartPadding(LayoutDirection.Ltr).toPx().toInt()
-            paddingEnd = chartPaddings.calculateEndPadding(LayoutDirection.Ltr).toPx().toInt()
         }
     }
 }
@@ -42,11 +38,10 @@ internal fun BoxScope.HighlightPopup(
             -IntOffset(p.width / 2, scope.point.yPos.toInt() + scope.paddingTop)
         HighlightPosition.BOTTOM ->
             -IntOffset(p.width / 2, 0)
-        HighlightPosition.START ->
+        HighlightPosition.START, HighlightPosition.END ->
             -IntOffset(0, p.height / 2) + IntOffset(0, scope.paddingTop)
         HighlightPosition.POINT ->
             -IntOffset(p.width / 2, p.height)
-        else -> IntOffset(0, 0) //TODO Implement placement of other positions
     }
 
     val popupLayoutModifier: MeasureScope.(Measurable, Constraints) -> MeasureResult = { m, c ->
@@ -58,6 +53,7 @@ internal fun BoxScope.HighlightPopup(
 
     fun getAlignment() = when (scope.position) {
         HighlightPosition.BOTTOM -> Alignment.BottomStart
+        HighlightPosition.END -> Alignment.TopEnd
         else -> Alignment.TopStart
     }
 
@@ -82,7 +78,7 @@ fun HighlightPopupScope.RoundedCardHighlightPopup(
             }
             HighlightPosition.BOTTOM -> IntOffset(point.xPos.toInt() + paddingStart, 0)
             HighlightPosition.START -> IntOffset(0, point.yPos.toInt())
-            else -> IntOffset(0, 0)
+            HighlightPosition.END -> IntOffset(0, point.yPos.toInt())
         }
     }
 

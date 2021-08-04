@@ -11,8 +11,6 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Rounded shape used by a composable highlighting a selected value on a chart.
- * TODO Arrows + coerce min width/height with arrow size.
- * TODO Make this shape customizable?
  */
 class HighlightPopupShape(
     private val position: HighlightPosition
@@ -117,6 +115,11 @@ class HighlightPopupShape(
             forceMoveTo = false
         )
         // Left
+        if (position == HighlightPosition.END) {
+            lineTo(0f, (size.height / 2) + arrowSizePx)
+            lineTo(- arrowSizePx, size.height / 2)
+            lineTo(0f, (size.height / 2) - arrowSizePx)
+        }
         lineTo(0f, cornerRadiusPx)
     })
 }
