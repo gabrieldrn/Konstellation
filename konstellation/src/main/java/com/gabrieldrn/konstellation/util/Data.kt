@@ -14,10 +14,22 @@ val samplePoints = listOf(
 )
 
 /**
- * Generates a random data set of 25 points with a y value between `0f` and `1f`.
+ * Generates a random data set of 20 points with a y value between `-10f` and `10f`.
  */
 fun randomDataSet() = mutableListOf<Point>().apply {
     (-10..10).forEach {
         add(it.toFloat() by Random.nextInt(-10..10).toFloat())
+    }
+}
+
+/**
+ * Generates a random fancy data set of 20 points with a y value between `-10f` and `10f`.
+ */
+fun randomFancyDataSet() = mutableListOf<Point>().apply {
+    val range = 10
+    var y = Random.nextInt(-range..range)
+    (-10..10).forEach {
+        y = Random.nextInt(y-1..y+1).coerceIn(-range..range)
+        add(it.toFloat() by y.toFloat())
     }
 }

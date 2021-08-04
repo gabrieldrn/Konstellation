@@ -36,6 +36,7 @@ import com.gabrieldrn.konstellation.linechart.setAxisTypeface
 import com.gabrieldrn.konstellation.style.*
 import com.gabrieldrn.konstellation.style.highlight.RoundedCardHighlightPopup
 import com.gabrieldrn.konstellation.util.randomDataSet
+import com.gabrieldrn.konstellation.util.randomFancyDataSet
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlinx.coroutines.launch
 import kotlin.math.PI
@@ -121,7 +122,7 @@ fun Content() {
 @ExperimentalComposeUiApi
 @Composable
 fun LineChartComp() {
-    var points by rememberSaveable { mutableStateOf(randomDataSet()) }
+    var points by rememberSaveable { mutableStateOf(randomFancyDataSet()) }
     var xRange by remember { mutableStateOf(15f) }
     var yRange by remember { mutableStateOf(15f) }
     val axisColor = MaterialTheme.colors.onBackground
@@ -170,7 +171,7 @@ fun LineChartComp() {
                 RoundedCardHighlightPopup {
                     Text(
                         modifier = Modifier.padding(8.dp).align(Alignment.Center),
-                        text = "${it.x};${it.y}",
+                        text = "${it.y}",
                         style = MaterialTheme.typography.body2,
                         textAlign = TextAlign.Center
                     )
@@ -203,7 +204,13 @@ fun LineChartComp() {
             .padding(top = 16.dp)
             .align(Alignment.CenterHorizontally),
             onClick = { points = randomDataSet() }, content = {
-                Text(text = "NEW DATASET")
+                Text(text = "NEW RANDOM DATASET")
+            })
+        Button(modifier = Modifier
+            .padding(top = 16.dp)
+            .align(Alignment.CenterHorizontally),
+            onClick = { points = randomFancyDataSet() }, content = {
+                Text(text = "NEW FANCY DATASET")
             })
     }
 }
