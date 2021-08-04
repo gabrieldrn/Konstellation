@@ -3,12 +3,10 @@ package com.gabrieldrn.konstellation.linechart
 import android.view.MotionEvent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
@@ -63,7 +61,7 @@ fun LineChart(
     val xRange = properties.dataXRange ?: dataSet.xRange
     val yRange = properties.dataYRange ?: dataSet.yRange
 
-    Box(Modifier.clip(CutCornerShape(0.dp))) {
+    Box {
         Canvas(
             modifier
                 .padding(properties.chartPaddingValues)
@@ -91,11 +89,10 @@ fun LineChart(
 
         highlightedValue?.let {
             if (highlightContent != null) {
-                HighlightPopupScope(
+                val scope = HighlightPopupScope(
                     it, highlightPosition, properties.chartPaddingValues
-                ).apply {
-                    ComputePaddings()
-                }.HighlightPopup { point ->
+                ).apply { ComputePaddings() }
+                HighlightPopup(scope) { point ->
                     highlightContent(point)
                 }
             }

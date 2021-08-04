@@ -3,6 +3,7 @@ package com.gabrieldrn.konstellation.style.highlight
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.*
@@ -32,13 +33,17 @@ class HighlightPopupScope(
 }
 
 @Composable
-internal fun HighlightPopupScope.HighlightPopup(
+internal fun BoxScope.HighlightPopup(
+    scope: HighlightPopupScope,
     content: @Composable HighlightPopupScope.(Point) -> Unit
 ) {
-    LocalDensity.current.run { chartPaddings.calculateTopPadding().toPx() }.toInt()
-    fun getPlacementOffset(p: Placeable) = when (position) {
-        HighlightPosition.TOP -> -IntOffset(p.width / 2, point.offset.y.toInt() + paddingTop)
-        HighlightPosition.POINT -> -IntOffset(p.width / 2, p.height)
+    fun getPlacementOffset(p: Placeable) = when (scope.position) {
+        HighlightPosition.TOP ->
+            -IntOffset(p.width / 2, scope.point.offset.y.toInt() + scope.paddingTop)
+        HighlightPosition.BOTTOM ->
+            -IntOffset(p.width / 2, 0)
+        HighlightPosition.POINT ->
+            -IntOffset(p.width / 2, p.height)
         else -> IntOffset(0, 0) //TODO Implement placement of other positions
     }
 
@@ -49,8 +54,13 @@ internal fun HighlightPopupScope.HighlightPopup(
         }
     }
 
-    Box(Modifier.layout(popupLayoutModifier)) {
-        content(point)
+    fun getAlignment() = when (scope.position) {
+        HighlightPosition.BOTTOM -> Alignment.BottomStart
+        else -> Alignment.TopStart
+    }
+
+    Box(Modifier.align(getAlignment()).layout(popupLayoutModifier)) {
+        content(scope, scope.point)
     }
 }
 
@@ -61,24 +71,31 @@ fun HighlightPopupScope.RoundedCardHighlightPopup(
 ) {
     val popupShape = HighlightPopupShape(position)
     val popupPositioner: Density.() -> IntOffset = {
-        IntOffset(
-            point.xPos.toInt() + paddingStart,
-            point.yPos.toInt() + paddingTop
-        ) + if (position == HighlightPosition.POINT) {
-            IntOffset(0, -popupShape.arrowSize.toPx().toInt())
-        } else {
-            IntOffset(0, 0)
+        when (position) {
+            HighlightPosition.TOP, HighlightPosition.POINT -> {
+                IntOffset(
+                    point.xPos.toInt() + paddingStart,
+                    point.yPos.toInt() + paddingTop
+                ) + if (position == HighlightPosition.POINT) {
+                    IntOffset(0, -popupShape.arrowSize.toPx().toInt())
+                } else {
+                    IntOffset(0, 0)
+                }
+            }
+            HighlightPosition.BOTTOM -> IntOffset(point.xPos.toInt() + paddingStart, 0)
+            else -> IntOffset(0, 0)
         }
     }
 
     Card(
         Modifier
             .offset(popupPositioner)
-            .padding(if (position != HighlightPosition.POINT) 4.dp else 0.dp)
+            .padding(if (position != HighlightPosition.POINT) 4.dp else 8.dp)
             .sizeIn(
                 minWidth = popupShape.suggestedMinWidth,
                 minHeight = popupShape.suggestedMinHeight
-            ).then(modifier),
+            )
+            .then(modifier),
         backgroundColor = Color.White,
         shape = popupShape,
         elevation = 4.dp

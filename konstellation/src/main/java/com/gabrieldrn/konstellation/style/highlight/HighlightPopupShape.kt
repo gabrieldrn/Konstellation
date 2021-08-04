@@ -53,6 +53,11 @@ class HighlightPopupShape(
             forceMoveTo = false
         )
         // Top
+        if (position == HighlightPosition.BOTTOM) {
+            lineTo((size.width / 2) - arrowSizePx, 0f)
+            lineTo(size.width / 2, - arrowSizePx)
+            lineTo((size.width / 2) + arrowSizePx, 0f)
+        }
         lineTo(size.width - cornerRadiusPx, 0f)
         // Top right
         arcTo(
