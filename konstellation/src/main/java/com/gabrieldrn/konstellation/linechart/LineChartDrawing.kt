@@ -156,8 +156,7 @@ internal fun DrawScope.drawMinMaxAxisValues(
 
 /**
  * Highlights a given [point] in the chart by drawing another circle styled with
- * [highlightPointStyle] in front of it and a text showing its value on top, styled with
- * [highlightTextStyle].
+ * [highlightPointStyle] in front of it and dashed lines based on [highlightPositions].
  */
 internal fun DrawScope.highlightPoint(
     point: Point,
