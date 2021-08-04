@@ -39,9 +39,11 @@ internal fun BoxScope.HighlightPopup(
 ) {
     fun getPlacementOffset(p: Placeable) = when (scope.position) {
         HighlightPosition.TOP ->
-            -IntOffset(p.width / 2, scope.point.offset.y.toInt() + scope.paddingTop)
+            -IntOffset(p.width / 2, scope.point.yPos.toInt() + scope.paddingTop)
         HighlightPosition.BOTTOM ->
             -IntOffset(p.width / 2, 0)
+        HighlightPosition.START ->
+            -IntOffset(0, p.height / 2) + IntOffset(0, scope.paddingTop)
         HighlightPosition.POINT ->
             -IntOffset(p.width / 2, p.height)
         else -> IntOffset(0, 0) //TODO Implement placement of other positions
@@ -76,13 +78,10 @@ fun HighlightPopupScope.RoundedCardHighlightPopup(
                 IntOffset(
                     point.xPos.toInt() + paddingStart,
                     point.yPos.toInt() + paddingTop
-                ) + if (position == HighlightPosition.POINT) {
-                    IntOffset(0, -popupShape.arrowSize.toPx().toInt())
-                } else {
-                    IntOffset(0, 0)
-                }
+                )
             }
             HighlightPosition.BOTTOM -> IntOffset(point.xPos.toInt() + paddingStart, 0)
+            HighlightPosition.START -> IntOffset(0, point.yPos.toInt())
             else -> IntOffset(0, 0)
         }
     }
@@ -90,7 +89,7 @@ fun HighlightPopupScope.RoundedCardHighlightPopup(
     Card(
         Modifier
             .offset(popupPositioner)
-            .padding(if (position != HighlightPosition.POINT) 4.dp else 8.dp)
+            .padding(popupShape.arrowSize)
             .sizeIn(
                 minWidth = popupShape.suggestedMinWidth,
                 minHeight = popupShape.suggestedMinHeight

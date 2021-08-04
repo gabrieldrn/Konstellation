@@ -170,6 +170,14 @@ internal fun DrawScope.highlightPoint(
             end = Offset(point.offset.x, size.height),
             pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f))
     )
+    drawLine(
+        color = highlightPointStyle.color,
+        strokeWidth = highlightPointStyle.radius.toPx() / 2,
+        cap = StrokeCap.Square,
+        start = Offset(0f, point.yPos),
+        end = Offset(size.width, point.yPos),
+        pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f))
+    )
 }
 
 internal fun DrawScope.drawLabelPoints(

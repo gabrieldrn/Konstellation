@@ -166,14 +166,14 @@ fun LineChartComp() {
                 .fillMaxHeight(.5f),
             dataSet = points,
             properties = chartProperties,
-            highlightPosition = HighlightPosition.TOP,
+            highlightPosition = HighlightPosition.START,
             highlightContent = {
                 RoundedCardHighlightPopup {
                     Text(
                         modifier = Modifier.padding(8.dp).align(Alignment.Center),
-                        text = "${it.y}",
+                        text = "y:${it.y}",
                         style = MaterialTheme.typography.body2,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Start
                     )
                 }
             }

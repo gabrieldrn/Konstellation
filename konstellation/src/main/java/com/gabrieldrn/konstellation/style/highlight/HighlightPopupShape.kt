@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 /**
  * Rounded shape used by a composable highlighting a selected value on a chart.
  * TODO Arrows + coerce min width/height with arrow size.
- * TODO Make this shape customizable.
+ * TODO Make this shape customizable?
  */
 class HighlightPopupShape(
     private val position: HighlightPosition
@@ -32,13 +32,20 @@ class HighlightPopupShape(
         layoutDirection: LayoutDirection,
         density: Density
     ) = Outline.Generic(Path().apply {
-        val cornerRadiusPx = with(density) {
-            cornersRadius
-                .toPx()
-                .coerceAtMost(size.height / 2)
-                .coerceAtMost(size.width / 2)
-        }
         val arrowSizePx = with(density) { arrowSize.toPx() }
+        val cornerRadiusPx = with(density) {
+            val r = cornersRadius.toPx()
+            val minBorderLength = r * 2 + arrowSizePx * 2
+            val isArrowBorderOverflowing =
+                if (position.isVertical) minBorderLength > size.width
+                else minBorderLength > size.height
+            if (isArrowBorderOverflowing) r.coerceAtMost(
+                ((if (position.isVertical) size.width else size.height) - 2 * arrowSizePx) / 2
+            )
+            else r.coerceAtMost(
+                if (position.isVertical) size.height / 2 else size.width / 2
+            )
+        }
         reset()
         // Top left
         arcTo(
@@ -55,7 +62,7 @@ class HighlightPopupShape(
         // Top
         if (position == HighlightPosition.BOTTOM) {
             lineTo((size.width / 2) - arrowSizePx, 0f)
-            lineTo(size.width / 2, - arrowSizePx)
+            lineTo(size.width / 2, -arrowSizePx)
             lineTo((size.width / 2) + arrowSizePx, 0f)
         }
         lineTo(size.width - cornerRadiusPx, 0f)
@@ -72,6 +79,11 @@ class HighlightPopupShape(
             forceMoveTo = false
         )
         // Right
+        if (position == HighlightPosition.START) {
+            lineTo(size.width, (size.height / 2) - arrowSizePx)
+            lineTo(size.width + arrowSizePx, size.height / 2)
+            lineTo(size.width, (size.height / 2) + arrowSizePx)
+        }
         lineTo(size.width, size.height - cornerRadiusPx)
         // Bottom right
         arcTo(
