@@ -1,5 +1,6 @@
 package com.gabrieldrn.konstellation.util
 
+import com.gabrieldrn.konstellation.core.plotting.Dataset
 import com.gabrieldrn.konstellation.core.plotting.Point
 import com.gabrieldrn.konstellation.core.plotting.by
 import kotlin.random.Random
@@ -20,7 +21,7 @@ fun randomDataSet() = mutableListOf<Point>().apply {
     (-10..10).forEach {
         add(it.toFloat() by Random.nextInt(-10..10).toFloat())
     }
-}
+} as Dataset
 
 /**
  * Generates a random fancy data set of 20 points with a y value between `-10f` and `10f`.
@@ -32,4 +33,4 @@ fun randomFancyDataSet() = mutableListOf<Point>().apply {
         y = Random.nextInt(y-1..y+1).coerceIn(-range..range)
         add(it.toFloat() by y.toFloat())
     }
-}
+} as Dataset

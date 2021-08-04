@@ -73,6 +73,7 @@ fun Content() {
     val scope = rememberCoroutineScope()
 
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
+
     LaunchedEffect(scaffoldState) {
         scaffoldState.conceal()
     }
@@ -119,12 +120,89 @@ fun Content() {
         })
 }
 
+@Composable
+fun LineChartSettings(
+    xRange: Float,
+    yRange: Float,
+    onChangeDataset: (Dataset) -> Unit,
+    onXRangeChanged: (Float) -> Unit,
+    onYRangeChanged: (Float) -> Unit
+) {
+    Text(
+        modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp),
+        text = "${DemoContent.LINE.chartName} settings",
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.h6
+    )
+    Row(
+        Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+    ) {
+        Button(
+            modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp),
+            onClick = { onChangeDataset(randomDataSet()) }, content = {
+                Text(text = "NEW RANDOM DATASET", textAlign = TextAlign.Center)
+            }
+        )
+        Button(
+            modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp),
+            onClick = { onChangeDataset(randomFancyDataSet()) }, content = {
+                Text(text = "NEW FANCY DATASET", textAlign = TextAlign.Center)
+            }
+        )
+    }
+    Row(Modifier.fillMaxWidth()) {
+        Text(
+            modifier = Modifier
+                    .padding(start = 16.dp)
+                    .align(Alignment.CenterVertically),
+            text = "X range"
+        )
+        Slider(
+            modifier = Modifier
+                    .padding(start = 16.dp)
+                    .weight(1f),
+            value = xRange,
+            valueRange = 1f..25f,
+            onValueChange = onXRangeChanged
+        )
+    }
+    Row(Modifier.fillMaxWidth()) {
+        Text(
+            modifier = Modifier
+                    .padding(start = 16.dp)
+                    .align(Alignment.CenterVertically),
+            text = "Y range"
+        )
+        Slider(
+            modifier = Modifier
+                    .padding(start = 16.dp)
+                    .weight(1f),
+            value = yRange,
+            valueRange = 1f..25f,
+            onValueChange = onYRangeChanged
+        )
+    }
+}
+
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Composable
 fun LineChartComp() {
+
+    val settingsSheetState = rememberBottomSheetScaffoldState()
+
     var points by rememberSaveable { mutableStateOf(randomFancyDataSet()) }
     var xRange by remember { mutableStateOf(15f) }
     var yRange by remember { mutableStateOf(15f) }
+
     val axisColor = MaterialTheme.colors.onBackground
     val chartProperties = LineChartProperties(
         lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
@@ -151,67 +229,48 @@ fun LineChartComp() {
 
     chartProperties.setAxisTypeface(textStyle.typeface)
 
-    Column {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            text = DemoContent.LINE.chartName,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h6
-        )
-        LineChart(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(.5f),
-            dataSet = points,
-            properties = chartProperties,
-            highlightPositions = arrayOf(HighlightPosition.TOP, HighlightPosition.START),
-            highlightContent = {
-                RoundedCardHighlightPopup {
-                    Text(
-                        modifier = Modifier.padding(8.dp).align(Alignment.Center),
-                        text = "y:${it.y.toInt()}",
-                        style = MaterialTheme.typography.body2,
-                        textAlign = TextAlign.Start
-                    )
+    BottomSheetScaffold(
+        scaffoldState = settingsSheetState,
+        sheetContent = {
+            LineChartSettings(
+                xRange = xRange,
+                yRange = yRange,
+                onChangeDataset = { points = it },
+                onXRangeChanged = { xRange = it },
+                onYRangeChanged = { yRange = it }
+            )
+        }
+    ) {
+        Column {
+            Text(
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                text = DemoContent.LINE.chartName,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.h6
+            )
+            LineChart(
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(.5f),
+                dataSet = points,
+                properties = chartProperties,
+                highlightPositions = arrayOf(HighlightPosition.TOP, HighlightPosition.START),
+                highlightContent = {
+                    RoundedCardHighlightPopup {
+                        Text(
+                            modifier = Modifier
+                                    .padding(8.dp)
+                                    .align(Alignment.Center),
+                            text = "y:${it.y.toInt()}",
+                            style = MaterialTheme.typography.body2,
+                            textAlign = TextAlign.Start
+                        )
+                    }
                 }
-            }
-        )
-        Text(
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .align(Alignment.CenterHorizontally),
-            text = "X range"
-        )
-        Slider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            value = xRange,
-            valueRange = 1f..25f,
-            onValueChange = { xRange = it })
-        Text(
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .align(Alignment.CenterHorizontally),
-            text = "Y range"
-        )
-        Slider(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            value = yRange,
-            valueRange = 1f..25f,
-            onValueChange = { yRange = it })
-        Button(modifier = Modifier
-            .padding(top = 16.dp)
-            .align(Alignment.CenterHorizontally),
-            onClick = { points = randomDataSet() }, content = {
-                Text(text = "NEW RANDOM DATASET")
-            })
-        Button(modifier = Modifier
-            .padding(top = 16.dp)
-            .align(Alignment.CenterHorizontally),
-            onClick = { points = randomFancyDataSet() }, content = {
-                Text(text = "NEW FANCY DATASET")
-            })
+            )
+        }
     }
 }
 
@@ -241,8 +300,8 @@ fun AnimatedFunctionChart() {
         }
         Row(
             Modifier
-                .padding(bottom = 16.dp)
-                .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 16.dp)
+                    .align(Alignment.CenterHorizontally)
         ) {
             Switch(checked = animate, onCheckedChange = { animate = it })
             Text(text = "Animate", Modifier.padding(start = 8.dp))
