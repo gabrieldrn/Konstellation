@@ -17,7 +17,6 @@ import com.gabrieldrn.konstellation.core.data.createOffsets
 import com.gabrieldrn.konstellation.core.drawing.*
 import com.gabrieldrn.konstellation.core.plotting.*
 import com.gabrieldrn.konstellation.style.PointDrawStyle
-import com.gabrieldrn.konstellation.style.TextDrawStyle
 import com.gabrieldrn.konstellation.style.highlight.HighlightPopup
 import com.gabrieldrn.konstellation.style.highlight.HighlightPopupScope
 import com.gabrieldrn.konstellation.style.highlight.HighlightPosition
@@ -25,7 +24,7 @@ import com.gabrieldrn.konstellation.style.highlight.HighlightPosition
 /**
  * Lambda invoked when a point needs to be highlighted.
  */
-val highlight: DrawScope.(Point, PointDrawStyle, TextDrawStyle) -> Unit = DrawScope::highlightPoint
+val highlight: DrawScope.(Point, Array<HighlightPosition>, PointDrawStyle) -> Unit = DrawScope::highlightPoint
 
 /**
  * Composable responsible of plotting lines from a dataset and draw axis.
@@ -36,7 +35,7 @@ fun LineChart(
     dataSet: Dataset,
     modifier: Modifier = Modifier,
     properties: LineChartProperties = LineChartProperties(),
-    highlightPosition: HighlightPosition = HighlightPosition.POINT,
+    highlightPositions: Array<HighlightPosition> = arrayOf(HighlightPosition.POINT),
     highlightContent: (@Composable HighlightPopupScope.(Point) -> Unit)? = null
 ) {
     var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
@@ -80,20 +79,22 @@ fun LineChart(
                 clipRect(0f, 0f, size.width, size.height) {
                     drawLines(dataSet, lineStyle, pointStyle, drawPoints = true)
                     highlightedValue?.let {
-                        highlight(this@Canvas, it, highlightPointStyle, highlightTextStyle)
+                        highlight(this@Canvas, it, highlightPositions, highlightPointStyle)
                     }
                 }
                 drawScaledAxis(this, dataSet)
             }
         }
 
-        highlightedValue?.let {
+        highlightedValue?.let { point ->
             if (highlightContent != null) {
-                val scope = HighlightPopupScope(
-                    it, highlightPosition, properties.chartPaddingValues
-                ).apply { ComputePaddings() }
-                HighlightPopup(scope) { point ->
-                    highlightContent(point)
+                highlightPositions.forEach { position ->
+                    val scope = HighlightPopupScope(
+                        point, position, properties.chartPaddingValues
+                    ).apply { ComputePaddings() }
+                    HighlightPopup(scope) { point ->
+                        highlightContent(point)
+                    }
                 }
             }
         }

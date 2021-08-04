@@ -31,19 +31,18 @@ class HighlightPopupShape(
         density: Density
     ) = Outline.Generic(Path().apply {
         val arrowSizePx = with(density) { arrowSize.toPx() }
-        val cornerRadiusPx = with(density) {
-            val r = cornersRadius.toPx()
-            val minBorderLength = r * 2 + arrowSizePx * 2
-            val isArrowBorderOverflowing =
-                if (position.isVertical) minBorderLength > size.width
-                else minBorderLength > size.height
-            if (isArrowBorderOverflowing) r.coerceAtMost(
-                ((if (position.isVertical) size.width else size.height) - 2 * arrowSizePx) / 2
-            )
-            else r.coerceAtMost(
-                if (position.isVertical) size.height / 2 else size.width / 2
-            )
+        var cornerRadiusPx = with(density) {
+            cornersRadius.toPx()
         }
+        val minBorderLength = cornerRadiusPx * 2 + arrowSizePx * 2
+        val len = if (position.isVertical) size.width else size.height
+        val invLen = if (position.isVertical) size.height else size.width
+        if (minBorderLength > len) {
+            cornerRadiusPx = cornerRadiusPx.coerceAtMost((len - (2 * arrowSizePx)) / 2)
+            if (cornerRadiusPx * 2 > invLen) {
+                cornerRadiusPx = cornerRadiusPx.coerceAtMost(invLen / 2)
+            }
+        } else cornerRadiusPx = cornerRadiusPx.coerceAtMost(invLen / 2)
         reset()
         // Top left
         arcTo(

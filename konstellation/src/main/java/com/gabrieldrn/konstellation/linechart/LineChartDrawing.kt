@@ -14,6 +14,9 @@ import com.gabrieldrn.konstellation.core.plotting.*
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
+import com.gabrieldrn.konstellation.style.highlight.*
+import com.gabrieldrn.konstellation.style.highlight.horizontalHLPositions
+import com.gabrieldrn.konstellation.style.highlight.verticalHLPositions
 import com.gabrieldrn.konstellation.util.toInt
 
 /**
@@ -158,26 +161,30 @@ internal fun DrawScope.drawMinMaxAxisValues(
  */
 internal fun DrawScope.highlightPoint(
     point: Point,
-    highlightPointStyle: PointDrawStyle,
-    highlightTextStyle: TextDrawStyle
+    highlightPositions: Array<HighlightPosition>,
+    highlightPointStyle: PointDrawStyle
 ) {
     drawPoint(point, highlightPointStyle)
-    drawLine(
+    if (highlightPositions.any { it in verticalHLPositions }) {
+        drawLine(
+                color = highlightPointStyle.color,
+                strokeWidth = highlightPointStyle.radius.toPx() / 2,
+                cap = StrokeCap.Square,
+                start = Offset(point.offset.x, 0f),
+                end = Offset(point.offset.x, size.height),
+                pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f))
+        )
+    }
+    if (highlightPositions.any { it in horizontalHLPositions }) {
+        drawLine(
             color = highlightPointStyle.color,
             strokeWidth = highlightPointStyle.radius.toPx() / 2,
             cap = StrokeCap.Square,
-            start = Offset(point.offset.x, 0f),
-            end = Offset(point.offset.x, size.height),
+            start = Offset(0f, point.yPos),
+            end = Offset(size.width, point.yPos),
             pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f))
-    )
-    drawLine(
-        color = highlightPointStyle.color,
-        strokeWidth = highlightPointStyle.radius.toPx() / 2,
-        cap = StrokeCap.Square,
-        start = Offset(0f, point.yPos),
-        end = Offset(size.width, point.yPos),
-        pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f))
-    )
+        )
+    }
 }
 
 internal fun DrawScope.drawLabelPoints(
