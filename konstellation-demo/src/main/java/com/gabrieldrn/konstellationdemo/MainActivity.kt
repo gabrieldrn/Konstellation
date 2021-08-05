@@ -124,9 +124,11 @@ fun Content() {
 fun LineChartSettings(
     xRange: Float,
     yRange: Float,
+    highlightPositions: Array<HighlightPosition>,
     onChangeDataset: (Dataset) -> Unit,
     onXRangeChanged: (Float) -> Unit,
-    onYRangeChanged: (Float) -> Unit
+    onYRangeChanged: (Float) -> Unit,
+    onHighlightPositionsChanged: (Array<HighlightPosition>) -> Unit
 ) {
     Text(
         modifier = Modifier
@@ -190,6 +192,36 @@ fun LineChartSettings(
             onValueChange = onYRangeChanged
         )
     }
+    Text(
+        modifier = Modifier.padding(start = 16.dp, top = 8.dp),
+        text = "Highlight positions"
+    )
+    Box(Modifier.fillMaxWidth().height(172.dp).padding(horizontal = 24.dp, vertical = 16.dp)) {
+        fun addOrRemovePosition(add: Boolean, position: HighlightPosition) {
+            onHighlightPositionsChanged(highlightPositions.toMutableList().apply {
+                if (add) add(position) else remove(position)
+            }.toSet().toTypedArray())
+        }
+
+        @Composable
+        fun HighlightPositionCheckbox(position: HighlightPosition) {
+            Checkbox(
+                modifier = Modifier.align(when (position) {
+                    HighlightPosition.TOP -> Alignment.TopCenter
+                    HighlightPosition.BOTTOM -> Alignment.BottomCenter
+                    HighlightPosition.START -> Alignment.CenterStart
+                    HighlightPosition.END -> Alignment.CenterEnd
+                    HighlightPosition.POINT -> Alignment.Center
+                }),
+                checked = highlightPositions.contains(position),
+                onCheckedChange = { addOrRemovePosition(it, position) }
+            )
+        }
+
+        HighlightPosition.values().forEach {
+            HighlightPositionCheckbox(position = it)
+        }
+    }
 }
 
 @ExperimentalMaterialApi
@@ -202,6 +234,7 @@ fun LineChartComp() {
     var points by rememberSaveable { mutableStateOf(randomFancyDataSet()) }
     var xRange by remember { mutableStateOf(15f) }
     var yRange by remember { mutableStateOf(15f) }
+    var highlightPositions by remember { mutableStateOf(arrayOf(HighlightPosition.TOP)) }
 
     val axisColor = MaterialTheme.colors.onBackground
     val chartProperties = LineChartProperties(
@@ -231,13 +264,16 @@ fun LineChartComp() {
 
     BottomSheetScaffold(
         scaffoldState = settingsSheetState,
+        sheetPeekHeight = 60.dp,
         sheetContent = {
             LineChartSettings(
                 xRange = xRange,
                 yRange = yRange,
+                highlightPositions = highlightPositions,
                 onChangeDataset = { points = it },
                 onXRangeChanged = { xRange = it },
-                onYRangeChanged = { yRange = it }
+                onYRangeChanged = { yRange = it },
+                onHighlightPositionsChanged = { highlightPositions = it }
             )
         }
     ) {
@@ -256,7 +292,7 @@ fun LineChartComp() {
                         .fillMaxHeight(.5f),
                 dataSet = points,
                 properties = chartProperties,
-                highlightPositions = arrayOf(HighlightPosition.TOP, HighlightPosition.START),
+                highlightPositions = highlightPositions,
                 highlightContent = {
                     RoundedCardHighlightPopup {
                         Text(
