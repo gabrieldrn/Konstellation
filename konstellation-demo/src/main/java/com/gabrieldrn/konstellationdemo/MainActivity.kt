@@ -133,29 +133,29 @@ fun LineChartSettings(
 ) {
     Text(
         modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
+            .fillMaxWidth()
+            .padding(top = 16.dp),
         text = "${DemoContent.LINE.chartName} settings",
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.h6
     )
     Row(
         Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+            .fillMaxWidth()
+            .padding(16.dp)
     ) {
         Button(
             modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp),
+                .weight(1f)
+                .padding(end = 8.dp),
             onClick = { onChangeDataset(randomDataSet()) }, content = {
                 Text(text = "NEW RANDOM DATASET", textAlign = TextAlign.Center)
             }
         )
         Button(
             modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 8.dp),
+                .weight(1f)
+                .padding(start = 8.dp),
             onClick = { onChangeDataset(randomFancyDataSet()) }, content = {
                 Text(text = "NEW FANCY DATASET", textAlign = TextAlign.Center)
             }
@@ -164,14 +164,14 @@ fun LineChartSettings(
     Row(Modifier.fillMaxWidth()) {
         Text(
             modifier = Modifier
-                    .padding(start = 16.dp)
-                    .align(Alignment.CenterVertically),
+                .padding(start = 16.dp)
+                .align(Alignment.CenterVertically),
             text = "X range"
         )
         Slider(
             modifier = Modifier
-                    .padding(start = 16.dp)
-                    .weight(1f),
+                .padding(start = 16.dp)
+                .weight(1f),
             value = xRange,
             valueRange = 1f..25f,
             onValueChange = onXRangeChanged
@@ -180,14 +180,14 @@ fun LineChartSettings(
     Row(Modifier.fillMaxWidth()) {
         Text(
             modifier = Modifier
-                    .padding(start = 16.dp)
-                    .align(Alignment.CenterVertically),
+                .padding(start = 16.dp)
+                .align(Alignment.CenterVertically),
             text = "Y range"
         )
         Slider(
             modifier = Modifier
-                    .padding(start = 16.dp)
-                    .weight(1f),
+                .padding(start = 16.dp)
+                .weight(1f),
             value = yRange,
             valueRange = 1f..25f,
             onValueChange = onYRangeChanged
@@ -197,7 +197,10 @@ fun LineChartSettings(
         modifier = Modifier.padding(start = 16.dp, top = 8.dp),
         text = "Highlight positions"
     )
-    Box(Modifier.fillMaxWidth().height(172.dp).padding(horizontal = 24.dp, vertical = 16.dp)) {
+    Box(Modifier
+        .fillMaxWidth()
+        .height(172.dp)
+        .padding(horizontal = 24.dp, vertical = 16.dp)) {
         fun addOrRemovePosition(add: Boolean, position: HighlightPosition) {
             onHighlightPositionsChanged(highlightPositions.toMutableList().apply {
                 if (add) add(position) else remove(position)
@@ -281,16 +284,16 @@ fun LineChartComp() {
         Column {
             Text(
                 modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
                 text = DemoContent.LINE.chartName,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.h6
             )
             LineChart(
                 modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(.5f),
+                    .fillMaxWidth()
+                    .fillMaxHeight(.5f),
                 dataSet = points,
                 properties = chartProperties,
                 highlightPositions = highlightPositions,
@@ -298,8 +301,8 @@ fun LineChartComp() {
                     RoundedCardHighlightPopup {
                         Text(
                             modifier = Modifier
-                                    .padding(8.dp)
-                                    .align(Alignment.Center),
+                                .padding(8.dp)
+                                .align(Alignment.Center),
                             text = "y:${it.y.toInt()}",
                             style = MaterialTheme.typography.body2,
                             textAlign = TextAlign.Start
@@ -337,8 +340,8 @@ fun AnimatedFunctionChart() {
         }
         Row(
             Modifier
-                    .padding(bottom = 16.dp)
-                    .align(Alignment.CenterHorizontally)
+                .padding(bottom = 16.dp)
+                .align(Alignment.CenterHorizontally)
         ) {
             Switch(checked = animate, onCheckedChange = { animate = it })
             Text(text = "Animate", Modifier.padding(start = 8.dp))
