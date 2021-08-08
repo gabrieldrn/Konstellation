@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.linechart
+package com.gabrieldrn.konstellation.charts.line
 
 import android.graphics.Paint
 import androidx.compose.ui.geometry.Offset
@@ -10,13 +10,13 @@ import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.data.convertFromRanges
+import com.gabrieldrn.konstellation.core.highlighting.HighlightPosition
 import com.gabrieldrn.konstellation.core.plotting.*
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
-import com.gabrieldrn.konstellation.style.highlight.*
-import com.gabrieldrn.konstellation.style.highlight.horizontalHLPositions
-import com.gabrieldrn.konstellation.style.highlight.verticalHLPositions
+import com.gabrieldrn.konstellation.core.highlighting.horizontalHLPositions
+import com.gabrieldrn.konstellation.core.highlighting.verticalHLPositions
 import com.gabrieldrn.konstellation.util.toInt
 
 /**

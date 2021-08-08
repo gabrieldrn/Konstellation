@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.style.highlight
+package com.gabrieldrn.konstellation.core.highlighting
 
 /**
  * Positions at where the highlight popup can be placed.

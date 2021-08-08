@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.linechart
+package com.gabrieldrn.konstellation.charts.line
 
 import android.view.MotionEvent
 import androidx.compose.foundation.Canvas
@@ -13,13 +13,14 @@ import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.*
+import com.gabrieldrn.konstellation.charts.line.LineChartProperties
 import com.gabrieldrn.konstellation.core.data.createOffsets
 import com.gabrieldrn.konstellation.core.drawing.*
 import com.gabrieldrn.konstellation.core.plotting.*
 import com.gabrieldrn.konstellation.style.PointDrawStyle
-import com.gabrieldrn.konstellation.style.highlight.HighlightPopup
-import com.gabrieldrn.konstellation.style.highlight.HighlightPopupScope
-import com.gabrieldrn.konstellation.style.highlight.HighlightPosition
+import com.gabrieldrn.konstellation.core.highlighting.HighlightPopup
+import com.gabrieldrn.konstellation.core.highlighting.HighlightPopupScope
+import com.gabrieldrn.konstellation.core.highlighting.HighlightPosition
 
 /**
  * Lambda invoked when a point needs to be highlighted.

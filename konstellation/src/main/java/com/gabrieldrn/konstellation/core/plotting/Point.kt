@@ -62,7 +62,8 @@ fun Collection<Pair<Float, Float>>.toDataset(): Dataset = map { it.first by it.s
 
 /**
  * A list of all the [Offset]s of every [Point] of this list. Please note offsets are managed by
- * Konstellation and may be uninitialized depending on the state of the chart calculations.
+ * Konstellation and may be uninitialized depending on the state of the chart calculations and
+ * composition.
  */
 val Dataset.offsets get() = map { it.offset }
 

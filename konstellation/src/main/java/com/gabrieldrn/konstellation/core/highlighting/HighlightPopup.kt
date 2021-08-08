@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.style.highlight
+package com.gabrieldrn.konstellation.core.highlighting
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card

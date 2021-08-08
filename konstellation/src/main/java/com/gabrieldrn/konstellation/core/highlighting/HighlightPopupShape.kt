@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.style.highlight
+package com.gabrieldrn.konstellation.core.highlighting
 
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size

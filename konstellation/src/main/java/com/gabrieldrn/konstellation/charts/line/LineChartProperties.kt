@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.linechart
+package com.gabrieldrn.konstellation.charts.line
 
 import android.graphics.Typeface
 import androidx.compose.foundation.layout.PaddingValues
