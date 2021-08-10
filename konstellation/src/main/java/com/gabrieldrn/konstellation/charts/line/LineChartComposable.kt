@@ -7,24 +7,15 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
-import androidx.compose.ui.layout.*
-import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.core.data.createOffsets
 import com.gabrieldrn.konstellation.core.drawing.*
 import com.gabrieldrn.konstellation.core.plotting.*
-import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPopup
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPopupScope
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPosition
-
-/**
- * Lambda invoked when a point needs to be highlighted.
- */
-val highlight: DrawScope.(Point, Array<HighlightPosition>, PointDrawStyle) -> Unit = DrawScope::highlightPoint
 
 /**
  * Composable responsible of plotting lines from a dataset and draw axis.
@@ -79,7 +70,7 @@ fun LineChart(
                 clipRect(0f, 0f, size.width, size.height) {
                     drawLines(dataSet, lineStyle, pointStyle, drawPoints = true)
                     highlightedValue?.let {
-                        highlight(this@Canvas, it, highlightPositions, highlightPointStyle)
+                        highlightPoint(it, highlightPositions, highlightPointStyle)
                     }
                 }
                 drawScaledAxis(this, dataSet)
