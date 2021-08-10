@@ -7,10 +7,6 @@ import com.gabrieldrn.konstellation.core.plotting.Point
 import com.gabrieldrn.konstellation.core.plotting.xRange
 import com.gabrieldrn.konstellation.core.plotting.yRange
 import kotlin.math.abs
-import kotlin.math.ceil
-import kotlin.math.log10
-import kotlin.math.pow
-import kotlin.math.roundToLong
 
 /**
  * Converts a value from a range to another value based on another range, so as they are equivalent

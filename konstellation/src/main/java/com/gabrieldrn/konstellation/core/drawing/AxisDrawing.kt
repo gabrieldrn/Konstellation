@@ -6,9 +6,9 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
+import com.gabrieldrn.konstellation.charts.line.drawLine
 import com.gabrieldrn.konstellation.core.plotting.*
 import com.gabrieldrn.konstellation.core.plotting.ChartProperties
-import com.gabrieldrn.konstellation.linechart.drawLine
 import com.gabrieldrn.konstellation.core.plotting.NiceScale
 import com.gabrieldrn.konstellation.util.rawRange
 import com.gabrieldrn.konstellation.util.toInt

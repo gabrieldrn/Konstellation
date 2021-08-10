@@ -13,7 +13,6 @@ import androidx.compose.ui.input.pointer.RequestDisallowInterceptTouchEvent
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.*
-import com.gabrieldrn.konstellation.charts.line.LineChartProperties
 import com.gabrieldrn.konstellation.core.data.createOffsets
 import com.gabrieldrn.konstellation.core.drawing.*
 import com.gabrieldrn.konstellation.core.plotting.*
