@@ -294,7 +294,7 @@ fun LineChartComp() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(.5f),
-                dataSet = points,
+                dataset = points,
                 properties = chartProperties,
                 highlightPositions = highlightPositions,
                 highlightContent = {
