@@ -2,6 +2,7 @@ package com.gabrieldrn.konstellation.core.highlighting
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,6 +66,7 @@ internal fun BoxScope.HighlightPopup(
 @Composable
 fun HighlightPopupScope.RoundedCardHighlightPopup(
     modifier: Modifier = Modifier,
+    backgroundColor: Color = if (MaterialTheme.colors.isLight) Color.White else Color.Black,
     cardContent: @Composable BoxScope.(Point) -> Unit
 ) {
     val popupShape = HighlightPopupShape(position)
@@ -91,7 +93,7 @@ fun HighlightPopupScope.RoundedCardHighlightPopup(
                 minHeight = popupShape.suggestedMinHeight
             )
             .then(modifier),
-        backgroundColor = Color.White,
+        backgroundColor = backgroundColor,
         shape = popupShape,
         elevation = 4.dp
     ) {

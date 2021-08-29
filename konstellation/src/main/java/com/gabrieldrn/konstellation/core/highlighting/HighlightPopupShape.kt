@@ -12,9 +12,7 @@ import androidx.compose.ui.unit.dp
 /**
  * Rounded shape used by a composable highlighting a selected value on a chart.
  */
-class HighlightPopupShape(
-    private val position: HighlightPosition
-) : Shape {
+class HighlightPopupShape(private val position: HighlightPosition) : Shape {
 
     var cornersRadius = 24f.dp
     var arrowSize = 8f.dp
