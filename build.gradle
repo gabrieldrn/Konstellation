@@ -2,15 +2,15 @@
 buildscript {
     ext {
         //https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
-        compose_version = '1.0.0'
-        gradle_version = '1.5.10'
+        compose_version = '1.0.1'
+        gradle_version = '1.5.21'
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0'
+        classpath 'com.android.tools.build:gradle:7.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$gradle_version"
 
         // NOTE: Do not place your application dependencies here; they belong
