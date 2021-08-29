@@ -20,6 +20,20 @@ class HighlightPopupScope(
     internal var paddingTop = 0
     internal var paddingStart = 0
 
+    val popupPositioner: Density.() -> IntOffset = {
+        when (position) {
+            HighlightPosition.TOP, HighlightPosition.POINT -> {
+                IntOffset(
+                    point.xPos.toInt() + paddingStart,
+                    point.yPos.toInt() + paddingTop
+                )
+            }
+            HighlightPosition.BOTTOM -> IntOffset(point.xPos.toInt() + paddingStart, 0)
+            HighlightPosition.START -> IntOffset(0, point.yPos.toInt())
+            HighlightPosition.END -> IntOffset(0, point.yPos.toInt())
+        }
+    }
+
     @Composable
     internal fun ComputePaddings() {
         LocalDensity.current.run {
@@ -30,7 +44,7 @@ class HighlightPopupScope(
 }
 
 @Composable
-internal fun BoxScope.BoxedHighlightPopup(
+internal fun BoxScope.BoxedPopup(
     scope: HighlightPopupScope,
     content: @Composable HighlightPopupScope.(Point) -> Unit
 ) {
@@ -58,7 +72,12 @@ internal fun BoxScope.BoxedHighlightPopup(
         else -> Alignment.TopStart
     }
 
-    Box(Modifier.align(getAlignment()).layout(popupLayoutModifier)) {
+    Box(
+        Modifier
+            .offset(scope.popupPositioner)
+            .align(getAlignment())
+            .layout(popupLayoutModifier)
+    ) {
         content(scope, scope.point)
     }
 }
@@ -70,23 +89,8 @@ fun HighlightPopupScope.HighlightPopup(
     backgroundColor: Color = if (MaterialTheme.colors.isLight) Color.White else Color.Black,
     cardContent: @Composable BoxScope.(Point) -> Unit
 ) {
-    val popupPositioner: Density.() -> IntOffset = {
-        when (position) {
-            HighlightPosition.TOP, HighlightPosition.POINT -> {
-                IntOffset(
-                    point.xPos.toInt() + paddingStart,
-                    point.yPos.toInt() + paddingTop
-                )
-            }
-            HighlightPosition.BOTTOM -> IntOffset(point.xPos.toInt() + paddingStart, 0)
-            HighlightPosition.START -> IntOffset(0, point.yPos.toInt())
-            HighlightPosition.END -> IntOffset(0, point.yPos.toInt())
-        }
-    }
-
     Card(
-        Modifier
-            .offset(popupPositioner)
+        modifier
             .padding(popupShape.arrowSize)
             .sizeIn(
                 minWidth = popupShape.suggestedMinWidth,
