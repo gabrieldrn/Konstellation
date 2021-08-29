@@ -11,11 +11,19 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Rounded shape used by a composable highlighting a selected value on a chart.
+ * @param position Position of this popup in front of the chart.
  */
-class HighlightPopupShape(private val position: HighlightPosition) : Shape {
+open class HighlightPopupShape(private val position: HighlightPosition) : Shape {
 
-    var cornersRadius = 24f.dp
-    var arrowSize = 8f.dp
+    /**
+     * The size of all corners for this shape.
+     */
+    open var cornersRadius = 16f.dp
+
+    /**
+     * The size of the arrow for this shape, as a distance from arrow's head to shape border.
+     */
+    open var arrowSize = 8f.dp
 
     val suggestedMinWidth
         get() = if (position.isVertical) arrowSize * 2 else 0.dp
@@ -23,7 +31,7 @@ class HighlightPopupShape(private val position: HighlightPosition) : Shape {
     val suggestedMinHeight
         get() = if (position.isHorizontal) arrowSize * 2 else 0.dp
 
-    override fun createOutline(
+    final override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,
         density: Density
@@ -35,6 +43,7 @@ class HighlightPopupShape(private val position: HighlightPosition) : Shape {
         val minBorderLength = cornerRadiusPx * 2 + arrowSizePx * 2
         val len = if (position.isVertical) size.width else size.height
         val invLen = if (position.isVertical) size.height else size.width
+        val isOnTopOrOnPoint = position in arrayOf(HighlightPosition.POINT, HighlightPosition.TOP)
         if (minBorderLength > len) {
             cornerRadiusPx = cornerRadiusPx.coerceAtMost((len - (2 * arrowSizePx)) / 2)
             if (cornerRadiusPx * 2 > invLen) {
@@ -43,7 +52,39 @@ class HighlightPopupShape(private val position: HighlightPosition) : Shape {
         } else cornerRadiusPx = cornerRadiusPx.coerceAtMost(invLen / 2)
         reset()
         // Top left
-        arcTo(
+        createCorner(Corner.TOP_LEFT, size, cornerRadiusPx)
+        // Top
+        if (position == HighlightPosition.BOTTOM) createTopArrow(size, arrowSizePx)
+        lineTo(size.width - cornerRadiusPx, 0f) // linkage to next corner
+        // Top right
+        createCorner(Corner.TOP_RIGHT, size, cornerRadiusPx)
+        // Right
+        if (position == HighlightPosition.START) createRightArrow(size, arrowSizePx)
+        lineTo(size.width, size.height - cornerRadiusPx)
+        // Bottom right
+        createCorner(Corner.BOTTOM_RIGHT, size, cornerRadiusPx)
+        // Bottom arrow
+        if (isOnTopOrOnPoint) createBottomArrow(size, arrowSizePx)
+        lineTo(cornerRadiusPx, size.height)
+        // Bottom left
+        createCorner(Corner.BOTTOM_LEFT, size, cornerRadiusPx)
+        // Left
+        if (position == HighlightPosition.END) createLeftArrow(size, arrowSizePx)
+        lineTo(0f, cornerRadiusPx)
+    })
+
+    /**
+     * On the receiving [Path], creates a corner depending on [corner] type.
+     * @param corner Position enumerated in [Corner]
+     * @param size The size of this shape boundaries.
+     * @param cornerRadiusPx Computed corners size in pixels.
+     */
+    open fun Path.createCorner(
+        corner: Corner,
+        size: Size,
+        cornerRadiusPx: Float
+    ) = when (corner) {
+        Corner.TOP_LEFT -> arcTo(
             rect = Rect(
                 left = 0f,
                 top = 0f,
@@ -54,15 +95,7 @@ class HighlightPopupShape(private val position: HighlightPosition) : Shape {
             sweepAngleDegrees = 90f,
             forceMoveTo = false
         )
-        // Top
-        if (position == HighlightPosition.BOTTOM) {
-            lineTo((size.width / 2) - arrowSizePx, 0f)
-            lineTo(size.width / 2, -arrowSizePx)
-            lineTo((size.width / 2) + arrowSizePx, 0f)
-        }
-        lineTo(size.width - cornerRadiusPx, 0f)
-        // Top right
-        arcTo(
+        Corner.TOP_RIGHT -> arcTo(
             rect = Rect(
                 left = size.width - cornerRadiusPx * 2,
                 top = 0f,
@@ -73,15 +106,7 @@ class HighlightPopupShape(private val position: HighlightPosition) : Shape {
             sweepAngleDegrees = 90f,
             forceMoveTo = false
         )
-        // Right
-        if (position == HighlightPosition.START) {
-            lineTo(size.width, (size.height / 2) - arrowSizePx)
-            lineTo(size.width + arrowSizePx, size.height / 2)
-            lineTo(size.width, (size.height / 2) + arrowSizePx)
-        }
-        lineTo(size.width, size.height - cornerRadiusPx)
-        // Bottom right
-        arcTo(
+        Corner.BOTTOM_RIGHT -> arcTo(
             rect = Rect(
                 left = size.width - cornerRadiusPx * 2,
                 top = size.height - cornerRadiusPx * 2,
@@ -92,15 +117,7 @@ class HighlightPopupShape(private val position: HighlightPosition) : Shape {
             sweepAngleDegrees = 90f,
             forceMoveTo = false
         )
-        // Bottom arrow
-        if (position in arrayOf(HighlightPosition.POINT, HighlightPosition.TOP)) {
-            lineTo((size.width / 2) + arrowSizePx, size.height)
-            lineTo(size.width / 2, size.height + arrowSizePx)
-            lineTo((size.width / 2) - arrowSizePx, size.height)
-        }
-        lineTo(cornerRadiusPx, size.height)
-        // Bottom left
-        arcTo(
+        Corner.BOTTOM_LEFT -> arcTo(
             rect = Rect(
                 left = 0f,
                 top = size.height - cornerRadiusPx * 2,
@@ -111,12 +128,56 @@ class HighlightPopupShape(private val position: HighlightPosition) : Shape {
             sweepAngleDegrees = 90f,
             forceMoveTo = false
         )
-        // Left
-        if (position == HighlightPosition.END) {
-            lineTo(0f, (size.height / 2) + arrowSizePx)
-            lineTo(- arrowSizePx, size.height / 2)
-            lineTo(0f, (size.height / 2) - arrowSizePx)
-        }
-        lineTo(0f, cornerRadiusPx)
-    })
+    }
+
+    /**
+     * Creates an arrow on this [Shape], supposedly that it will be on the left side.
+     * @param size The size of this shape boundaries.
+     * @param arrowSizePx Computed arrow size in pixels.
+     */
+    open fun Path.createLeftArrow(size: Size, arrowSizePx: Float) {
+        lineTo(0f, (size.height / 2) + arrowSizePx)
+        lineTo(-arrowSizePx, size.height / 2)
+        lineTo(0f, (size.height / 2) - arrowSizePx)
+    }
+
+    /**
+     * Creates an arrow on this [Shape], supposedly that it will be on the bottom side.
+     * @param size The size of this shape boundaries.
+     * @param arrowSizePx Computed arrow size in pixels.
+     */
+    open fun Path.createBottomArrow(size: Size, arrowSizePx: Float) {
+        lineTo((size.width / 2) + arrowSizePx, size.height)
+        lineTo(size.width / 2, size.height + arrowSizePx)
+        lineTo((size.width / 2) - arrowSizePx, size.height)
+    }
+
+    /**
+     * Creates an arrow on this [Shape], supposedly that it will be on the right side.
+     * @param size The size of this shape boundaries.
+     * @param arrowSizePx Computed arrow size in pixels.
+     */
+    open fun Path.createRightArrow(size: Size, arrowSizePx: Float) {
+        lineTo(size.width, (size.height / 2) - arrowSizePx)
+        lineTo(size.width + arrowSizePx, size.height / 2)
+        lineTo(size.width, (size.height / 2) + arrowSizePx)
+    }
+
+    /**
+     * Creates an arrow on this [Shape], supposedly that it will be on the top side.
+     * @param size The size of this shape boundaries.
+     * @param arrowSizePx Computed arrow size in pixels.
+     */
+    open fun Path.createTopArrow(size: Size, arrowSizePx: Float) {
+        lineTo((size.width / 2) - arrowSizePx, 0f)
+        lineTo(size.width / 2, -arrowSizePx)
+        lineTo((size.width / 2) + arrowSizePx, 0f)
+    }
+
+    /**
+     * Enumeration of possible computed corner positions for this shape.
+     */
+    enum class Corner {
+        TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
+    }
 }

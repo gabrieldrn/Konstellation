@@ -10,16 +10,18 @@ enum class HighlightPosition {
 /**
  * Array of the possible vertical positions where the popup can be placed.
  */
-internal val verticalHLPositions get() = arrayOf(
-    HighlightPosition.POINT, HighlightPosition.TOP, HighlightPosition.BOTTOM
-)
+internal val verticalHLPositions
+    get() = arrayOf(
+        HighlightPosition.POINT, HighlightPosition.TOP, HighlightPosition.BOTTOM
+    )
 
 /**
  * Array of the possible horizontal positions where the popup can be placed.
  */
-internal val horizontalHLPositions get() = arrayOf(
-    HighlightPosition.START, HighlightPosition.END
-)
+internal val horizontalHLPositions
+    get() = arrayOf(
+        HighlightPosition.START, HighlightPosition.END
+    )
 
 /**
  * Returns true if this position is a vertical one.

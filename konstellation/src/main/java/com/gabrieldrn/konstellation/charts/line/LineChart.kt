@@ -15,7 +15,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import com.gabrieldrn.konstellation.core.data.createOffsets
 import com.gabrieldrn.konstellation.core.drawing.drawScaledAxis
-import com.gabrieldrn.konstellation.core.highlighting.HighlightPopup
+import com.gabrieldrn.konstellation.core.highlighting.BoxedHighlightPopup
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPopupScope
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPosition
 import com.gabrieldrn.konstellation.core.plotting.*
@@ -86,7 +86,7 @@ fun LineChart(
         highlightedValue?.let { point ->
             if (highlightContent != null) {
                 highlightPositions.forEach { position ->
-                    HighlightPopup(
+                    BoxedHighlightPopup(
                         HighlightPopupScope(
                             point, position, properties.chartPaddingValues
                         ).apply { ComputePaddings() }

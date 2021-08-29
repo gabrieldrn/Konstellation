@@ -30,7 +30,7 @@ class HighlightPopupScope(
 }
 
 @Composable
-internal fun BoxScope.HighlightPopup(
+internal fun BoxScope.BoxedHighlightPopup(
     scope: HighlightPopupScope,
     content: @Composable HighlightPopupScope.(Point) -> Unit
 ) {
@@ -64,12 +64,12 @@ internal fun BoxScope.HighlightPopup(
 }
 
 @Composable
-fun HighlightPopupScope.RoundedCardHighlightPopup(
+fun HighlightPopupScope.HighlightPopup(
     modifier: Modifier = Modifier,
+    popupShape: HighlightPopupShape = HighlightPopupShape(position),
     backgroundColor: Color = if (MaterialTheme.colors.isLight) Color.White else Color.Black,
     cardContent: @Composable BoxScope.(Point) -> Unit
 ) {
-    val popupShape = HighlightPopupShape(position)
     val popupPositioner: Density.() -> IntOffset = {
         when (position) {
             HighlightPosition.TOP, HighlightPosition.POINT -> {

@@ -35,7 +35,7 @@ import com.gabrieldrn.konstellation.charts.line.setAxisTypeface
 import com.gabrieldrn.konstellation.core.plotting.*
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPosition
 import com.gabrieldrn.konstellation.style.*
-import com.gabrieldrn.konstellation.core.highlighting.RoundedCardHighlightPopup
+import com.gabrieldrn.konstellation.core.highlighting.HighlightPopup
 import com.gabrieldrn.konstellation.util.randomDataSet
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
@@ -298,12 +298,12 @@ fun LineChartComp() {
                 properties = chartProperties,
                 highlightPositions = highlightPositions,
                 highlightContent = {
-                    RoundedCardHighlightPopup {
+                    HighlightPopup {
                         Text(
                             modifier = Modifier
                                 .padding(8.dp)
                                 .align(Alignment.Center),
-                            text = "y:${it.y.toInt()}",
+                            text = "y -> ${it.y.toInt()}\nx -> ${it.x.toInt()}",
                             style = MaterialTheme.typography.body2,
                             textAlign = TextAlign.Start
                         )
