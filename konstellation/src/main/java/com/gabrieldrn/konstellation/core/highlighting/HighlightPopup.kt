@@ -12,10 +12,15 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.core.plotting.Point
 
+/**
+ * A scope providing placement and contents data for a highlighting popup.
+ * @param point Highlighted [Point].
+ * @param position Where the popup will be gravitating in front of the chart.
+ */
 class HighlightPopupScope(
     val point: Point,
     val position: HighlightPosition,
-    val chartPaddings: PaddingValues
+    private val chartPaddings: PaddingValues
 ) {
     internal var paddingTop = 0
     internal var paddingStart = 0
@@ -43,6 +48,10 @@ class HighlightPopupScope(
     }
 }
 
+/**
+ * Creates and places a [Box] ready to compose a highlight popup within a highlighting [scope] with
+ * a given [content] provided by the user.
+ */
 @Composable
 internal fun BoxScope.BoxedPopup(
     scope: HighlightPopupScope,
@@ -82,25 +91,32 @@ internal fun BoxScope.BoxedPopup(
     }
 }
 
+/**
+ * Creates a popup to highlight content from the chart with a [shape]. The default shape, a
+ * [HighlightPopupShape], is a rounded card with an arrow placed in accordance with the positions
+ * of the highlight defined in the chart composable parameters, so as it will pointing towards the
+ * highlighted value. The background of this shape is customizable by modifying [backgroundColor].
+ * Contents of the highlighting popup is defined in [content].
+ */
 @Composable
 fun HighlightPopupScope.HighlightPopup(
     modifier: Modifier = Modifier,
-    popupShape: HighlightPopupShape = HighlightPopupShape(position),
+    shape: HighlightPopupShape = HighlightPopupShape(position),
     backgroundColor: Color = if (MaterialTheme.colors.isLight) Color.White else Color.Black,
-    cardContent: @Composable BoxScope.(Point) -> Unit
+    content: @Composable BoxScope.(Point) -> Unit
 ) {
     Card(
         modifier
-            .padding(popupShape.arrowSize)
+            .padding(shape.arrowSize)
             .sizeIn(
-                minWidth = popupShape.suggestedMinWidth,
-                minHeight = popupShape.suggestedMinHeight
+                minWidth = shape.suggestedMinWidth,
+                minHeight = shape.suggestedMinHeight
             )
             .then(modifier),
         backgroundColor = backgroundColor,
-        shape = popupShape,
+        shape = shape,
         elevation = 4.dp
     ) {
-        Box(content = { cardContent(point) })
+        Box(content = { content(point) })
     }
 }

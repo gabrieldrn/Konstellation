@@ -43,7 +43,7 @@ internal fun Float.convertFromRanges(
 
 /**
  * Sets all the offsets in each [Point] of the receiving collection, based on the bounds of the
- * passed [drawScope]. A specific ranges can be given with [dataSetXRange] and [dataSetYRange].
+ * passed [drawScope]. A specific range can be given with [dataSetXRange] and [dataSetYRange].
  *
  * @receiver The current collection of point within which to establish the offsets.
  * @param drawScope The draw scope of the chart in which drawing the future offsets.
@@ -65,19 +65,6 @@ internal fun Dataset.createOffsets(
             y = it.y.convertFromRanges(dataSetYRange, canvasYRange) + drawScope.size.height,
         )
     }
-}
-
-internal fun Point.createOffset(
-    drawScope: DrawScope,
-    datasetXRange: ClosedRange<Float>,
-    datasetYRange: ClosedRange<Float>
-) {
-    val canvasYRange = drawScope.size.height..0f //Inverting to draw from bottom to top
-    val canvasXRange = 0f..drawScope.size.width
-    offset = Offset(
-        x = x.convertFromRanges(datasetXRange, canvasXRange),
-        y = y.convertFromRanges(datasetYRange, canvasYRange) + drawScope.size.height,
-    )
 }
 
 /**

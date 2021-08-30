@@ -24,7 +24,7 @@ private val chartScale = NiceScale(0f..1f)
 private val tickLabelPaint = Paint()
 
 /**
- * Draws axis and labels of a chart based on a [dataSet] and with given [properties].
+ * Draws axis and labels of a chart based on a [dataSet] and given [properties].
  */
 internal fun DrawScope.drawScaledAxis(
     properties: ChartProperties,

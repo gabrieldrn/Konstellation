@@ -21,7 +21,14 @@ import com.gabrieldrn.konstellation.core.highlighting.HighlightPosition
 import com.gabrieldrn.konstellation.core.plotting.*
 
 /**
- * Composable responsible of plotting lines from a dataset and draw axis.
+ * Konstellation composable function drawing a line chart.
+ * @param dataset Your set of points.
+ * @param modifier Your classic Jetpack-Compose modifier
+ * @param properties The DNA of your chart. See [LineChartProperties].
+ * @param highlightPositions Where to place highlighting popups. There will be as much popup as
+ * there is positions defined.
+ * @param highlightContent Classic Composable scope defining the content to be shown inside
+ * highlighting popup(s).
  */
 @ExperimentalComposeUiApi
 @Composable

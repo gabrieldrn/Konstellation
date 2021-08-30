@@ -2,6 +2,8 @@ package com.gabrieldrn.konstellation.core.highlighting
 
 /**
  * Positions at where the highlight popup can be placed.
+ * [TOP], [BOTTOM], [START], [END] represents the positions where the popup will stick over chart
+ * "window". [POINT] will place the popup up above the highlighted point.
  */
 enum class HighlightPosition {
     TOP, BOTTOM, START, END, POINT

@@ -37,9 +37,7 @@ open class HighlightPopupShape(private val position: HighlightPosition) : Shape 
         density: Density
     ) = Outline.Generic(Path().apply {
         val arrowSizePx = with(density) { arrowSize.toPx() }
-        var cornerRadiusPx = with(density) {
-            cornersRadius.toPx()
-        }
+        var cornerRadiusPx = with(density) { cornersRadius.toPx() }
         val minBorderLength = cornerRadiusPx * 2 + arrowSizePx * 2
         val len = if (position.isVertical) size.width else size.height
         val invLen = if (position.isVertical) size.height else size.width

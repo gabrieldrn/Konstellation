@@ -200,7 +200,9 @@ fun LineChartSettings(
     Box(Modifier
         .fillMaxWidth()
         .height(172.dp)
-        .padding(horizontal = 24.dp, vertical = 16.dp)) {
+        .padding(horizontal = 24.dp, vertical = 16.dp)
+    ) {
+
         fun addOrRemovePosition(add: Boolean, position: HighlightPosition) {
             onHighlightPositionsChanged(highlightPositions.toMutableList().apply {
                 if (add) add(position) else remove(position)
@@ -257,10 +259,10 @@ fun LineChartComp() {
         dataXRange = -xRange..xRange,
         dataYRange = -yRange..yRange,
         axes = setOf(
-            xBottom.apply { style.setColor(axisColor) },
-            xTop.apply { style.setColor(axisColor) },
-            yLeft.apply { style.setColor(axisColor) },
-            yRight.apply { style.setColor(axisColor) },
+            Axes.xBottom.apply { style.setColor(axisColor) },
+            Axes.xTop.apply { style.setColor(axisColor) },
+            Axes.yLeft.apply { style.setColor(axisColor) },
+            Axes.yRight.apply { style.setColor(axisColor) },
         ),
     )
 
