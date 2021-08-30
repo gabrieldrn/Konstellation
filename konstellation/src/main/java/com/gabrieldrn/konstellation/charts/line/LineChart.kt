@@ -25,8 +25,8 @@ import com.gabrieldrn.konstellation.core.plotting.*
  * @param dataset Your set of points.
  * @param modifier Your classic Jetpack-Compose modifier
  * @param properties The DNA of your chart. See [LineChartProperties].
- * @param highlightPositions Where to place highlighting popups. There will be as much popup as
- * there is positions defined.
+ * @param highlightPositions Where to place highlighting popups. There will be as much popups as
+ * there is positions.
  * @param highlightContent Classic Composable scope defining the content to be shown inside
  * highlighting popup(s).
  */
