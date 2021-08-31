@@ -36,6 +36,10 @@ data class Point(
     val yPos get() = offset.y
 
     override fun toString() = "[($x;$y), $offset]"
+
+    companion object {
+        const val serialVersionUID = 1L
+    }
 }
 
 /**
