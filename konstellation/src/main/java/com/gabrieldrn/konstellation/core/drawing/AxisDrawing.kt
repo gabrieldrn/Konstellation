@@ -106,6 +106,9 @@ private fun DrawScope.calculateAxisOffsets(
     return tickSpacingOffset to lineStartOffset
 }
 
+private const val DEFAULT_TICK_SIZE = 20f //TODO Move into style data class
+private const val DEFAULT_LABEL_X_OFFSET = 20f //TODO Move into style data class
+
 /**
  * Draws a tiny vertical line representing a tick, with a given [label]. The orientation of the tick
  * depends on the type of axis (X or Y).
@@ -117,12 +120,12 @@ internal fun DrawScope.drawTick(
 ) {
     drawLine(
         start = when (axis.axis) {
-            Axis.X_TOP, Axis.X_BOTTOM -> Offset(position.x, position.y - 10f)
-            else -> Offset(position.x - 10f, position.y)
+            Axis.X_TOP, Axis.X_BOTTOM -> Offset(position.x, position.y - DEFAULT_TICK_SIZE / 2)
+            else -> Offset(position.x - DEFAULT_TICK_SIZE / 2, position.y)
         },
         end = when (axis.axis) {
-            Axis.X_TOP, Axis.X_BOTTOM -> Offset(position.x, position.y + 10f)
-            else -> Offset(position.x + 10f, position.y)
+            Axis.X_TOP, Axis.X_BOTTOM -> Offset(position.x, position.y + DEFAULT_TICK_SIZE / 2)
+            else -> Offset(position.x + DEFAULT_TICK_SIZE / 2, position.y)
         },
         lineStyle = axis.style.tickLineStyle.copy(cap = StrokeCap.Square)
     )
@@ -135,8 +138,8 @@ internal fun DrawScope.drawTick(
             flags = Paint.ANTI_ALIAS_FLAG
         }
         val xMetricsOffset = when (axis.axis) {
-            Axis.Y_LEFT -> -20f
-            Axis.Y_RIGHT -> 20f
+            Axis.Y_LEFT -> -DEFAULT_LABEL_X_OFFSET
+            Axis.Y_RIGHT -> DEFAULT_LABEL_X_OFFSET
             else -> 0f
         }
         val yMetricsOffset = when (axis.axis) {

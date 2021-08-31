@@ -22,6 +22,7 @@ import com.gabrieldrn.konstellation.style.TextDrawStyle
  * Composable responsible of plotting points from a function and draw axis.
  */
 @Composable
+@Suppress("LongParameterList") //TODO Remove Suppress
 fun FunctionPlotter(
     modifier: Modifier = Modifier,
     lineStyle: LineDrawStyle = LineDrawStyle(),

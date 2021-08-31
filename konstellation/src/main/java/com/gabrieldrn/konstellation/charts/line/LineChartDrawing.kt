@@ -28,7 +28,10 @@ internal fun DrawScope.drawLine(
     strokeWidth = lineStyle.strokeWidth.toPx(),
     cap = lineStyle.cap,
     start = start,
-    end = end
+    end = end,
+    pathEffect = if (lineStyle.dashed)
+        PathEffect.dashPathEffect(lineStyle.dashedEffectIntervals, lineStyle.dashedEffectPhase)
+    else null
 )
 
 /**
@@ -149,27 +152,22 @@ internal fun DrawScope.drawMinMaxAxisValues(
 internal fun DrawScope.highlightPoint(
     point: Point,
     highlightPositions: Array<HighlightPosition>,
-    highlightPointStyle: PointDrawStyle
+    highlightPointStyle: PointDrawStyle,
+    highlightLineStyle: LineDrawStyle
 ) {
     drawPoint(point, highlightPointStyle)
     if (highlightPositions.any { it in verticalHLPositions }) {
         drawLine(
-                color = highlightPointStyle.color,
-                strokeWidth = highlightPointStyle.radius.toPx() / 2,
-                cap = StrokeCap.Square,
-                start = Offset(point.offset.x, 0f),
-                end = Offset(point.offset.x, size.height),
-                pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f))
+            Offset(point.offset.x, 0f),
+            Offset(point.offset.x, size.height),
+            highlightLineStyle
         )
     }
     if (highlightPositions.any { it in horizontalHLPositions }) {
         drawLine(
-            color = highlightPointStyle.color,
-            strokeWidth = highlightPointStyle.radius.toPx() / 2,
-            cap = StrokeCap.Square,
-            start = Offset(0f, point.yPos),
-            end = Offset(size.width, point.yPos),
-            pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f))
+            Offset(0f, point.yPos),
+            Offset(size.width, point.yPos),
+            highlightLineStyle
         )
     }
 }

@@ -17,6 +17,9 @@ data class LineChartProperties(
     override var pointStyle: PointDrawStyle = PointDrawStyle(),
     var textStyle: TextDrawStyle = TextDrawStyle(),
     var highlightPointStyle: PointDrawStyle = PointDrawStyle(),
+    var highlightLineStyle: LineDrawStyle = LineDrawStyle(
+        strokeWidth = 1.dp, dashed = true
+    ),
     var highlightTextStyle: TextDrawStyle = TextDrawStyle(),
     var chartPaddingValues: PaddingValues = PaddingValues(0.dp),
     override var dataXRange: ClosedFloatingPointRange<Float>? = null,

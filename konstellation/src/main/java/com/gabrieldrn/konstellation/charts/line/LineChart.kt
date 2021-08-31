@@ -3,8 +3,7 @@ package com.gabrieldrn.konstellation.charts.line
 import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -83,24 +82,36 @@ fun LineChart(
                 clipRect(0f, 0f, size.width, size.height) {
                     drawLines(points, lineStyle, pointStyle, drawPoints = true)
                     highlightedValue?.let {
-                        highlightPoint(it, highlightPositions, highlightPointStyle)
+                        highlightPoint(
+                            it, highlightPositions, highlightPointStyle, highlightLineStyle
+                        )
                     }
                 }
                 drawScaledAxis(this, points)
             }
         }
 
-        highlightedValue?.let { point ->
-            if (highlightContent != null) {
-                highlightPositions.forEach { position ->
-                    BoxedPopup(
-                        HighlightPopupScope(
-                            point, position, properties.chartPaddingValues
-                        ).apply { ComputePaddings() }
-                    ) { point ->
-                        highlightContent(point)
-                    }
-                }
+        highlightedValue?.let {
+            ComposeHighlightPopup(highlightContent, highlightPositions, it, properties)
+        }
+    }
+}
+
+@Composable
+private fun BoxScope.ComposeHighlightPopup(
+    highlightContent: @Composable (HighlightPopupScope.(Point) -> Unit)?,
+    highlightPositions: Array<HighlightPosition>,
+    point: Point,
+    properties: LineChartProperties
+) {
+    if (highlightContent != null) {
+        highlightPositions.forEach { position ->
+            BoxedPopup(
+                HighlightPopupScope(
+                    point, position, properties.chartPaddingValues
+                ).apply { ComputePaddings() },
+            ) { point ->
+                highlightContent(point)
             }
         }
     }

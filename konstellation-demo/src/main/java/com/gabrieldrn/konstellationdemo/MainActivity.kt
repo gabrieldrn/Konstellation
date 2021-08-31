@@ -43,7 +43,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.PI
 import kotlin.math.sin
 
-private var textStyle = TextDrawStyle()
+private var mainTextStyle = TextDrawStyle()
 
 class MainActivity : AppCompatActivity() {
     @ExperimentalMaterialApi
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ResourcesCompat.getFont(this, R.font.space_mono_regular)?.let {
-            textStyle.typeface = it
+            mainTextStyle.typeface = it
         }
         setContent {
             KonstellationTheme {
@@ -243,30 +243,32 @@ fun LineChartComp() {
     var highlightPositions by remember { mutableStateOf(arrayOf(HighlightPosition.TOP)) }
 
     val axisColor = MaterialTheme.colors.onBackground
-    val chartProperties = LineChartProperties(
-        lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
-        pointStyle = PointDrawStyle(color = MaterialTheme.colors.primary),
-        textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
-        highlightPointStyle = PointDrawStyle(
-            color = MaterialTheme.colors.primary.copy(alpha = 0.3f), radius = 6.dp
-        ),
-        highlightTextStyle = textStyle.copy(
+    val chartProperties = LineChartProperties().apply {
+        lineStyle.color = MaterialTheme.colors.primary
+        pointStyle.color = MaterialTheme.colors.primary
+        textStyle.color = MaterialTheme.colors.primary
+        highlightPointStyle.run {
+            color = MaterialTheme.colors.primary.copy(alpha = 0.3f)
+            radius = 6.dp
+        }
+        highlightLineStyle.color = MaterialTheme.colors.primary.copy(alpha = 0.3f)
+        highlightTextStyle = mainTextStyle.copy(
             color = MaterialTheme.colors.primary,
             textAlign = Paint.Align.CENTER,
             offsetY = -25f
-        ),
-        chartPaddingValues = PaddingValues(44.dp),
-        dataXRange = -xRange..xRange,
-        dataYRange = -yRange..yRange,
+        )
+        chartPaddingValues = PaddingValues(44.dp)
+        dataXRange = -xRange..xRange
+        dataYRange = -yRange..yRange
         axes = setOf(
             Axes.xBottom.apply { style.setColor(axisColor) },
             Axes.xTop.apply { style.setColor(axisColor) },
             Axes.yLeft.apply { style.setColor(axisColor) },
             Axes.yRight.apply { style.setColor(axisColor) },
-        ),
-    )
+        )
+    }
 
-    chartProperties.setAxisTypeface(textStyle.typeface)
+    chartProperties.setAxisTypeface(mainTextStyle.typeface)
 
     BottomSheetScaffold(
         scaffoldState = settingsSheetState,
@@ -333,7 +335,7 @@ fun AnimatedFunctionChart() {
             FunctionPlotter(
                 pointSpacing = 5,
                 lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
-                textStyle = textStyle.copy(color = MaterialTheme.colors.primary),
+                textStyle = mainTextStyle.copy(color = MaterialTheme.colors.primary),
                 dataXRange = -PI.toFloat() + (if (animate) m else 0f)..PI.toFloat() + (if (animate) m else 0f),
                 dataYRange = -2f..2f
             ) {
