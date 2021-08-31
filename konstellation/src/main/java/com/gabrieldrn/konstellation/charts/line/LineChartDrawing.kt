@@ -6,10 +6,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.core.data.convertFromRanges
+import com.gabrieldrn.konstellation.core.drawing.drawText
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPosition
 import com.gabrieldrn.konstellation.core.plotting.*
 import com.gabrieldrn.konstellation.style.LineDrawStyle
@@ -17,7 +16,6 @@ import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 import com.gabrieldrn.konstellation.core.highlighting.horizontalHLPositions
 import com.gabrieldrn.konstellation.core.highlighting.verticalHLPositions
-import com.gabrieldrn.konstellation.util.toInt
 
 /**
  * Draws a line between the given offsets using the given style. The line is stroked.
@@ -73,10 +71,6 @@ internal fun DrawScope.drawLines(
  */
 internal fun DrawScope.drawPoint(point: Point, style: PointDrawStyle = PointDrawStyle()) {
     drawCircle(center = point.offset, color = style.color, radius = style.radius.toPx())
-}
-
-internal fun DrawScope.drawPoints(dataset: Dataset, style: PointDrawStyle) {
-    dataset.forEach { drawPoint(it, style) }
 }
 
 /**
@@ -148,12 +142,6 @@ internal fun DrawScope.drawMinMaxAxisValues(
     )
 }
 
-internal fun DrawScope.drawMinMaxAxisValues(
-    dataset: Dataset, textStyle: TextDrawStyle
-) = with(dataset) {
-    drawMinMaxAxisValues(xMin, xMax, yMin, yMax, textStyle)
-}
-
 /**
  * Highlights a given [point] in the chart by drawing another circle styled with
  * [highlightPointStyle] in front of it and dashed lines based on [highlightPositions].
@@ -184,39 +172,4 @@ internal fun DrawScope.highlightPoint(
             pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 20f))
         )
     }
-}
-
-internal fun DrawScope.drawLabelPoints(
-    dataset: Dataset, textStyle: TextDrawStyle,
-    onDrawPointLabel: (point: Point) -> String = { "${it.y}" }
-) {
-    dataset.forEach {
-        drawText(
-            it.offset,
-            text = onDrawPointLabel(it),
-            style = textStyle
-        )
-    }
-}
-
-/**
- * Draws a text into the current DrawScope.
- */
-internal fun DrawScope.drawText(
-    point: Offset,
-    text: String,
-    style: TextDrawStyle = TextDrawStyle()
-) = drawIntoCanvas {
-    it.nativeCanvas.drawText(
-        text,
-        point.x + style.offsetX,
-        point.y + style.offsetY,
-        Paint().apply {
-            textAlign = style.textAlign
-            textSize = style.textSize
-            color = style.color.toInt()
-            typeface = style.typeface
-            flags = Paint.ANTI_ALIAS_FLAG
-        }
-    )
 }

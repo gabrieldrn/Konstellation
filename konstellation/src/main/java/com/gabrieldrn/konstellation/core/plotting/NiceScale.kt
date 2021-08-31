@@ -46,6 +46,7 @@ class NiceScale(var dataRange: ClosedFloatingPointRange<Float>, var maxTicks: In
      * @param round Whether to round the result
      * @return A "nice" number to be used for the data range
      */
+    @Suppress("MagicNumber")
     private fun niceNum(range: Float, round: Boolean): Float {
         val exponent = floor(log10(range)) //nice, rounded fraction
         val fraction = range / 10f.pow(exponent) //exponent of range
