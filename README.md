@@ -1,5 +1,9 @@
 ![Konstellation logo](https://user-images.githubusercontent.com/22205373/112414032-b8319500-8cf7-11eb-97d0-720f2f202cde.png)
 
+[![License](https://img.shields.io/badge/License-GNU%20v3.0-white.svg)](LICENSE)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.5.21-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.0.1-blue.svg?logo=android)](https://developer.android.com/jetpack/compose)
+
 A plotting library based on Jetpack Compose.
 
 **This library is still a work in progress and is being actively worked on. Here's what it can draw so far:**
