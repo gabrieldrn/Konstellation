@@ -10,7 +10,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -197,10 +197,11 @@ fun LineChartSettings(
         modifier = Modifier.padding(start = 16.dp, top = 8.dp),
         text = "Highlight positions"
     )
-    Box(Modifier
-        .fillMaxWidth()
-        .height(172.dp)
-        .padding(horizontal = 24.dp, vertical = 16.dp)
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .height(172.dp)
+            .padding(horizontal = 24.dp, vertical = 16.dp)
     ) {
 
         fun addOrRemovePosition(add: Boolean, position: HighlightPosition) {
@@ -302,13 +303,19 @@ fun LineChartComp() {
                 properties = chartProperties,
                 highlightPositions = highlightPositions,
                 highlightContent = {
-                    HighlightPopup {
+                    HighlightPopup(
+                        backgroundColor = if (isSystemInDarkTheme()) {
+                            MaterialTheme.colors.primary
+                        } else {
+                            Color.White
+                        }
+                    ) {
                         Text(
                             modifier = Modifier
                                 .padding(8.dp)
                                 .align(Alignment.Center),
-                            text = "y -> ${it.y.toInt()}\nx -> ${it.x.toInt()}",
-                            style = MaterialTheme.typography.body2,
+                            text = "y -> ${it.y.toInt()}",
+                            style = MaterialTheme.typography.body1,
                             textAlign = TextAlign.Start
                         )
                     }
