@@ -1,4 +1,4 @@
-![Konstellation logo](https://user-images.githubusercontent.com/22205373/112414032-b8319500-8cf7-11eb-97d0-720f2f202cde.png)
+![Konstellation logo - 3](https://user-images.githubusercontent.com/22205373/131760981-76444b9a-97d1-481f-8fa4-16379a841f9c.png)
 
 [![License](https://img.shields.io/badge/License-GNU%20v3.0-white.svg)](LICENSE)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.5.21-blue.svg?logo=kotlin)](http://kotlinlang.org)
