@@ -2,7 +2,7 @@
 buildscript {
     ext {
         //https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
-        compose_version = '1.0.1'
+        compose_version = '1.0.2'
         gradle_version = '1.5.21'
     }
     repositories {
@@ -28,9 +28,6 @@ subprojects {
         // Version of Detekt that will be used. When unspecified the latest detekt
         // version found will be used. Override to stay on the same version.
         toolVersion = "1.18.0"
-
-        // The directories where detekt looks for source files.
-        // Defaults to `files("src/main/java", "src/test/java", "src/main/kotlin", "src/test/kotlin")`.
 
         // Builds the AST in parallel. Rules are always executed in parallel.
         // Can lead to speedups in larger projects. `false` by default.
@@ -74,23 +71,16 @@ subprojects {
         basePath = projectDir
 
         reports {
-            // Enable/Disable XML report (default: true)
             xml {
                 enabled = true
                 destination = file("build/reports/detekt/detekt.xml")
             }
-            // Enable/Disable HTML report (default: true)
             html {
                 enabled = true
                 destination = file("build/reports/detekt/detekt.html")
             }
             txt.enabled = false
             sarif.enabled = false
-//            custom {
-//                // The simple class name of your custom report.
-//                reportId = "CustomJsonReport"
-//                destination = file("build/reports/detekt.json")
-//            }
         }
     }
 }
