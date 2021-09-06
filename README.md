@@ -4,6 +4,8 @@
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.5.21-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.0.1-blue.svg?logo=android)](https://developer.android.com/jetpack/compose)
 
+[![](https://github.com/gabrieldrn/Konstellation/workflows/CI/badge.svg?branch=develop)]()
+
 A plotting library based on Jetpack Compose.
 
 **This library is still a work in progress and is being actively worked on. Here's what it can draw so far:**
