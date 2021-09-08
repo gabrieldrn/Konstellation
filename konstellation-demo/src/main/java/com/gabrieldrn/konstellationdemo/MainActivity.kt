@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ResourcesCompat.getFont(this, R.font.space_mono_regular)?.let {
+        ResourcesCompat.getFont(this, R.font.manrope_medium)?.let {
             mainTextStyle.typeface = it
         }
         setContent {
@@ -83,7 +84,7 @@ fun Content() {
         appBar = {
             TopAppBar(
                 title = {
-                    Text(text = "Konstellation")
+                    Text(text = "Konstellation", fontWeight = FontWeight.Bold)
                 },
                 navigationIcon = {
                     if (scaffoldState.isConcealed) {
@@ -107,7 +108,12 @@ fun Content() {
                             contentSelection = item
                             scope.launch { scaffoldState.conceal() }
                         },
-                        text = { Text(text = item.chartName) },
+                        text = {
+                            Text(
+                                text = item.chartName,
+                                fontWeight = if (contentSelection == item) FontWeight.Bold else null
+                            )
+                        },
                     )
                 }
             }
@@ -213,13 +219,15 @@ fun LineChartSettings(
         @Composable
         fun HighlightPositionCheckbox(position: HighlightPosition) {
             Checkbox(
-                modifier = Modifier.align(when (position) {
-                    HighlightPosition.TOP -> Alignment.TopCenter
-                    HighlightPosition.BOTTOM -> Alignment.BottomCenter
-                    HighlightPosition.START -> Alignment.CenterStart
-                    HighlightPosition.END -> Alignment.CenterEnd
-                    HighlightPosition.POINT -> Alignment.Center
-                }),
+                modifier = Modifier.align(
+                    when (position) {
+                        HighlightPosition.TOP -> Alignment.TopCenter
+                        HighlightPosition.BOTTOM -> Alignment.BottomCenter
+                        HighlightPosition.START -> Alignment.CenterStart
+                        HighlightPosition.END -> Alignment.CenterEnd
+                        HighlightPosition.POINT -> Alignment.Center
+                    }
+                ),
                 checked = highlightPositions.contains(position),
                 onCheckedChange = { addOrRemovePosition(it, position) }
             )
@@ -252,7 +260,7 @@ fun LineChartComp() {
             color = MaterialTheme.colors.primary.copy(alpha = 0.3f)
             radius = 6.dp
         }
-        highlightLineStyle.color = MaterialTheme.colors.primary.copy(alpha = 0.3f)
+        highlightLineStyle.color = MaterialTheme.colors.onBackground
         highlightTextStyle = mainTextStyle.copy(
             color = MaterialTheme.colors.primary,
             textAlign = Paint.Align.CENTER,
@@ -290,10 +298,10 @@ fun LineChartComp() {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
-                text = DemoContent.LINE.chartName,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.h6
+                    .padding(start = 16.dp, top = 16.dp),
+                text = DemoContent.LINE.chartName.uppercase(),
+                style = MaterialTheme.typography.h4,
+                fontWeight = FontWeight.ExtraBold
             )
             LineChart(
                 modifier = Modifier
@@ -304,11 +312,7 @@ fun LineChartComp() {
                 highlightPositions = highlightPositions,
                 highlightContent = {
                     HighlightPopup(
-                        backgroundColor = if (isSystemInDarkTheme()) {
-                            MaterialTheme.colors.primary
-                        } else {
-                            Color.White
-                        }
+                        backgroundColor = MaterialTheme.colors.primary
                     ) {
                         Text(
                             modifier = Modifier
