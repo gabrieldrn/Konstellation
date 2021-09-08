@@ -23,11 +23,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.*
 import androidx.core.content.res.ResourcesCompat
 import com.gabrieldrn.konstellation.charts.function.FunctionPlotter
 import com.gabrieldrn.konstellation.charts.line.LineChart
@@ -301,7 +302,7 @@ fun LineChartComp() {
                     .padding(start = 16.dp, top = 16.dp),
                 text = DemoContent.LINE.chartName.uppercase(),
                 style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.ExtraBold
+                fontWeight = FontWeight.ExtraBold,
             )
             LineChart(
                 modifier = Modifier
