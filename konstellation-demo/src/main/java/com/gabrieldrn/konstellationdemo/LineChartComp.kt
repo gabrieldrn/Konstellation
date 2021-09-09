@@ -74,7 +74,7 @@ fun LineChartComp(mainTextStyle: TextDrawStyle) {
 
     BottomSheetScaffold(
         scaffoldState = settingsSheetState,
-        sheetPeekHeight = 56.dp + imeBottom,
+        sheetPeekHeight = 60.dp + imeBottom,
         sheetContent = {
             Column(Modifier.verticalScroll(rememberScrollState())) {
                 LineChartSettingsContent(
@@ -147,19 +147,13 @@ fun ColumnScope.LineChartSettingsContent(
                 .padding(start = 34.dp)
                 .padding(vertical = 16.dp)
                 .align(Alignment.CenterVertically),
-            text = "${DemoContent.LINE.chartName} settings",
+            text = "Settings",
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.h6,
+            fontWeight = FontWeight.Bold
         )
     }
-    Row {
-        Icon(
-            Icons.Rounded.ArrowRight,
-            null,
-            Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp)
-        )
-        Text(modifier = Modifier.align(Alignment.CenterVertically), text = "Datasets")
-    }
+    LineChartSettingHeader("Datasets")
     Row(
         Modifier
             .fillMaxWidth()
@@ -170,7 +164,7 @@ fun ColumnScope.LineChartSettingsContent(
                 .weight(1f)
                 .padding(end = 8.dp),
             onClick = { onChangeDataset(randomDataSet()) }, content = {
-                Text(text = "RANDOM", textAlign = TextAlign.Center)
+                Text(text = "NEW RANDOM", textAlign = TextAlign.Center)
             }
         )
         Button(
@@ -178,18 +172,11 @@ fun ColumnScope.LineChartSettingsContent(
                 .weight(1f)
                 .padding(start = 8.dp),
             onClick = { onChangeDataset(randomFancyDataSet()) }, content = {
-                Text(text = "FANCY", textAlign = TextAlign.Center)
+                Text(text = "NEW FANCY", textAlign = TextAlign.Center)
             }
         )
     }
-    Row {
-        Icon(
-            Icons.Rounded.ArrowRight,
-            null,
-            Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp)
-        )
-        Text(modifier = Modifier.align(Alignment.CenterVertically), text = "Ranges")
-    }
+    LineChartSettingHeader("Ranges")
     Row(Modifier.fillMaxWidth()) {
         Text(
             modifier = Modifier
@@ -222,14 +209,7 @@ fun ColumnScope.LineChartSettingsContent(
             onValueChange = onYRangeChanged
         )
     }
-    Row {
-        Icon(
-            Icons.Rounded.ArrowRight,
-            null,
-            Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp)
-        )
-        Text(modifier = Modifier.align(Alignment.CenterVertically), text = "Highlight positions")
-    }
+    LineChartSettingHeader("Highlight positions")
     Box(
         Modifier
             .height(156.dp)
@@ -266,4 +246,16 @@ fun ColumnScope.LineChartSettingsContent(
         }
     }
     Spacer(Modifier.navigationBarsHeight().fillMaxWidth())
+}
+
+@Composable
+private fun LineChartSettingHeader(title: String) {
+    Row(Modifier.padding(top = 8.dp)) {
+        Icon(
+            Icons.Rounded.ArrowRight,
+            null,
+            Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp)
+        )
+        Text(modifier = Modifier.align(Alignment.CenterVertically), text = title)
+    }
 }
