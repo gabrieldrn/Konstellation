@@ -4,6 +4,7 @@ buildscript {
         //https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
         compose_version = '1.0.2'
         gradle_version = '1.5.21'
+        accompanist_version = '0.18.0'
     }
     repositories {
         google()

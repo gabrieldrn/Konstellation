@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.gabrieldrn.konstellationdemo.ui.theme
 
 import androidx.compose.material.Typography
