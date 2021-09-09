@@ -4,6 +4,8 @@ import android.graphics.Paint
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
@@ -72,7 +74,7 @@ fun LineChartComp(mainTextStyle: TextDrawStyle) {
 
     BottomSheetScaffold(
         scaffoldState = settingsSheetState,
-        sheetPeekHeight = 60.dp + imeBottom,
+        sheetPeekHeight = 56.dp + imeBottom,
         sheetContent = {
             Column(Modifier.verticalScroll(rememberScrollState())) {
                 LineChartSettingsContent(
@@ -125,7 +127,7 @@ fun LineChartComp(mainTextStyle: TextDrawStyle) {
 }
 
 @Composable
-fun LineChartSettingsContent(
+fun ColumnScope.LineChartSettingsContent(
     xRange: Float,
     yRange: Float,
     highlightPositions: Array<HighlightPosition>,
@@ -134,14 +136,30 @@ fun LineChartSettingsContent(
     onYRangeChanged: (Float) -> Unit,
     onHighlightPositionsChanged: (Array<HighlightPosition>) -> Unit
 ) {
-    Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp),
-        text = "${DemoContent.LINE.chartName} settings",
-        textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.h6
-    )
+    Row {
+        Icon(
+            Icons.Rounded.ArrowDownward,
+            null,
+            Modifier.align(Alignment.CenterVertically).padding(start = 16.dp)
+        )
+        Text(
+            modifier = Modifier
+                .padding(start = 34.dp)
+                .padding(vertical = 16.dp)
+                .align(Alignment.CenterVertically),
+            text = "${DemoContent.LINE.chartName} settings",
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.h6
+        )
+    }
+    Row {
+        Icon(
+            Icons.Rounded.ArrowRight,
+            null,
+            Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp)
+        )
+        Text(modifier = Modifier.align(Alignment.CenterVertically), text = "Datasets")
+    }
     Row(
         Modifier
             .fillMaxWidth()
@@ -152,7 +170,7 @@ fun LineChartSettingsContent(
                 .weight(1f)
                 .padding(end = 8.dp),
             onClick = { onChangeDataset(randomDataSet()) }, content = {
-                Text(text = "NEW RANDOM DATASET", textAlign = TextAlign.Center)
+                Text(text = "RANDOM", textAlign = TextAlign.Center)
             }
         )
         Button(
@@ -160,16 +178,24 @@ fun LineChartSettingsContent(
                 .weight(1f)
                 .padding(start = 8.dp),
             onClick = { onChangeDataset(randomFancyDataSet()) }, content = {
-                Text(text = "NEW FANCY DATASET", textAlign = TextAlign.Center)
+                Text(text = "FANCY", textAlign = TextAlign.Center)
             }
         )
+    }
+    Row {
+        Icon(
+            Icons.Rounded.ArrowRight,
+            null,
+            Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp)
+        )
+        Text(modifier = Modifier.align(Alignment.CenterVertically), text = "Ranges")
     }
     Row(Modifier.fillMaxWidth()) {
         Text(
             modifier = Modifier
                 .padding(start = 16.dp)
                 .align(Alignment.CenterVertically),
-            text = "X range"
+            text = "X"
         )
         Slider(
             modifier = Modifier
@@ -185,7 +211,7 @@ fun LineChartSettingsContent(
             modifier = Modifier
                 .padding(start = 16.dp)
                 .align(Alignment.CenterVertically),
-            text = "Y range"
+            text = "Y"
         )
         Slider(
             modifier = Modifier
@@ -196,15 +222,20 @@ fun LineChartSettingsContent(
             onValueChange = onYRangeChanged
         )
     }
-    Text(
-        modifier = Modifier.padding(start = 16.dp, top = 8.dp),
-        text = "Highlight positions"
-    )
+    Row {
+        Icon(
+            Icons.Rounded.ArrowRight,
+            null,
+            Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp)
+        )
+        Text(modifier = Modifier.align(Alignment.CenterVertically), text = "Highlight positions")
+    }
     Box(
         Modifier
-            .fillMaxWidth()
-            .height(172.dp)
+            .height(156.dp)
+            .aspectRatio(1f)
             .padding(horizontal = 24.dp, vertical = 16.dp)
+            .align(Alignment.CenterHorizontally)
     ) {
 
         fun addOrRemovePosition(add: Boolean, position: HighlightPosition) {
@@ -225,7 +256,8 @@ fun LineChartSettingsContent(
                     }
                 ),
                 checked = highlightPositions.contains(it),
-                onCheckedChange = { checked -> addOrRemovePosition(checked, it) }
+                onCheckedChange = { checked -> addOrRemovePosition(checked, it) },
+                colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
             )
         }
 

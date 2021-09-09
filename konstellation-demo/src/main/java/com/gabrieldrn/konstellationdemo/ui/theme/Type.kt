@@ -28,6 +28,11 @@ private val manropeBaselineShift = BaselineShift(0.2f)
 // Set of Material typography styles to start with
 val Typography = Typography(
     defaultFontFamily = manropeFamily,
+    h6 = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 20.sp,
+        baselineShift = manropeBaselineShift
+    ),
     body1 = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
