@@ -1,8 +1,7 @@
 package com.gabrieldrn.konstellation.charts.line
 
-import android.util.Log
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -10,14 +9,16 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.LocalHapticFeedback
+import com.gabrieldrn.konstellation.core.data.*
 import com.gabrieldrn.konstellation.core.data.createOffsets
 import com.gabrieldrn.konstellation.core.drawing.drawScaledAxis
 import com.gabrieldrn.konstellation.core.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPopupScope
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPosition
 import com.gabrieldrn.konstellation.core.plotting.*
+import kotlin.math.absoluteValue
 
 /**
  * Konstellation composable function drawing a line chart.
@@ -46,13 +47,24 @@ fun LineChart(
     var points by remember { mutableStateOf<Dataset>(listOf()) }
     points = dataset
 
-    val xRange = properties.dataXRange ?: dataset.xRange
-    val yRange = properties.dataYRange ?: dataset.yRange
+    var xRange by remember { mutableStateOf(properties.dataXRange ?: dataset.xRange) }
+    var yRange by remember { mutableStateOf(properties.dataYRange ?: dataset.yRange) }
+    var panScalerX = 0f
+    var panScalerY = 0f
 
     Box {
         Canvas(
             modifier
                 .padding(properties.chartPaddingValues)
+                .pointerInput(Unit) {
+                    detectTransformGestures { _, pan, zoom, _ ->
+                        val z = 1 / zoom
+                        val xOffset = -(pan.x * panScalerX)
+                        val yOffset = pan.y * panScalerY
+                        xRange = (xRange.start + xOffset) * z..(xRange.endInclusive + xOffset) * z
+                        yRange = (yRange.start + yOffset) * z..(yRange.endInclusive + yOffset) * z
+                    }
+                }
                 .pointerInput(Unit) {
                     detectDragGesturesAfterLongPress(
                         onDragStart = {
@@ -60,7 +72,6 @@ fun LineChart(
                             highlightedValue = points.nearestPointByX(it.x)
                         },
                         onDragEnd = {
-                            Log.d("LINE CHART", "DRAG ENDED")
                             highlightedValue = null
                         },
                         onDrag = { change, _ ->
@@ -87,8 +98,11 @@ fun LineChart(
                         )
                     }
                 }
-                drawScaledAxis(this, points)
+                drawScaledAxis(this, xRange, yRange)
             }
+
+            panScalerX = xRange.endInclusive - 1f.convertFromRanges(0f..size.width, xRange).absoluteValue
+            panScalerY = yRange.endInclusive - 1f.convertFromRanges(0f..size.height, yRange).absoluteValue
         }
 
         highlightedValue?.let {

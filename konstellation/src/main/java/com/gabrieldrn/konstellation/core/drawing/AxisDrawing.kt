@@ -24,11 +24,13 @@ private val chartScale = NiceScale(0f..1f)
 private val tickLabelPaint = Paint()
 
 /**
- * Draws axis and labels of a chart based on a [dataSet] and given [properties].
+ * Draws axis and labels of a chart based on a given [properties] and axis ranges [xRange],
+ * [yRange].
  */
 internal fun DrawScope.drawScaledAxis(
     properties: ChartProperties,
-    dataSet: Dataset
+    xRange: ClosedFloatingPointRange<Float>,
+    yRange: ClosedFloatingPointRange<Float>,
 ) {
     var range: ClosedFloatingPointRange<Float>
     var lineStart: Offset
@@ -36,8 +38,8 @@ internal fun DrawScope.drawScaledAxis(
 
     properties.axes.forEach { axis ->
         range = when (axis.axis) {
-            Axis.X_TOP, Axis.X_BOTTOM -> properties.dataXRange ?: dataSet.xRange
-            Axis.Y_LEFT, Axis.Y_RIGHT -> properties.dataYRange ?: dataSet.yRange
+            Axis.X_TOP, Axis.X_BOTTOM -> xRange
+            Axis.Y_LEFT, Axis.Y_RIGHT -> yRange
         }
 
         //Axis scale computation
