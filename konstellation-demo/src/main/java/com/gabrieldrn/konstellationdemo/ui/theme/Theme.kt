@@ -1,11 +1,11 @@
 package com.gabrieldrn.konstellationdemo.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import android.R.color.*
+import android.os.Build
+import androidx.compose.foundation.*
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.res.*
 
 private val DarkColorPalette = darkColors(
     primary = Purple200,
@@ -33,11 +33,21 @@ fun KonstellationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+    val colors = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Using Material You
+        if (darkTheme) darkColors(
+            primary = colorResource(system_accent1_300),
+            primaryVariant = colorResource(system_accent1_100),
+            secondary = colorResource(system_accent2_200),
+            secondaryVariant = colorResource(system_accent2_400),
+            surface = colorResource(system_neutral1_900),
+        ) else lightColors(
+            primary = colorResource(system_accent1_500),
+            primaryVariant = colorResource(system_accent1_700),
+            secondary = colorResource(system_accent2_200),
+            secondaryVariant = colorResource(system_accent2_400),
+            surface = colorResource(system_accent1_10)
+        )
+    } else if (darkTheme) DarkColorPalette else LightColorPalette
 
     MaterialTheme(
         colors = colors,
