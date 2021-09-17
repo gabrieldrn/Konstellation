@@ -18,7 +18,7 @@ internal fun DrawScope.getAxisDrawingPoints(
     Axis.X_BOTTOM -> Offset(0f, size.height) to Offset(size.width, size.height)
     Axis.Y_LEFT -> Offset(0f, size.height) to Offset(0f, 0f)
     Axis.Y_RIGHT -> Offset(size.width, size.height) to Offset(size.width, 0f)
-}.run { first to second }
+}
 
 /**
  * Returns the positions between where ticks of this [axis] should be drawn. The first offset is the

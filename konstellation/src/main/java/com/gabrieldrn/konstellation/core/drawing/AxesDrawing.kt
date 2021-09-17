@@ -33,8 +33,6 @@ internal fun DrawScope.drawScaledAxis(
     yRange: ClosedFloatingPointRange<Float>,
 ) {
     var range: ClosedFloatingPointRange<Float>
-    var lineStart: Offset
-    var lineEnd: Offset
 
     properties.axes.forEach { axis ->
         range = when (axis.axis) {
@@ -51,10 +49,7 @@ internal fun DrawScope.drawScaledAxis(
 
         //Axis line offsets
         //lineStart = initial drawing point
-        getAxisDrawingPoints(axis).run {
-            lineEnd = first
-            lineStart = second
-        }
+        var (lineStart, lineEnd) = getAxisDrawingPoints(axis)
 
         //Axis line
         drawLine(lineStart, lineEnd, axis.style.axisLineStyle)
