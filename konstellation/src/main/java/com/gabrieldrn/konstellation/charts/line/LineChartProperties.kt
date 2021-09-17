@@ -1,9 +1,10 @@
 package com.gabrieldrn.konstellation.charts.line
 
 import android.graphics.Typeface
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.ui.unit.dp
-import com.gabrieldrn.konstellation.core.plotting.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.unit.*
+import com.gabrieldrn.konstellation.core.plotting.Axes
+import com.gabrieldrn.konstellation.core.plotting.ChartAxis
 import com.gabrieldrn.konstellation.core.plotting.ChartProperties
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle

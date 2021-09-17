@@ -21,11 +21,7 @@ import com.gabrieldrn.konstellation.util.*
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsHeight
 
-private const val LINE_CHART_X_RANGE_MIN = 1f
-private const val LINE_CHART_X_RANGE_MAX = 25f
 private const val LINE_CHART_X_RANGE_DEFAULT = 15f
-private const val LINE_CHART_Y_RANGE_MIN = 1f
-private const val LINE_CHART_Y_RANGE_MAX = 25f
 private const val LINE_CHART_Y_RANGE_DEFAULT = 15f
 
 @ExperimentalMaterialApi
@@ -36,8 +32,6 @@ fun LineChartComp(mainTextStyle: TextDrawStyle) {
     val settingsSheetState = rememberBottomSheetScaffoldState()
 
     var points by rememberSaveable { mutableStateOf(randomFancyDataSet()) }
-    var xRange by remember { mutableStateOf(LINE_CHART_X_RANGE_DEFAULT) }
-    var yRange by remember { mutableStateOf(LINE_CHART_Y_RANGE_DEFAULT) }
     var highlightPositions by remember { mutableStateOf(arrayOf(HighlightPosition.TOP)) }
 
     val axisColor = MaterialTheme.colors.onBackground
@@ -56,8 +50,8 @@ fun LineChartComp(mainTextStyle: TextDrawStyle) {
             offsetY = -25f
         )
         chartPaddingValues = PaddingValues(44.dp)
-        dataXRange = -xRange..xRange
-        dataYRange = -yRange..yRange
+        dataXRange = -LINE_CHART_X_RANGE_DEFAULT..LINE_CHART_X_RANGE_DEFAULT
+        dataYRange = -LINE_CHART_Y_RANGE_DEFAULT..LINE_CHART_Y_RANGE_DEFAULT
         axes = setOf(
             Axes.xBottom.apply { style.setColor(axisColor) },
             Axes.xTop.apply { style.setColor(axisColor) },
@@ -78,12 +72,8 @@ fun LineChartComp(mainTextStyle: TextDrawStyle) {
         sheetContent = {
             Column(Modifier.verticalScroll(rememberScrollState())) {
                 LineChartSettingsContent(
-                    xRange = xRange,
-                    yRange = yRange,
                     highlightPositions = highlightPositions,
                     onChangeDataset = { points = it },
-                    onXRangeChanged = { xRange = it },
-                    onYRangeChanged = { yRange = it },
                     onHighlightPositionsChanged = { highlightPositions = it }
                 )
             }
@@ -128,12 +118,8 @@ fun LineChartComp(mainTextStyle: TextDrawStyle) {
 
 @Composable
 fun ColumnScope.LineChartSettingsContent(
-    xRange: Float,
-    yRange: Float,
     highlightPositions: Array<HighlightPosition>,
     onChangeDataset: (Dataset) -> Unit,
-    onXRangeChanged: (Float) -> Unit,
-    onYRangeChanged: (Float) -> Unit,
     onHighlightPositionsChanged: (Array<HighlightPosition>) -> Unit
 ) {
     Row {
@@ -174,39 +160,6 @@ fun ColumnScope.LineChartSettingsContent(
             onClick = { onChangeDataset(randomFancyDataSet()) }, content = {
                 Text(text = "NEW FANCY", textAlign = TextAlign.Center)
             }
-        )
-    }
-    LineChartSettingHeader("Ranges")
-    Row(Modifier.fillMaxWidth()) {
-        Text(
-            modifier = Modifier
-                .padding(start = 16.dp)
-                .align(Alignment.CenterVertically),
-            text = "X"
-        )
-        Slider(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .weight(1f),
-            value = xRange,
-            valueRange = LINE_CHART_X_RANGE_MIN..LINE_CHART_X_RANGE_MAX,
-            onValueChange = onXRangeChanged
-        )
-    }
-    Row(Modifier.fillMaxWidth()) {
-        Text(
-            modifier = Modifier
-                .padding(start = 16.dp)
-                .align(Alignment.CenterVertically),
-            text = "Y"
-        )
-        Slider(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .weight(1f),
-            value = yRange,
-            valueRange = LINE_CHART_Y_RANGE_MIN..LINE_CHART_Y_RANGE_MAX,
-            onValueChange = onYRangeChanged
         )
     }
     LineChartSettingHeader("Highlight positions")

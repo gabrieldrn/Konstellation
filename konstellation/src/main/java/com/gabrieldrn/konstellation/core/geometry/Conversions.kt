@@ -1,7 +1,7 @@
-package com.gabrieldrn.konstellation.core.data
+package com.gabrieldrn.konstellation.core.geometry
 
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.geometry.*
+import androidx.compose.ui.graphics.drawscope.*
 import com.gabrieldrn.konstellation.core.plotting.Dataset
 import com.gabrieldrn.konstellation.core.plotting.Point
 import com.gabrieldrn.konstellation.core.plotting.xRange
@@ -68,18 +68,25 @@ internal fun Dataset.createOffsets(
 }
 
 /**
- * Returns a position inside the given data range, relative to a given X position in the canvas.
- *
- * Example:
- *
- * Given a canvas width of 500 and data set with a range of [0.0;1.0]
- * If canvas x pos = 250
- * Then returned pos in dataset = 0.5
+ * Returns a position inside the given data range, relative to a given X position in the canvas with
+ * the same logic from [convertFromRanges].
  *
  * @param canvasPos X position in the current canvas.
  * @param range Range of the dataset
  */
 internal fun DrawScope.convertCanvasXToDataX(
-    canvasPos: Int,
+    canvasPos: Float,
     range: ClosedRange<Float>
-) = canvasPos.toFloat().convertFromRanges(0f..size.width, range)
+) = canvasPos.convertFromRanges(0f..size.width, range)
+
+/**
+ * Returns a position inside the given data range, relative to a given X position in the canvas with
+ * the same logic from [convertFromRanges].
+ *
+ * @param canvasPos X position in the current canvas.
+ * @param range Range of the dataset
+ */
+internal fun DrawScope.convertCanvasYToDataY(
+    canvasPos: Float,
+    range: ClosedRange<Float>
+) = canvasPos.convertFromRanges(0f..size.height, range)

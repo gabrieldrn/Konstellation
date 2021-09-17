@@ -1,24 +1,25 @@
 package com.gabrieldrn.konstellation.charts.line
 
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.drawscope.clipRect
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.runtime.saveable.*
+import androidx.compose.ui.*
+import androidx.compose.ui.geometry.*
+import androidx.compose.ui.graphics.drawscope.*
+import androidx.compose.ui.hapticfeedback.*
 import androidx.compose.ui.input.pointer.*
-import androidx.compose.ui.platform.LocalHapticFeedback
-import com.gabrieldrn.konstellation.core.data.*
-import com.gabrieldrn.konstellation.core.data.createOffsets
+import androidx.compose.ui.platform.*
 import com.gabrieldrn.konstellation.core.drawing.drawScaledAxis
+import com.gabrieldrn.konstellation.core.geometry.convertCanvasXToDataX
+import com.gabrieldrn.konstellation.core.geometry.convertCanvasYToDataY
+import com.gabrieldrn.konstellation.core.geometry.createOffsets
 import com.gabrieldrn.konstellation.core.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPopupScope
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPosition
 import com.gabrieldrn.konstellation.core.plotting.*
-import kotlin.math.absoluteValue
+import kotlin.math.abs
 
 /**
  * Konstellation composable function drawing a line chart.
@@ -39,30 +40,29 @@ fun LineChart(
     highlightPositions: Array<HighlightPosition> = arrayOf(HighlightPosition.POINT),
     highlightContent: (@Composable HighlightPopupScope.(Point) -> Unit)? = null
 ) {
-    val hapticLocal = LocalHapticFeedback.current
-    var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
-
-    // In order to force the Canvas pointerInput modifier to be re-composed, the dataset is "moved"
-    // inside a state.
-    var points by remember { mutableStateOf<Dataset>(listOf()) }
-    points = dataset
-
-    var xRange by remember { mutableStateOf(properties.dataXRange ?: dataset.xRange) }
-    var yRange by remember { mutableStateOf(properties.dataYRange ?: dataset.yRange) }
-    var panScalerX = 0f
-    var panScalerY = 0f
-
     Box {
+        val hapticLocal = LocalHapticFeedback.current
+        var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
+
+        // In order to force the Canvas pointerInput modifier to be re-composed, the dataset is
+        // "moved" inside a state.
+        var points by remember { mutableStateOf<Dataset>(listOf()) }
+        points = dataset
+
+        var xDrawRange by remember { mutableStateOf(properties.dataXRange ?: dataset.xRange) }
+        var yDrawRange by remember { mutableStateOf(properties.dataYRange ?: dataset.yRange) }
+        var panScaler = Offset(0f, 0f)
+
         Canvas(
             modifier
                 .padding(properties.chartPaddingValues)
                 .pointerInput(Unit) {
                     detectTransformGestures { _, pan, zoom, _ ->
                         val z = 1 / zoom
-                        val xOffset = -(pan.x * panScalerX)
-                        val yOffset = pan.y * panScalerY
-                        xRange = (xRange.start + xOffset) * z..(xRange.endInclusive + xOffset) * z
-                        yRange = (yRange.start + yOffset) * z..(yRange.endInclusive + yOffset) * z
+                        val x = -pan.x * panScaler.x
+                        val y = pan.y * panScaler.y
+                        xDrawRange = (xDrawRange.start + x) * z..(xDrawRange.endInclusive + x) * z
+                        yDrawRange = (yDrawRange.start + y) * z..(yDrawRange.endInclusive + y) * z
                     }
                 }
                 .pointerInput(Unit) {
@@ -84,12 +84,12 @@ fun LineChart(
 
             points.createOffsets(
                 drawScope = this,
-                dataSetXRange = xRange,
-                dataSetYRange = yRange
+                dataSetXRange = xDrawRange,
+                dataSetYRange = yDrawRange
             )
 
             with(properties) {
-                drawZeroLines(xRange, yRange)
+                drawZeroLines(xDrawRange, yDrawRange)
                 clipRect(0f, 0f, size.width, size.height) {
                     drawLines(points, lineStyle, pointStyle, drawPoints = true)
                     highlightedValue?.let {
@@ -98,11 +98,13 @@ fun LineChart(
                         )
                     }
                 }
-                drawScaledAxis(this, xRange, yRange)
+                drawScaledAxis(this, xDrawRange, yDrawRange)
             }
 
-            panScalerX = xRange.endInclusive - 1f.convertFromRanges(0f..size.width, xRange).absoluteValue
-            panScalerY = yRange.endInclusive - 1f.convertFromRanges(0f..size.height, yRange).absoluteValue
+            panScaler = Offset(
+                xDrawRange.endInclusive - abs(convertCanvasXToDataX(1f, xDrawRange)),
+                yDrawRange.endInclusive - abs(convertCanvasYToDataY(1f, yDrawRange))
+            )
         }
 
         highlightedValue?.let {

@@ -2,7 +2,7 @@ package com.gabrieldrn.konstellation.style
 
 import android.graphics.Paint
 import android.graphics.Typeface
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.*
 
 /**
  * Defines drawing style for texts into charts.

@@ -1,21 +1,20 @@
 package com.gabrieldrn.konstellation.charts.line
 
 import android.graphics.Paint
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.unit.dp
-import com.gabrieldrn.konstellation.core.data.convertFromRanges
+import androidx.compose.ui.geometry.*
+import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.*
+import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.core.drawing.drawText
+import com.gabrieldrn.konstellation.core.geometry.convertFromRanges
 import com.gabrieldrn.konstellation.core.highlighting.HighlightPosition
-import com.gabrieldrn.konstellation.core.plotting.*
+import com.gabrieldrn.konstellation.core.highlighting.horizontalHLPositions
+import com.gabrieldrn.konstellation.core.highlighting.verticalHLPositions
+import com.gabrieldrn.konstellation.core.plotting.Dataset
+import com.gabrieldrn.konstellation.core.plotting.Point
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
-import com.gabrieldrn.konstellation.core.highlighting.horizontalHLPositions
-import com.gabrieldrn.konstellation.core.highlighting.verticalHLPositions
 
 /**
  * Draws a line between the given offsets using the given style. The line is stroked.

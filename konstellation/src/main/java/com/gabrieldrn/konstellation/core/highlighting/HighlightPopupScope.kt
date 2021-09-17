@@ -1,12 +1,9 @@
 package com.gabrieldrn.konstellation.core.highlighting
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.*
+import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.core.plotting.Point
 
 /**

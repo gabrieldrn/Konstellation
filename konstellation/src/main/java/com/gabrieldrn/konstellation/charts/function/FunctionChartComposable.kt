@@ -10,8 +10,8 @@ import com.gabrieldrn.konstellation.charts.line.drawFrame
 import com.gabrieldrn.konstellation.charts.line.drawLines
 import com.gabrieldrn.konstellation.charts.line.drawMinMaxAxisValues
 import com.gabrieldrn.konstellation.charts.line.drawZeroLines
-import com.gabrieldrn.konstellation.core.data.convertCanvasXToDataX
-import com.gabrieldrn.konstellation.core.data.createOffsets
+import com.gabrieldrn.konstellation.core.geometry.convertCanvasXToDataX
+import com.gabrieldrn.konstellation.core.geometry.createOffsets
 import com.gabrieldrn.konstellation.core.plotting.Point
 import com.gabrieldrn.konstellation.core.plotting.by
 import com.gabrieldrn.konstellation.style.LineDrawStyle
@@ -41,7 +41,7 @@ fun FunctionPlotter(
         val points = mutableListOf<Point>()
         fun addPoint(x: Float, y: Float) = points.add(x by y)
         (0..size.width.toInt() step pointSpacing.coerceAtLeast(1)).forEach {
-            addPoint(it.toFloat(), function(convertCanvasXToDataX(it, dataXRange)))
+            addPoint(it.toFloat(), function(convertCanvasXToDataX(it.toFloat(), dataXRange)))
         }
         addPoint(size.width, function(dataXRange.endInclusive))
 
