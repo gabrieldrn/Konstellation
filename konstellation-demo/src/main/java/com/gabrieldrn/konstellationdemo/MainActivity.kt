@@ -33,9 +33,9 @@ import kotlin.math.sin
 
 private var mainTextStyle = TextDrawStyle()
 
+@ExperimentalMaterialApi
+@ExperimentalComposeUiApi
 class MainActivity : AppCompatActivity() {
-    @ExperimentalMaterialApi
-    @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
