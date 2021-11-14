@@ -2,7 +2,7 @@
 buildscript {
     ext {
         //https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
-        compose_version = '1.0.4'
+        compose_version = '1.0.5'
         gradle_version = '1.5.31'
         accompanist_version = '0.18.0'
     }
