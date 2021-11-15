@@ -10,7 +10,7 @@ A plotting library based on Jetpack Compose.
 
 **This library is still a work in progress and is being actively worked on. Here's what it can draw so far:**
 
-![device-2021-08-04-211915_framed](https://user-images.githubusercontent.com/22205373/128276471-6e20e929-10b7-4f6d-b9af-603da8d0dee2.png)
+![device-2021-11-14-231208_framed](https://user-images.githubusercontent.com/22205373/141721568-02888a5b-60bc-4fb5-a880-cf89f5ef8f28.png)
 
 ## Usage example of a function chart
 
