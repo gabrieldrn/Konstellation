@@ -81,3 +81,5 @@ fun HighlightPopupScope.HighlightPopup(
         Box(content = { content(point) })
     }
 }
+
+//TODO Preview highlight popup for every position.
