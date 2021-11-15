@@ -11,5 +11,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Konstellation"
-include ':konstellation'
-include ':konstellation-demo'
+include ':core'
+include ':charts:line'
+include ':charts:function'
+include ':demo-app'

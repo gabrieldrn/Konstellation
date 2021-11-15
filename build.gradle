@@ -5,6 +5,7 @@ buildscript {
         compose_version = '1.0.5'
         gradle_version = '1.5.31'
         accompanist_version = '0.18.0'
+        junit_version = '4.13.2'
     }
     repositories {
         google()
