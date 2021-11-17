@@ -57,22 +57,12 @@ fun LineChart(
         var points by remember { mutableStateOf<Dataset>(listOf()) }
         points = dataset
 
-        var xDrawRange by remember { mutableStateOf(properties.dataXRange ?: dataset.xRange) }
-        var yDrawRange by remember { mutableStateOf(properties.dataYRange ?: dataset.yRange) }
-        var panScaler = Offset(0f, 0f)
+        val xDrawRange by remember { mutableStateOf(properties.dataXRange ?: dataset.xRange) }
+        val yDrawRange by remember { mutableStateOf(properties.dataYRange ?: dataset.yRange) }
 
         Canvas(
             modifier
                 .padding(properties.chartPaddingValues)
-                .pointerInput(Unit) {
-                    detectTransformGestures { _, pan, zoom, _ ->
-                        val z = 1 / zoom
-                        val x = -pan.x * panScaler.x
-                        val y = pan.y * panScaler.y
-                        xDrawRange = (xDrawRange.start + x) * z..(xDrawRange.endInclusive + x) * z
-                        yDrawRange = (yDrawRange.start + y) * z..(yDrawRange.endInclusive + y) * z
-                    }
-                }
                 .pointerInput(Unit) {
                     detectDragGesturesAfterLongPress(
                         onDragStart = {
@@ -108,11 +98,6 @@ fun LineChart(
                 }
                 drawScaledAxis(this, xDrawRange, yDrawRange)
             }
-
-            panScaler = Offset(
-                xDrawRange.endInclusive - abs(convertCanvasXToDataX(1f, xDrawRange)),
-                yDrawRange.endInclusive - abs(convertCanvasYToDataY(1f, yDrawRange))
-            )
         }
 
         highlightedValue?.let {
