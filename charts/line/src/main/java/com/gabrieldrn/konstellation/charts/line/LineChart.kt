@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
-import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.hapticfeedback.*
 import androidx.compose.ui.input.pointer.*
@@ -16,8 +15,6 @@ import com.gabrieldrn.konstellation.drawing.drawLines
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
 import com.gabrieldrn.konstellation.drawing.drawZeroLines
 import com.gabrieldrn.konstellation.drawing.highlightPoint
-import com.gabrieldrn.konstellation.geometry.convertCanvasXToDataX
-import com.gabrieldrn.konstellation.geometry.convertCanvasYToDataY
 import com.gabrieldrn.konstellation.geometry.createOffsets
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.highlighting.HighlightPopupScope
@@ -27,7 +24,6 @@ import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.nearestPointByX
 import com.gabrieldrn.konstellation.plotting.xRange
 import com.gabrieldrn.konstellation.plotting.yRange
-import kotlin.math.abs
 
 /**
  * Konstellation composable function drawing a line chart.

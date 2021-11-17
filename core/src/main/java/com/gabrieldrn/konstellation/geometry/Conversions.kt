@@ -72,21 +72,21 @@ fun Dataset.createOffsets(
  * the same logic from [convertFromRanges].
  *
  * @param canvasPos X position in the current canvas.
- * @param range Range of the dataset
+ * @param dataRange Range of the dataset
  */
 fun DrawScope.convertCanvasXToDataX(
     canvasPos: Float,
-    range: ClosedRange<Float>
-) = canvasPos.convertFromRanges(0f..size.width, range)
+    dataRange: ClosedRange<Float>
+) = canvasPos.convertFromRanges(0f..size.width, dataRange)
 
 /**
- * Returns a position inside the given data range, relative to a given X position in the canvas with
+ * Returns a position inside the given data range, relative to a given Y position in the canvas with
  * the same logic from [convertFromRanges].
  *
- * @param canvasPos X position in the current canvas.
- * @param range Range of the dataset
+ * @param canvasPos Y position in the current canvas.
+ * @param dataRange Range of the dataset
  */
 fun DrawScope.convertCanvasYToDataY(
     canvasPos: Float,
-    range: ClosedRange<Float>
-) = canvasPos.convertFromRanges(0f..size.height, range)
+    dataRange: ClosedRange<Float>
+) = canvasPos.convertFromRanges(0f..size.height, dataRange)
