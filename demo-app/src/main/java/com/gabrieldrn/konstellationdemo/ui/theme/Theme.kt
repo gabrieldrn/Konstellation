@@ -1,6 +1,13 @@
 package com.gabrieldrn.konstellationdemo.ui.theme
 
-import android.R.color.*
+import android.R.color.system_accent1_10
+import android.R.color.system_accent1_100
+import android.R.color.system_accent1_300
+import android.R.color.system_accent1_500
+import android.R.color.system_accent1_700
+import android.R.color.system_accent2_200
+import android.R.color.system_accent2_400
+import android.R.color.system_neutral1_900
 import android.os.Build
 import androidx.compose.foundation.*
 import androidx.compose.material.*

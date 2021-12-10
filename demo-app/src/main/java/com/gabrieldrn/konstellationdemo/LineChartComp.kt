@@ -9,9 +9,11 @@ import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
+import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.charts.line.*
 import com.gabrieldrn.konstellation.highlighting.*
@@ -35,30 +37,7 @@ fun LineChartComp(mainTextStyle: TextDrawStyle) {
     var highlightPositions by remember { mutableStateOf(arrayOf(HighlightPosition.TOP)) }
 
     val axisColor = MaterialTheme.colors.onBackground
-    val chartProperties = LineChartProperties().apply {
-        lineStyle.color = MaterialTheme.colors.primary
-        pointStyle.color = MaterialTheme.colors.primary
-        textStyle.color = MaterialTheme.colors.primary
-        highlightPointStyle.run {
-            color = MaterialTheme.colors.primary.copy(alpha = 0.3f)
-            radius = 6.dp
-        }
-        highlightLineStyle.color = MaterialTheme.colors.onBackground
-        highlightTextStyle = mainTextStyle.copy(
-            color = MaterialTheme.colors.primary,
-            textAlign = Paint.Align.CENTER,
-            offsetY = -25f
-        )
-        chartPaddingValues = PaddingValues(44.dp)
-        dataXRange = -LINE_CHART_X_RANGE_DEFAULT..LINE_CHART_X_RANGE_DEFAULT
-        dataYRange = -LINE_CHART_Y_RANGE_DEFAULT..LINE_CHART_Y_RANGE_DEFAULT
-        axes = setOf(
-            Axes.xBottom.apply { style.setColor(axisColor) },
-            Axes.xTop.apply { style.setColor(axisColor) },
-            Axes.yLeft.apply { style.setColor(axisColor) },
-            Axes.yRight.apply { style.setColor(axisColor) },
-        )
-    }
+    val chartProperties = getChartProperties(mainTextStyle, axisColor)
 
     chartProperties.setAxisTypeface(mainTextStyle.typeface)
 
@@ -117,6 +96,35 @@ fun LineChartComp(mainTextStyle: TextDrawStyle) {
 }
 
 @Composable
+private fun getChartProperties(
+    mainTextStyle: TextDrawStyle,
+    axisColor: Color
+) = LineChartProperties().apply {
+    lineStyle.color = MaterialTheme.colors.primary
+    pointStyle.color = MaterialTheme.colors.primary
+    textStyle.color = MaterialTheme.colors.primary
+    highlightPointStyle.run {
+        color = MaterialTheme.colors.primary.copy(alpha = 0.3f)
+        radius = 6.dp
+    }
+    highlightLineStyle.color = MaterialTheme.colors.onBackground
+    highlightTextStyle = mainTextStyle.copy(
+        color = MaterialTheme.colors.primary,
+        textAlign = Paint.Align.CENTER,
+        offsetY = -25f
+    )
+    chartPaddingValues = PaddingValues(44.dp)
+    dataXRange = -LINE_CHART_X_RANGE_DEFAULT..LINE_CHART_X_RANGE_DEFAULT
+    dataYRange = -LINE_CHART_Y_RANGE_DEFAULT..LINE_CHART_Y_RANGE_DEFAULT
+    axes = setOf(
+        Axes.xBottom.apply { style.setColor(axisColor) },
+        Axes.xTop.apply { style.setColor(axisColor) },
+        Axes.yLeft.apply { style.setColor(axisColor) },
+        Axes.yRight.apply { style.setColor(axisColor) },
+    )
+}
+
+@Composable
 fun ColumnScope.LineChartSettingsContent(
     highlightPositions: Array<HighlightPosition>,
     onChangeDataset: (Dataset) -> Unit,
@@ -126,7 +134,9 @@ fun ColumnScope.LineChartSettingsContent(
         Icon(
             Icons.Rounded.ArrowDownward,
             null,
-            Modifier.align(Alignment.CenterVertically).padding(start = 16.dp)
+            Modifier
+                .align(Alignment.CenterVertically)
+                .padding(start = 16.dp)
         )
         Text(
             modifier = Modifier
@@ -139,6 +149,17 @@ fun ColumnScope.LineChartSettingsContent(
             fontWeight = FontWeight.Bold
         )
     }
+    LineChartDatasetSelector(onChangeDataset)
+    LineChartHighlightSetting(onHighlightPositionsChanged, highlightPositions)
+    Spacer(
+        Modifier
+            .navigationBarsHeight()
+            .fillMaxWidth()
+    )
+}
+
+@Composable
+private fun LineChartDatasetSelector(onChangeDataset: (Dataset) -> Unit) {
     LineChartSettingHeader("Datasets")
     Row(
         Modifier
@@ -162,6 +183,13 @@ fun ColumnScope.LineChartSettingsContent(
             }
         )
     }
+}
+
+@Composable
+private fun ColumnScope.LineChartHighlightSetting(
+    onHighlightPositionsChanged: (Array<HighlightPosition>) -> Unit,
+    highlightPositions: Array<HighlightPosition>
+) {
     LineChartSettingHeader("Highlight positions")
     Box(
         Modifier
@@ -198,7 +226,6 @@ fun ColumnScope.LineChartSettingsContent(
             highlightPositionCheckbox(it)
         }
     }
-    Spacer(Modifier.navigationBarsHeight().fillMaxWidth())
 }
 
 @Composable
@@ -207,8 +234,55 @@ private fun LineChartSettingHeader(title: String) {
         Icon(
             Icons.Rounded.ArrowRight,
             null,
-            Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp)
+            Modifier
+                .align(Alignment.CenterVertically)
+                .padding(horizontal = 16.dp)
         )
         Text(modifier = Modifier.align(Alignment.CenterVertically), text = title)
+    }
+}
+
+@ExperimentalComposeUiApi
+@Preview
+@Composable
+fun LineChartWithCustomPropertiesPreview() {
+    Box(
+        Modifier
+            .background(Color.White)
+            .fillMaxWidth()
+            .aspectRatio(1f)
+    ) {
+        val chartProperties = LineChartProperties().apply {
+            lineStyle.color = MaterialTheme.colors.primary
+            pointStyle.color = MaterialTheme.colors.primary
+            textStyle.color = MaterialTheme.colors.primary
+            chartPaddingValues = PaddingValues(44.dp)
+            dataXRange = -LINE_CHART_X_RANGE_DEFAULT..LINE_CHART_X_RANGE_DEFAULT
+            dataYRange = -LINE_CHART_Y_RANGE_DEFAULT..LINE_CHART_Y_RANGE_DEFAULT
+            axes = setOf(
+                Axes.xBottom.apply { style.setColor(Color.Black) },
+                Axes.xTop.apply { style.setColor(Color.Black) },
+                Axes.yLeft.apply { style.setColor(Color.Black) },
+                Axes.yRight.apply { style.setColor(Color.Black) },
+            )
+        }
+
+        LineChart(
+            modifier = Modifier.fillMaxSize(),
+            dataset = randomFancyDataSet(),
+            properties = chartProperties
+        )
+    }
+}
+
+@Preview
+@Composable
+fun LineChartSettingsPreview() {
+    Column(Modifier.background(Color.White)) {
+        LineChartSettingsContent(
+            highlightPositions = arrayOf(HighlightPosition.POINT),
+            onChangeDataset = {},
+            onHighlightPositionsChanged = {}
+        )
     }
 }

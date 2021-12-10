@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.hapticfeedback.*
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.tooling.preview.*
+import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.drawing.drawFrame
 import com.gabrieldrn.konstellation.drawing.drawLines
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
@@ -19,11 +22,18 @@ import com.gabrieldrn.konstellation.geometry.createOffsets
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.highlighting.HighlightPopupScope
 import com.gabrieldrn.konstellation.highlighting.HighlightPosition
+import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.nearestPointByX
+import com.gabrieldrn.konstellation.plotting.xMax
+import com.gabrieldrn.konstellation.plotting.xMin
 import com.gabrieldrn.konstellation.plotting.xRange
+import com.gabrieldrn.konstellation.plotting.yMax
+import com.gabrieldrn.konstellation.plotting.yMin
 import com.gabrieldrn.konstellation.plotting.yRange
+import com.gabrieldrn.konstellation.style.setColor
+import com.gabrieldrn.konstellation.util.randomFancyDataSet
 
 /**
  * Konstellation composable function drawing a line chart.
@@ -119,5 +129,32 @@ private fun BoxScope.ComposeHighlightPopup(
                 highlightContent(point)
             }
         }
+    }
+}
+
+@ExperimentalComposeUiApi
+@Preview
+@Composable
+fun LineChartPreview() {
+    Box(
+        Modifier
+            .background(Color.White)
+            .fillMaxWidth()
+            .aspectRatio(1f)
+    ) {
+        val dataset = randomFancyDataSet()
+        LineChart(
+            modifier = Modifier.fillMaxSize(),
+            dataset = dataset,
+            properties = LineChartProperties().apply {
+                chartPaddingValues = PaddingValues(44.dp)
+                dataXRange = (dataset.xMin - 1)..(dataset.xMax + 1)
+                dataYRange = (dataset.yMin - 1)..(dataset.yMax + 1)
+                axes = setOf(
+                    Axes.xBottom.apply { style.setColor(Color.Black) },
+                    Axes.yLeft.apply { style.setColor(Color.Black) },
+                )
+            }
+        )
     }
 }
