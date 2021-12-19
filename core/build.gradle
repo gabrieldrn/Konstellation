@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id "org.jetbrains.dokka"
 }
 
 android {
@@ -34,6 +35,14 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
+    }
+}
+
+dokkaHtml.configure {
+    dokkaSourceSets {
+        named("main") {
+            noAndroidSdkLink.set(false)
+        }
     }
 }
 
