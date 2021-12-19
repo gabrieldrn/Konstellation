@@ -9,8 +9,8 @@ import com.gabrieldrn.konstellation.plotting.yRange
 import kotlin.math.abs
 
 /**
- * Converts a value from a range to another value based on another range, so as they are equivalent
- * between the two ranges.
+ * Applies a rule of three on the receiving Float, so as the returned float in [toRange] is
+ * equivalent to the received one in [fromRange].
  *
  * Example:
  *
@@ -28,7 +28,7 @@ import kotlin.math.abs
  * @param toRange Targeted range.
  * @return The value converted with the targeted range.
  */
-internal fun Float.convertFromRanges(
+fun Float.convertFromRanges(
     fromRange: ClosedRange<Float>,
     toRange: ClosedRange<Float>
 ): Float {
