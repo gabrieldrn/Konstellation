@@ -1,5 +1,6 @@
 package com.gabrieldrn.konstellation.charts.line
 
+import android.graphics.Typeface
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
@@ -51,6 +52,7 @@ fun LineChart(
     dataset: Dataset,
     modifier: Modifier = Modifier,
     properties: LineChartProperties = LineChartProperties(),
+    // TODO Move highlight positions in line chart properties
     highlightPositions: Array<HighlightPosition> = arrayOf(HighlightPosition.POINT),
     highlightContent: (@Composable HighlightPopupScope.(Point) -> Unit)? = null
 ) {
@@ -132,6 +134,9 @@ private fun BoxScope.ComposeHighlightPopup(
     }
 }
 
+/**
+ * @suppress
+ */
 @ExperimentalComposeUiApi
 @Preview
 @Composable
@@ -154,6 +159,7 @@ fun LineChartPreview() {
                     Axes.xBottom.apply { style.setColor(Color.Black) },
                     Axes.yLeft.apply { style.setColor(Color.Black) },
                 )
+                setAxisTypeface(Typeface.MONOSPACE)
             }
         )
     }

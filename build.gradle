@@ -25,10 +25,6 @@ plugins {
     id "io.gitlab.arturbosch.detekt" version "1.18.0" //TODO Replace by Kover plugin?
     id "org.jetbrains.dokka" version "$dokka_version"
 }
-//
-//tasks.dokkaHtmlMultiModule.configure {
-//    outputDirectory.set(buildDir.resolve("dokkaHtlmMultiModuleOutput"))
-//}
 
 subprojects {
     apply plugin: 'io.gitlab.arturbosch.detekt'

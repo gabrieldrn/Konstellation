@@ -11,7 +11,21 @@ import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
 
 /**
- * Class defining visuals and features of a Konstellation line chart.
+ * Class defining appearance and features of a Konstellation line chart.
+ * @property lineStyle Appearance of the lines connecting points.
+ * @property pointStyle Appearance of data points.
+ * @property textStyle Text appearance of all texts.
+ * @property highlightPointStyle Appearance of the highlighted point.
+ * @property highlightLineStyle Appearance of the lines drawn on the highlighted point. Their
+ * orientation depends on the provided highlighting positions in the LineChart composable.
+ * @property highlightTextStyle Text appearance of the text shown in the highlight popup.
+ * @property chartPaddingValues Paddings applied to the bounds of the chart (from "view" bounds to
+ * axes)
+ * @property dataXRange The range that should be applied to x axes. If null, data set range will be
+ * used.
+ * @property dataYRange The range that should be applied to y axes. If null, data set range will be
+ * used.
+ * @property axes Axes to be drawn on the chart.
  */
 data class LineChartProperties(
     override var lineStyle: LineDrawStyle = LineDrawStyle(),
@@ -28,6 +42,10 @@ data class LineChartProperties(
     override var axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft)
 ) : ChartProperties
 
+/**
+ * Convenience function to change the typeface of texts drawn on axes.
+ * @param typeface The new typeface to apply.
+ */
 fun LineChartProperties.setAxisTypeface(typeface: Typeface) {
     axes.forEach { it.style.tickTextStyle.typeface = typeface }
 }
