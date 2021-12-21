@@ -26,13 +26,18 @@ description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "/Konstellation" # the subpath of your site, e.g. /blog
 url: "https://gabrieldrn.github.io/Konstellation" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: GabrielDerrien
+twitter:
+  username: "GabrielDerrien"
 github_username:  gabrieldrn
-
+repository: "gabrieldrn/Konstellation"
 # Build settings
-theme: minima
+#theme: minima
+#theme: minimal-mistakes-jekyll
+remote_theme: "mmistakes/minimal-mistakes@4.24.0"
+minimal_mistakes_skin: "dark"
 plugins:
   - jekyll-feed
-
+  - jekyll-include-cache
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
