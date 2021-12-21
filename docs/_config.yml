@@ -23,7 +23,7 @@ email:
 description: >- # this means to ignore newlines until "baseurl:"
   Konstellation is a Jetpack Compose librairy providing charts to android projects
   in a native way.
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/Konstellation" # the subpath of your site, e.g. /blog
 url: "https://gabrieldrn.github.io/Konstellation" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: GabrielDerrien
 github_username:  gabrieldrn
