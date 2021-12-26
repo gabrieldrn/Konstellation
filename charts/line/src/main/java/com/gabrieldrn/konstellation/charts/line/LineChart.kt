@@ -53,7 +53,7 @@ fun LineChart(
     modifier: Modifier = Modifier,
     properties: LineChartProperties = LineChartProperties(),
     // TODO Move highlight positions in line chart properties
-    highlightPositions: Array<HighlightPosition> = arrayOf(HighlightPosition.POINT),
+    highlightPositions: Set<HighlightPosition> = setOf(HighlightPosition.POINT),
     highlightContent: (@Composable HighlightPopupScope.(Point) -> Unit)? = null
 ) {
     Box {
@@ -65,8 +65,8 @@ fun LineChart(
         var points by remember { mutableStateOf<Dataset>(listOf()) }
         points = dataset
 
-        val xDrawRange by remember { mutableStateOf(properties.dataXRange ?: dataset.xRange) }
-        val yDrawRange by remember { mutableStateOf(properties.dataYRange ?: dataset.yRange) }
+        val xDrawRange = properties.dataXRange ?: dataset.xRange
+        val yDrawRange = properties.dataYRange ?: dataset.yRange
 
         Canvas(
             modifier
@@ -117,7 +117,7 @@ fun LineChart(
 @Composable
 private fun BoxScope.ComposeHighlightPopup(
     highlightContent: @Composable (HighlightPopupScope.(Point) -> Unit)?,
-    highlightPositions: Array<HighlightPosition>,
+    highlightPositions: Set<HighlightPosition>,
     point: Point,
     properties: LineChartProperties
 ) {

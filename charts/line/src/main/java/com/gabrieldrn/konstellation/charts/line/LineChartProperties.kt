@@ -2,6 +2,7 @@ package com.gabrieldrn.konstellation.charts.line
 
 import android.graphics.Typeface
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
@@ -9,6 +10,7 @@ import com.gabrieldrn.konstellation.plotting.ChartProperties
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
+import com.gabrieldrn.konstellation.style.setColor
 
 /**
  * Class defining appearance and features of a Konstellation line chart.
@@ -48,4 +50,8 @@ data class LineChartProperties(
  */
 fun LineChartProperties.setAxisTypeface(typeface: Typeface) {
     axes.forEach { it.style.tickTextStyle.typeface = typeface }
+}
+
+fun LineChartProperties.setAxesColor(color: Color) {
+    axes.forEach { it.style.setColor(color) }
 }

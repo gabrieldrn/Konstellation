@@ -15,7 +15,7 @@ import com.gabrieldrn.konstellation.style.PointDrawStyle
  */
 fun DrawScope.highlightPoint(
     point: Point,
-    highlightPositions: Array<HighlightPosition>,
+    highlightPositions: Set<HighlightPosition>,
     highlightPointStyle: PointDrawStyle,
     highlightLineStyle: LineDrawStyle
 ) {
