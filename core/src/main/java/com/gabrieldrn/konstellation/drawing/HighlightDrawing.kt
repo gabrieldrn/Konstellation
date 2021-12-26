@@ -6,8 +6,8 @@ import com.gabrieldrn.konstellation.highlighting.HighlightPosition
 import com.gabrieldrn.konstellation.highlighting.horizontalHLPositions
 import com.gabrieldrn.konstellation.highlighting.verticalHLPositions
 import com.gabrieldrn.konstellation.plotting.Point
-import com.gabrieldrn.konstellation.style.LineDrawStyle
-import com.gabrieldrn.konstellation.style.PointDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
 
 /**
  * Highlights a given [point] in the chart by drawing another circle styled with

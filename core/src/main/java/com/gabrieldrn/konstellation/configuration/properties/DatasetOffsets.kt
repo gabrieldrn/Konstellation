@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.style
+package com.gabrieldrn.konstellation.configuration.properties
 
 /**
  * This class details offsets to apply around a dataset, usually to create a padding effect around

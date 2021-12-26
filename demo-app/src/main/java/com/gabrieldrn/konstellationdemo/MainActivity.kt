@@ -20,9 +20,11 @@ import androidx.compose.ui.unit.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
 import com.gabrieldrn.konstellation.charts.function.*
-import com.gabrieldrn.konstellation.style.*
-import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartComp
+import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
+import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartComposable
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
+import com.gabrieldrn.konstellationdemo.linechartdemo.getChartProperties
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.ProvideWindowInsets
@@ -31,16 +33,22 @@ import com.google.accompanist.insets.ui.TopAppBar
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 import kotlin.math.PI
 import kotlin.math.sin
 
-private var mainTextStyle = TextDrawStyle()
+private val injector = object : KoinComponent {}
+private val mainTextStyle by injector.inject<TextDrawStyle>(QF_MAIN_TEXT_STYLE)
 
 @ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 class MainActivity : AppCompatActivity() {
 
-    private val lineChartViewModel by viewModel<LineChartDemoViewModel>()
+    private val lineChartViewModel by viewModel<LineChartDemoViewModel> {
+        parametersOf(getChartProperties())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,7 +137,7 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
         }, frontLayerContent = {
             Box(Modifier.fillMaxSize()) {
                 when (contentSelection) {
-                    DemoContent.LINE -> LineChartComp(lineChartDemoViewModel, mainTextStyle)
+                    DemoContent.LINE -> LineChartComposable(lineChartDemoViewModel)
                     DemoContent.FUNCTION -> AnimatedFunctionChart()
                 }
             }
@@ -177,6 +185,8 @@ fun AnimatedFunctionChart() {
 @Composable
 fun DefaultPreview() {
     KonstellationTheme {
-        Content(LineChartDemoViewModel())
+        Content(LineChartDemoViewModel(
+            getChartProperties()
+        ))
     }
 }

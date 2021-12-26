@@ -14,9 +14,9 @@ import com.gabrieldrn.konstellation.geometry.convertCanvasXToDataX
 import com.gabrieldrn.konstellation.geometry.createOffsets
 import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.by
-import com.gabrieldrn.konstellation.style.LineDrawStyle
-import com.gabrieldrn.konstellation.style.PointDrawStyle
-import com.gabrieldrn.konstellation.style.TextDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 
 /**
  * Composable responsible of plotting points from a function and draw axis.
@@ -86,4 +86,3 @@ fun DrawScope.drawMinMaxAxisValues(
         style = textStyle.copy(offsetY = 25f)
     )
 }
-

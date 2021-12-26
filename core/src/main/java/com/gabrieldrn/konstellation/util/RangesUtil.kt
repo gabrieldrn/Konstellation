@@ -1,6 +1,6 @@
 package com.gabrieldrn.konstellation.util
 
-import com.gabrieldrn.konstellation.style.DatasetOffsets
+import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 
 /**
  * Distance between the first and last value (end - start)

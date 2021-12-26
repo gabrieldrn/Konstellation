@@ -5,8 +5,8 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
-import com.gabrieldrn.konstellation.style.LineDrawStyle
-import com.gabrieldrn.konstellation.style.PointDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
 
 /**
  * Draws a line between the given offsets using the given style. The line is stroked.

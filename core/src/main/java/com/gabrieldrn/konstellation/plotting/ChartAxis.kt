@@ -1,16 +1,15 @@
 package com.gabrieldrn.konstellation.plotting
 
 import android.graphics.Paint
-import com.gabrieldrn.konstellation.style.AxisDrawStyle
-import com.gabrieldrn.konstellation.style.TextDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.AxisDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 
 /**
  * Represents a chart axis.
  * @param axis Position of the axis within the chart
  * @param tickCount Maximum number of ticks that will be drawn on this axis.
- * @param style Defined visuals of this axis.
  */
-data class ChartAxis(var axis: Axis, var tickCount: Int, var style: AxisDrawStyle)
+data class ChartAxis(var axis: Axis, var tickCount: Int)
 
 /**
  * Positions of an axis.
@@ -29,41 +28,45 @@ object Axes {
 
     val xBottom = ChartAxis(
         axis = Axis.X_BOTTOM,
-        tickCount = 5,
-        style = AxisDrawStyle(
-            tickTextStyle = TextDrawStyle(
-                textAlign = Paint.Align.CENTER
-            )
+        tickCount = 5
+    )
+
+    val xBottomStyle = AxisDrawStyle(
+        tickTextStyle = TextDrawStyle(
+            textAlign = Paint.Align.CENTER
         )
     )
 
     val xTop = ChartAxis(
         axis = Axis.X_TOP,
-        tickCount = 5,
-        style = AxisDrawStyle(
-            tickTextStyle = TextDrawStyle(
-                textAlign = Paint.Align.CENTER
-            )
+        tickCount = 5
+    )
+
+    val xTopStyle = AxisDrawStyle(
+        tickTextStyle = TextDrawStyle(
+            textAlign = Paint.Align.CENTER
         )
     )
 
     val yLeft = ChartAxis(
         axis = Axis.Y_LEFT,
-        tickCount = 5,
-        style = AxisDrawStyle(
-            tickTextStyle = TextDrawStyle(
-                textAlign = Paint.Align.RIGHT
-            )
+        tickCount = 5
+    )
+
+    val yLeftStyle = AxisDrawStyle(
+        tickTextStyle = TextDrawStyle(
+            textAlign = Paint.Align.RIGHT
         )
     )
 
     val yRight = ChartAxis(
         axis = Axis.Y_RIGHT,
-        tickCount = 5,
-        style = AxisDrawStyle(
-            tickTextStyle = TextDrawStyle(
-                textAlign = Paint.Align.LEFT
-            )
+        tickCount = 5
+    )
+
+    val yRightStyle = AxisDrawStyle(
+        tickTextStyle = TextDrawStyle(
+            textAlign = Paint.Align.LEFT
         )
     )
 }

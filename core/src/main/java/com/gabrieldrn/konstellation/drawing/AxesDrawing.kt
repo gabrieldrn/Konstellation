@@ -10,9 +10,12 @@ import com.gabrieldrn.konstellation.geometry.calculateAxisOffsets
 import com.gabrieldrn.konstellation.geometry.getAxisDrawingPoints
 import com.gabrieldrn.konstellation.plotting.Axis
 import com.gabrieldrn.konstellation.plotting.ChartAxis
-import com.gabrieldrn.konstellation.style.ChartProperties
+import com.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import com.gabrieldrn.konstellation.plotting.NiceScale
-import com.gabrieldrn.konstellation.style.*
+import com.gabrieldrn.konstellation.configuration.styles.AxisDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.ChartStyles
+import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
+import com.gabrieldrn.konstellation.configuration.styles.getAxisStyleByType
 import com.gabrieldrn.konstellation.util.toInt
 
 /**
@@ -31,16 +34,18 @@ private val tickLabelPaint = Paint()
  */
 fun DrawScope.drawScaledAxis(
     properties: ChartProperties,
+    styles: ChartStyles,
     xRange: ClosedFloatingPointRange<Float>,
     yRange: ClosedFloatingPointRange<Float>,
 ) {
     var range: ClosedFloatingPointRange<Float>
-
+    var style: AxisDrawStyle
     properties.axes.forEach { axis ->
         range = when (axis.axis) {
             Axis.X_TOP, Axis.X_BOTTOM -> xRange
             Axis.Y_LEFT, Axis.Y_RIGHT -> yRange
         }
+        style = styles.getAxisStyleByType(axis)
 
         //Axis scale computation
         chartScale.run {
@@ -54,7 +59,7 @@ fun DrawScope.drawScaledAxis(
         var (lineStart, lineEnd) = getAxisDrawingPoints(axis)
 
         //Axis line
-        drawLine(lineStart, lineEnd, axis.style.axisLineStyle)
+        drawLine(lineStart, lineEnd, style.axisLineStyle)
 
         //Compute starting offsets for drawing
         val (tickSpacingOffset, lineStartOffset) = calculateAxisOffsets(
@@ -66,7 +71,7 @@ fun DrawScope.drawScaledAxis(
         var tickValue = chartScale.niceMin
         //Labels drawing
         while (tickValue <= chartScale.niceMax) {
-            if (tickValue in range) drawTick(lineStart, axis, tickValue.toString())
+            if (tickValue in range) drawTick(lineStart, axis, tickValue.toString(), style)
             lineStart += tickSpacingOffset
             tickValue += chartScale.tickSpacing
         }
@@ -83,7 +88,8 @@ private const val DEFAULT_LABEL_X_OFFSET = 20f //TODO Move into style data class
 internal fun DrawScope.drawTick(
     position: Offset,
     axis: ChartAxis,
-    label: String
+    label: String,
+    style: AxisDrawStyle
 ) {
     drawLine(
         start = when (axis.axis) {
@@ -94,14 +100,14 @@ internal fun DrawScope.drawTick(
             Axis.X_TOP, Axis.X_BOTTOM -> Offset(position.x, position.y + DEFAULT_TICK_SIZE / 2)
             else -> Offset(position.x + DEFAULT_TICK_SIZE / 2, position.y)
         },
-        lineStyle = axis.style.tickLineStyle.copy(cap = StrokeCap.Square)
+        lineStyle = style.tickLineStyle.copy(cap = StrokeCap.Square)
     )
     drawIntoCanvas {
         tickLabelPaint.apply {
-            textAlign = axis.style.tickTextStyle.textAlign
-            textSize = axis.style.tickTextStyle.textSize
-            color = axis.style.tickTextStyle.color.toInt()
-            typeface = axis.style.tickTextStyle.typeface
+            textAlign = style.tickTextStyle.textAlign
+            textSize = style.tickTextStyle.textSize
+            color = style.tickTextStyle.color.toInt()
+            typeface = style.tickTextStyle.typeface
             flags = Paint.ANTI_ALIAS_FLAG
         }
         val xMetricsOffset = when (axis.axis) {
@@ -116,8 +122,8 @@ internal fun DrawScope.drawTick(
         }
         it.nativeCanvas.drawText(
             label,
-            (position.x + axis.style.tickTextStyle.offsetX) + xMetricsOffset,
-            (position.y + axis.style.tickTextStyle.offsetY) + yMetricsOffset,
+            (position.x + style.tickTextStyle.offsetX) + xMetricsOffset,
+            (position.y + style.tickTextStyle.offsetY) + yMetricsOffset,
             tickLabelPaint
         )
     }

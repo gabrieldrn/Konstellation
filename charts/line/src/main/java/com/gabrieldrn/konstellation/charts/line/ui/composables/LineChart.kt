@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.charts.line
+package com.gabrieldrn.konstellation.charts.line.ui.composables
 
 import android.graphics.Typeface
 import androidx.compose.foundation.*
@@ -14,6 +14,10 @@ import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
+import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
+import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
+import com.gabrieldrn.konstellation.charts.line.configuration.setAxesColor
+import com.gabrieldrn.konstellation.charts.line.configuration.setAxesTypeface
 import com.gabrieldrn.konstellation.drawing.drawFrame
 import com.gabrieldrn.konstellation.drawing.drawLines
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
@@ -30,8 +34,7 @@ import com.gabrieldrn.konstellation.plotting.datasetOf
 import com.gabrieldrn.konstellation.plotting.nearestPointByX
 import com.gabrieldrn.konstellation.plotting.xRange
 import com.gabrieldrn.konstellation.plotting.yRange
-import com.gabrieldrn.konstellation.style.DatasetOffsets
-import com.gabrieldrn.konstellation.style.setColor
+import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.util.applyDatasetOffsets
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 
@@ -51,6 +54,7 @@ fun LineChart(
     dataset: Dataset,
     modifier: Modifier = Modifier,
     properties: LineChartProperties = LineChartProperties(),
+    styles: LineChartStyles = LineChartStyles(),
     // TODO Move highlight positions in line chart properties
     highlightPositions: Set<HighlightPosition> = setOf(HighlightPosition.POINT),
     highlightContent: (@Composable HighlightPopupScope.(Point) -> Unit)? = null
@@ -95,7 +99,7 @@ fun LineChart(
                 dataSetYRange = yDrawRange
             )
 
-            with(properties) {
+            with(styles) {
                 drawZeroLines(xDrawRange, yDrawRange)
                 clipRect(0f, 0f, size.width, size.height) {
                     drawLines(points, lineStyle, pointStyle, drawPoints = true)
@@ -105,7 +109,7 @@ fun LineChart(
                         )
                     }
                 }
-                drawScaledAxis(this, xDrawRange, yDrawRange)
+                drawScaledAxis(properties, styles, xDrawRange, yDrawRange)
             }
         }
 
@@ -149,23 +153,26 @@ fun LineChartPreview() {
             .aspectRatio(1f)
     ) {
         val dataset = randomFancyDataSet()
+        val properties = LineChartProperties(
+            axes = setOf(Axes.xBottom, Axes.yLeft),
+            chartPaddingValues = PaddingValues(44.dp),
+            datasetOffsets = DatasetOffsets(
+                xStartOffset = 2f,
+                xEndOffset = 2f,
+                yStartOffset = 0.5f,
+                yEndOffset = 0.5f
+            )
+        )
+        val styles = LineChartStyles().apply {
+            setAxesColor(Color.Black)
+            setAxesTypeface(Typeface.MONOSPACE)
+        }
+
         LineChart(
             modifier = Modifier.fillMaxSize(),
             dataset = dataset,
-            properties = LineChartProperties().apply {
-                chartPaddingValues = PaddingValues(44.dp)
-                axes = setOf(
-                    Axes.xBottom.apply { style.setColor(Color.Black) },
-                    Axes.yLeft.apply { style.setColor(Color.Black) },
-                )
-                datasetOffsets = DatasetOffsets(
-                    xStartOffset = 2f,
-                    xEndOffset = 2f,
-                    yStartOffset = 0.5f,
-                    yEndOffset = 0.5f
-                )
-                setAxisTypeface(Typeface.MONOSPACE)
-            }
+            properties = properties,
+            styles = styles
         )
     }
 }

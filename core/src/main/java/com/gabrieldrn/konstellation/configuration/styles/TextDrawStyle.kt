@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.style
+package com.gabrieldrn.konstellation.configuration.styles
 
 import android.graphics.Paint
 import android.graphics.Typeface
