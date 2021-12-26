@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
+import com.gabrieldrn.konstellation.style.DatasetOffsets
 import com.gabrieldrn.konstellation.charts.line.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.setAxesColor
 import com.gabrieldrn.konstellation.charts.line.setAxisTypeface
@@ -28,6 +29,12 @@ internal fun getChartProperties(mainTextStyle: TextDrawStyle) = LineChartPropert
     )
     chartPaddingValues = PaddingValues(44.dp)
     axes = setOf(Axes.xBottom, Axes.xTop, Axes.yLeft, Axes.yRight)
+    datasetOffsets = DatasetOffsets(
+        xStartOffset = 2f,
+        xEndOffset = 2f,
+        yStartOffset = 0.5f,
+        yEndOffset = 0.5f
+    )
     setAxesColor(MaterialTheme.colors.onBackground)
     setAxisTypeface(mainTextStyle.typeface)
 }

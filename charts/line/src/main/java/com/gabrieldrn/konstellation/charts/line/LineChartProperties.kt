@@ -6,7 +6,8 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
-import com.gabrieldrn.konstellation.plotting.ChartProperties
+import com.gabrieldrn.konstellation.style.ChartProperties
+import com.gabrieldrn.konstellation.style.DatasetOffsets
 import com.gabrieldrn.konstellation.style.LineDrawStyle
 import com.gabrieldrn.konstellation.style.PointDrawStyle
 import com.gabrieldrn.konstellation.style.TextDrawStyle
@@ -14,6 +15,7 @@ import com.gabrieldrn.konstellation.style.setColor
 
 /**
  * Class defining appearance and features of a Konstellation line chart.
+ * @property axes Axes to be drawn on the chart.
  * @property lineStyle Appearance of the lines connecting points.
  * @property pointStyle Appearance of data points.
  * @property textStyle Text appearance of all texts.
@@ -23,13 +25,11 @@ import com.gabrieldrn.konstellation.style.setColor
  * @property highlightTextStyle Text appearance of the text shown in the highlight popup.
  * @property chartPaddingValues Paddings applied to the bounds of the chart (from "view" bounds to
  * axes)
- * @property dataXRange The range that should be applied to x axes. If null, data set range will be
- * used.
- * @property dataYRange The range that should be applied to y axes. If null, data set range will be
- * used.
- * @property axes Axes to be drawn on the chart.
+ * @property datasetOffsets Offsets to be applied around the dataset, see [DatasetOffsets]
+ * for more details. A null value means no offsets.
  */
 data class LineChartProperties(
+    override var axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
     override var lineStyle: LineDrawStyle = LineDrawStyle(),
     override var pointStyle: PointDrawStyle = PointDrawStyle(),
     var textStyle: TextDrawStyle = TextDrawStyle(),
@@ -39,9 +39,7 @@ data class LineChartProperties(
     ),
     var highlightTextStyle: TextDrawStyle = TextDrawStyle(),
     var chartPaddingValues: PaddingValues = PaddingValues(0.dp),
-    override var dataXRange: ClosedFloatingPointRange<Float>? = null,
-    override var dataYRange: ClosedFloatingPointRange<Float>? = null,
-    override var axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft)
+    var datasetOffsets: DatasetOffsets? = null
 ) : ChartProperties
 
 /**

@@ -10,7 +10,7 @@ import com.gabrieldrn.konstellation.geometry.calculateAxisOffsets
 import com.gabrieldrn.konstellation.geometry.getAxisDrawingPoints
 import com.gabrieldrn.konstellation.plotting.Axis
 import com.gabrieldrn.konstellation.plotting.ChartAxis
-import com.gabrieldrn.konstellation.plotting.ChartProperties
+import com.gabrieldrn.konstellation.style.ChartProperties
 import com.gabrieldrn.konstellation.plotting.NiceScale
 import com.gabrieldrn.konstellation.style.*
 import com.gabrieldrn.konstellation.util.toInt

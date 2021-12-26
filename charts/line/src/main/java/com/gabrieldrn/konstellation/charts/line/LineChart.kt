@@ -26,14 +26,13 @@ import com.gabrieldrn.konstellation.highlighting.HighlightPosition
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
+import com.gabrieldrn.konstellation.plotting.datasetOf
 import com.gabrieldrn.konstellation.plotting.nearestPointByX
-import com.gabrieldrn.konstellation.plotting.xMax
-import com.gabrieldrn.konstellation.plotting.xMin
 import com.gabrieldrn.konstellation.plotting.xRange
-import com.gabrieldrn.konstellation.plotting.yMax
-import com.gabrieldrn.konstellation.plotting.yMin
 import com.gabrieldrn.konstellation.plotting.yRange
+import com.gabrieldrn.konstellation.style.DatasetOffsets
 import com.gabrieldrn.konstellation.style.setColor
+import com.gabrieldrn.konstellation.util.applyDatasetOffsets
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 
 /**
@@ -60,13 +59,15 @@ fun LineChart(
         val hapticLocal = LocalHapticFeedback.current
         var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
 
-        // In order to force the Canvas pointerInput modifier to be re-composed, the dataset is
+        // In order to enable re-composition of the Canvas pointerInput modifier, the dataset is
         // "moved" inside a state.
-        var points by remember { mutableStateOf<Dataset>(listOf()) }
+        var points by remember { mutableStateOf(datasetOf()) }
         points = dataset
 
-        val xDrawRange = properties.dataXRange ?: dataset.xRange
-        val yDrawRange = properties.dataYRange ?: dataset.yRange
+        val (xDrawRange, yDrawRange) = properties.datasetOffsets.applyDatasetOffsets(
+            xDrawRange = dataset.xRange,
+            yDrawRange = dataset.yRange
+        )
 
         Canvas(
             modifier
@@ -153,11 +154,15 @@ fun LineChartPreview() {
             dataset = dataset,
             properties = LineChartProperties().apply {
                 chartPaddingValues = PaddingValues(44.dp)
-                dataXRange = (dataset.xMin - 1)..(dataset.xMax + 1)
-                dataYRange = (dataset.yMin - 1)..(dataset.yMax + 1)
                 axes = setOf(
                     Axes.xBottom.apply { style.setColor(Color.Black) },
                     Axes.yLeft.apply { style.setColor(Color.Black) },
+                )
+                datasetOffsets = DatasetOffsets(
+                    xStartOffset = 2f,
+                    xEndOffset = 2f,
+                    yStartOffset = 0.5f,
+                    yEndOffset = 0.5f
                 )
                 setAxisTypeface(Typeface.MONOSPACE)
             }
