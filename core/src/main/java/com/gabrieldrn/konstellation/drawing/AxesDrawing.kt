@@ -105,7 +105,7 @@ internal fun DrawScope.drawTick(
     drawIntoCanvas {
         tickLabelPaint.apply {
             textAlign = style.tickTextStyle.textAlign
-            textSize = style.tickTextStyle.textSize
+            textSize = style.tickTextStyle.textSize.value
             color = style.tickTextStyle.color.toInt()
             typeface = style.tickTextStyle.typeface
             flags = Paint.ANTI_ALIAS_FLAG

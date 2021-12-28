@@ -21,7 +21,7 @@ fun DrawScope.drawText(
         point.y + style.offsetY,
         Paint().apply {
             textAlign = style.textAlign
-            textSize = style.textSize
+            textSize = style.textSize.value
             color = style.color.toInt()
             typeface = style.typeface
             flags = Paint.ANTI_ALIAS_FLAG

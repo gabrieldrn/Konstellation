@@ -3,6 +3,7 @@ package com.gabrieldrn.konstellation.configuration.styles
 import android.graphics.Paint
 import android.graphics.Typeface
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.unit.*
 
 /**
  * Defines drawing style for texts into charts.
@@ -17,7 +18,7 @@ import androidx.compose.ui.graphics.*
 data class TextDrawStyle(
     override var color: Color = Color.Black,
     var typeface: Typeface = Typeface.DEFAULT,
-    var textSize: Float = 32f,
+    var textSize: TextUnit = 32.sp,
     var textAlign: Paint.Align = Paint.Align.LEFT,
     var offsetX: Float = 0f,
     var offsetY: Float = 0f,
