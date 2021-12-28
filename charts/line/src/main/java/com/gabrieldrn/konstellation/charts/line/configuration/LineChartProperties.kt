@@ -15,7 +15,8 @@ import com.gabrieldrn.konstellation.highlighting.HighlightPosition
  * axes)
  * @property datasetOffsets Offsets to be applied around the dataset, see [DatasetOffsets]
  * for more details. A null value means no offsets.
- * @property highlightPositions TODO
+ * @property highlightPositions Where to place highlighting popups. There will be as much popups as
+ * there is positions.
  */
 data class LineChartProperties(
     override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
