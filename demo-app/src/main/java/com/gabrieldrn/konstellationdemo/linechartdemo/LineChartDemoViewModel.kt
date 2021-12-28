@@ -1,20 +1,23 @@
 package com.gabrieldrn.konstellationdemo.linechartdemo
 
 import androidx.compose.runtime.*
+import androidx.lifecycle.ViewModel
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.highlighting.HighlightPosition
+import com.gabrieldrn.konstellation.plotting.Dataset
+import com.gabrieldrn.konstellation.plotting.datasetOf
 import com.gabrieldrn.konstellation.util.randomDataSet
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
-import com.gabrieldrn.konstellationdemo.ui.viewmodel.ChartViewModel
 
 class LineChartDemoViewModel(
     properties: LineChartProperties = LineChartProperties()
-) : ChartViewModel() {
+) : ViewModel() {
 
-    var properties by mutableStateOf(properties)
+    var dataset: Dataset by mutableStateOf(datasetOf())
+    var properties: LineChartProperties by mutableStateOf(properties)
 
     init {
-        dataset = randomFancyDataSet()
+        generateNewFancyDataset()
     }
 
     fun generateNewFancyDataset() {

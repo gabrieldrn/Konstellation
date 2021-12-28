@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.configuration.setAxesColor
-import com.gabrieldrn.konstellation.charts.line.ui.composables.LineChart
+import com.gabrieldrn.konstellation.charts.line.composables.LineChart
 import com.gabrieldrn.konstellation.highlighting.HighlightPopup
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
@@ -95,7 +95,6 @@ fun LineChartWithCustomPropertiesPreview() {
     ) {
         val chartProperties = LineChartProperties(
             axes = setOf(Axes.xBottom, Axes.xTop, Axes.yLeft, Axes.yRight),
-            chartPaddingValues = PaddingValues(44.dp),
             datasetOffsets = DatasetOffsets(
                 xStartOffset = 2f,
                 xEndOffset = 2f,

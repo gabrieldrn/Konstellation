@@ -1,6 +1,5 @@
-package com.gabrieldrn.konstellation.charts.line.ui.composables
+package com.gabrieldrn.konstellation.charts.line.composables
 
-import android.graphics.Typeface
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.*
 import androidx.compose.foundation.layout.*
@@ -13,11 +12,9 @@ import androidx.compose.ui.hapticfeedback.*
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.tooling.preview.*
-import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
-import com.gabrieldrn.konstellation.charts.line.configuration.setAxesColor
-import com.gabrieldrn.konstellation.charts.line.configuration.setAxesTypeface
+import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.drawing.drawFrame
 import com.gabrieldrn.konstellation.drawing.drawLines
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
@@ -26,15 +23,12 @@ import com.gabrieldrn.konstellation.drawing.highlightPoint
 import com.gabrieldrn.konstellation.geometry.createOffsets
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.highlighting.HighlightPopupScope
-import com.gabrieldrn.konstellation.highlighting.HighlightPosition
-import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.datasetOf
 import com.gabrieldrn.konstellation.plotting.nearestPointByX
 import com.gabrieldrn.konstellation.plotting.xRange
 import com.gabrieldrn.konstellation.plotting.yRange
-import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.util.applyDatasetOffsets
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 
@@ -115,8 +109,8 @@ fun LineChart(
             }
         }
 
-        highlightedValue?.let {
-            ComposeHighlightPopup(highlightContent, properties.highlightPositions, it, properties)
+        highlightedValue?.let { point ->
+            ComposeHighlightPopup(highlightContent, point, properties)
         }
     }
 }
@@ -124,12 +118,11 @@ fun LineChart(
 @Composable
 private fun BoxScope.ComposeHighlightPopup(
     highlightContent: @Composable (HighlightPopupScope.(Point) -> Unit)?,
-    highlightPositions: Set<HighlightPosition>,
     point: Point,
     properties: LineChartProperties
 ) {
     if (highlightContent != null) {
-        highlightPositions.forEach { position ->
+        properties.highlightPositions.forEach { position ->
             BoxedPopup(
                 HighlightPopupScope(
                     point, position, properties.chartPaddingValues
@@ -154,27 +147,17 @@ fun LineChartPreview() {
             .fillMaxWidth()
             .aspectRatio(1f)
     ) {
-        val dataset = randomFancyDataSet()
-        val properties = LineChartProperties(
-            axes = setOf(Axes.xBottom, Axes.yLeft),
-            chartPaddingValues = PaddingValues(44.dp),
-            datasetOffsets = DatasetOffsets(
-                xStartOffset = 2f,
-                xEndOffset = 2f,
-                yStartOffset = 0.5f,
-                yEndOffset = 0.5f
-            )
-        )
-        val styles = LineChartStyles().apply {
-            setAxesColor(Color.Black)
-            setAxesTypeface(Typeface.MONOSPACE)
-        }
-
         LineChart(
+            dataset = randomFancyDataSet(),
             modifier = Modifier.fillMaxSize(),
-            dataset = dataset,
-            properties = properties,
-            styles = styles
+            properties = LineChartProperties(
+                datasetOffsets = DatasetOffsets(
+                    xStartOffset = 2f,
+                    xEndOffset = 2f,
+                    yStartOffset = 0.5f,
+                    yEndOffset = 0.5f
+                )
+            )
         )
     }
 }

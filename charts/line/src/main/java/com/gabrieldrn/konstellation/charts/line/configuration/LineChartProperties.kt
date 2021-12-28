@@ -20,7 +20,7 @@ import com.gabrieldrn.konstellation.highlighting.HighlightPosition
  */
 data class LineChartProperties(
     override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
-    val chartPaddingValues: PaddingValues = PaddingValues(0.dp),
+    val chartPaddingValues: PaddingValues = PaddingValues(44.dp),
     val datasetOffsets: DatasetOffsets? = null,
     val highlightPositions: Set<HighlightPosition> = setOf(HighlightPosition.POINT)
 ) : ChartProperties
