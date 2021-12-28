@@ -6,9 +6,14 @@ import androidx.compose.ui.unit.*
 /**
  * Defines drawing style for lines into charts.
  *
- * @param color Line color.
- * @param strokeWidth Line thickness.
- * @param cap Line ending style. See [StrokeCap].
+ * See [PathEffect.dashPathEffect] for more insight on the dash effect.
+ *
+ * @property color Line color.
+ * @property strokeWidth Line thickness.
+ * @property cap Line ending style. See [StrokeCap].
+ * @property dashed Indicates if the line has to be dashed.
+ * @property dashedEffectIntervals Array of "on" and "off" distances for the dashed line segments.
+ * @property dashedEffectPhase Pixel offset into the intervals array
  */
 data class LineDrawStyle(
     override var color: Color = DEFAULT_LINE_COLOR,

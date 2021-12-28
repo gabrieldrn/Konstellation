@@ -12,11 +12,15 @@ import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.setColor
 
 /**
- * TODO DOC
- * @property lineStyle Appearance of the lines connecting points.
+ * Class defining visual appearances of components in a Konstellation line chart.
+ * @property lineStyle Appearance of the lines connecting data points.
  * @property pointStyle Appearance of data points.
+ * @property xAxisBottomStyle Appearance of the bottom axis.
+ * @property xAxisTopStyle Appearance of the top axis.
+ * @property yAxisLeftStyle Appearance of the left axis.
+ * @property yAxisRightStyle Appearance of the right axis.
  * @property textStyle Text appearance of all texts.
- * @property highlightPointStyle Appearance of the highlighted point.
+ * @property highlightPointStyle Appearance of the highlighted data point.
  * @property highlightLineStyle Appearance of the lines drawn on the highlighted point. Their
  * orientation depends on the provided highlighting positions in the LineChart composable.
  * @property highlightTextStyle Text appearance of the text shown in the highlight popup.
@@ -50,6 +54,10 @@ fun LineChartStyles.setAxesTypeface(typeface: Typeface) {
     axes.forEach { it.tickTextStyle.typeface = typeface }
 }
 
+/**
+ * Convenience function to change the color of all drawn axes.
+ * @throws color The new color to apply.
+ */
 fun LineChartStyles.setAxesColor(color: Color) {
     axes.forEach { it.setColor(color) }
 }

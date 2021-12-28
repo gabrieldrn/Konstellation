@@ -8,7 +8,7 @@ import com.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 
 /**
- * Class defining appearance and features of a Konstellation line chart.
+ * Class defining features of a Konstellation line chart.
  * @property axes Axes to be drawn on the chart.
  * @property chartPaddingValues Paddings applied to the bounds of the chart (from "view" bounds to
  * axes)
