@@ -11,27 +11,27 @@ import com.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
 
 /**
  * Highlights a given [point] in the chart by drawing another circle styled with
- * [highlightPointStyle] in front of it and dashed lines based on [highlightPositions].
+ * [pointStyle] in front of it and dashed lines based on [positions].
  */
 fun DrawScope.highlightPoint(
     point: Point,
-    highlightPositions: Set<HighlightPosition>,
-    highlightPointStyle: PointDrawStyle,
-    highlightLineStyle: LineDrawStyle
+    positions: Set<HighlightPosition>,
+    pointStyle: PointDrawStyle,
+    lineStyle: LineDrawStyle
 ) {
-    drawPoint(point, highlightPointStyle)
-    if (highlightPositions.any { it in verticalHLPositions }) {
+    drawPoint(point, pointStyle)
+    if (positions.any { it in verticalHLPositions }) {
         drawLine(
             Offset(point.offset.x, 0f),
             Offset(point.offset.x, size.height),
-            highlightLineStyle
+            lineStyle
         )
     }
-    if (highlightPositions.any { it in horizontalHLPositions }) {
+    if (positions.any { it in horizontalHLPositions }) {
         drawLine(
             Offset(0f, point.yPos),
             Offset(size.width, point.yPos),
-            highlightLineStyle
+            lineStyle
         )
     }
 }

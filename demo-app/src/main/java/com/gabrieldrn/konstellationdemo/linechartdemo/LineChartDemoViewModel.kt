@@ -11,9 +11,6 @@ class LineChartDemoViewModel(
     properties: LineChartProperties = LineChartProperties()
 ) : ChartViewModel() {
 
-    var highlightPositions by mutableStateOf(setOf(HighlightPosition.POINT))
-        private set
-
     var properties by mutableStateOf(properties)
 
     init {
@@ -28,7 +25,19 @@ class LineChartDemoViewModel(
         dataset = randomDataSet()
     }
 
-    fun setNewHighlightPositions(positions: Set<HighlightPosition>) {
-        highlightPositions = positions
+    fun addHighlightPosition(position: HighlightPosition) {
+        properties = properties.copy(
+            highlightPositions = properties.highlightPositions.toMutableSet().apply {
+                add(position)
+            }
+        )
+    }
+
+    fun removeHighlightPosition(position: HighlightPosition) {
+        properties = properties.copy(
+            highlightPositions = properties.highlightPositions.toMutableSet().apply {
+                remove(position)
+            }
+        )
     }
 }

@@ -64,7 +64,6 @@ fun LineChartComposable(viewModel: LineChartDemoViewModel) {
                 dataset = viewModel.dataset,
                 properties = viewModel.properties,
                 styles = chartStyles,
-                highlightPositions = viewModel.highlightPositions,
                 highlightContent = {
                     HighlightPopup(
                         backgroundColor = MaterialTheme.colors.primary

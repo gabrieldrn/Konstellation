@@ -43,8 +43,6 @@ import com.gabrieldrn.konstellation.util.randomFancyDataSet
  * @param dataset Your set of points.
  * @param modifier Your classic Jetpack-Compose modifier.
  * @param properties The DNA of your chart. See [LineChartProperties].
- * @param highlightPositions Where to place highlighting popups. There will be as much popups as
- * there is positions.
  * @param highlightContent Classic Composable scope defining the content to be shown inside
  * highlighting popup(s).
  */
@@ -55,8 +53,6 @@ fun LineChart(
     modifier: Modifier = Modifier,
     properties: LineChartProperties = LineChartProperties(),
     styles: LineChartStyles = LineChartStyles(),
-    // TODO Move highlight positions in line chart properties
-    highlightPositions: Set<HighlightPosition> = setOf(HighlightPosition.POINT),
     highlightContent: (@Composable HighlightPopupScope.(Point) -> Unit)? = null
 ) {
     Box {
@@ -99,13 +95,19 @@ fun LineChart(
                 dataSetYRange = yDrawRange
             )
 
+            drawZeroLines(xDrawRange, yDrawRange)
+
             with(styles) {
-                drawZeroLines(xDrawRange, yDrawRange)
                 clipRect(0f, 0f, size.width, size.height) {
+                    //Lines between data points
                     drawLines(points, lineStyle, pointStyle, drawPoints = true)
+                    //Highlight
                     highlightedValue?.let {
                         highlightPoint(
-                            it, highlightPositions, highlightPointStyle, highlightLineStyle
+                            point = it,
+                            positions = properties.highlightPositions,
+                            pointStyle = highlightPointStyle,
+                            lineStyle = highlightLineStyle
                         )
                     }
                 }
@@ -114,7 +116,7 @@ fun LineChart(
         }
 
         highlightedValue?.let {
-            ComposeHighlightPopup(highlightContent, highlightPositions, it, properties)
+            ComposeHighlightPopup(highlightContent, properties.highlightPositions, it, properties)
         }
     }
 }

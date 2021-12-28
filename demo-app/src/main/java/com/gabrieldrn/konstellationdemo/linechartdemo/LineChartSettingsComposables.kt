@@ -83,14 +83,6 @@ private fun ColumnScope.LineChartHighlightSetting(viewModel: LineChartDemoViewMo
             .align(Alignment.CenterHorizontally)
     ) {
 
-        fun addOrRemovePosition(add: Boolean, position: HighlightPosition) {
-            viewModel.setNewHighlightPositions(
-                viewModel.highlightPositions.toMutableSet().apply {
-                    if (add) add(position) else remove(position)
-                }
-            )
-        }
-
         val highlightPositionCheckbox: @Composable (position: HighlightPosition) -> Unit = {
             Checkbox(
                 modifier = Modifier.align(
@@ -102,8 +94,11 @@ private fun ColumnScope.LineChartHighlightSetting(viewModel: LineChartDemoViewMo
                         HighlightPosition.POINT -> Alignment.Center
                     }
                 ),
-                checked = viewModel.highlightPositions.contains(it),
-                onCheckedChange = { checked -> addOrRemovePosition(checked, it) },
+                checked = viewModel.properties.highlightPositions.contains(it),
+                onCheckedChange = { checked ->
+                    if (checked) viewModel.addHighlightPosition(it)
+                    else viewModel.removeHighlightPosition(it)
+                },
                 colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
             )
         }
