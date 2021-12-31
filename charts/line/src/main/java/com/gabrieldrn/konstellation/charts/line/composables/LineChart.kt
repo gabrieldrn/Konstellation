@@ -22,7 +22,7 @@ import com.gabrieldrn.konstellation.drawing.drawZeroLines
 import com.gabrieldrn.konstellation.drawing.highlightPoint
 import com.gabrieldrn.konstellation.geometry.createOffsets
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
-import com.gabrieldrn.konstellation.highlighting.HighlightPopupScope
+import com.gabrieldrn.konstellation.highlighting.HighlightScope
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.datasetOf
@@ -38,7 +38,10 @@ import com.gabrieldrn.konstellation.util.randomFancyDataSet
  * @param modifier Your classic Jetpack-Compose modifier.
  * @param properties The DNA of your chart. See [LineChartProperties].
  * @param highlightContent Classic Composable scope defining the content to be shown inside
- * highlighting popup(s).
+ * highlight popup(s). This is optional.
+ * @param onHighlightChange Callback invoked each time the highlighted value changes. This is
+ * optional and it's a light alternative to [highlightContent] to have feedback on highlighting
+ * without having to draw content above the chart.
  */
 @ExperimentalComposeUiApi
 @Composable
@@ -47,7 +50,8 @@ fun LineChart(
     modifier: Modifier = Modifier,
     properties: LineChartProperties = LineChartProperties(),
     styles: LineChartStyles = LineChartStyles(),
-    highlightContent: (@Composable HighlightPopupScope.(Point) -> Unit)? = null
+    highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
+    onHighlightChange: ((Point?) -> Unit)? = null
 ) {
     Box {
         val hapticLocal = LocalHapticFeedback.current
@@ -71,12 +75,15 @@ fun LineChart(
                         onDragStart = {
                             hapticLocal.performHapticFeedback(HapticFeedbackType.LongPress)
                             highlightedValue = points.nearestPointByX(it.x)
+                            onHighlightChange?.invoke(highlightedValue)
                         },
                         onDragEnd = {
                             highlightedValue = null
+                            onHighlightChange?.invoke(highlightedValue)
                         },
                         onDrag = { change, _ ->
                             highlightedValue = points.nearestPointByX(change.position.x)
+                            onHighlightChange?.invoke(highlightedValue)
                         }
                     )
                 }
@@ -93,9 +100,9 @@ fun LineChart(
 
             with(styles) {
                 clipRect(0f, 0f, size.width, size.height) {
-                    //Lines between data points
+                    // Lines between data points
                     drawLines(points, lineStyle, pointStyle, drawPoints = true)
-                    //Highlight
+                    // Highlight
                     highlightedValue?.let {
                         highlightPoint(
                             point = it,
@@ -117,18 +124,18 @@ fun LineChart(
 
 @Composable
 private fun BoxScope.ComposeHighlightPopup(
-    highlightContent: @Composable (HighlightPopupScope.(Point) -> Unit)?,
+    highlightContent: @Composable (HighlightScope.() -> Unit)?,
     point: Point,
     properties: LineChartProperties
 ) {
     if (highlightContent != null) {
         properties.highlightPositions.forEach { position ->
             BoxedPopup(
-                HighlightPopupScope(
+                HighlightScope(
                     point, position, properties.chartPaddingValues
                 ).apply { ComputePaddings() },
-            ) { point ->
-                highlightContent(point)
+            ) {
+                highlightContent()
             }
         }
     }

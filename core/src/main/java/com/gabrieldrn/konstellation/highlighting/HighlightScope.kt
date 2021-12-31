@@ -7,11 +7,11 @@ import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.plotting.Point
 
 /**
- * A scope providing placement and contents data for a highlighting popup.
- * @param point Highlighted [Point].
- * @param position Where the popup will be gravitating in front of the chart.
+ * A scope providing placement and contents data for a highlighting composed content.
+ * @param point The [Point] to highlight.
+ * @param position Where the content will be gravitating in front of the chart.
  */
-class HighlightPopupScope(
+class HighlightScope(
     val point: Point,
     val position: HighlightPosition,
     private val chartPaddings: PaddingValues

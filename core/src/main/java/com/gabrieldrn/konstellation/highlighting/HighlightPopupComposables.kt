@@ -7,7 +7,6 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.*
-import com.gabrieldrn.konstellation.plotting.Point
 
 /**
  * Creates and places a [Box] ready to compose a highlight popup within a highlighting [scope] with
@@ -15,8 +14,8 @@ import com.gabrieldrn.konstellation.plotting.Point
  */
 @Composable
 fun BoxScope.BoxedPopup(
-    scope: HighlightPopupScope,
-    content: @Composable HighlightPopupScope.(Point) -> Unit
+    scope: HighlightScope,
+    content: @Composable HighlightScope.() -> Unit
 ) {
     fun getPlacementOffset(p: Placeable) = when (scope.position) {
         HighlightPosition.TOP ->
@@ -48,7 +47,7 @@ fun BoxScope.BoxedPopup(
             .align(getAlignment())
             .layout(popupLayoutModifier)
     ) {
-        content(scope, scope.point)
+        content(scope)
     }
 }
 
@@ -60,11 +59,11 @@ fun BoxScope.BoxedPopup(
  * Contents of the highlighting popup is defined in [content].
  */
 @Composable
-fun HighlightPopupScope.HighlightPopup(
+fun HighlightScope.HighlightPopup(
     modifier: Modifier = Modifier,
     shape: HighlightPopupShape = HighlightPopupShape(position),
     backgroundColor: Color = if (MaterialTheme.colors.isLight) Color.White else Color.Black,
-    content: @Composable BoxScope.(Point) -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     Card(
         modifier
@@ -78,7 +77,7 @@ fun HighlightPopupScope.HighlightPopup(
         shape = shape,
         elevation = 4.dp
     ) {
-        Box(content = { content(point) })
+        Box(content = content)
     }
 }
 

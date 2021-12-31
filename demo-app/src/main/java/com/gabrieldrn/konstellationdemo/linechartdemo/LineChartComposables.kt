@@ -11,13 +11,14 @@ import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
+import com.gabrieldrn.konstellation.charts.line.composables.LineChart
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.configuration.setAxesColor
-import com.gabrieldrn.konstellation.charts.line.composables.LineChart
+import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.highlighting.HighlightPopup
 import com.gabrieldrn.konstellation.plotting.Axes
-import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
+import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 import com.gabrieldrn.konstellationdemo.DemoContent
 import com.google.accompanist.insets.LocalWindowInsets
@@ -33,6 +34,10 @@ fun LineChartComposable(viewModel: LineChartDemoViewModel) {
 
     val imeBottom = with(LocalDensity.current) {
         LocalWindowInsets.current.navigationBars.bottom.toDp()
+    }
+
+    var highlightedPoint: Point? by remember {
+        mutableStateOf(null)
     }
 
     BottomSheetScaffold(
@@ -72,13 +77,22 @@ fun LineChartComposable(viewModel: LineChartDemoViewModel) {
                             modifier = Modifier
                                 .padding(8.dp)
                                 .align(Alignment.Center),
-                            text = "y -> ${it.y.toInt()}",
+                            text = "y -> ${point.y.toInt()}",
                             style = MaterialTheme.typography.body1,
                             textAlign = TextAlign.Start
                         )
                     }
+                },
+                onHighlightChange = {
+                    highlightedPoint = it
                 }
             )
+            highlightedPoint?.let {
+                Text(
+                    modifier = Modifier.padding(start = 16.dp),
+                    text = "Selected point: ${it.x};${it.y}"
+                )
+            }
         }
     }
 }
