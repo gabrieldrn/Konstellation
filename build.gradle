@@ -6,6 +6,7 @@ buildscript {
         gradle_version = '1.5.31'
         accompanist_version = '0.18.0'
         junit_version = '4.13.2'
+        detekt_version = '1.19.0'
         dokka_version = "1.6.0"
     }
     repositories {
@@ -22,8 +23,23 @@ buildscript {
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "1.18.0" //TODO Replace by Kover plugin?
+    id "io.gitlab.arturbosch.detekt" version "$detekt_version"
     id "org.jetbrains.dokka" version "$dokka_version"
+}
+
+tasks.named("detekt").configure {
+    reports {
+        xml {
+            required = true
+            outputLocation = file("build/reports/detekt/detekt.xml")
+        }
+        html {
+            required = true
+            outputLocation = file("build/reports/detekt/detekt.html")
+        }
+        txt.required.set(false)
+        sarif.required.set(false)
+    }
 }
 
 subprojects {
@@ -31,7 +47,7 @@ subprojects {
     detekt {
         // Version of Detekt that will be used. When unspecified the latest detekt
         // version found will be used. Override to stay on the same version.
-        toolVersion = "1.18.0"
+        toolVersion = "$detekt_version"
 
         // Builds the AST in parallel. Rules are always executed in parallel.
         // Can lead to speedups in larger projects. `false` by default.
@@ -39,20 +55,10 @@ subprojects {
 
         // Define the detekt configuration(s) you want to use.
         // Defaults to the default detekt configuration.
-//        config = files("config/detekt/detekt.yml")
-
-        // Applies the config files on top of detekt's default config file. `false` by default.
-//        buildUponDefaultConfig = false
+        config = files("$rootDir/config/detekt/detekt.yml")
 
         // Turns on all the rules. `false` by default.
         allRules = false
-
-        // Specifying a baseline file. All findings stored in this file in subsequent runs of detekt.
-//        baseline = file("path/to/baseline.xml")
-
-        // Disables all default detekt rulesets and will only run detekt with custom rules
-        // defined in plugins passed in with `detektPlugins` configuration. `false` by default.
-        disableDefaultRuleSets = false
 
         // Adds debug output during task execution. `false` by default.
         debug = false
@@ -73,19 +79,6 @@ subprojects {
         // Specify the base path for file paths in the formatted reports.
         // If not set, all file paths reported will be absolute file path.
         basePath = projectDir
-
-        reports {
-            xml {
-                enabled = true
-                destination = file("build/reports/detekt/detekt.xml")
-            }
-            html {
-                enabled = true
-                destination = file("build/reports/detekt/detekt.html")
-            }
-            txt.enabled = false
-            sarif.enabled = false
-        }
     }
 }
 

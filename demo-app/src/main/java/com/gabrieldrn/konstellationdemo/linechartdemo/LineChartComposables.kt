@@ -36,10 +36,6 @@ fun LineChartComposable(viewModel: LineChartDemoViewModel) {
         LocalWindowInsets.current.navigationBars.bottom.toDp()
     }
 
-    var highlightedPoint: Point? by remember {
-        mutableStateOf(null)
-    }
-
     BottomSheetScaffold(
         scaffoldState = settingsSheetState,
         sheetPeekHeight = 60.dp + imeBottom,
@@ -54,46 +50,58 @@ fun LineChartComposable(viewModel: LineChartDemoViewModel) {
         Column(
             Modifier.verticalScroll(rememberScrollState())
         ) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, top = 16.dp),
-                text = DemoContent.LINE.chartName.uppercase(),
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.ExtraBold,
-            )
-            LineChart(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f), //Keep the chart square
-                dataset = viewModel.dataset,
-                properties = viewModel.properties,
-                styles = chartStyles,
-                highlightContent = {
-                    HighlightPopup(
-                        backgroundColor = MaterialTheme.colors.primary
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .align(Alignment.Center),
-                            text = "y -> ${point.y.toInt()}",
-                            style = MaterialTheme.typography.body1,
-                            textAlign = TextAlign.Start
-                        )
-                    }
-                },
-                onHighlightChange = {
-                    highlightedPoint = it
-                }
-            )
-            highlightedPoint?.let {
+            DemoContent(viewModel, chartStyles)
+        }
+    }
+}
+
+@ExperimentalComposeUiApi
+@Composable
+private fun DemoContent(
+    viewModel: LineChartDemoViewModel,
+    chartStyles: LineChartStyles,
+) {
+    var highlightedPoint: Point? by remember {
+        mutableStateOf(null)
+    }
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, top = 16.dp),
+        text = DemoContent.LINE.chartName.uppercase(),
+        style = MaterialTheme.typography.h4,
+        fontWeight = FontWeight.ExtraBold,
+    )
+    LineChart(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f), //Keep the chart square
+        dataset = viewModel.dataset,
+        properties = viewModel.properties,
+        styles = chartStyles,
+        highlightContent = {
+            HighlightPopup(
+                backgroundColor = MaterialTheme.colors.primary
+            ) {
                 Text(
-                    modifier = Modifier.padding(start = 16.dp),
-                    text = "Selected point: ${it.x};${it.y}"
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.Center),
+                    text = "y -> ${point.y.toInt()}",
+                    style = MaterialTheme.typography.body1,
+                    textAlign = TextAlign.Start
                 )
             }
+        },
+        onHighlightChange = {
+            highlightedPoint = it
         }
+    )
+    highlightedPoint?.let {
+        Text(
+            modifier = Modifier.padding(start = 16.dp),
+            text = "Selected point: ${it.x};${it.y}"
+        )
     }
 }
 
