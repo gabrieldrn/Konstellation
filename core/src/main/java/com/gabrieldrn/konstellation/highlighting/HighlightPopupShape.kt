@@ -6,9 +6,9 @@ import androidx.compose.ui.unit.*
 
 /**
  * Rounded shape used by a composable highlighting a selected value on a chart.
- * @param position Position of this popup in front of the chart.
+ * @param contentPosition Position of this popup in front of the chart.
  */
-open class HighlightPopupShape(private val position: HighlightPosition) : Shape {
+open class HighlightPopupShape(private val contentPosition: HighlightContentPosition) : Shape {
 
     /**
      * The size of all corners for this shape.
@@ -21,10 +21,10 @@ open class HighlightPopupShape(private val position: HighlightPosition) : Shape 
     open var arrowSize = 8f.dp
 
     val suggestedMinWidth
-        get() = if (position.isVertical) arrowSize * 2 else 0.dp
+        get() = if (contentPosition.isVertical) arrowSize * 2 else 0.dp
 
     val suggestedMinHeight
-        get() = if (position.isHorizontal) arrowSize * 2 else 0.dp
+        get() = if (contentPosition.isHorizontal) arrowSize * 2 else 0.dp
 
     final override fun createOutline(
         size: Size,
@@ -34,9 +34,9 @@ open class HighlightPopupShape(private val position: HighlightPosition) : Shape 
         val arrowSizePx = with(density) { arrowSize.toPx() }
         var cornerRadiusPx = with(density) { cornersRadius.toPx() }
         val minBorderLength = cornerRadiusPx * 2 + arrowSizePx * 2
-        val len = if (position.isVertical) size.width else size.height
-        val invLen = if (position.isVertical) size.height else size.width
-        val isOnTopOrOnPoint = position in arrayOf(HighlightPosition.POINT, HighlightPosition.TOP)
+        val len = if (contentPosition.isVertical) size.width else size.height
+        val invLen = if (contentPosition.isVertical) size.height else size.width
+        val isOnTopOrOnPoint = contentPosition in arrayOf(HighlightContentPosition.POINT, HighlightContentPosition.TOP)
         if (minBorderLength > len) {
             cornerRadiusPx = cornerRadiusPx.coerceAtMost((len - (2 * arrowSizePx)) / 2)
             if (cornerRadiusPx * 2 > invLen) {
@@ -47,12 +47,12 @@ open class HighlightPopupShape(private val position: HighlightPosition) : Shape 
         // Top left
         createCorner(Corner.TOP_LEFT, size, cornerRadiusPx)
         // Top
-        if (position == HighlightPosition.BOTTOM) createTopArrow(size, arrowSizePx)
+        if (contentPosition == HighlightContentPosition.BOTTOM) createTopArrow(size, arrowSizePx)
         lineTo(size.width - cornerRadiusPx, 0f) // linkage to next corner
         // Top right
         createCorner(Corner.TOP_RIGHT, size, cornerRadiusPx)
         // Right
-        if (position == HighlightPosition.START) createRightArrow(size, arrowSizePx)
+        if (contentPosition == HighlightContentPosition.START) createRightArrow(size, arrowSizePx)
         lineTo(size.width, size.height - cornerRadiusPx)
         // Bottom right
         createCorner(Corner.BOTTOM_RIGHT, size, cornerRadiusPx)
@@ -62,7 +62,7 @@ open class HighlightPopupShape(private val position: HighlightPosition) : Shape 
         // Bottom left
         createCorner(Corner.BOTTOM_LEFT, size, cornerRadiusPx)
         // Left
-        if (position == HighlightPosition.END) createLeftArrow(size, arrowSizePx)
+        if (contentPosition == HighlightContentPosition.END) createLeftArrow(size, arrowSizePx)
         lineTo(0f, cornerRadiusPx)
     })
 

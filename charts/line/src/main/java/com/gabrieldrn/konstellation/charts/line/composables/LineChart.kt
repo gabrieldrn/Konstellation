@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.hapticfeedback.*
 import androidx.compose.ui.input.pointer.*
@@ -99,15 +98,16 @@ fun LineChart(
             drawZeroLines(xDrawRange, yDrawRange)
 
             with(styles) {
-                clipRect(0f, 0f, size.width, size.height) {
+                clipRect {
                     // Lines between data points
                     drawLines(points, lineStyle, pointStyle, drawPoints = true)
                     // Highlight
                     highlightedValue?.let {
                         highlightPoint(
                             point = it,
-                            positions = properties.highlightPositions,
+                            contentPositions = properties.highlightContentPositions,
                             pointStyle = highlightPointStyle,
+                            linePosition = properties.highlightLinePosition,
                             lineStyle = highlightLineStyle
                         )
                     }
@@ -129,7 +129,7 @@ private fun BoxScope.ComposeHighlightPopup(
     properties: LineChartProperties
 ) {
     if (highlightContent != null) {
-        properties.highlightPositions.forEach { position ->
+        properties.highlightContentPositions.forEach { position ->
             BoxedPopup(
                 HighlightScope(
                     point, position, properties.chartPaddingValues
@@ -145,26 +145,21 @@ private fun BoxScope.ComposeHighlightPopup(
  * @suppress
  */
 @ExperimentalComposeUiApi
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LineChartPreview() {
-    Box(
-        Modifier
-            .background(Color.White)
+    LineChart(
+        dataset = randomFancyDataSet(),
+        modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1f)
-    ) {
-        LineChart(
-            dataset = randomFancyDataSet(),
-            modifier = Modifier.fillMaxSize(),
-            properties = LineChartProperties(
-                datasetOffsets = DatasetOffsets(
-                    xStartOffset = 2f,
-                    xEndOffset = 2f,
-                    yStartOffset = 0.5f,
-                    yEndOffset = 0.5f
-                )
+            .aspectRatio(1f),
+        properties = LineChartProperties(
+            datasetOffsets = DatasetOffsets(
+                xStartOffset = 2f,
+                xEndOffset = 2f,
+                yStartOffset = 0.5f,
+                yEndOffset = 0.5f
             )
         )
-    }
+    )
 }

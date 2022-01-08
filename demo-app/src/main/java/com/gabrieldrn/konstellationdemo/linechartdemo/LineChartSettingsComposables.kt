@@ -1,18 +1,16 @@
 package com.gabrieldrn.konstellationdemo.linechartdemo
 
-import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
-import com.gabrieldrn.konstellation.highlighting.HighlightPosition
+import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.google.accompanist.insets.navigationBarsHeight
 
 @Composable
@@ -82,29 +80,27 @@ private fun ColumnScope.LineChartHighlightSetting(viewModel: LineChartDemoViewMo
             .padding(horizontal = 24.dp, vertical = 16.dp)
             .align(Alignment.CenterHorizontally)
     ) {
+        @Composable
+        fun Checkbox(contentPosition: HighlightContentPosition) = Checkbox(
+            modifier = Modifier.align(
+                when (contentPosition) {
+                    HighlightContentPosition.TOP -> Alignment.TopCenter
+                    HighlightContentPosition.BOTTOM -> Alignment.BottomCenter
+                    HighlightContentPosition.START -> Alignment.CenterStart
+                    HighlightContentPosition.END -> Alignment.CenterEnd
+                    HighlightContentPosition.POINT -> Alignment.Center
+                }
+            ),
+            checked = viewModel.properties.highlightContentPositions.contains(contentPosition),
+            onCheckedChange = { checked ->
+                if (checked) viewModel.addHighlightPosition(contentPosition)
+                else viewModel.removeHighlightPosition(contentPosition)
+            },
+            colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
+        )
 
-        val highlightPositionCheckbox: @Composable (position: HighlightPosition) -> Unit = {
-            Checkbox(
-                modifier = Modifier.align(
-                    when (it) {
-                        HighlightPosition.TOP -> Alignment.TopCenter
-                        HighlightPosition.BOTTOM -> Alignment.BottomCenter
-                        HighlightPosition.START -> Alignment.CenterStart
-                        HighlightPosition.END -> Alignment.CenterEnd
-                        HighlightPosition.POINT -> Alignment.Center
-                    }
-                ),
-                checked = viewModel.properties.highlightPositions.contains(it),
-                onCheckedChange = { checked ->
-                    if (checked) viewModel.addHighlightPosition(it)
-                    else viewModel.removeHighlightPosition(it)
-                },
-                colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
-            )
-        }
-
-        HighlightPosition.values().forEach {
-            highlightPositionCheckbox(it)
+        HighlightContentPosition.values().forEach {
+            Checkbox(it)
         }
     }
 }
@@ -123,10 +119,10 @@ private fun LineChartSettingHeader(title: String) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LineChartSettingsPreview() {
-    Column(Modifier.background(Color.White)) {
+    Column {
         LineChartSettingsContent(
             viewModel = LineChartDemoViewModel()
         )

@@ -17,14 +17,14 @@ fun BoxScope.BoxedPopup(
     scope: HighlightScope,
     content: @Composable HighlightScope.() -> Unit
 ) {
-    fun getPlacementOffset(p: Placeable) = when (scope.position) {
-        HighlightPosition.TOP ->
+    fun getPlacementOffset(p: Placeable) = when (scope.contentPosition) {
+        HighlightContentPosition.TOP ->
             -IntOffset(p.width / 2, scope.point.yPos.toInt() + scope.paddingTop)
-        HighlightPosition.BOTTOM ->
+        HighlightContentPosition.BOTTOM ->
             -IntOffset(p.width / 2, 0)
-        HighlightPosition.START, HighlightPosition.END ->
+        HighlightContentPosition.START, HighlightContentPosition.END ->
             -IntOffset(0, p.height / 2) + IntOffset(0, scope.paddingTop)
-        HighlightPosition.POINT ->
+        HighlightContentPosition.POINT ->
             -IntOffset(p.width / 2, p.height)
     }
 
@@ -35,9 +35,9 @@ fun BoxScope.BoxedPopup(
         }
     }
 
-    fun getAlignment() = when (scope.position) {
-        HighlightPosition.BOTTOM -> Alignment.BottomStart
-        HighlightPosition.END -> Alignment.TopEnd
+    fun getAlignment() = when (scope.contentPosition) {
+        HighlightContentPosition.BOTTOM -> Alignment.BottomStart
+        HighlightContentPosition.END -> Alignment.TopEnd
         else -> Alignment.TopStart
     }
 
@@ -61,7 +61,7 @@ fun BoxScope.BoxedPopup(
 @Composable
 fun HighlightScope.HighlightPopup(
     modifier: Modifier = Modifier,
-    shape: HighlightPopupShape = HighlightPopupShape(position),
+    shape: HighlightPopupShape = HighlightPopupShape(contentPosition),
     backgroundColor: Color = if (MaterialTheme.colors.isLight) Color.White else Color.Black,
     content: @Composable BoxScope.() -> Unit
 ) {

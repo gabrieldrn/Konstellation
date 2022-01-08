@@ -3,7 +3,7 @@ package com.gabrieldrn.konstellationdemo.linechartdemo
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
-import com.gabrieldrn.konstellation.highlighting.HighlightPosition
+import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.datasetOf
 import com.gabrieldrn.konstellation.util.randomDataSet
@@ -28,18 +28,18 @@ class LineChartDemoViewModel(
         dataset = randomDataSet()
     }
 
-    fun addHighlightPosition(position: HighlightPosition) {
+    fun addHighlightPosition(contentPosition: HighlightContentPosition) {
         properties = properties.copy(
-            highlightPositions = properties.highlightPositions.toMutableSet().apply {
-                add(position)
+            highlightContentPositions = properties.highlightContentPositions.toMutableSet().apply {
+                add(contentPosition)
             }
         )
     }
 
-    fun removeHighlightPosition(position: HighlightPosition) {
+    fun removeHighlightPosition(contentPosition: HighlightContentPosition) {
         properties = properties.copy(
-            highlightPositions = properties.highlightPositions.toMutableSet().apply {
-                remove(position)
+            highlightContentPositions = properties.highlightContentPositions.toMutableSet().apply {
+                remove(contentPosition)
             }
         )
     }

@@ -97,45 +97,40 @@ private fun DemoContent(
             highlightedPoint = it
         }
     )
-    highlightedPoint?.let {
-        Text(
-            modifier = Modifier.padding(start = 16.dp),
-            text = "Selected point: ${it.x};${it.y}"
-        )
-    }
+    Text(
+        modifier = Modifier.padding(start = 16.dp),
+        text = highlightedPoint?.let {
+            "Selected point: ${it.x};${it.y}"
+        } ?: "Hold and <-swipe-> to highlight"
+    )
 }
 
 @ExperimentalComposeUiApi
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LineChartWithCustomPropertiesPreview() {
-    Box(
-        Modifier
-            .background(Color.White)
-            .fillMaxWidth()
-            .aspectRatio(1f)
-    ) {
-        val chartProperties = LineChartProperties(
-            axes = setOf(Axes.xBottom, Axes.xTop, Axes.yLeft, Axes.yRight),
-            datasetOffsets = DatasetOffsets(
-                xStartOffset = 2f,
-                xEndOffset = 2f,
-                yStartOffset = 0.5f,
-                yEndOffset = 0.5f
-            )
+    val chartProperties = LineChartProperties(
+        axes = setOf(Axes.xTop, Axes.xBottom, Axes.yLeft, Axes.yRight),
+        datasetOffsets = DatasetOffsets(
+            xStartOffset = 2f,
+            xEndOffset = 2f,
+            yStartOffset = 0.5f,
+            yEndOffset = 0.5f
         )
-        val chartStyles = LineChartStyles().apply {
-            lineStyle.color = MaterialTheme.colors.primary
-            pointStyle.color = MaterialTheme.colors.primary
-            textStyle.color = MaterialTheme.colors.primary
-            setAxesColor(Color.Black)
-        }
-
-        LineChart(
-            modifier = Modifier.fillMaxSize(),
-            dataset = randomFancyDataSet(),
-            properties = chartProperties,
-            styles = chartStyles
-        )
+    )
+    val chartStyles = LineChartStyles().apply {
+        lineStyle.color = MaterialTheme.colors.primary
+        pointStyle.color = MaterialTheme.colors.primary
+        textStyle.color = MaterialTheme.colors.primary
+        setAxesColor(Color.Black)
     }
+
+    LineChart(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f),
+        dataset = randomFancyDataSet(),
+        properties = chartProperties,
+        styles = chartStyles
+    )
 }

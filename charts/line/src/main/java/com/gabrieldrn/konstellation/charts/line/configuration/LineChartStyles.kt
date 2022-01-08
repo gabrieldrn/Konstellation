@@ -34,7 +34,7 @@ data class LineChartStyles(
     override val yAxisRightStyle: AxisDrawStyle = Axes.yRightStyle,
     val textStyle: TextDrawStyle = TextDrawStyle(),
     val highlightPointStyle: PointDrawStyle = PointDrawStyle(),
-    val highlightLineStyle: LineDrawStyle = LineDrawStyle(
+    val highlightLineStyle: LineDrawStyle? = LineDrawStyle(
         strokeWidth = 1.dp, dashed = true
     ),
     val highlightTextStyle: TextDrawStyle = TextDrawStyle(),
@@ -43,7 +43,7 @@ data class LineChartStyles(
     /**
      * Set of all axes styles.
      */
-    val axes get() = setOf(xAxisBottomStyle, xAxisTopStyle, yAxisLeftStyle, yAxisRightStyle)
+    val axesStyles get() = setOf(xAxisBottomStyle, xAxisTopStyle, yAxisLeftStyle, yAxisRightStyle)
 }
 
 /**
@@ -51,7 +51,7 @@ data class LineChartStyles(
  * @param typeface The new typeface to apply.
  */
 fun LineChartStyles.setAxesTypeface(typeface: Typeface) {
-    axes.forEach { it.tickTextStyle.typeface = typeface }
+    axesStyles.forEach { it.tickTextStyle.typeface = typeface }
 }
 
 /**
@@ -59,5 +59,5 @@ fun LineChartStyles.setAxesTypeface(typeface: Typeface) {
  * @throws color The new color to apply.
  */
 fun LineChartStyles.setAxesColor(color: Color) {
-    axes.forEach { it.setColor(color) }
+    axesStyles.forEach { it.setColor(color) }
 }
