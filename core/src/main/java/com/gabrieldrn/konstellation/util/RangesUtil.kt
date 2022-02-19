@@ -3,13 +3,13 @@ package com.gabrieldrn.konstellation.util
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 
 /**
- * Distance between the first and last value (end - start)
+ * Distance between the first and last value (end - start).
  */
 val ClosedFloatingPointRange<Float>.rawRange get() = endInclusive - start
 
 /**
- * Applies a receiving [DatasetOffsets] to X and Y given drawing ranges then returns them modified
- * in a pair [x-range, y-range].
+ * Applies a receiving [DatasetOffsets] to X and Y from given drawing ranges then returns them
+ * modified in a pair [x-range, y-range].
  */
 fun DatasetOffsets?.applyDatasetOffsets(
     xDrawRange: ClosedFloatingPointRange<Float>,

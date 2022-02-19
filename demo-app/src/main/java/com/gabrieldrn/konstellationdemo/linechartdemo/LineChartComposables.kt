@@ -24,7 +24,6 @@ import com.gabrieldrn.konstellationdemo.DemoContent
 import com.google.accompanist.insets.LocalWindowInsets
 
 @ExperimentalMaterialApi
-@ExperimentalComposeUiApi
 @Composable
 fun LineChartComposable(viewModel: LineChartDemoViewModel) {
 
@@ -55,7 +54,6 @@ fun LineChartComposable(viewModel: LineChartDemoViewModel) {
     }
 }
 
-@ExperimentalComposeUiApi
 @Composable
 private fun DemoContent(
     viewModel: LineChartDemoViewModel,
@@ -105,7 +103,6 @@ private fun DemoContent(
     )
 }
 
-@ExperimentalComposeUiApi
 @Preview(showBackground = true)
 @Composable
 fun LineChartWithCustomPropertiesPreview() {

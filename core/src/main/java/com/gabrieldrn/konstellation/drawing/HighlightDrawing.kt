@@ -23,7 +23,7 @@ fun DrawScope.highlightPoint(
 ) {
     drawPoint(point, pointStyle)
 
-    if (lineStyle == null) return
+    if (lineStyle == null || linePosition == null) return
 
     fun horizontalLine() = drawLine(
         Offset(0f, point.yPos),
@@ -36,8 +36,6 @@ fun DrawScope.highlightPoint(
         Offset(point.offset.x, size.height),
         lineStyle
     )
-
-    if (linePosition == null) return
 
     when (linePosition) {
         HighlightLinePosition.RELATIVE -> {

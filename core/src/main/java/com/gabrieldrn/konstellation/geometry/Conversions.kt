@@ -42,14 +42,14 @@ fun Float.convertFromRanges(
 }
 
 /**
- * Sets all the offsets in each [Point] of the receiving collection, based on the bounds of the
+ * Sets the offset attribute of each [Point] of the receiving collection, based on the bounds of the
  * passed [drawScope]. A specific range can be given with [dataSetXRange] and [dataSetYRange].
  *
- * @receiver The current collection of point within which to establish the offsets.
+ * @receiver The current collection of points within which to establish the offsets.
  * @param drawScope The draw scope of the chart in which drawing the future offsets.
- * @param dataSetXRange (optional) A specific range of values on the X axis to consider instead of
+ * @param dataSetXRange (optional) A specific range of values on the X-axis to consider instead of
  * the X range of the receiving collection.
- * @param dataSetYRange (optional) A specific range of values on the Y axis to consider instead of
+ * @param dataSetYRange (optional) A specific range of values on the Y-axis to consider instead of
  * the Y range of the receiving collection.
  */
 fun Dataset.createOffsets(

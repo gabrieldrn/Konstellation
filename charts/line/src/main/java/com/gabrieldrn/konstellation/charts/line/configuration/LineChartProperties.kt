@@ -16,10 +16,10 @@ import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
  * axes).
  * @property datasetOffsets Offsets to be applied around the dataset, see [DatasetOffsets]
  * for more details. A null value means no offsets.
- * @property highlightContentPositions Where to place highlighting popups. There will be as much popups as
- * there is positions.
+ * @property highlightContentPositions Where to place highlighting popups. There will be as many
+ * popups as there are positions.
  * @param highlightLinePosition Where highlight lines will be placed. See enum values for more
- * insight. A null value means to not draw any highlight line.
+ * insight. A null value means not drawing any highlight line.
  */
 data class LineChartProperties(
     override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),

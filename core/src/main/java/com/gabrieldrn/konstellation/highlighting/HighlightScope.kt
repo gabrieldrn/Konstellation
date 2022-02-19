@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.plotting.Point
 
 /**
- * A scope providing placement and contents data for a highlighting composed content.
+ * A scope providing placement and contents data for a highlighted composed content.
  * @param point The [Point] to highlight.
  * @param contentPosition Where the content will be gravitating in front of the chart.
  */

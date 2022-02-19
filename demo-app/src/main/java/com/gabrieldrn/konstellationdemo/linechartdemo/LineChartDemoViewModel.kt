@@ -14,7 +14,9 @@ class LineChartDemoViewModel(
 ) : ViewModel() {
 
     var dataset: Dataset by mutableStateOf(datasetOf())
+        private set
     var properties: LineChartProperties by mutableStateOf(properties)
+        private set
 
     init {
         generateNewFancyDataset()

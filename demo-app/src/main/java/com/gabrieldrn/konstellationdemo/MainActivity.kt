@@ -43,7 +43,6 @@ private val injector = object : KoinComponent {}
 private val mainTextStyle by injector.inject<TextDrawStyle>(QF_MAIN_TEXT_STYLE)
 
 @ExperimentalMaterialApi
-@ExperimentalComposeUiApi
 class MainActivity : AppCompatActivity() {
 
     private val lineChartViewModel by viewModel<LineChartDemoViewModel> {
@@ -81,7 +80,6 @@ enum class DemoContent(val chartName: String) {
 }
 
 @ExperimentalMaterialApi
-@ExperimentalComposeUiApi
 @Composable
 fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
     var contentSelection by rememberSaveable { mutableStateOf(DemoContent.values().first()) }
@@ -180,7 +178,6 @@ fun AnimatedFunctionChart() {
 }
 
 @ExperimentalMaterialApi
-@ExperimentalComposeUiApi
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {

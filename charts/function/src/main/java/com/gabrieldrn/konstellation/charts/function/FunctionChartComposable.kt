@@ -19,7 +19,7 @@ import com.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 
 /**
- * Composable responsible of plotting points from a function and draw axis.
+ * Composable responsible for plotting points from a function and drawing axis.
  */
 @Composable
 @Suppress("LongParameterList") //TODO Remove Suppress

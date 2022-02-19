@@ -7,10 +7,10 @@ import com.gabrieldrn.konstellation.plotting.ChartAxis
  * Base definition of styles that can be applied to components of a chart.
  * @property lineStyle Appearance of the lines connecting points.
  * @property pointStyle Appearance of data points.
- * @property xAxisBottomStyle Appearance of the bottom axis.
  * @property xAxisTopStyle Appearance of the top axis.
  * @property yAxisLeftStyle Appearance of the left axis.
  * @property yAxisRightStyle Appearance of the right axis.
+ * @property xAxisBottomStyle Appearance of the bottom axis.
  */
 interface ChartStyles {
     val lineStyle: LineDrawStyle

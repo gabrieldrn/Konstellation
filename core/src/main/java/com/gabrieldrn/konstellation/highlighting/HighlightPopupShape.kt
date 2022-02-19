@@ -16,7 +16,7 @@ open class HighlightPopupShape(private val contentPosition: HighlightContentPosi
     open var cornersRadius = 16f.dp
 
     /**
-     * The size of the arrow for this shape, as a distance from arrow's head to shape border.
+     * The size of the arrow for this shape, as a distance from the arrow's head to shape border.
      */
     open var arrowSize = 8f.dp
 

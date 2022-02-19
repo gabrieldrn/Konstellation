@@ -42,7 +42,6 @@ import com.gabrieldrn.konstellation.util.randomFancyDataSet
  * optional and it's a light alternative to [highlightContent] to have feedback on highlighting
  * without having to draw content above the chart.
  */
-@ExperimentalComposeUiApi
 @Composable
 fun LineChart(
     dataset: Dataset,
@@ -144,7 +143,6 @@ private fun BoxScope.ComposeHighlightPopup(
 /**
  * @suppress
  */
-@ExperimentalComposeUiApi
 @Preview(showBackground = true)
 @Composable
 fun LineChartPreview() {

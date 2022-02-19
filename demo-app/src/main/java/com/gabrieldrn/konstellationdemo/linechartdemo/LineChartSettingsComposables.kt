@@ -16,8 +16,9 @@ import com.google.accompanist.insets.navigationBarsHeight
 @Composable
 fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel) {
     Row {
+        // TODO Use DrawerState to animate this arrow
         Icon(
-            Icons.Rounded.ArrowDownward,
+            Icons.Rounded.ArrowUpward,
             null,
             Modifier
                 .align(Alignment.CenterVertically)
@@ -72,7 +73,7 @@ private fun LineChartDatasetSelector(viewModel: LineChartDemoViewModel) {
 
 @Composable
 private fun ColumnScope.LineChartHighlightSetting(viewModel: LineChartDemoViewModel) {
-    LineChartSettingHeader("Highlight positions")
+    LineChartSettingHeader("Highlight popup positions")
     Box(
         Modifier
             .height(156.dp)

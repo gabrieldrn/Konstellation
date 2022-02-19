@@ -21,8 +21,8 @@ internal fun DrawScope.getAxisDrawingPoints(
 }
 
 /**
- * Returns the positions between where ticks of this [axis] should be drawn. The first offset is the
- * start position and the second one is the end.
+ * Returns the positions indicating the space where ticks of this [axis] should be drawn. The first
+ * offset is the start position and the second one is the end.
  */
 internal fun DrawScope.calculateAxisOffsets(
     axis: ChartAxis,
