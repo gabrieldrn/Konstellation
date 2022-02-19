@@ -37,6 +37,8 @@ fun DrawScope.highlightPoint(
         lineStyle
     )
 
+    if (linePosition == null) return
+
     when (linePosition) {
         HighlightLinePosition.RELATIVE -> {
             if (contentPositions.any { it in verticalHLPositions }) {
