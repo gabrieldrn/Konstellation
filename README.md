@@ -1,4 +1,5 @@
-![Konstellation logo](https://user-images.githubusercontent.com/22205373/112414032-b8319500-8cf7-11eb-97d0-720f2f202cde.png)
+![Header](https://user-images.githubusercontent.com/22205373/159395017-93cd77cd-e19c-4ec3-a79d-40f1913b6f7b.png#gh-light-mode-only)
+![Header](https://user-images.githubusercontent.com/22205373/159395023-0eccf032-aed6-4d71-9500-02760793651b.png#gh-dark-mode-only)
 
 [![License](https://img.shields.io/badge/License-GNU%20v3.0-white.svg)](LICENSE)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.5.31-blue.svg?logo=kotlin)](http://kotlinlang.org)
