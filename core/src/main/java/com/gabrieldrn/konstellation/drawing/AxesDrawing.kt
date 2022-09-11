@@ -5,9 +5,9 @@ import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.unit.*
-import com.gabrieldrn.konstellation.geometry.*
-import com.gabrieldrn.konstellation.geometry.calculateAxisOffsets
-import com.gabrieldrn.konstellation.geometry.getAxisDrawingPoints
+import com.gabrieldrn.konstellation.math.*
+import com.gabrieldrn.konstellation.math.calculateAxisOffsets
+import com.gabrieldrn.konstellation.math.getAxisDrawingPoints
 import com.gabrieldrn.konstellation.plotting.Axis
 import com.gabrieldrn.konstellation.plotting.ChartAxis
 import com.gabrieldrn.konstellation.configuration.properties.ChartProperties
@@ -162,11 +162,11 @@ fun DrawScope.drawZeroLines(
     var zero: Float
 
     if (horizontalLine && 0f in datasetYRange) {
-        zero = 0f.convertFromRanges(datasetYRange, size.height..0f) + size.height
+        zero = 0f.map(datasetYRange, size.height..0f) + size.height
         drawLine(Offset(0f, zero), Offset(size.width, zero), lineStyle)
     }
     if (verticalLine && 0f in datasetXRange) {
-        zero = 0f.convertFromRanges(datasetXRange, 0f..size.width)
+        zero = 0f.map(datasetXRange, 0f..size.width)
         drawLine(Offset(zero, 0f), Offset(zero, size.height), lineStyle)
     }
 }

@@ -5,7 +5,7 @@ buildscript {
         core_ktx_version = '1.7.0'
         app_compat_version = '1.4.1'
         lifecycle_ktx = '2.4.1'
-        compose_version = '1.1.0' //https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
+        compose_version = '1.1.1' //https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
         activity_compose_version = '1.4.0'
         accompanist_version = '0.18.0'
         // endregion
@@ -15,7 +15,7 @@ buildscript {
         // endregion
 
         // region Gradle
-        gradle_version = '7.1.1'
+        gradle_version = '7.2.2'
         // endregion
 
         // region Tests

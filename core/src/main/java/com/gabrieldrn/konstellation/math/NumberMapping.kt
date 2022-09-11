@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.geometry
+package com.gabrieldrn.konstellation.math
 
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.drawscope.*
@@ -9,8 +9,7 @@ import com.gabrieldrn.konstellation.plotting.yRange
 import kotlin.math.abs
 
 /**
- * Applies a rule of three on the receiving Float, so as the returned float in [toRange] is
- * equivalent to the received one in [fromRange].
+ * Linearly maps a number that falls inside [fromRange] to [toRange].
  *
  * Example:
  *
@@ -28,13 +27,10 @@ import kotlin.math.abs
  * @param toRange Targeted range.
  * @return The value converted with the targeted range.
  */
-fun Float.convertFromRanges(
+fun Float.map(
     fromRange: ClosedRange<Float>,
     toRange: ClosedRange<Float>
 ): Float {
-//    require(this in fromRange) {
-//        "The point must be within the bounds of his range"
-//    }
     val offsetRange = if (toRange.start < 0f) abs(toRange.start) else 0f
     return (((toRange.endInclusive + offsetRange) - (toRange.start + offsetRange))
             * (this - fromRange.start) / (fromRange.endInclusive - fromRange.start)
@@ -61,32 +57,32 @@ fun Dataset.createOffsets(
     val canvasXRange = 0f..drawScope.size.width
     forEach {
         it.offset = Offset(
-            x = it.x.convertFromRanges(dataSetXRange, canvasXRange),
-            y = it.y.convertFromRanges(dataSetYRange, canvasYRange) + drawScope.size.height,
+            x = it.x.map(dataSetXRange, canvasXRange),
+            y = it.y.map(dataSetYRange, canvasYRange) + drawScope.size.height,
         )
     }
 }
 
 /**
  * Returns a position inside the given data range, relative to a given X position in the canvas with
- * the same logic from [convertFromRanges].
+ * the same logic from [map].
  *
  * @param canvasPos X position in the current canvas.
  * @param dataRange Range of the dataset
  */
-fun DrawScope.convertCanvasXToDataX(
+fun DrawScope.mapCanvasXToDataX(
     canvasPos: Float,
     dataRange: ClosedRange<Float>
-) = canvasPos.convertFromRanges(0f..size.width, dataRange)
+) = canvasPos.map(0f..size.width, dataRange)
 
 /**
  * Returns a position inside the given data range, relative to a given Y position in the canvas with
- * the same logic from [convertFromRanges].
+ * the same logic from [map].
  *
  * @param canvasPos Y position in the current canvas.
  * @param dataRange Range of the dataset
  */
-fun DrawScope.convertCanvasYToDataY(
+fun DrawScope.mapCanvasYToDataY(
     canvasPos: Float,
     dataRange: ClosedRange<Float>
-) = canvasPos.convertFromRanges(0f..size.height, dataRange)
+) = canvasPos.map(0f..size.height, dataRange)

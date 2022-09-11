@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.geometry
+package com.gabrieldrn.konstellation.math
 
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.drawscope.*

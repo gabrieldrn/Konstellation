@@ -19,7 +19,7 @@ import com.gabrieldrn.konstellation.drawing.drawLines
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
 import com.gabrieldrn.konstellation.drawing.drawZeroLines
 import com.gabrieldrn.konstellation.drawing.highlightPoint
-import com.gabrieldrn.konstellation.geometry.createOffsets
+import com.gabrieldrn.konstellation.math.createOffsets
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.highlighting.HighlightScope
 import com.gabrieldrn.konstellation.plotting.Dataset
@@ -39,7 +39,7 @@ import com.gabrieldrn.konstellation.util.randomFancyDataSet
  * @param highlightContent Classic Composable scope defining the content to be shown inside
  * highlight popup(s). This is optional.
  * @param onHighlightChange Callback invoked each time the highlighted value changes. This is
- * optional and it's a light alternative to [highlightContent] to have feedback on highlighting
+ * optional, and it's a light alternative to [highlightContent] to have feedback on highlighting
  * without having to draw content above the chart.
  */
 @Composable
@@ -51,20 +51,20 @@ fun LineChart(
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
+    val hapticLocal = LocalHapticFeedback.current
+    var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
+
+    // In order to enable re-composition of the Canvas pointerInput modifier, the dataset is
+    // "moved" inside a state.
+    var points by remember { mutableStateOf(datasetOf()) }
+    points = dataset
+
+    val (xDrawRange, yDrawRange) = properties.datasetOffsets.applyDatasetOffsets(
+        xDrawRange = dataset.xRange,
+        yDrawRange = dataset.yRange
+    )
+
     Box {
-        val hapticLocal = LocalHapticFeedback.current
-        var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
-
-        // In order to enable re-composition of the Canvas pointerInput modifier, the dataset is
-        // "moved" inside a state.
-        var points by remember { mutableStateOf(datasetOf()) }
-        points = dataset
-
-        val (xDrawRange, yDrawRange) = properties.datasetOffsets.applyDatasetOffsets(
-            xDrawRange = dataset.xRange,
-            yDrawRange = dataset.yRange
-        )
-
         Canvas(
             modifier
                 .padding(properties.chartPaddingValues)
