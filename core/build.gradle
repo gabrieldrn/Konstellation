@@ -1,7 +1,6 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
-    id "org.jetbrains.dokka"
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin.android
 }
 
 android {
@@ -34,20 +33,19 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion libs.versions.androidxCompose.get()
     }
 }
 
-dokkaHtml.configure {
-    dokkaSourceSets {
-        named("main") {
-            noAndroidSdkLink.set(false)
-        }
-    }
-}
+//dokkaHtml.configure {
+//    dokkaSourceSets {
+//        named("main") {
+//            noAndroidSdkLink.set(false)
+//        }
+//    }
+//}
 
 dependencies {
-
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
     implementation libs.androidx.compose.ui
