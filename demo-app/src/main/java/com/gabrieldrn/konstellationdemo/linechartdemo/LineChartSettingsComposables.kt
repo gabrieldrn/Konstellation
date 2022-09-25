@@ -11,7 +11,6 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
-import com.google.accompanist.insets.navigationBarsHeight
 
 @Composable
 fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel) {
@@ -39,7 +38,7 @@ fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel) {
     LineChartHighlightSetting(viewModel)
     Spacer(
         Modifier
-            .navigationBarsHeight()
+            .windowInsetsBottomHeight(WindowInsets.navigationBars)
             .fillMaxWidth()
     )
 }

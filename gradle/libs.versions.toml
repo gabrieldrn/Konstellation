@@ -1,39 +1,40 @@
 [versions]
-kotlin = "1.6.10"
-androidxAppcompat = "1.4.1"
-androidxCore = "1.7.0"
-androidxLifecycle = "2.4.1"
-androidxActivity = "1.4.0"
-androidxCompose = "1.1.1" #https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
+kotlin = "1.7.10"
+androidxAppcompat = "1.5.1"
+androidxCore = "1.9.0"
+androidxLifecycle = "2.5.1"
+androidxActivity = "1.6.0"
+#https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
+androidxCompose = "1.2.1"
+androidxComposeCompiler = "1.3.0"
 androidxTestExtJunit = "1.1.3"
 androidxEspresso = "3.4.0"
-material = "1.5.0"
-accompanist = "0.18.0"
-koin = "3.1.4"
+material = "1.6.1"
+accompanist = "0.25.1"
+koin = "3.2.2"
 junit = "4.13.2"
-android-gradle = "7.2.2"
-versionsPlugin = "0.41.0"
-versionsCatalogUpdatePlugin = "0.6.1" #https://github.com/littlerobots/version-catalog-update-plugin
-detekt = "1.19.0"
-dokka = "1.6.0"
+android-gradle = "7.3.0"
+versionsPlugin = "0.42.0"
+#https://github.com/littlerobots/version-catalog-update-plugin
+versionsCatalogUpdatePlugin = "0.6.1"
+detekt = "1.21.0"
+dokka = "1.7.10"
 
 [libraries]
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcompat" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
-androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidxCompose" }
-androidx-compose-uiTooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "androidxCompose" }
-androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "androidxCompose" }
-androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "androidxCompose" }
-androidx-test-ext = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExtJunit" }
-androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidxCompose" }
+androidx-compose-uiTooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidxCompose" }
+androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidxCompose" }
+androidx-compose-material-iconsExtended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidxCompose" }
+androidx-test-ext = { module = "androidx.test.ext:junit", version.ref = "androidxTestExtJunit" }
+androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxEspresso" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
-accompanist-insets = { group = "com.google.accompanist", name = "accompanist-insets", version.ref = "accompanist" }
-accompanist-insets-ui = { group = "com.google.accompanist", name = "accompanist-insets-ui", version.ref = "accompanist" }
-accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 koin = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
+junit = { module = "junit:junit", version.ref = "junit" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }

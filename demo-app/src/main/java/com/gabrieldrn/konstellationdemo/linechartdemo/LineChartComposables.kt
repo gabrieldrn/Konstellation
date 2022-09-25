@@ -21,7 +21,6 @@ import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 import com.gabrieldrn.konstellationdemo.DemoContent
-import com.google.accompanist.insets.LocalWindowInsets
 
 @ExperimentalMaterialApi
 @Composable
@@ -32,7 +31,7 @@ fun LineChartComposable(viewModel: LineChartDemoViewModel) {
     val chartStyles = getChartStyles()
 
     val imeBottom = with(LocalDensity.current) {
-        LocalWindowInsets.current.navigationBars.bottom.toDp()
+        WindowInsets.navigationBars.getBottom(this).toDp()
     }
 
     BottomSheetScaffold(

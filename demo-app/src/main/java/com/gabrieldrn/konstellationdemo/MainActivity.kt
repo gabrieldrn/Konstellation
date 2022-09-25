@@ -19,17 +19,13 @@ import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
-import com.gabrieldrn.konstellation.charts.function.*
+import com.gabrieldrn.konstellation.charts.function.FunctionPlotter
 import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartComposable
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
 import com.gabrieldrn.konstellationdemo.linechartdemo.getChartProperties
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
-import com.google.accompanist.insets.ui.TopAppBar
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -66,9 +62,7 @@ class MainActivity : AppCompatActivity() {
                 )
             }
             KonstellationTheme {
-                ProvideWindowInsets {
-                    Content(lineChartViewModel)
-                }
+                Content(lineChartViewModel)
             }
         }
     }
@@ -86,7 +80,8 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
     val scope = rememberCoroutineScope()
 
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    val insetsPaddingValues = rememberInsetsPaddingValues(LocalWindowInsets.current.statusBars)
+//    val insetsPaddingValues = rememberInsetsPaddingValues(LocalWindowInsets.current.statusBars)
+    val insetsPaddingValues = WindowInsets.statusBars.asPaddingValues()
 
     LaunchedEffect(scaffoldState) {
         scaffoldState.conceal()
@@ -111,7 +106,7 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
                 },
                 elevation = 0.dp,
                 backgroundColor = Color.Transparent,
-                contentPadding = insetsPaddingValues
+                modifier = Modifier.padding(insetsPaddingValues),
             )
         },
         peekHeight = BackdropScaffoldDefaults.PeekHeight + insetsPaddingValues.calculateTopPadding(),
@@ -143,6 +138,7 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
 }
 
 @Composable
+@Suppress("MagicNumber")
 fun AnimatedFunctionChart() {
     var animate by rememberSaveable { mutableStateOf(false) }
     val infiniteTransition = rememberInfiniteTransition()
@@ -182,8 +178,10 @@ fun AnimatedFunctionChart() {
 @Composable
 fun DefaultPreview() {
     KonstellationTheme {
-        Content(LineChartDemoViewModel(
-            getChartProperties()
-        ))
+        Content(
+            LineChartDemoViewModel(
+                getChartProperties()
+            )
+        )
     }
 }

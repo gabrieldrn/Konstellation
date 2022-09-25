@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.gabrieldrn.konstellationdemo"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 1
         versionName "0.1"
 
@@ -31,13 +31,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        useIR = true
+//        useIR = true
     }
     buildFeatures {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.androidxCompose.get()
+        kotlinCompilerExtensionVersion libs.versions.androidxComposeCompiler.get()
     }
 }
 
@@ -54,8 +54,6 @@ dependencies {
     implementation libs.androidx.compose.material
     implementation libs.androidx.compose.material.iconsExtended
     implementation libs.material
-    implementation libs.accompanist.insets
-    implementation libs.accompanist.insets.ui
     implementation libs.accompanist.systemuicontroller
 
     implementation libs.koin
