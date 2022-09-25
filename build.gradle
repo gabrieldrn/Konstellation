@@ -17,21 +17,6 @@ plugins {
     alias libs.plugins.dokka apply false //Globally
 }
 
-tasks.named("detekt").configure {
-    reports {
-        xml {
-            required = true
-            outputLocation = file("build/reports/detekt/detekt.xml")
-        }
-        html {
-            required = true
-            outputLocation = file("build/reports/detekt/detekt.html")
-        }
-        txt.required.set(false)
-        sarif.required.set(false)
-    }
-}
-
 def isNonStable = { String version ->
     def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
     def regex = /^[0-9,.v-]+(-r)?$/
@@ -46,6 +31,21 @@ tasks.named("dependencyUpdates").configure {
 
 versionCatalogUpdate {
     sortByKey = false
+}
+
+tasks.named("detekt").configure {
+    reports {
+        xml {
+            required = true
+            outputLocation = file("build/reports/detekt/detekt.xml")
+        }
+        html {
+            required = true
+            outputLocation = file("build/reports/detekt/detekt.html")
+        }
+        txt.required.set(false)
+        sarif.required.set(false)
+    }
 }
 
 subprojects {

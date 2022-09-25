@@ -80,7 +80,6 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
     val scope = rememberCoroutineScope()
 
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-//    val insetsPaddingValues = rememberInsetsPaddingValues(LocalWindowInsets.current.statusBars)
     val insetsPaddingValues = WindowInsets.statusBars.asPaddingValues()
 
     LaunchedEffect(scaffoldState) {

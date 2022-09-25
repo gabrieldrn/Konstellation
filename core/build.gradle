@@ -4,6 +4,8 @@ plugins {
 }
 
 android {
+    namespace "com.gabrieldrn.konstellation"
+
     compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
