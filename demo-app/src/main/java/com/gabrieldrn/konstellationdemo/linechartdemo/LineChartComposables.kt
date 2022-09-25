@@ -2,6 +2,7 @@ package com.gabrieldrn.konstellationdemo.linechartdemo
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -69,31 +70,33 @@ private fun DemoContent(
         style = MaterialTheme.typography.h4,
         fontWeight = FontWeight.ExtraBold,
     )
-    LineChart(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f), //Keep the chart square
-        dataset = viewModel.dataset,
-        properties = viewModel.properties,
-        styles = chartStyles,
-        highlightContent = {
-            HighlightPopup(
-                backgroundColor = MaterialTheme.colors.primary
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .align(Alignment.Center),
-                    text = "y -> ${point.y.toInt()}",
-                    style = MaterialTheme.typography.body1,
-                    textAlign = TextAlign.Start
-                )
+    Surface(shape = RoundedCornerShape(16.dp), modifier = Modifier.padding(16.dp)) {
+        LineChart(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f), //Keep the chart square
+            dataset = viewModel.dataset,
+            properties = viewModel.properties,
+            styles = chartStyles,
+            highlightContent = {
+                HighlightPopup(
+                    backgroundColor = MaterialTheme.colors.primary
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.Center),
+                        text = "y -> ${point.y.toInt()}",
+                        style = MaterialTheme.typography.body1,
+                        textAlign = TextAlign.Start
+                    )
+                }
+            },
+            onHighlightChange = {
+                highlightedPoint = it
             }
-        },
-        onHighlightChange = {
-            highlightedPoint = it
-        }
-    )
+        )
+    }
     Text(
         modifier = Modifier.padding(start = 16.dp),
         text = highlightedPoint?.let {

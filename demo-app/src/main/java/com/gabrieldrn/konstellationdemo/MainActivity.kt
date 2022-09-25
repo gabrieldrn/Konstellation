@@ -53,15 +53,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContent {
-            val systemUiController = rememberSystemUiController()
-            val useDarkIcons = isSystemInDarkTheme()
-            SideEffect {
-                systemUiController.setSystemBarsColor(
-                    color = Color.Transparent,
-                    darkIcons = useDarkIcons
-                )
-            }
             KonstellationTheme {
+                val systemUiController = rememberSystemUiController()
+                val useDarkIcons = MaterialTheme.colors.primary.luminance() > 0.5f
+                SideEffect {
+                    systemUiController.setSystemBarsColor(
+                        color = Color.Transparent,
+                        darkIcons = useDarkIcons
+                    )
+                }
                 Content(lineChartViewModel)
             }
         }
@@ -108,6 +108,7 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
                 modifier = Modifier.padding(insetsPaddingValues),
             )
         },
+        gesturesEnabled = false,
         peekHeight = BackdropScaffoldDefaults.PeekHeight + insetsPaddingValues.calculateTopPadding(),
         backLayerContent = {
             LazyColumn {

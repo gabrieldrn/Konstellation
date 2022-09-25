@@ -21,7 +21,7 @@ private val injector = object : KoinComponent {}
 
 internal fun getChartProperties() = LineChartProperties(
     chartPaddingValues = PaddingValues(44.dp),
-    axes = setOf(Axes.xBottom, Axes.xTop, Axes.yLeft, Axes.yRight),
+    axes = setOf(Axes.xBottom, Axes.yLeft),
     datasetOffsets = DatasetOffsets(
         xStartOffset = 2f,
         xEndOffset = 2f,
@@ -46,12 +46,12 @@ internal fun getChartStyles(
         offsetY = -25f
     )
 ).apply {
-    lineStyle.color = MaterialTheme.colors.primary
-    pointStyle.color = MaterialTheme.colors.primary
-    textStyle.color = MaterialTheme.colors.primary
+    lineStyle.color = MaterialTheme.colors.primaryVariant
+    pointStyle.color = MaterialTheme.colors.primaryVariant
+    textStyle.color = MaterialTheme.colors.onBackground
     highlightLineStyle?.color = MaterialTheme.colors.onBackground
     highlightPointStyle.run {
-        color = MaterialTheme.colors.primary.copy(alpha = 0.3f)
+        color = MaterialTheme.colors.primaryVariant.copy(alpha = 0.3f)
         radius = 6.dp
     }
     setAxesColor(MaterialTheme.colors.onBackground)
