@@ -42,8 +42,8 @@ buildscript {
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "$plugin_detekt_version"
-    id "org.jetbrains.dokka" version "$plugin_dokka_version"
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.dokka)
 }
 
 tasks.named("detekt").configure {

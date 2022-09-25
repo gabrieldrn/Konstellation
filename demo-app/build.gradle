@@ -45,22 +45,22 @@ dependencies {
     implementation project(":charts:line")
     implementation project(":charts:function")
 
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.appcompat:appcompat:$app_compat_version"
-    implementation "com.google.android.material:material:$material_version"
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling:$compose_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_ktx"
-    implementation "androidx.activity:activity-compose:$activity_compose_version"
-    implementation "com.google.accompanist:accompanist-insets:$accompanist_version"
-    implementation "com.google.accompanist:accompanist-insets-ui:$accompanist_version"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.activity.compose
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.uiTooling
+    implementation libs.androidx.compose.material
+    implementation libs.androidx.compose.material.iconsExtended
+    implementation libs.material
+    implementation libs.accompanist.insets
+    implementation libs.accompanist.insets.ui
+    implementation libs.accompanist.systemuicontroller
 
-    implementation "io.insert-koin:koin-android:3.1.4"
+    implementation libs.koin
 
-    testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "androidx.test.ext:junit:1.1.3"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.4.0"
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.test.ext
+    androidTestImplementation libs.androidx.test.espresso
 }
