@@ -25,16 +25,16 @@ fun ToggleIconButton(
     onToggleChange: (Boolean) -> Unit,
     imageVector: ImageVector,
     toggledColor: Color = MaterialTheme.colors.primary,
-    untoggledColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f),
+    disabledColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f),
     toggledImageVectorTint: Color = MaterialTheme.colors.onPrimary,
-    untoggledImageVectorTint: Color = MaterialTheme.colors.onSurface,
+    disabledImageVectorTint: Color = MaterialTheme.colors.onSurface,
     modifier: Modifier = Modifier
 ) {
     val background by animateColorAsState(
-        if (toggled) toggledColor else untoggledColor
+        if (toggled) toggledColor else disabledColor
     )
     val imageVectorTint by animateColorAsState(
-        if (toggled) toggledImageVectorTint else untoggledImageVectorTint
+        if (toggled) toggledImageVectorTint else disabledImageVectorTint
     )
     Box(
         modifier = modifier

@@ -38,7 +38,7 @@ import kotlin.math.sin
 private val injector = object : KoinComponent {}
 private val mainTextStyle by injector.inject<TextDrawStyle>(QF_MAIN_TEXT_STYLE)
 
-private const val DARK_ICONS_LUMINANCE_THRESHOLD = 0.5f
+private const val DarkIconsLuminanceThreshold = 0.5f
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             KonstellationTheme {
                 val systemUiController = rememberSystemUiController()
                 val useDarkIcons =
-                    MaterialTheme.colors.primary.luminance() > DARK_ICONS_LUMINANCE_THRESHOLD
+                    MaterialTheme.colors.primary.luminance() > DarkIconsLuminanceThreshold
                 SideEffect {
                     systemUiController.setSystemBarsColor(
                         color = Color.Transparent,

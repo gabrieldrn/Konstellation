@@ -212,7 +212,7 @@ private fun LineChartAxisSelectorSetting(
 
 @Preview(showBackground = true)
 @Composable
-fun ChartSelectorPreview() {
+private fun ChartSelectorPreview() {
     KonstellationTheme {
         Box(Modifier.background(MaterialTheme.colors.background)) {
             LineChartDatasetSelector(
@@ -228,7 +228,7 @@ fun ChartSelectorPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun ChartHighlightSelectorPreview() {
+private fun ChartHighlightSelectorPreview() {
     KonstellationTheme {
         Box(Modifier.background(MaterialTheme.colors.background)) {
             LineChartHighlightSetting(
@@ -244,7 +244,7 @@ fun ChartHighlightSelectorPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun ChartAxesSelectorPreview() {
+private fun ChartAxesSelectorPreview() {
     KonstellationTheme {
         Box(Modifier.background(MaterialTheme.colors.background)) {
             LineChartAxisSelectorSetting(
