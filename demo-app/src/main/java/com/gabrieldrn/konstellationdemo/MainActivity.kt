@@ -132,7 +132,14 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
         frontLayerContent = {
             Box(Modifier.fillMaxSize()) {
                 when (contentSelection) {
-                    DemoContent.LINE -> LineChartComposable(lineChartDemoViewModel)
+                    DemoContent.LINE -> LineChartComposable(
+                        onGenerateRandomDataset = lineChartDemoViewModel::generateNewRandomDataset,
+                        onGenerateFancyDataset = lineChartDemoViewModel::generateNewFancyDataset,
+                        onAddHighlightPosition = lineChartDemoViewModel::addHighlightPosition,
+                        onRemoveHighlightPosition = lineChartDemoViewModel::removeHighlightPosition,
+                        onAddAxis = lineChartDemoViewModel::addAxis,
+                        onRemoveAxis = lineChartDemoViewModel::removeAxis,
+                    )
                     DemoContent.FUNCTION -> AnimatedFunctionChart()
                 }
             }
@@ -182,9 +189,7 @@ fun AnimatedFunctionChart() {
 fun DefaultPreview() {
     KonstellationTheme {
         Content(
-            LineChartDemoViewModel(
-                getChartProperties()
-            )
+            LineChartDemoViewModel(getChartProperties())
         )
     }
 }

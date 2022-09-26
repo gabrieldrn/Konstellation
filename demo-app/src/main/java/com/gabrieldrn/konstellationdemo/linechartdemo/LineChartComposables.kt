@@ -11,19 +11,29 @@ import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gabrieldrn.konstellation.charts.line.composables.LineChart
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.configuration.setAxesColor
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
+import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.highlighting.HighlightPopup
 import com.gabrieldrn.konstellation.plotting.Axes
+import com.gabrieldrn.konstellation.plotting.ChartAxis
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 import com.gabrieldrn.konstellationdemo.DemoContent
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
 @Composable
-fun LineChartComposable(viewModel: LineChartDemoViewModel) {
+fun LineChartComposable(
+    onGenerateRandomDataset: () -> Unit,
+    onGenerateFancyDataset: () -> Unit,
+    onAddHighlightPosition: (HighlightContentPosition) -> Unit,
+    onRemoveHighlightPosition: (HighlightContentPosition) -> Unit,
+    onAddAxis: (ChartAxis) -> Unit,
+    onRemoveAxis: (ChartAxis) -> Unit,
+) {
 
     val chartStyles = getChartStyles()
 
@@ -34,14 +44,20 @@ fun LineChartComposable(viewModel: LineChartDemoViewModel) {
             .background(color = MaterialTheme.colors.background)
             .navigationBarsPadding(),
     ) {
-        DemoContent(viewModel, chartStyles)
-        LineChartSettingsContent(viewModel = viewModel)
+        DemoContent(chartStyles)
+        LineChartSettingsContent(
+            onGenerateRandomDataset = onGenerateRandomDataset,
+            onGenerateFancyDataset = onGenerateFancyDataset,
+            onAddHighlightPosition = onAddHighlightPosition,
+            onRemoveHighlightPosition = onRemoveHighlightPosition,
+            onAddAxis = onAddAxis,
+            onRemoveAxis = onRemoveAxis,
+        )
     }
 }
 
 @Composable
 private fun DemoContent(
-    viewModel: LineChartDemoViewModel,
     chartStyles: LineChartStyles,
 ) {
     Text(
@@ -62,8 +78,8 @@ private fun DemoContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f), //Keep the chart square
-            dataset = viewModel.dataset,
-            properties = viewModel.properties,
+            dataset = viewModel<LineChartDemoViewModel>().dataset,
+            properties = viewModel<LineChartDemoViewModel>().properties,
             styles = chartStyles,
             highlightContent = {
                 HighlightPopup(
