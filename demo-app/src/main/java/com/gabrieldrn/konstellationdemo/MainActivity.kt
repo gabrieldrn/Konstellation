@@ -133,8 +133,10 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
             Box(Modifier.fillMaxSize()) {
                 when (contentSelection) {
                     DemoContent.LINE -> LineChartComposable(
+                        drawPoints = lineChartDemoViewModel.properties.drawPoints,
                         onGenerateRandomDataset = lineChartDemoViewModel::generateNewRandomDataset,
                         onGenerateFancyDataset = lineChartDemoViewModel::generateNewFancyDataset,
+                        onToggleDrawPoints = lineChartDemoViewModel::updateDrawPoints,
                         onAddHighlightPosition = lineChartDemoViewModel::addHighlightPosition,
                         onRemoveHighlightPosition = lineChartDemoViewModel::removeHighlightPosition,
                         onAddAxis = lineChartDemoViewModel::addAxis,

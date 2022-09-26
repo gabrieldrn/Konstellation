@@ -27,8 +27,10 @@ import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
 @Composable
 fun LineChartComposable(
+    drawPoints: Boolean,
     onGenerateRandomDataset: () -> Unit,
     onGenerateFancyDataset: () -> Unit,
+    onToggleDrawPoints: (Boolean) -> Unit,
     onAddHighlightPosition: (HighlightContentPosition) -> Unit,
     onRemoveHighlightPosition: (HighlightContentPosition) -> Unit,
     onAddAxis: (ChartAxis) -> Unit,
@@ -46,8 +48,10 @@ fun LineChartComposable(
     ) {
         DemoContent(chartStyles)
         LineChartSettingsContent(
+            drawPoints = drawPoints,
             onGenerateRandomDataset = onGenerateRandomDataset,
             onGenerateFancyDataset = onGenerateFancyDataset,
+            onToggleDrawPoints = onToggleDrawPoints,
             onAddHighlightPosition = onAddHighlightPosition,
             onRemoveHighlightPosition = onRemoveHighlightPosition,
             onAddAxis = onAddAxis,

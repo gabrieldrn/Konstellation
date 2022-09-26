@@ -20,6 +20,7 @@ import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
  * popups as there are positions.
  * @param highlightLinePosition Where highlight lines will be placed. See enum values for more
  * insight. A null value means not drawing any highlight line.
+ * @param drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
  */
 data class LineChartProperties(
     override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
@@ -28,5 +29,6 @@ data class LineChartProperties(
     val highlightContentPositions: Set<HighlightContentPosition> = setOf(
         HighlightContentPosition.POINT
     ),
-    val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.RELATIVE
+    val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.RELATIVE,
+    val drawPoints: Boolean = false
 ) : ChartProperties

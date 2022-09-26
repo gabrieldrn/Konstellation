@@ -19,9 +19,9 @@ import com.gabrieldrn.konstellation.drawing.drawLines
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
 import com.gabrieldrn.konstellation.drawing.drawZeroLines
 import com.gabrieldrn.konstellation.drawing.highlightPoint
-import com.gabrieldrn.konstellation.math.createOffsets
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.highlighting.HighlightScope
+import com.gabrieldrn.konstellation.math.createOffsets
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.datasetOf
@@ -99,7 +99,7 @@ fun LineChart(
             with(styles) {
                 clipRect {
                     // Lines between data points
-                    drawLines(points, lineStyle, pointStyle, drawPoints = true)
+                    drawLines(points, lineStyle, pointStyle, properties.drawPoints)
                     // Highlight
                     highlightedValue?.let {
                         highlightPoint(
