@@ -38,13 +38,15 @@ import kotlin.math.sin
 private val injector = object : KoinComponent {}
 private val mainTextStyle by injector.inject<TextDrawStyle>(QF_MAIN_TEXT_STYLE)
 
-@ExperimentalMaterialApi
+private const val DARK_ICONS_LUMINANCE_THRESHOLD = 0.5f
+
 class MainActivity : AppCompatActivity() {
 
     private val lineChartViewModel by viewModel<LineChartDemoViewModel> {
         parametersOf(getChartProperties())
     }
 
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -55,7 +57,8 @@ class MainActivity : AppCompatActivity() {
         setContent {
             KonstellationTheme {
                 val systemUiController = rememberSystemUiController()
-                val useDarkIcons = MaterialTheme.colors.primary.luminance() > 0.5f
+                val useDarkIcons =
+                    MaterialTheme.colors.primary.luminance() > DARK_ICONS_LUMINANCE_THRESHOLD
                 SideEffect {
                     systemUiController.setSystemBarsColor(
                         color = Color.Transparent,
@@ -89,9 +92,7 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
         scaffoldState = scaffoldState,
         appBar = {
             TopAppBar(
-                title = {
-                    Text(text = "Konstellation", fontWeight = FontWeight.Bold)
-                },
+                title = { Text(text = "Konstellation", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     if (scaffoldState.isConcealed) {
                         IconButton(onClick = { scope.launch { scaffoldState.reveal() } }) {
@@ -127,14 +128,16 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
                     )
                 }
             }
-        }, frontLayerContent = {
+        },
+        frontLayerContent = {
             Box(Modifier.fillMaxSize()) {
                 when (contentSelection) {
                     DemoContent.LINE -> LineChartComposable(lineChartDemoViewModel)
                     DemoContent.FUNCTION -> AnimatedFunctionChart()
                 }
             }
-        })
+        }
+    )
 }
 
 @Composable

@@ -1,130 +1,168 @@
 package com.gabrieldrn.konstellationdemo.linechartdemo
 
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.*
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
-import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
+import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.rememberPagerState
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel) {
-    Row {
-        // TODO Use DrawerState to animate this arrow
-        Icon(
-            Icons.Rounded.ArrowUpward,
-            null,
-            Modifier
-                .align(Alignment.CenterVertically)
-                .padding(start = 16.dp)
-        )
-        Text(
-            modifier = Modifier
-                .padding(start = 34.dp)
-                .padding(vertical = 16.dp)
-                .align(Alignment.CenterVertically),
-            text = "Settings",
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.h6,
-            fontWeight = FontWeight.Bold
-        )
+    val pagerState = rememberPagerState()
+    HorizontalPager(
+        count = 2,
+        state = pagerState,
+        verticalAlignment = Alignment.Top
+    ) { page ->
+        when (page) {
+            0 -> LineChartDatasetSelector(
+                viewModel,
+                Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            )
+            1 -> LineChartHighlightSetting(
+                viewModel,
+                Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            )
+        }
     }
-    LineChartDatasetSelector(viewModel)
-    LineChartHighlightSetting(viewModel)
-    Spacer(
-        Modifier
-            .windowInsetsBottomHeight(WindowInsets.navigationBars)
-            .fillMaxWidth()
+    HorizontalPagerIndicator(
+        pagerState = pagerState,
+        modifier = Modifier
+            .align(Alignment.CenterHorizontally)
+            .padding(top = 4.dp),
     )
 }
 
 @Composable
-private fun LineChartDatasetSelector(viewModel: LineChartDemoViewModel) {
-    LineChartSettingHeader("Datasets")
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Button(
-            modifier = Modifier
-                .weight(1f)
-                .padding(end = 8.dp),
-            onClick = { viewModel.generateNewRandomDataset() }
+private fun LineChartDatasetSelector(
+    viewModel: LineChartDemoViewModel,
+    modifier: Modifier = Modifier
+) {
+    Column {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            modifier = modifier
         ) {
-            Text(text = "NEW RANDOM", textAlign = TextAlign.Center)
-        }
-        Button(
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 8.dp),
-            onClick = { viewModel.generateNewFancyDataset() }
-        ) {
-            Text(text = "NEW FANCY", textAlign = TextAlign.Center)
-        }
-    }
-}
-
-@Composable
-private fun ColumnScope.LineChartHighlightSetting(viewModel: LineChartDemoViewModel) {
-    LineChartSettingHeader("Highlight popup positions")
-    Box(
-        Modifier
-            .height(156.dp)
-            .aspectRatio(1f)
-            .padding(horizontal = 24.dp, vertical = 16.dp)
-            .align(Alignment.CenterHorizontally)
-    ) {
-        @Composable
-        fun Checkbox(contentPosition: HighlightContentPosition) = Checkbox(
-            modifier = Modifier.align(
-                when (contentPosition) {
-                    HighlightContentPosition.TOP -> Alignment.TopCenter
-                    HighlightContentPosition.BOTTOM -> Alignment.BottomCenter
-                    HighlightContentPosition.START -> Alignment.CenterStart
-                    HighlightContentPosition.END -> Alignment.CenterEnd
-                    HighlightContentPosition.POINT -> Alignment.Center
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 32.dp)
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    IconButton(
+                        onClick = { viewModel.generateNewRandomDataset() },
+                        Modifier.background(
+                            color = MaterialTheme.colors.primary,
+                            shape = CircleShape
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Shuffle,
+                            contentDescription = null,
+                            tint = MaterialTheme.colors.onPrimary
+                        )
+                    }
+                    Text(text = "Random", textAlign = TextAlign.Center)
                 }
-            ),
-            checked = viewModel.properties.highlightContentPositions.contains(contentPosition),
-            onCheckedChange = { checked ->
-                if (checked) viewModel.addHighlightPosition(contentPosition)
-                else viewModel.removeHighlightPosition(contentPosition)
-            },
-            colors = CheckboxDefaults.colors(checkedColor = MaterialTheme.colors.primary)
-        )
-
-        HighlightContentPosition.values().forEach {
-            Checkbox(it)
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    IconButton(
+                        onClick = { viewModel.generateNewFancyDataset() },
+                        Modifier.background(
+                            color = MaterialTheme.colors.primary,
+                            shape = CircleShape
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AutoGraph,
+                            contentDescription = null,
+                            tint = MaterialTheme.colors.onPrimary
+                        )
+                    }
+                    Text(text = "Fancy", textAlign = TextAlign.Center)
+                }
+            }
         }
+        Text("Datasets", modifier = Modifier.align(Alignment.CenterHorizontally))
     }
 }
 
 @Composable
-private fun LineChartSettingHeader(title: String) {
-    Row(Modifier.padding(top = 8.dp)) {
-        Icon(
-            Icons.Rounded.ArrowRight,
-            null,
-            Modifier
-                .align(Alignment.CenterVertically)
-                .padding(horizontal = 16.dp)
+private fun LineChartHighlightSetting(
+    viewModel: LineChartDemoViewModel,
+    modifier: Modifier = Modifier
+) {
+    Column {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            modifier = modifier
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                @Composable
+                fun PositionSwitch(position: HighlightContentPosition) {
+                    Switch(
+                        checked = viewModel.properties.highlightContentPositions.contains(position),
+                        onCheckedChange = { checked ->
+                            if (checked) viewModel.addHighlightPosition(position)
+                            else viewModel.removeHighlightPosition(position)
+                        }
+                    )
+                }
+                PositionSwitch(HighlightContentPosition.TOP)
+                Row {
+                    PositionSwitch(HighlightContentPosition.START)
+                    PositionSwitch(HighlightContentPosition.POINT)
+                    PositionSwitch(HighlightContentPosition.END)
+                }
+                PositionSwitch(HighlightContentPosition.BOTTOM)
+            }
+        }
+        Text(
+            "Highlight popup positions",
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         )
-        Text(modifier = Modifier.align(Alignment.CenterVertically), text = title)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun LineChartSettingsPreview() {
-    Column {
-        LineChartSettingsContent(
-            viewModel = LineChartDemoViewModel()
-        )
+fun ChartSelectorPreview() {
+    KonstellationTheme {
+        Box(Modifier.background(MaterialTheme.colors.background)) {
+            LineChartDatasetSelector(
+                viewModel = LineChartDemoViewModel(),
+                Modifier.fillMaxWidth().padding(16.dp)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ChartHighlightSelectorPreview() {
+    KonstellationTheme {
+        Box(Modifier.background(MaterialTheme.colors.background)) {
+            LineChartHighlightSetting(
+                viewModel = LineChartDemoViewModel(),
+                Modifier.fillMaxWidth().padding(16.dp)
+            )
+        }
     }
 }

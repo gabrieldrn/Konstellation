@@ -7,7 +7,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
@@ -19,38 +18,24 @@ import com.gabrieldrn.konstellation.charts.line.configuration.setAxesColor
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.highlighting.HighlightPopup
 import com.gabrieldrn.konstellation.plotting.Axes
-import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 import com.gabrieldrn.konstellationdemo.DemoContent
+import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
-@ExperimentalMaterialApi
 @Composable
 fun LineChartComposable(viewModel: LineChartDemoViewModel) {
 
-    val settingsSheetState = rememberBottomSheetScaffoldState()
-
     val chartStyles = getChartStyles()
 
-    val imeBottom = with(LocalDensity.current) {
-        WindowInsets.navigationBars.getBottom(this).toDp()
-    }
-
-    BottomSheetScaffold(
-        scaffoldState = settingsSheetState,
-        sheetPeekHeight = 60.dp + imeBottom,
-        sheetContent = {
-            Column(Modifier.verticalScroll(rememberScrollState())) {
-                LineChartSettingsContent(
-                    viewModel = viewModel
-                )
-            }
-        }
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .background(color = MaterialTheme.colors.background)
+            .navigationBarsPadding(),
     ) {
-        Column(
-            Modifier.verticalScroll(rememberScrollState())
-        ) {
-            DemoContent(viewModel, chartStyles)
-        }
+        DemoContent(viewModel, chartStyles)
+        LineChartSettingsContent(viewModel = viewModel)
     }
 }
 
@@ -59,9 +44,6 @@ private fun DemoContent(
     viewModel: LineChartDemoViewModel,
     chartStyles: LineChartStyles,
 ) {
-    var highlightedPoint: Point? by remember {
-        mutableStateOf(null)
-    }
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -70,7 +52,12 @@ private fun DemoContent(
         style = MaterialTheme.typography.h4,
         fontWeight = FontWeight.ExtraBold,
     )
-    Surface(shape = RoundedCornerShape(16.dp), modifier = Modifier.padding(16.dp)) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier
+            .padding(top = 16.dp)
+            .padding(horizontal = 16.dp)
+    ) {
         LineChart(
             modifier = Modifier
                 .fillMaxWidth()
@@ -91,18 +78,9 @@ private fun DemoContent(
                         textAlign = TextAlign.Start
                     )
                 }
-            },
-            onHighlightChange = {
-                highlightedPoint = it
             }
         )
     }
-    Text(
-        modifier = Modifier.padding(start = 16.dp),
-        text = highlightedPoint?.let {
-            "Selected point: ${it.x};${it.y}"
-        } ?: "Hold and <-swipe-> to highlight"
-    )
 }
 
 @Preview(showBackground = true)
@@ -124,12 +102,14 @@ fun LineChartWithCustomPropertiesPreview() {
         setAxesColor(Color.Black)
     }
 
-    LineChart(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f),
-        dataset = randomFancyDataSet(),
-        properties = chartProperties,
-        styles = chartStyles
-    )
+    KonstellationTheme {
+        LineChart(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f),
+            dataset = randomFancyDataSet(),
+            properties = chartProperties,
+            styles = chartStyles
+        )
+    }
 }

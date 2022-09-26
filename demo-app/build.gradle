@@ -57,6 +57,8 @@ dependencies {
     implementation libs.androidx.compose.material.iconsExtended
     implementation libs.material
     implementation libs.accompanist.systemuicontroller
+    implementation libs.accompanist.pager
+    implementation libs.accompanist.pager.indicators
 
     implementation libs.koin
 
