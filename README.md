@@ -1,16 +1,18 @@
 ![Konstellation logo](https://user-images.githubusercontent.com/22205373/112414032-b8319500-8cf7-11eb-97d0-720f2f202cde.png)
 
 [![License](https://img.shields.io/badge/License-GNU%20v3.0-white.svg)](LICENSE)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.5.31-blue.svg?logo=kotlin)](http://kotlinlang.org)
-[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.0.5-blue.svg?logo=android)](https://developer.android.com/jetpack/compose)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.7.10-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.2.1-blue.svg?logo=android)](https://developer.android.com/jetpack/compose)
 
 [![](https://github.com/gabrieldrn/Konstellation/workflows/CI/badge.svg?branch=develop)]()
 
 A plotting library based on Jetpack Compose.
 
-**This library is still a work in progress and is being actively worked on. Here's what it can draw so far:**
+**This library is still a work in progress and is being actively worked on.**
 
-![device-2021-11-14-231208_framed](https://user-images.githubusercontent.com/22205373/141721568-02888a5b-60bc-4fb5-a880-cf89f5ef8f28.png)
+![Screenshot_20220927_003134_framed](https://user-images.githubusercontent.com/22205373/192433407-087166f9-9e96-4f66-bbc9-daef829dab9f.png#gh-light-mode-only)
+![Screenshot_20220927_003116_framed](https://user-images.githubusercontent.com/22205373/192433474-6384bd39-751f-4120-b206-e839bba60e28.png#gh-dark-mode-only)
+
 
 ## Usage example of a function chart
 
