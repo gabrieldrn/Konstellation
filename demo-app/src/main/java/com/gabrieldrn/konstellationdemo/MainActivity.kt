@@ -134,6 +134,8 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
                 when (contentSelection) {
                     DemoContent.LINE -> LineChartComposable(
                         drawPoints = lineChartDemoViewModel.properties.drawPoints,
+                        highlightPositions = lineChartDemoViewModel.properties.highlightContentPositions,
+                        axes = lineChartDemoViewModel.properties.axes,
                         onGenerateRandomDataset = lineChartDemoViewModel::generateNewRandomDataset,
                         onGenerateFancyDataset = lineChartDemoViewModel::generateNewFancyDataset,
                         onToggleDrawPoints = lineChartDemoViewModel::updateDrawPoints,

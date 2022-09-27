@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.vector.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
@@ -30,6 +29,8 @@ private val SettingSurfaceHeight = 124.dp
 @Composable
 fun ColumnScope.LineChartSettingsContent(
     drawPoints: Boolean,
+    highlightPositions: Set<HighlightContentPosition>,
+    axes: Set<ChartAxis>,
     onGenerateRandomDataset: () -> Unit,
     onGenerateFancyDataset: () -> Unit,
     onToggleDrawPoints: (Boolean) -> Unit,
@@ -44,6 +45,7 @@ fun ColumnScope.LineChartSettingsContent(
         state = pagerState,
         verticalAlignment = Alignment.Top
     ) { page ->
+        @Suppress("MagicNumber")
         when (page) {
             0 -> LineChartDatasetSelector(
                 onGenerateRandomDataset = onGenerateRandomDataset,
@@ -54,10 +56,12 @@ fun ColumnScope.LineChartSettingsContent(
                 onToggleDrawPoints = onToggleDrawPoints
             )
             2 -> LineChartHighlightSetting(
+                highlightPositions = highlightPositions ,
                 onAddHighlightPosition = onAddHighlightPosition,
                 onRemoveHighlightPosition = onRemoveHighlightPosition
             )
             3 -> LineChartAxisSelectorSetting(
+                axes = axes,
                 onAddAxis = onAddAxis,
                 onRemoveAxis = onRemoveAxis
             )
@@ -161,6 +165,7 @@ private fun LineChartPointsSetting(
 
 @Composable
 private fun LineChartHighlightSetting(
+    highlightPositions: Set<HighlightContentPosition>,
     onAddHighlightPosition: (HighlightContentPosition) -> Unit,
     onRemoveHighlightPosition: (HighlightContentPosition) -> Unit,
     modifier: Modifier = Modifier
@@ -169,8 +174,7 @@ private fun LineChartHighlightSetting(
         @Composable
         fun PositionToggleButton(position: HighlightContentPosition, imageVector: ImageVector) {
             ToggleIconButton(
-                toggled = viewModel<LineChartDemoViewModel>()
-                    .properties.highlightContentPositions.contains(position),
+                toggled = highlightPositions.contains(position),
                 onToggleChange = { toggled ->
                     if (toggled) onAddHighlightPosition(position)
                     else onRemoveHighlightPosition(position)
@@ -200,6 +204,7 @@ private fun LineChartHighlightSetting(
 
 @Composable
 private fun LineChartAxisSelectorSetting(
+    axes: Set<ChartAxis>,
     onAddAxis: (ChartAxis) -> Unit,
     onRemoveAxis: (ChartAxis) -> Unit,
     modifier: Modifier = Modifier
@@ -208,8 +213,7 @@ private fun LineChartAxisSelectorSetting(
         @Composable
         fun AxisToggleButton(axis: ChartAxis, imageVector: ImageVector) {
             ToggleIconButton(
-                toggled = viewModel<LineChartDemoViewModel>()
-                    .properties.axes.contains(axis),
+                toggled = axes.contains(axis),
                 onToggleChange = { toggled ->
                     if (toggled) onAddAxis(axis)
                     else onRemoveAxis(axis)
@@ -262,7 +266,9 @@ private fun ChartPointsSettingsPreview() {
 private fun ChartHighlightSelectorPreview() {
     KonstellationTheme {
         Box(Modifier.background(MaterialTheme.colors.background)) {
-            LineChartHighlightSetting({}, {})
+            LineChartHighlightSetting(
+                setOf(HighlightContentPosition.POINT), {}, {}
+            )
         }
     }
 }
@@ -272,7 +278,9 @@ private fun ChartHighlightSelectorPreview() {
 private fun ChartAxesSelectorPreview() {
     KonstellationTheme {
         Box(Modifier.background(MaterialTheme.colors.background)) {
-            LineChartAxisSelectorSetting({}, {})
+            LineChartAxisSelectorSetting(
+                setOf(Axes.yLeft, Axes.xBottom), {}, {}
+            )
         }
     }
 }
