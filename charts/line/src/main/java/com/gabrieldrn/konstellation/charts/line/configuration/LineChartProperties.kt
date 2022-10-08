@@ -6,6 +6,7 @@ import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
 import com.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
+import com.gabrieldrn.konstellation.configuration.properties.Rounding
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
 
@@ -21,6 +22,7 @@ import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
  * @param highlightLinePosition Where highlight lines will be placed. See enum values for more
  * insight. A null value means not drawing any highlight line.
  * @param drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
+ * @param rounding The style of the lines drawing between the data points.
  */
 data class LineChartProperties(
     override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
@@ -30,5 +32,6 @@ data class LineChartProperties(
         HighlightContentPosition.POINT
     ),
     val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.RELATIVE,
-    val drawPoints: Boolean = false
+    val drawPoints: Boolean = false,
+    override val rounding: Rounding = Rounding.None
 ) : ChartProperties

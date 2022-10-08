@@ -12,7 +12,7 @@ enum class HighlightContentPosition {
 /**
  * Array of the possible vertical positions where the popup can be placed.
  */
-internal val verticalHLPositions = arrayOf(
+val verticalHLPositions = arrayOf(
     HighlightContentPosition.POINT,
     HighlightContentPosition.TOP,
     HighlightContentPosition.BOTTOM
@@ -21,7 +21,7 @@ internal val verticalHLPositions = arrayOf(
 /**
  * Array of the possible horizontal positions where the popup can be placed.
  */
-internal val horizontalHLPositions = arrayOf(
+val horizontalHLPositions = arrayOf(
     HighlightContentPosition.START,
     HighlightContentPosition.END
 )

@@ -16,15 +16,15 @@ import androidx.compose.ui.unit.*
  * @property dashedEffectPhase Pixel offset into the intervals array
  */
 data class LineDrawStyle(
-    override var color: Color = DEFAULT_LINE_COLOR,
-    var strokeWidth: Dp = DEFAULT_STROKE_WIDTH,
-    var cap: StrokeCap = DEFAULT_LINE_CAP,
-    var dashed: Boolean = DEFAULT_DASHED_ENABLED,
+    override var color: Color = DefaultLineColor,
+    var strokeWidth: Dp = DefaultStrokeWidth,
+    var cap: StrokeCap = DefaultLineCap,
+    var dashed: Boolean = DefaultDashed,
     var dashedEffectIntervals: FloatArray = floatArrayOf(
-        DEFAULT_HIGHLIGHT_DASHED_LINE_ON,
-        DEFAULT_HIGHLIGHT_DASHED_LINE_OFF
+        DefaultHighlightDashedLineOn,
+        DefaultHighlightDashedLineOff
     ),
-    var dashedEffectPhase: Float = DEFAULT_HIGHLIGHT_DASHED_LINE_PHASE,
+    var dashedEffectPhase: Float = DefaultHighlightDashedLinePhase,
 ) : DrawStyle {
 
     override fun equals(other: Any?): Boolean {
@@ -52,12 +52,12 @@ data class LineDrawStyle(
     }
 
     companion object {
-        private val DEFAULT_LINE_COLOR = Color.Black
-        private val DEFAULT_STROKE_WIDTH = 1.5.dp
-        private val DEFAULT_LINE_CAP = StrokeCap.Round
-        private const val DEFAULT_DASHED_ENABLED = false
-        private const val DEFAULT_HIGHLIGHT_DASHED_LINE_ON = 10f
-        private const val DEFAULT_HIGHLIGHT_DASHED_LINE_OFF = 20f
-        private const val DEFAULT_HIGHLIGHT_DASHED_LINE_PHASE = 0f
+        val DefaultLineColor = Color.Black
+        val DefaultStrokeWidth = 1.5.dp
+        val DefaultLineCap = StrokeCap.Round
+        const val DefaultDashed = false
+        const val DefaultHighlightDashedLineOn = 10f
+        const val DefaultHighlightDashedLineOff = 20f
+        const val DefaultHighlightDashedLinePhase = 0f
     }
 }
