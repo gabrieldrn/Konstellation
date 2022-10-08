@@ -105,9 +105,7 @@ fun LineChart(
 
                     // Points
                     if (properties.drawPoints) {
-                        dataset.forEach { p ->
-                            drawPoint(p, pointStyle)
-                        }
+                        points.forEach { drawPoint(it, pointStyle) }
                     }
 
                     // Highlight
