@@ -1,6 +1,7 @@
 package com.gabrieldrn.konstellationdemo.ui.composables
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.*
 import androidx.compose.foundation.layout.*
@@ -31,10 +32,12 @@ fun ToggleIconButton(
     modifier: Modifier = Modifier
 ) {
     val background by animateColorAsState(
-        if (toggled) toggledColor else disabledColor
+        targetValue = if (toggled) toggledColor else disabledColor,
+        animationSpec = tween()
     )
     val imageVectorTint by animateColorAsState(
-        if (toggled) toggledImageVectorTint else disabledImageVectorTint
+        targetValue = if (toggled) toggledImageVectorTint else disabledImageVectorTint,
+        animationSpec = tween()
     )
     Box(
         modifier = modifier

@@ -1,6 +1,7 @@
 package com.gabrieldrn.konstellation.charts.line.configuration
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
@@ -19,10 +20,12 @@ import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
  * for more details. A null value means no offsets.
  * @property highlightContentPositions Where to place highlighting popups. There will be as many
  * popups as there are positions.
- * @param highlightLinePosition Where highlight lines will be placed. See enum values for more
+ * @property highlightLinePosition Where highlight lines will be placed. See enum values for more
  * insight. A null value means not drawing any highlight line.
- * @param drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
- * @param rounding The style of the lines drawing between the data points.
+ * @property drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
+ * @property rounding The style of the lines drawing between the data points.
+ * @property fillingBrush The brush to apply to the filling content from the bottom of the chart to
+ * the data lines.
  */
 data class LineChartProperties(
     override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
@@ -33,5 +36,6 @@ data class LineChartProperties(
     ),
     val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.RELATIVE,
     val drawPoints: Boolean = false,
-    override val rounding: Rounding = Rounding.None
+    override val rounding: Rounding = Rounding.None,
+    val fillingBrush: Brush? = null
 ) : ChartProperties

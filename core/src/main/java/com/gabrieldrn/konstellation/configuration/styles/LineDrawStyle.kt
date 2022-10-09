@@ -54,7 +54,7 @@ data class LineDrawStyle(
     companion object {
         val DefaultLineColor = Color.Black
         val DefaultStrokeWidth = 1.5.dp
-        val DefaultLineCap = StrokeCap.Round
+        val DefaultLineCap = StrokeCap.Square
         const val DefaultDashed = false
         const val DefaultHighlightDashedLineOn = 10f
         const val DefaultHighlightDashedLineOff = 20f

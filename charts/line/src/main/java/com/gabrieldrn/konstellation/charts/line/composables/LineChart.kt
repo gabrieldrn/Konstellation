@@ -20,12 +20,12 @@ import com.gabrieldrn.konstellation.drawing.drawPoint
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
 import com.gabrieldrn.konstellation.drawing.drawZeroLines
 import com.gabrieldrn.konstellation.drawing.highlightPoint
+import com.gabrieldrn.konstellation.drawing.toPath
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.highlighting.HighlightScope
 import com.gabrieldrn.konstellation.math.createOffsets
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
-import com.gabrieldrn.konstellation.plotting.datasetOf
 import com.gabrieldrn.konstellation.plotting.nearestPointByX
 import com.gabrieldrn.konstellation.plotting.xRange
 import com.gabrieldrn.konstellation.plotting.yRange
@@ -55,11 +55,6 @@ fun LineChart(
     val hapticLocal = LocalHapticFeedback.current
     var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
 
-    // In order to enable re-composition of the Canvas pointerInput modifier, the dataset is
-    // "moved" inside a state.
-    var points by remember { mutableStateOf(datasetOf()) }
-    points = dataset
-
     val (xDrawRange, yDrawRange) = properties.datasetOffsets.applyDatasetOffsets(
         xDrawRange = dataset.xRange,
         yDrawRange = dataset.yRange
@@ -69,11 +64,11 @@ fun LineChart(
         Canvas(
             modifier
                 .padding(properties.chartPaddingValues)
-                .pointerInput(Unit) {
+                .pointerInput(dataset) {
                     detectDragGesturesAfterLongPress(
                         onDragStart = {
                             hapticLocal.performHapticFeedback(HapticFeedbackType.LongPress)
-                            highlightedValue = points.nearestPointByX(it.x)
+                            highlightedValue = dataset.nearestPointByX(it.x)
                             onHighlightChange?.invoke(highlightedValue)
                         },
                         onDragEnd = {
@@ -81,7 +76,7 @@ fun LineChart(
                             onHighlightChange?.invoke(highlightedValue)
                         },
                         onDrag = { change, _ ->
-                            highlightedValue = points.nearestPointByX(change.position.x)
+                            highlightedValue = dataset.nearestPointByX(change.position.x)
                             onHighlightChange?.invoke(highlightedValue)
                         }
                     )
@@ -89,7 +84,7 @@ fun LineChart(
         ) {
             drawFrame()
 
-            points.createOffsets(
+            dataset.createOffsets(
                 drawScope = this,
                 dataSetXRange = xDrawRange,
                 dataSetYRange = yDrawRange
@@ -100,12 +95,29 @@ fun LineChart(
             with(styles) {
                 clipRect {
 
+                    // Background filling
+                    properties.fillingBrush?.let { brush ->
+                        drawPath(
+                            path = dataset.toPath(properties.rounding).apply {
+                                // Closing shape
+                                lineTo(dataset.last().xPos, size.height)
+                                lineTo(dataset[0].xPos, size.height)
+                                close()
+                            },
+                            brush = brush
+                        )
+                    }
+
                     // Lines between data points
-                    drawPath(points, lineStyle, properties.rounding)
+                    drawPath(
+                        dataset,
+                        properties.rounding,
+                        lineStyle
+                    )
 
                     // Points
                     if (properties.drawPoints) {
-                        points.forEach { drawPoint(it, pointStyle) }
+                        dataset.forEach { drawPoint(it, pointStyle) }
                     }
 
                     // Highlight

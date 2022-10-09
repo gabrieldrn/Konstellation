@@ -1,6 +1,7 @@
 package com.gabrieldrn.konstellationdemo.linechartdemo
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.*
 import androidx.lifecycle.ViewModel
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
@@ -66,5 +67,9 @@ class LineChartDemoViewModel(
 
     fun updateDrawPoints(value: Boolean) {
         properties = properties.copy(drawPoints = value)
+    }
+
+    fun changeFillingBrush(brush: Brush?) {
+        properties = properties.copy(fillingBrush = brush)
     }
 }

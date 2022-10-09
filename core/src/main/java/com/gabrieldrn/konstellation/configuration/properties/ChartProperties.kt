@@ -26,4 +26,6 @@ enum class Rounding {
      * adaptation from the positions of the other data points.
      */
     SimpleCubic
+
+    // TODO Complex cubic
 }

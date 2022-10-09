@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity() {
     @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lineChartViewModel // Trigger instantiation.
+
         WindowCompat.setDecorFitsSystemWindows(window, false)
         ResourcesCompat.getFont(this, R.font.manrope_medium)?.let {
             mainTextStyle.typeface = it
@@ -65,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                         darkIcons = useDarkIcons
                     )
                 }
-                Content(lineChartViewModel)
+                Content()
             }
         }
     }
@@ -78,7 +81,7 @@ enum class DemoContent(val chartName: String) {
 
 @ExperimentalMaterialApi
 @Composable
-fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
+fun Content() {
     var contentSelection by rememberSaveable { mutableStateOf(DemoContent.values().first()) }
     val scope = rememberCoroutineScope()
 
@@ -132,18 +135,7 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
         frontLayerContent = {
             Box(Modifier.fillMaxSize()) {
                 when (contentSelection) {
-                    DemoContent.LINE -> LineChartComposable(
-                        drawPoints = lineChartDemoViewModel.properties.drawPoints,
-                        highlightPositions = lineChartDemoViewModel.properties.highlightContentPositions,
-                        axes = lineChartDemoViewModel.properties.axes,
-                        onGenerateRandomDataset = lineChartDemoViewModel::generateNewRandomDataset,
-                        onGenerateFancyDataset = lineChartDemoViewModel::generateNewFancyDataset,
-                        onToggleDrawPoints = lineChartDemoViewModel::updateDrawPoints,
-                        onAddHighlightPosition = lineChartDemoViewModel::addHighlightPosition,
-                        onRemoveHighlightPosition = lineChartDemoViewModel::removeHighlightPosition,
-                        onAddAxis = lineChartDemoViewModel::addAxis,
-                        onRemoveAxis = lineChartDemoViewModel::removeAxis,
-                    )
+                    DemoContent.LINE -> LineChartComposable()
                     DemoContent.FUNCTION -> AnimatedFunctionChart()
                 }
             }
@@ -192,8 +184,6 @@ fun AnimatedFunctionChart() {
 @Composable
 fun DefaultPreview() {
     KonstellationTheme {
-        Content(
-            LineChartDemoViewModel(getChartProperties())
-        )
+        Content()
     }
 }

@@ -9,10 +9,12 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.vector.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
@@ -27,43 +29,41 @@ private val SettingSurfaceHeight = 124.dp
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ColumnScope.LineChartSettingsContent(
-    drawPoints: Boolean,
-    highlightPositions: Set<HighlightContentPosition>,
-    axes: Set<ChartAxis>,
-    onGenerateRandomDataset: () -> Unit,
-    onGenerateFancyDataset: () -> Unit,
-    onToggleDrawPoints: (Boolean) -> Unit,
-    onAddHighlightPosition: (HighlightContentPosition) -> Unit,
-    onRemoveHighlightPosition: (HighlightContentPosition) -> Unit,
-    onAddAxis: (ChartAxis) -> Unit,
-    onRemoveAxis: (ChartAxis) -> Unit,
-) {
+fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = viewModel()) {
     val pagerState = rememberPagerState()
+
     HorizontalPager(
-        count = 4,
+        count = 5,
         state = pagerState,
         verticalAlignment = Alignment.Top
     ) { page ->
         @Suppress("MagicNumber")
         when (page) {
             0 -> LineChartDatasetSelector(
-                onGenerateRandomDataset = onGenerateRandomDataset,
-                onGenerateFancyDataset = onGenerateFancyDataset
+                onGenerateRandomDataset = viewModel::generateNewRandomDataset,
+                onGenerateFancyDataset = viewModel::generateNewFancyDataset
             )
+
             1 -> LineChartPointsSetting(
-                drawPoints = drawPoints,
-                onToggleDrawPoints = onToggleDrawPoints
+                drawPoints = viewModel.properties.drawPoints,
+                onToggleDrawPoints = viewModel::updateDrawPoints
             )
-            2 -> LineChartHighlightSetting(
-                highlightPositions = highlightPositions ,
-                onAddHighlightPosition = onAddHighlightPosition,
-                onRemoveHighlightPosition = onRemoveHighlightPosition
+
+            2 -> LineChartFillingSetting(
+                brush = viewModel.properties.fillingBrush,
+                onChangeBrush = viewModel::changeFillingBrush
             )
-            3 -> LineChartAxisSelectorSetting(
-                axes = axes,
-                onAddAxis = onAddAxis,
-                onRemoveAxis = onRemoveAxis
+
+            3 -> LineChartHighlightSetting(
+                highlightPositions = viewModel.properties.highlightContentPositions,
+                onAddHighlightPosition = viewModel::addHighlightPosition,
+                onRemoveHighlightPosition = viewModel::removeHighlightPosition
+            )
+
+            4 -> LineChartAxisSelectorSetting(
+                axes = viewModel.properties.axes,
+                onAddAxis = viewModel::addAxis,
+                onRemoveAxis = viewModel::removeAxis
             )
         }
     }
@@ -164,6 +164,47 @@ private fun LineChartPointsSetting(
 }
 
 @Composable
+private fun LineChartFillingSetting(
+    brush: Brush?,
+    onChangeBrush: (Brush?) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val solidColor = SolidColor(MaterialTheme.colors.primary.copy(alpha = .75f))
+    val gradientBrush = Brush.verticalGradient(
+        colors = listOf(MaterialTheme.colors.primary, Color.Transparent)
+    )
+    SettingSurface(title = "Filling", modifier = modifier) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(24.dp)
+        ) {
+            ToggleIconButton(
+                toggled = brush is SolidColor,
+                onToggleChange = {
+                    onChangeBrush(solidColor)
+                },
+                imageVector = Icons.Default.FormatColorFill
+            )
+            ToggleIconButton(
+                toggled = brush is ShaderBrush,
+                onToggleChange = {
+                    onChangeBrush(gradientBrush)
+                },
+                imageVector = Icons.Default.Gradient
+            )
+            ToggleIconButton(
+                toggled = brush == null,
+                onToggleChange = {
+                    onChangeBrush(null)
+                },
+                imageVector = Icons.Default.FormatColorReset
+            )
+        }
+    }
+}
+
+@Composable
 private fun LineChartHighlightSetting(
     highlightPositions: Set<HighlightContentPosition>,
     onAddHighlightPosition: (HighlightContentPosition) -> Unit,
@@ -257,6 +298,17 @@ private fun ChartPointsSettingsPreview() {
         Box(Modifier.background(MaterialTheme.colors.background)) {
             var value by remember { mutableStateOf(true) }
             LineChartPointsSetting(value, { value = it })
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ChartFillingSettingPreview() {
+    KonstellationTheme {
+        Box(Modifier.background(MaterialTheme.colors.background)) {
+            var value by remember { mutableStateOf<Brush?>(null) }
+            LineChartFillingSetting(brush = value, onChangeBrush = { value = it })
         }
     }
 }
