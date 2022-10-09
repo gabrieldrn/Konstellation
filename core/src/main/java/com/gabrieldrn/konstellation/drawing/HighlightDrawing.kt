@@ -38,7 +38,7 @@ fun DrawScope.highlightPoint(
     )
 
     when (linePosition) {
-        HighlightLinePosition.RELATIVE -> {
+        HighlightLinePosition.Relative -> {
             if (contentPositions.any { it in verticalHLPositions }) {
                 verticalLine()
             }
@@ -46,9 +46,9 @@ fun DrawScope.highlightPoint(
                 horizontalLine()
             }
         }
-        HighlightLinePosition.HORIZONTAL -> horizontalLine()
-        HighlightLinePosition.VERTICAL -> verticalLine()
-        HighlightLinePosition.BOTH -> {
+        HighlightLinePosition.Horizontal -> horizontalLine()
+        HighlightLinePosition.Vertical -> verticalLine()
+        HighlightLinePosition.Both -> {
             horizontalLine()
             verticalLine()
         }

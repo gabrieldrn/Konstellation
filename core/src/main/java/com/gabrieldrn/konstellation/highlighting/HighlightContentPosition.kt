@@ -2,28 +2,28 @@ package com.gabrieldrn.konstellation.highlighting
 
 /**
  * Positions where a highlight popup can be placed.
- * [TOP], [BOTTOM], [START], [END] represents the positions where the popup will stick over the
- * chart "window". [POINT] will place the popup up above the highlighted point.
+ * [Top], [Bottom], [Start], [End] represents the positions where the popup will stick over the
+ * chart "window". [Point] will place the popup up above the highlighted point.
  */
 enum class HighlightContentPosition {
-    TOP, BOTTOM, START, END, POINT
+    Top, Bottom, Start, End, Point
 }
 
 /**
  * Array of the possible vertical positions where the popup can be placed.
  */
 val verticalHLPositions = arrayOf(
-    HighlightContentPosition.POINT,
-    HighlightContentPosition.TOP,
-    HighlightContentPosition.BOTTOM
+    HighlightContentPosition.Point,
+    HighlightContentPosition.Top,
+    HighlightContentPosition.Bottom
 )
 
 /**
  * Array of the possible horizontal positions where the popup can be placed.
  */
 val horizontalHLPositions = arrayOf(
-    HighlightContentPosition.START,
-    HighlightContentPosition.END
+    HighlightContentPosition.Start,
+    HighlightContentPosition.End
 )
 
 /**

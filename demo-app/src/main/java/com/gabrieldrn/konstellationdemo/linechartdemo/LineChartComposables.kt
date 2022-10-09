@@ -17,11 +17,9 @@ import com.gabrieldrn.konstellation.charts.line.configuration.LineChartPropertie
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.configuration.setAxesColor
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
-import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.highlighting.HighlightPopup
-import com.gabrieldrn.konstellation.highlighting.verticalHLPositions
+import com.gabrieldrn.konstellation.highlighting.horizontalHLPositions
 import com.gabrieldrn.konstellation.plotting.Axes
-import com.gabrieldrn.konstellation.plotting.ChartAxis
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 import com.gabrieldrn.konstellationdemo.DemoContent
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
@@ -76,7 +74,11 @@ private fun DemoContent(
                         modifier = Modifier
                             .padding(8.dp)
                             .align(Alignment.Center),
-                        text = "y -> ${point.y.toInt()}",
+                        text = if (contentPosition in horizontalHLPositions) {
+                            "x -> ${point.x.toInt()}"
+                        } else {
+                            "y -> ${point.y.toInt()}"
+                        },
                         style = MaterialTheme.typography.body1,
                         textAlign = TextAlign.Start
                     )

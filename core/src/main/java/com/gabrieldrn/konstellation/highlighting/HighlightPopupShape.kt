@@ -36,7 +36,7 @@ open class HighlightPopupShape(private val contentPosition: HighlightContentPosi
         val minBorderLength = cornerRadiusPx * 2 + arrowSizePx * 2
         val len = if (contentPosition.isVertical) size.width else size.height
         val invLen = if (contentPosition.isVertical) size.height else size.width
-        val isOnTopOrOnPoint = contentPosition in arrayOf(HighlightContentPosition.POINT, HighlightContentPosition.TOP)
+        val isOnTopOrOnPoint = contentPosition in arrayOf(HighlightContentPosition.Point, HighlightContentPosition.Top)
         if (minBorderLength > len) {
             cornerRadiusPx = cornerRadiusPx.coerceAtMost((len - (2 * arrowSizePx)) / 2)
             if (cornerRadiusPx * 2 > invLen) {
@@ -47,12 +47,12 @@ open class HighlightPopupShape(private val contentPosition: HighlightContentPosi
         // Top left
         createCorner(Corner.TOP_LEFT, size, cornerRadiusPx)
         // Top
-        if (contentPosition == HighlightContentPosition.BOTTOM) createTopArrow(size, arrowSizePx)
+        if (contentPosition == HighlightContentPosition.Bottom) createTopArrow(size, arrowSizePx)
         lineTo(size.width - cornerRadiusPx, 0f) // linkage to next corner
         // Top right
         createCorner(Corner.TOP_RIGHT, size, cornerRadiusPx)
         // Right
-        if (contentPosition == HighlightContentPosition.START) createRightArrow(size, arrowSizePx)
+        if (contentPosition == HighlightContentPosition.Start) createRightArrow(size, arrowSizePx)
         lineTo(size.width, size.height - cornerRadiusPx)
         // Bottom right
         createCorner(Corner.BOTTOM_RIGHT, size, cornerRadiusPx)
@@ -62,7 +62,7 @@ open class HighlightPopupShape(private val contentPosition: HighlightContentPosi
         // Bottom left
         createCorner(Corner.BOTTOM_LEFT, size, cornerRadiusPx)
         // Left
-        if (contentPosition == HighlightContentPosition.END) createLeftArrow(size, arrowSizePx)
+        if (contentPosition == HighlightContentPosition.End) createLeftArrow(size, arrowSizePx)
         lineTo(0f, cornerRadiusPx)
     })
 

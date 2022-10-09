@@ -33,9 +33,9 @@ data class LineChartProperties(
     val chartPaddingValues: PaddingValues = PaddingValues(44.dp),
     val datasetOffsets: DatasetOffsets? = null,
     val highlightContentPositions: Set<HighlightContentPosition> = setOf(
-        HighlightContentPosition.POINT
+        HighlightContentPosition.Point
     ),
-    val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.RELATIVE,
+    val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.Relative,
     val drawLines: Boolean = true,
     val drawPoints: Boolean = false,
     override val rounding: Rounding = Rounding.None,

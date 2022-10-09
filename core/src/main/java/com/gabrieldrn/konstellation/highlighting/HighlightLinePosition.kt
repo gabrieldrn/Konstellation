@@ -12,20 +12,20 @@ enum class HighlightLinePosition {
      * two popups of positions "top" and "left", then there will be both a horizontal and a vertical
      * line.
      */
-    RELATIVE,
+    Relative,
 
     /**
      * Horizontally-oriented line, independent of highlight content orientation
      */
-    HORIZONTAL,
+    Horizontal,
 
     /**
      * Vertically-oriented line, independent of highlight content orientation
      */
-    VERTICAL,
+    Vertical,
 
     /**
      * Both horizontal and vertical oriented lines.
      */
-    BOTH
+    Both
 }

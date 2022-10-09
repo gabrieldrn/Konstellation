@@ -21,15 +21,15 @@ class HighlightScope(
 
     val popupPositioner: Density.() -> IntOffset = {
         when (contentPosition) {
-            HighlightContentPosition.TOP, HighlightContentPosition.POINT -> {
+            HighlightContentPosition.Top, HighlightContentPosition.Point -> {
                 IntOffset(
                     point.xPos.toInt() + paddingStart,
                     point.yPos.toInt() + paddingTop
                 )
             }
-            HighlightContentPosition.BOTTOM -> IntOffset(point.xPos.toInt() + paddingStart, 0)
-            HighlightContentPosition.START -> IntOffset(0, point.yPos.toInt())
-            HighlightContentPosition.END -> IntOffset(0, point.yPos.toInt())
+            HighlightContentPosition.Bottom -> IntOffset(point.xPos.toInt() + paddingStart, 0)
+            HighlightContentPosition.Start -> IntOffset(0, point.yPos.toInt())
+            HighlightContentPosition.End -> IntOffset(0, point.yPos.toInt())
         }
     }
 

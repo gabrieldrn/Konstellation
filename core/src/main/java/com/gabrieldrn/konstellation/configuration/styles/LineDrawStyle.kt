@@ -37,7 +37,7 @@ data class LineDrawStyle(
                 || strokeWidth != other.strokeWidth
                 || cap != other.cap
                 || dashed != other.dashed
-                || dashedEffectIntervals.contentEquals(other.dashedEffectIntervals)
+                || !dashedEffectIntervals.contentEquals(other.dashedEffectIntervals)
                 || dashedEffectPhase != other.dashedEffectPhase)
     }
 

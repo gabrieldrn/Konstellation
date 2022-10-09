@@ -18,13 +18,13 @@ fun BoxScope.BoxedPopup(
     content: @Composable HighlightScope.() -> Unit
 ) {
     fun getPlacementOffset(p: Placeable) = when (scope.contentPosition) {
-        HighlightContentPosition.TOP ->
+        HighlightContentPosition.Top ->
             -IntOffset(p.width / 2, scope.point.yPos.toInt() + scope.paddingTop)
-        HighlightContentPosition.BOTTOM ->
+        HighlightContentPosition.Bottom ->
             -IntOffset(p.width / 2, 0)
-        HighlightContentPosition.START, HighlightContentPosition.END ->
+        HighlightContentPosition.Start, HighlightContentPosition.End ->
             -IntOffset(0, p.height / 2) + IntOffset(0, scope.paddingTop)
-        HighlightContentPosition.POINT ->
+        HighlightContentPosition.Point ->
             -IntOffset(p.width / 2, p.height)
     }
 
@@ -36,8 +36,8 @@ fun BoxScope.BoxedPopup(
     }
 
     fun getAlignment() = when (scope.contentPosition) {
-        HighlightContentPosition.BOTTOM -> Alignment.BottomStart
-        HighlightContentPosition.END -> Alignment.TopEnd
+        HighlightContentPosition.Bottom -> Alignment.BottomStart
+        HighlightContentPosition.End -> Alignment.TopEnd
         else -> Alignment.TopStart
     }
 

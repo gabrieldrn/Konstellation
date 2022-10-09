@@ -250,17 +250,17 @@ private fun LineChartHighlightSetting(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(24.dp)
         ) {
-            PositionToggleButton(HighlightContentPosition.TOP, Icons.Default.North)
-            PositionToggleButton(HighlightContentPosition.BOTTOM, Icons.Default.South)
-            PositionToggleButton(HighlightContentPosition.START, Icons.Default.West)
-            PositionToggleButton(HighlightContentPosition.END, Icons.Default.East)
+            PositionToggleButton(HighlightContentPosition.Top, Icons.Default.North)
+            PositionToggleButton(HighlightContentPosition.Bottom, Icons.Default.South)
+            PositionToggleButton(HighlightContentPosition.Start, Icons.Default.West)
+            PositionToggleButton(HighlightContentPosition.End, Icons.Default.East)
             Box(
                 Modifier
                     .height(48.dp)
                     .width(1.dp)
                     .background(MaterialTheme.colors.onSurface.copy(alpha = 0.12f))
             )
-            PositionToggleButton(HighlightContentPosition.POINT, Icons.Default.PushPin)
+            PositionToggleButton(HighlightContentPosition.Point, Icons.Default.PushPin)
         }
     }
 }
@@ -303,61 +303,34 @@ private fun LineChartAxisSelectorSetting(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-private fun ChartSelectorPreview() {
+fun SettingsPreviews() {
     KonstellationTheme {
-        Box(Modifier.background(MaterialTheme.colors.background)) {
-            LineChartDatasetSelector({}, {})
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ChartPointsSettingsPreview() {
-    KonstellationTheme {
-        Box(Modifier.background(MaterialTheme.colors.background)) {
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colors.background)
+                .verticalScroll(rememberScrollState())
+        ) {
             var lines by remember { mutableStateOf(true) }
             var points by remember { mutableStateOf(true) }
+            var brush by remember { mutableStateOf<Brush?>(null) }
+
+            LineChartDatasetSelector({}, {})
+
             LineChartDataDrawingSetting(
                 lines,
                 points,
                 { lines = it },
                 { points = it }
             )
-        }
-    }
-}
 
-@Preview(showBackground = true)
-@Composable
-private fun ChartFillingSettingPreview() {
-    KonstellationTheme {
-        Box(Modifier.background(MaterialTheme.colors.background)) {
-            var value by remember { mutableStateOf<Brush?>(null) }
-            LineChartFillingSetting(brush = value, onChangeBrush = { value = it })
-        }
-    }
-}
+            LineChartFillingSetting(brush = brush, onChangeBrush = { brush = it })
 
-@Preview(showBackground = true)
-@Composable
-private fun ChartHighlightSelectorPreview() {
-    KonstellationTheme {
-        Box(Modifier.background(MaterialTheme.colors.background)) {
             LineChartHighlightSetting(
-                setOf(HighlightContentPosition.POINT), {}, {}
+                setOf(HighlightContentPosition.Point), {}, {}
             )
-        }
-    }
-}
 
-@Preview(showBackground = true)
-@Composable
-private fun ChartAxesSelectorPreview() {
-    KonstellationTheme {
-        Box(Modifier.background(MaterialTheme.colors.background)) {
             LineChartAxisSelectorSetting(
                 setOf(Axes.yLeft, Axes.xBottom), {}, {}
             )
