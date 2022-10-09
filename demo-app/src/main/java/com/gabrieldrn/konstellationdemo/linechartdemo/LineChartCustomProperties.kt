@@ -4,7 +4,6 @@ import android.graphics.Paint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties

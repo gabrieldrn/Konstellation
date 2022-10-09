@@ -65,6 +65,10 @@ class LineChartDemoViewModel(
         )
     }
 
+    fun updateDrawLines(value: Boolean) {
+        properties = properties.copy(drawLines = value)
+    }
+
     fun updateDrawPoints(value: Boolean) {
         properties = properties.copy(drawPoints = value)
     }

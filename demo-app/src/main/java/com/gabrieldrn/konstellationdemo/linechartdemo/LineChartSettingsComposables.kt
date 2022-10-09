@@ -44,8 +44,10 @@ fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = vie
                 onGenerateFancyDataset = viewModel::generateNewFancyDataset
             )
 
-            1 -> LineChartPointsSetting(
+            1 -> LineChartDataDrawingSetting(
+                drawLines = viewModel.properties.drawLines,
                 drawPoints = viewModel.properties.drawPoints,
+                onToggleDrawLines = viewModel::updateDrawLines,
                 onToggleDrawPoints = viewModel::updateDrawPoints
             )
 
@@ -143,22 +145,42 @@ private fun LineChartDatasetSelector(
 }
 
 @Composable
-private fun LineChartPointsSetting(
+private fun LineChartDataDrawingSetting(
+    drawLines: Boolean,
     drawPoints: Boolean,
+    onToggleDrawLines: (Boolean) -> Unit,
     onToggleDrawPoints: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    SettingSurface(title = "Points", modifier = modifier) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+    SettingSurface(title = "Data drawing", modifier = modifier) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(24.dp)
         ) {
-            ToggleIconButton(
-                toggled = drawPoints,
-                onToggleChange = onToggleDrawPoints,
-                imageVector = Icons.Outlined.Commit
-            )
-            Text(text = "Draw points", textAlign = TextAlign.Center)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                ToggleIconButton(
+                    toggled = drawLines,
+                    onToggleChange = onToggleDrawLines,
+                    imageVector = Icons.Outlined.ShowChart
+                )
+                Text(text = "Lines", textAlign = TextAlign.Center)
+            }
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                ToggleIconButton(
+                    toggled = drawPoints,
+                    onToggleChange = onToggleDrawPoints,
+                    imageVector = Icons.Outlined.Commit
+                )
+                Text(text = "Points", textAlign = TextAlign.Center)
+            }
         }
     }
 }
@@ -296,8 +318,14 @@ private fun ChartSelectorPreview() {
 private fun ChartPointsSettingsPreview() {
     KonstellationTheme {
         Box(Modifier.background(MaterialTheme.colors.background)) {
-            var value by remember { mutableStateOf(true) }
-            LineChartPointsSetting(value, { value = it })
+            var lines by remember { mutableStateOf(true) }
+            var points by remember { mutableStateOf(true) }
+            LineChartDataDrawingSetting(
+                lines,
+                points,
+                { lines = it },
+                { points = it }
+            )
         }
     }
 }

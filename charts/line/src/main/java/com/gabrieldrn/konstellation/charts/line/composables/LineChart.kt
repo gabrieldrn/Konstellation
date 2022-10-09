@@ -108,12 +108,14 @@ fun LineChart(
                         )
                     }
 
-                    // Lines between data points
-                    drawPath(
-                        dataset,
-                        properties.rounding,
-                        lineStyle
-                    )
+                    if (properties.drawLines) {
+                        // Lines between data points
+                        drawPath(
+                            dataset,
+                            properties.rounding,
+                            lineStyle
+                        )
+                    }
 
                     // Points
                     if (properties.drawPoints) {

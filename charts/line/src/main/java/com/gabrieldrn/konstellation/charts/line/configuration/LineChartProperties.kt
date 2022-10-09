@@ -22,6 +22,7 @@ import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
  * popups as there are positions.
  * @property highlightLinePosition Where highlight lines will be placed. See enum values for more
  * insight. A null value means not drawing any highlight line.
+ * @property drawLines Either to draw lines (as described by [LineChartStyles.lineStyle]) or not.
  * @property drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
  * @property rounding The style of the lines drawing between the data points.
  * @property fillingBrush The brush to apply to the filling content from the bottom of the chart to
@@ -35,6 +36,7 @@ data class LineChartProperties(
         HighlightContentPosition.POINT
     ),
     val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.RELATIVE,
+    val drawLines: Boolean = true,
     val drawPoints: Boolean = false,
     override val rounding: Rounding = Rounding.None,
     val fillingBrush: Brush? = null
