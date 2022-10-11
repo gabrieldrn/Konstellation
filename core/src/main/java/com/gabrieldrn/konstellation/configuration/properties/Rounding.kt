@@ -16,5 +16,5 @@ enum class Rounding {
      */
     SimpleCubic
 
-    // TODO Complex cubic
+    // TODO Complex cubic with quadratic Bézier curves
 }

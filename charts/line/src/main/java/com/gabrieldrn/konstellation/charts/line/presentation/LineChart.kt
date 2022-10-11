@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.charts.line.composables
+package com.gabrieldrn.konstellation.charts.line.presentation
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.*
@@ -15,12 +15,10 @@ import com.gabrieldrn.konstellation.charts.line.configuration.LineChartPropertie
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.drawing.drawFrame
-import com.gabrieldrn.konstellation.drawing.drawPath
 import com.gabrieldrn.konstellation.drawing.drawPoint
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
 import com.gabrieldrn.konstellation.drawing.drawZeroLines
 import com.gabrieldrn.konstellation.drawing.highlightPoint
-import com.gabrieldrn.konstellation.drawing.toPath
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.highlighting.HighlightScope
 import com.gabrieldrn.konstellation.math.createOffsets
@@ -98,8 +96,8 @@ fun LineChart(
                     // Background filling
                     properties.fillingBrush?.let { brush ->
                         drawPath(
-                            path = dataset.toPath(properties.rounding).apply {
-                                // Closing shape
+                            path = dataset.toLinePath(properties.rounding).apply {
+                                // Closing path shape with chart bottom
                                 lineTo(dataset.last().xPos, size.height)
                                 lineTo(dataset[0].xPos, size.height)
                                 close()
@@ -110,7 +108,7 @@ fun LineChart(
 
                     if (properties.drawLines) {
                         // Lines between data points
-                        drawPath(
+                        drawLinePath(
                             dataset,
                             properties.rounding,
                             lineStyle
@@ -162,12 +160,9 @@ private fun BoxScope.ComposeHighlightPopup(
     }
 }
 
-/**
- * @suppress
- */
 @Preview(showBackground = true)
 @Composable
-fun LineChartPreview() {
+private fun LineChartPreview() {
     LineChart(
         dataset = randomFancyDataSet(),
         modifier = Modifier

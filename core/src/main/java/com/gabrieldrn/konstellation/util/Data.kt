@@ -33,7 +33,7 @@ fun randomDataSet() = mutableListOf<Point>().apply {
 fun randomFancyDataSet() = mutableListOf<Point>().apply {
     val range = 10
     var y = Random.nextInt(-range..range)
-    (-range..range).forEach {
+    (-range / 2 ..range / 2).forEach {
         y = Random.nextInt(y-1..y+1).coerceIn(-range..range)
         add(it.toFloat() by y.toFloat())
     }

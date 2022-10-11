@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gabrieldrn.konstellation.configuration.properties.Rounding
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
@@ -47,8 +48,10 @@ fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = vie
             1 -> LineChartDataDrawingSetting(
                 drawLines = viewModel.properties.drawLines,
                 drawPoints = viewModel.properties.drawPoints,
+                rounding = viewModel.properties.rounding,
                 onToggleDrawLines = viewModel::updateDrawLines,
-                onToggleDrawPoints = viewModel::updateDrawPoints
+                onToggleDrawPoints = viewModel::updateDrawPoints,
+                onChangeRounding = viewModel::changeRounding
             )
 
             2 -> LineChartFillingSetting(
@@ -148,13 +151,15 @@ private fun LineChartDatasetSelector(
 private fun LineChartDataDrawingSetting(
     drawLines: Boolean,
     drawPoints: Boolean,
+    rounding: Rounding,
     onToggleDrawLines: (Boolean) -> Unit,
     onToggleDrawPoints: (Boolean) -> Unit,
+    onChangeRounding: (Rounding) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingSurface(title = "Data drawing", modifier = modifier) {
         Row(
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(24.dp)
         ) {
@@ -180,6 +185,29 @@ private fun LineChartDataDrawingSetting(
                     imageVector = Icons.Outlined.Commit
                 )
                 Text(text = "Points", textAlign = TextAlign.Center)
+            }
+
+            Box(
+                Modifier
+                    .fillMaxHeight()
+                    .width(1.dp)
+                    .background(MaterialTheme.colors.onSurface.copy(alpha = 0.12f))
+            )
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                ToggleIconButton(
+                    toggled = rounding != Rounding.None,
+                    onToggleChange = {
+                        onChangeRounding(
+                            if (rounding == Rounding.None) Rounding.SimpleCubic else Rounding.None
+                        )
+                    },
+                    imageVector = Icons.Default.AutoAwesome
+                )
+                Text(text = "Rounding", textAlign = TextAlign.Center)
             }
         }
     }
@@ -312,28 +340,17 @@ fun SettingsPreviews() {
                 .background(MaterialTheme.colors.background)
                 .verticalScroll(rememberScrollState())
         ) {
-            var lines by remember { mutableStateOf(true) }
-            var points by remember { mutableStateOf(true) }
-            var brush by remember { mutableStateOf<Brush?>(null) }
-
             LineChartDatasetSelector({}, {})
 
             LineChartDataDrawingSetting(
-                lines,
-                points,
-                { lines = it },
-                { points = it }
+                drawLines = true, drawPoints = true, Rounding.None, {}, {}, {}
             )
 
-            LineChartFillingSetting(brush = brush, onChangeBrush = { brush = it })
+            LineChartFillingSetting(null, {})
 
-            LineChartHighlightSetting(
-                setOf(HighlightContentPosition.Point), {}, {}
-            )
+            LineChartHighlightSetting(setOf(HighlightContentPosition.Point), {}, {})
 
-            LineChartAxisSelectorSetting(
-                setOf(Axes.yLeft, Axes.xBottom), {}, {}
-            )
+            LineChartAxisSelectorSetting(setOf(Axes.yLeft, Axes.xBottom), {}, {})
         }
     }
 }

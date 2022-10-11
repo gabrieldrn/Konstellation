@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.gabrieldrn.konstellation.charts.line.composables.LineChart
+import com.gabrieldrn.konstellation.charts.line.presentation.LineChart
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.configuration.setAxesColor
