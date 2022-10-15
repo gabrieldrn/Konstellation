@@ -7,7 +7,7 @@ import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
 import com.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
-import com.gabrieldrn.konstellation.configuration.properties.Rounding
+import com.gabrieldrn.konstellation.configuration.properties.Smoothing
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
 
@@ -24,7 +24,7 @@ import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
  * insight. A null value means not drawing any highlight line.
  * @property drawLines Either to draw lines (as described by [LineChartStyles.lineStyle]) or not.
  * @property drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
- * @property rounding The style of the lines drawing between the data points.
+ * @property smoothing The style of the lines drawing between the data points.
  * @property fillingBrush The brush to apply to the filling content from the bottom of the chart to
  * the data lines.
  */
@@ -38,6 +38,6 @@ data class LineChartProperties(
     val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.Relative,
     val drawLines: Boolean = true,
     val drawPoints: Boolean = false,
-    override val rounding: Rounding = Rounding.None,
+    override val smoothing: Smoothing = Smoothing.values().first(),
     val fillingBrush: Brush? = null
 ) : ChartProperties

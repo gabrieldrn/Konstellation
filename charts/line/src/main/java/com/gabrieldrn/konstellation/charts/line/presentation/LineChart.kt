@@ -96,7 +96,7 @@ fun LineChart(
                     // Background filling
                     properties.fillingBrush?.let { brush ->
                         drawPath(
-                            path = dataset.toLinePath(properties.rounding).apply {
+                            path = dataset.toLinePath(properties.smoothing).apply {
                                 // Closing path shape with chart bottom
                                 lineTo(dataset.last().xPos, size.height)
                                 lineTo(dataset[0].xPos, size.height)
@@ -110,7 +110,7 @@ fun LineChart(
                         // Lines between data points
                         drawLinePath(
                             dataset,
-                            properties.rounding,
+                            properties.smoothing,
                             lineStyle
                         )
                     }

@@ -4,9 +4,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.*
 import androidx.lifecycle.ViewModel
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
-import com.gabrieldrn.konstellation.configuration.properties.Rounding
+import com.gabrieldrn.konstellation.configuration.properties.Smoothing
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
-import com.gabrieldrn.konstellation.plotting.Axis
 import com.gabrieldrn.konstellation.plotting.ChartAxis
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.datasetOf
@@ -74,8 +73,8 @@ class LineChartDemoViewModel(
         properties = properties.copy(drawPoints = value)
     }
 
-    fun changeRounding(rounding: Rounding) {
-        properties = properties.copy(rounding = rounding)
+    fun changeSmoothing(smoothing: Smoothing) {
+        properties = properties.copy(smoothing = smoothing)
     }
 
     fun changeFillingBrush(brush: Brush?) {

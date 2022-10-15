@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.gabrieldrn.konstellation.configuration.properties.Rounding
+import com.gabrieldrn.konstellation.configuration.properties.Smoothing
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
@@ -48,10 +48,10 @@ fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = vie
             1 -> LineChartDataDrawingSetting(
                 drawLines = viewModel.properties.drawLines,
                 drawPoints = viewModel.properties.drawPoints,
-                rounding = viewModel.properties.rounding,
+                smoothing = viewModel.properties.smoothing,
                 onToggleDrawLines = viewModel::updateDrawLines,
                 onToggleDrawPoints = viewModel::updateDrawPoints,
-                onChangeRounding = viewModel::changeRounding
+                onChangeSmoothing = viewModel::changeSmoothing
             )
 
             2 -> LineChartFillingSetting(
@@ -151,10 +151,10 @@ private fun LineChartDatasetSelector(
 private fun LineChartDataDrawingSetting(
     drawLines: Boolean,
     drawPoints: Boolean,
-    rounding: Rounding,
+    smoothing: Smoothing,
     onToggleDrawLines: (Boolean) -> Unit,
     onToggleDrawPoints: (Boolean) -> Unit,
-    onChangeRounding: (Rounding) -> Unit,
+    onChangeSmoothing: (Smoothing) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingSurface(title = "Data drawing", modifier = modifier) {
@@ -198,16 +198,25 @@ private fun LineChartDataDrawingSetting(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                ToggleIconButton(
-                    toggled = rounding != Rounding.None,
-                    onToggleChange = {
-                        onChangeRounding(
-                            if (rounding == Rounding.None) Rounding.SimpleCubic else Rounding.None
-                        )
+                val methods by remember { mutableStateOf(Smoothing.values()) }
+                IconButton(
+                    onClick = {
+                        val index = (methods.indexOf(smoothing) + 1)
+                            .takeIf { it in methods.indices } ?: 0
+                        onChangeSmoothing(methods[index])
                     },
-                    imageVector = Icons.Default.AutoAwesome
-                )
-                Text(text = "Rounding", textAlign = TextAlign.Center)
+                    Modifier.background(
+                        color = MaterialTheme.colors.primary,
+                        shape = CircleShape
+                    )
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.AutoAwesome,
+                        contentDescription = null,
+                        tint = MaterialTheme.colors.onPrimary
+                    )
+                }
+                Text(text = "Smoothing", textAlign = TextAlign.Center)
             }
         }
     }
@@ -343,7 +352,7 @@ fun SettingsPreviews() {
             LineChartDatasetSelector({}, {})
 
             LineChartDataDrawingSetting(
-                drawLines = true, drawPoints = true, Rounding.None, {}, {}, {}
+                drawLines = true, drawPoints = true, Smoothing.None, {}, {}, {}
             )
 
             LineChartFillingSetting(null, {})
