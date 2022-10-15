@@ -10,8 +10,8 @@ import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.drawing.*
-import com.gabrieldrn.konstellation.geometry.convertCanvasXToDataX
-import com.gabrieldrn.konstellation.geometry.createOffsets
+import com.gabrieldrn.konstellation.math.mapCanvasXToDataX
+import com.gabrieldrn.konstellation.math.createOffsets
 import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.by
 import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
@@ -19,7 +19,7 @@ import com.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 
 /**
- * Composable responsible of plotting points from a function and draw axis.
+ * Composable responsible for plotting points from a function and drawing axis.
  */
 @Composable
 @Suppress("LongParameterList") //TODO Remove Suppress
@@ -41,7 +41,7 @@ fun FunctionPlotter(
         val points = mutableListOf<Point>()
         fun addPoint(x: Float, y: Float) = points.add(x by y)
         (0..size.width.toInt() step pointSpacing.coerceAtLeast(1)).forEach {
-            addPoint(it.toFloat(), function(convertCanvasXToDataX(it.toFloat(), dataXRange)))
+            addPoint(it.toFloat(), function(mapCanvasXToDataX(it.toFloat(), dataXRange)))
         }
         addPoint(size.width, function(dataXRange.endInclusive))
 

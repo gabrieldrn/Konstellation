@@ -17,14 +17,14 @@ fun BoxScope.BoxedPopup(
     scope: HighlightScope,
     content: @Composable HighlightScope.() -> Unit
 ) {
-    fun getPlacementOffset(p: Placeable) = when (scope.position) {
-        HighlightPosition.TOP ->
+    fun getPlacementOffset(p: Placeable) = when (scope.contentPosition) {
+        HighlightContentPosition.Top ->
             -IntOffset(p.width / 2, scope.point.yPos.toInt() + scope.paddingTop)
-        HighlightPosition.BOTTOM ->
+        HighlightContentPosition.Bottom ->
             -IntOffset(p.width / 2, 0)
-        HighlightPosition.START, HighlightPosition.END ->
+        HighlightContentPosition.Start, HighlightContentPosition.End ->
             -IntOffset(0, p.height / 2) + IntOffset(0, scope.paddingTop)
-        HighlightPosition.POINT ->
+        HighlightContentPosition.Point ->
             -IntOffset(p.width / 2, p.height)
     }
 
@@ -35,9 +35,9 @@ fun BoxScope.BoxedPopup(
         }
     }
 
-    fun getAlignment() = when (scope.position) {
-        HighlightPosition.BOTTOM -> Alignment.BottomStart
-        HighlightPosition.END -> Alignment.TopEnd
+    fun getAlignment() = when (scope.contentPosition) {
+        HighlightContentPosition.Bottom -> Alignment.BottomStart
+        HighlightContentPosition.End -> Alignment.TopEnd
         else -> Alignment.TopStart
     }
 
@@ -54,14 +54,14 @@ fun BoxScope.BoxedPopup(
 /**
  * Creates a popup to highlight content from the chart with a [shape]. The default shape, a
  * [HighlightPopupShape], is a rounded card with an arrow placed in accordance with the positions
- * of the highlight defined in the chart composable parameters, so as it will pointing towards the
+ * of the highlight defined in the chart composable parameters, so as it will point towards the
  * highlighted value. The background of this shape is customizable by modifying [backgroundColor].
- * Contents of the highlighting popup is defined in [content].
+ * Contents of the highlighting popup are defined in [content].
  */
 @Composable
 fun HighlightScope.HighlightPopup(
     modifier: Modifier = Modifier,
-    shape: HighlightPopupShape = HighlightPopupShape(position),
+    shape: HighlightPopupShape = HighlightPopupShape(contentPosition),
     backgroundColor: Color = if (MaterialTheme.colors.isLight) Color.White else Color.Black,
     content: @Composable BoxScope.() -> Unit
 ) {

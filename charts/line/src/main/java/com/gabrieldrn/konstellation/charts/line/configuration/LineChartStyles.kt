@@ -26,24 +26,35 @@ import com.gabrieldrn.konstellation.configuration.styles.setColor
  * @property highlightTextStyle Text appearance of the text shown in the highlight popup.
  */
 data class LineChartStyles(
-    override val lineStyle: LineDrawStyle = LineDrawStyle(),
-    override val pointStyle: PointDrawStyle = PointDrawStyle(),
-    override val xAxisBottomStyle: AxisDrawStyle = Axes.xBottomStyle,
-    override val xAxisTopStyle: AxisDrawStyle = Axes.xTopStyle,
-    override val yAxisLeftStyle: AxisDrawStyle = Axes.yLeftStyle,
-    override val yAxisRightStyle: AxisDrawStyle = Axes.yRightStyle,
-    val textStyle: TextDrawStyle = TextDrawStyle(),
-    val highlightPointStyle: PointDrawStyle = PointDrawStyle(),
-    val highlightLineStyle: LineDrawStyle = LineDrawStyle(
-        strokeWidth = 1.dp, dashed = true
-    ),
-    val highlightTextStyle: TextDrawStyle = TextDrawStyle(),
+    override val lineStyle: LineDrawStyle = defaultLineStyle,
+    override val pointStyle: PointDrawStyle = defaultPointStyle,
+    override val xAxisBottomStyle: AxisDrawStyle = defaultXAxisBottomStyle,
+    override val xAxisTopStyle: AxisDrawStyle = defaultXAxisTopStyle,
+    override val yAxisLeftStyle: AxisDrawStyle = defaultYAxisLeftStyle,
+    override val yAxisRightStyle: AxisDrawStyle = defaultYAxisRightStyle,
+    val textStyle: TextDrawStyle = defaultTextStyle,
+    val highlightPointStyle: PointDrawStyle = defaultHighlightPointStyle,
+    val highlightLineStyle: LineDrawStyle? = defaultHighlightLineStyle,
+    val highlightTextStyle: TextDrawStyle = defaultHighlightTextStyle,
 ) : ChartStyles {
 
     /**
      * Set of all axes styles.
      */
-    val axes get() = setOf(xAxisBottomStyle, xAxisTopStyle, yAxisLeftStyle, yAxisRightStyle)
+    val axesStyles get() = setOf(xAxisBottomStyle, xAxisTopStyle, yAxisLeftStyle, yAxisRightStyle)
+
+    companion object {
+        val defaultLineStyle = LineDrawStyle()
+        val defaultPointStyle = PointDrawStyle()
+        val defaultXAxisBottomStyle = Axes.xBottomStyle
+        val defaultXAxisTopStyle = Axes.xTopStyle
+        val defaultYAxisLeftStyle = Axes.yLeftStyle
+        val defaultYAxisRightStyle = Axes.yRightStyle
+        val defaultTextStyle = TextDrawStyle()
+        val defaultHighlightPointStyle = PointDrawStyle()
+        val defaultHighlightLineStyle = LineDrawStyle(strokeWidth = 1.dp, dashed = true)
+        val defaultHighlightTextStyle = TextDrawStyle()
+    }
 }
 
 /**
@@ -51,7 +62,7 @@ data class LineChartStyles(
  * @param typeface The new typeface to apply.
  */
 fun LineChartStyles.setAxesTypeface(typeface: Typeface) {
-    axes.forEach { it.tickTextStyle.typeface = typeface }
+    axesStyles.forEach { it.tickTextStyle.typeface = typeface }
 }
 
 /**
@@ -59,5 +70,5 @@ fun LineChartStyles.setAxesTypeface(typeface: Typeface) {
  * @throws color The new color to apply.
  */
 fun LineChartStyles.setAxesColor(color: Color) {
-    axes.forEach { it.setColor(color) }
+    axesStyles.forEach { it.setColor(color) }
 }

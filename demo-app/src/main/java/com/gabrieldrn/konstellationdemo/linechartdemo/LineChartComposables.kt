@@ -2,68 +2,49 @@ package com.gabrieldrn.konstellationdemo.linechartdemo
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.platform.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
-import com.gabrieldrn.konstellation.charts.line.composables.LineChart
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gabrieldrn.konstellation.charts.line.presentation.LineChart
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.configuration.setAxesColor
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.highlighting.HighlightPopup
+import com.gabrieldrn.konstellation.highlighting.horizontalHLPositions
 import com.gabrieldrn.konstellation.plotting.Axes
-import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 import com.gabrieldrn.konstellationdemo.DemoContent
-import com.google.accompanist.insets.LocalWindowInsets
+import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
-@ExperimentalMaterialApi
-@ExperimentalComposeUiApi
 @Composable
-fun LineChartComposable(viewModel: LineChartDemoViewModel) {
-
-    val settingsSheetState = rememberBottomSheetScaffoldState()
+fun LineChartComposable() {
 
     val chartStyles = getChartStyles()
 
-    val imeBottom = with(LocalDensity.current) {
-        LocalWindowInsets.current.navigationBars.bottom.toDp()
-    }
-
-    BottomSheetScaffold(
-        scaffoldState = settingsSheetState,
-        sheetPeekHeight = 60.dp + imeBottom,
-        sheetContent = {
-            Column(Modifier.verticalScroll(rememberScrollState())) {
-                LineChartSettingsContent(
-                    viewModel = viewModel
-                )
-            }
-        }
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .background(color = MaterialTheme.colors.background)
+            .navigationBarsPadding(),
     ) {
-        Column(
-            Modifier.verticalScroll(rememberScrollState())
-        ) {
-            DemoContent(viewModel, chartStyles)
-        }
+        DemoContent(chartStyles)
+        LineChartSettingsContent()
     }
 }
 
-@ExperimentalComposeUiApi
 @Composable
 private fun DemoContent(
-    viewModel: LineChartDemoViewModel,
     chartStyles: LineChartStyles,
 ) {
-    var highlightedPoint: Point? by remember {
-        mutableStateOf(null)
-    }
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -72,67 +53,65 @@ private fun DemoContent(
         style = MaterialTheme.typography.h4,
         fontWeight = FontWeight.ExtraBold,
     )
-    LineChart(
+    Surface(
+        shape = RoundedCornerShape(16.dp),
         modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f), //Keep the chart square
-        dataset = viewModel.dataset,
-        properties = viewModel.properties,
-        styles = chartStyles,
-        highlightContent = {
-            HighlightPopup(
-                backgroundColor = MaterialTheme.colors.primary
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .align(Alignment.Center),
-                    text = "y -> ${point.y.toInt()}",
-                    style = MaterialTheme.typography.body1,
-                    textAlign = TextAlign.Start
-                )
+            .padding(top = 16.dp)
+            .padding(horizontal = 16.dp)
+    ) {
+        LineChart(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f), //Keep the chart square
+            dataset = viewModel<LineChartDemoViewModel>().dataset,
+            properties = viewModel<LineChartDemoViewModel>().properties,
+            styles = chartStyles,
+            highlightContent = {
+                HighlightPopup(
+                    backgroundColor = MaterialTheme.colors.primary
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.Center),
+                        text = if (contentPosition in horizontalHLPositions) {
+                            "x -> ${point.x.toInt()}"
+                        } else {
+                            "y -> ${point.y.toInt()}"
+                        },
+                        style = MaterialTheme.typography.body1,
+                        textAlign = TextAlign.Start
+                    )
+                }
             }
-        },
-        onHighlightChange = {
-            highlightedPoint = it
-        }
-    )
-    highlightedPoint?.let {
-        Text(
-            modifier = Modifier.padding(start = 16.dp),
-            text = "Selected point: ${it.x};${it.y}"
         )
     }
 }
 
-@ExperimentalComposeUiApi
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LineChartWithCustomPropertiesPreview() {
-    Box(
-        Modifier
-            .background(Color.White)
-            .fillMaxWidth()
-            .aspectRatio(1f)
-    ) {
-        val chartProperties = LineChartProperties(
-            axes = setOf(Axes.xBottom, Axes.xTop, Axes.yLeft, Axes.yRight),
-            datasetOffsets = DatasetOffsets(
-                xStartOffset = 2f,
-                xEndOffset = 2f,
-                yStartOffset = 0.5f,
-                yEndOffset = 0.5f
-            )
+    val chartProperties = LineChartProperties(
+        axes = setOf(Axes.xTop, Axes.xBottom, Axes.yLeft, Axes.yRight),
+        datasetOffsets = DatasetOffsets(
+            xStartOffset = 2f,
+            xEndOffset = 2f,
+            yStartOffset = 0.5f,
+            yEndOffset = 0.5f
         )
-        val chartStyles = LineChartStyles().apply {
-            lineStyle.color = MaterialTheme.colors.primary
-            pointStyle.color = MaterialTheme.colors.primary
-            textStyle.color = MaterialTheme.colors.primary
-            setAxesColor(Color.Black)
-        }
+    )
+    val chartStyles = LineChartStyles().apply {
+        lineStyle.color = MaterialTheme.colors.primary
+        pointStyle.color = MaterialTheme.colors.primary
+        textStyle.color = MaterialTheme.colors.primary
+        setAxesColor(Color.Black)
+    }
 
+    KonstellationTheme {
         LineChart(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f),
             dataset = randomFancyDataSet(),
             properties = chartProperties,
             styles = chartStyles

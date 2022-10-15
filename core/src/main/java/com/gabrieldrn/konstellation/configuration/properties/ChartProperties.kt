@@ -8,4 +8,5 @@ import com.gabrieldrn.konstellation.plotting.ChartAxis
  */
 interface ChartProperties {
     val axes: Set<ChartAxis>
+    val smoothing: Smoothing
 }

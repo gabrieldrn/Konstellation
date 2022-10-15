@@ -15,12 +15,13 @@ import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import com.gabrieldrn.konstellationdemo.QF_MAIN_TEXT_STYLE
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
+import java.lang.IllegalStateException
 
 private val injector = object : KoinComponent {}
 
 internal fun getChartProperties() = LineChartProperties(
     chartPaddingValues = PaddingValues(44.dp),
-    axes = setOf(Axes.xBottom, Axes.xTop, Axes.yLeft, Axes.yRight),
+    axes = setOf(Axes.xBottom, Axes.yLeft),
     datasetOffsets = DatasetOffsets(
         xStartOffset = 2f,
         xEndOffset = 2f,
@@ -30,8 +31,14 @@ internal fun getChartProperties() = LineChartProperties(
 )
 
 @Composable
+@Suppress("SwallowedException") // No need of caught exception
 internal fun getChartStyles(
-    mainTextStyle: TextDrawStyle = injector.get(QF_MAIN_TEXT_STYLE)
+    mainTextStyle: TextDrawStyle = try {
+        injector.get(QF_MAIN_TEXT_STYLE)
+    } catch (iae: IllegalStateException) {
+        //Koin not initialized.
+        TextDrawStyle()
+    }
 ) = LineChartStyles(
     highlightTextStyle = mainTextStyle.copy(
         color = MaterialTheme.colors.primary,
@@ -39,12 +46,12 @@ internal fun getChartStyles(
         offsetY = -25f
     )
 ).apply {
-    lineStyle.color = MaterialTheme.colors.primary
-    pointStyle.color = MaterialTheme.colors.primary
-    textStyle.color = MaterialTheme.colors.primary
-    highlightLineStyle.color = MaterialTheme.colors.onBackground
+    lineStyle.color = MaterialTheme.colors.primaryVariant
+    pointStyle.color = MaterialTheme.colors.primaryVariant
+    textStyle.color = MaterialTheme.colors.onBackground
+    highlightLineStyle?.color = MaterialTheme.colors.onBackground
     highlightPointStyle.run {
-        color = MaterialTheme.colors.primary.copy(alpha = 0.3f)
+        color = MaterialTheme.colors.primaryVariant.copy(alpha = 0.3f)
         radius = 6.dp
     }
     setAxesColor(MaterialTheme.colors.onBackground)

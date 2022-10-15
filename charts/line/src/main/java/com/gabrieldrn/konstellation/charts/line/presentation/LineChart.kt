@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.charts.line.composables
+package com.gabrieldrn.konstellation.charts.line.presentation
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.*
@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.hapticfeedback.*
 import androidx.compose.ui.input.pointer.*
@@ -16,16 +15,15 @@ import com.gabrieldrn.konstellation.charts.line.configuration.LineChartPropertie
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.drawing.drawFrame
-import com.gabrieldrn.konstellation.drawing.drawLines
+import com.gabrieldrn.konstellation.drawing.drawPoint
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
 import com.gabrieldrn.konstellation.drawing.drawZeroLines
 import com.gabrieldrn.konstellation.drawing.highlightPoint
-import com.gabrieldrn.konstellation.geometry.createOffsets
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.highlighting.HighlightScope
+import com.gabrieldrn.konstellation.math.createOffsets
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
-import com.gabrieldrn.konstellation.plotting.datasetOf
 import com.gabrieldrn.konstellation.plotting.nearestPointByX
 import com.gabrieldrn.konstellation.plotting.xRange
 import com.gabrieldrn.konstellation.plotting.yRange
@@ -40,10 +38,9 @@ import com.gabrieldrn.konstellation.util.randomFancyDataSet
  * @param highlightContent Classic Composable scope defining the content to be shown inside
  * highlight popup(s). This is optional.
  * @param onHighlightChange Callback invoked each time the highlighted value changes. This is
- * optional and it's a light alternative to [highlightContent] to have feedback on highlighting
+ * optional, and it's a light alternative to [highlightContent] to have feedback on highlighting
  * without having to draw content above the chart.
  */
-@ExperimentalComposeUiApi
 @Composable
 fun LineChart(
     dataset: Dataset,
@@ -53,28 +50,23 @@ fun LineChart(
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
+    val hapticLocal = LocalHapticFeedback.current
+    var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
+
+    val (xDrawRange, yDrawRange) = properties.datasetOffsets.applyDatasetOffsets(
+        xDrawRange = dataset.xRange,
+        yDrawRange = dataset.yRange
+    )
+
     Box {
-        val hapticLocal = LocalHapticFeedback.current
-        var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
-
-        // In order to enable re-composition of the Canvas pointerInput modifier, the dataset is
-        // "moved" inside a state.
-        var points by remember { mutableStateOf(datasetOf()) }
-        points = dataset
-
-        val (xDrawRange, yDrawRange) = properties.datasetOffsets.applyDatasetOffsets(
-            xDrawRange = dataset.xRange,
-            yDrawRange = dataset.yRange
-        )
-
         Canvas(
             modifier
                 .padding(properties.chartPaddingValues)
-                .pointerInput(Unit) {
+                .pointerInput(dataset) {
                     detectDragGesturesAfterLongPress(
                         onDragStart = {
                             hapticLocal.performHapticFeedback(HapticFeedbackType.LongPress)
-                            highlightedValue = points.nearestPointByX(it.x)
+                            highlightedValue = dataset.nearestPointByX(it.x)
                             onHighlightChange?.invoke(highlightedValue)
                         },
                         onDragEnd = {
@@ -82,7 +74,7 @@ fun LineChart(
                             onHighlightChange?.invoke(highlightedValue)
                         },
                         onDrag = { change, _ ->
-                            highlightedValue = points.nearestPointByX(change.position.x)
+                            highlightedValue = dataset.nearestPointByX(change.position.x)
                             onHighlightChange?.invoke(highlightedValue)
                         }
                     )
@@ -90,7 +82,7 @@ fun LineChart(
         ) {
             drawFrame()
 
-            points.createOffsets(
+            dataset.createOffsets(
                 drawScope = this,
                 dataSetXRange = xDrawRange,
                 dataSetYRange = yDrawRange
@@ -99,15 +91,42 @@ fun LineChart(
             drawZeroLines(xDrawRange, yDrawRange)
 
             with(styles) {
-                clipRect(0f, 0f, size.width, size.height) {
-                    // Lines between data points
-                    drawLines(points, lineStyle, pointStyle, drawPoints = true)
+                clipRect {
+
+                    // Background filling
+                    properties.fillingBrush?.let { brush ->
+                        drawPath(
+                            path = dataset.toLinePath(properties.smoothing).apply {
+                                // Closing path shape with chart bottom
+                                lineTo(dataset.last().xPos, size.height)
+                                lineTo(dataset[0].xPos, size.height)
+                                close()
+                            },
+                            brush = brush
+                        )
+                    }
+
+                    if (properties.drawLines) {
+                        // Lines between data points
+                        drawLinePath(
+                            dataset,
+                            properties.smoothing,
+                            lineStyle
+                        )
+                    }
+
+                    // Points
+                    if (properties.drawPoints) {
+                        dataset.forEach { drawPoint(it, pointStyle) }
+                    }
+
                     // Highlight
                     highlightedValue?.let {
                         highlightPoint(
                             point = it,
-                            positions = properties.highlightPositions,
+                            contentPositions = properties.highlightContentPositions,
                             pointStyle = highlightPointStyle,
+                            linePosition = properties.highlightLinePosition,
                             lineStyle = highlightLineStyle
                         )
                     }
@@ -129,7 +148,7 @@ private fun BoxScope.ComposeHighlightPopup(
     properties: LineChartProperties
 ) {
     if (highlightContent != null) {
-        properties.highlightPositions.forEach { position ->
+        properties.highlightContentPositions.forEach { position ->
             BoxedPopup(
                 HighlightScope(
                     point, position, properties.chartPaddingValues
@@ -141,30 +160,21 @@ private fun BoxScope.ComposeHighlightPopup(
     }
 }
 
-/**
- * @suppress
- */
-@ExperimentalComposeUiApi
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun LineChartPreview() {
-    Box(
-        Modifier
-            .background(Color.White)
+private fun LineChartPreview() {
+    LineChart(
+        dataset = randomFancyDataSet(),
+        modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1f)
-    ) {
-        LineChart(
-            dataset = randomFancyDataSet(),
-            modifier = Modifier.fillMaxSize(),
-            properties = LineChartProperties(
-                datasetOffsets = DatasetOffsets(
-                    xStartOffset = 2f,
-                    xEndOffset = 2f,
-                    yStartOffset = 0.5f,
-                    yEndOffset = 0.5f
-                )
+            .aspectRatio(1f),
+        properties = LineChartProperties(
+            datasetOffsets = DatasetOffsets(
+                xStartOffset = 2f,
+                xEndOffset = 2f,
+                yStartOffset = 0.5f,
+                yEndOffset = 0.5f
             )
         )
-    }
+    )
 }

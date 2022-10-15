@@ -34,7 +34,8 @@ fun DrawScope.drawLine(
 ) = drawLine(start.offset, end.offset, lineStyle)
 
 /**
- * Draws a series of stroked lines from a dataset, using the given style.
+ * Draws a series of stroked lines from a [dataset], using the given [lineStyle]. If [drawPoints] is
+ * true, data points will be drawn with the given [pointStyle].
  */
 fun DrawScope.drawLines(
     dataset: Dataset,

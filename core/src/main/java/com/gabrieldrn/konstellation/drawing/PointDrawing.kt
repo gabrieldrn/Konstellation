@@ -7,6 +7,6 @@ import com.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
 /**
  * Draws a circle representing a point of the dataset
  */
-internal fun DrawScope.drawPoint(point: Point, style: PointDrawStyle = PointDrawStyle()) {
+fun DrawScope.drawPoint(point: Point, style: PointDrawStyle = PointDrawStyle()) {
     drawCircle(center = point.offset, color = style.color, radius = style.radius.toPx())
 }

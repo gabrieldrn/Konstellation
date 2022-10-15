@@ -3,10 +3,13 @@ package com.gabrieldrn.konstellationdemo.ui.theme
 import android.R.color.system_accent1_10
 import android.R.color.system_accent1_100
 import android.R.color.system_accent1_300
-import android.R.color.system_accent1_500
-import android.R.color.system_accent1_700
-import android.R.color.system_accent2_200
-import android.R.color.system_accent2_400
+import android.R.color.system_accent1_400
+import android.R.color.system_accent1_900
+import android.R.color.system_accent3_100
+import android.R.color.system_accent3_500
+import android.R.color.system_accent3_300
+import android.R.color.system_accent3_900
+import android.R.color.system_neutral1_50
 import android.R.color.system_neutral1_900
 import android.os.Build
 import androidx.compose.foundation.*
@@ -42,17 +45,21 @@ fun KonstellationTheme(
 ) {
     val colors = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) { // Using Material You
         if (darkTheme) darkColors(
-            primary = colorResource(system_accent1_300),
-            primaryVariant = colorResource(system_accent1_100),
-            secondary = colorResource(system_accent2_200),
-            secondaryVariant = colorResource(system_accent2_400),
+            primary = colorResource(system_accent1_100),
+            primaryVariant = colorResource(system_accent1_300),
+            secondary = colorResource(system_accent3_100),
+            secondaryVariant = colorResource(system_accent3_300),
             surface = colorResource(system_neutral1_900),
         ) else lightColors(
-            primary = colorResource(system_accent1_500),
-            primaryVariant = colorResource(system_accent1_700),
-            secondary = colorResource(system_accent2_200),
-            secondaryVariant = colorResource(system_accent2_400),
-            surface = colorResource(system_accent1_10)
+            primary = colorResource(system_accent1_100),
+            primaryVariant = colorResource(system_accent1_400),
+            secondary = colorResource(system_accent3_500),
+            secondaryVariant = colorResource(system_accent3_300),
+            background = colorResource(system_neutral1_50),
+            surface = colorResource(system_accent1_10),
+            onPrimary = colorResource(system_accent1_900),
+            onSecondary = colorResource(system_accent3_900),
+            onBackground = colorResource(system_accent1_900)
         )
     } else if (darkTheme) DarkColorPalette else LightColorPalette
 

@@ -22,7 +22,7 @@ enum class Axis {
 }
 
 /**
- * Convenience singleton providing all default axes for a chart.
+ * Convenience singleton, providing all default axes for a chart.
  */
 object Axes {
 

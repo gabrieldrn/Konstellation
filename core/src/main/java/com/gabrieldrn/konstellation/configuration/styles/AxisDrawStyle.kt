@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
  *
  * @property axisLineStyle Axis' line appearance.
  * @property tickLineStyle Appearance of ticks drawn on the axis.
- * @property tickLineStyle Appearance of ticks text labels.
+ * @property tickTextStyle Appearance of ticks text labels.
  */
 data class AxisDrawStyle(
     var axisLineStyle: LineDrawStyle = LineDrawStyle(),

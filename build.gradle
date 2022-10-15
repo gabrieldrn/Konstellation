@@ -1,30 +1,36 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext {
-        //https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
-        compose_version = '1.0.5'
-        gradle_version = '1.5.31'
-        accompanist_version = '0.18.0'
-        junit_version = '4.13.2'
-        detekt_version = '1.19.0'
-        dokka_version = "1.6.0"
-    }
     repositories {
         google()
         mavenCentral()
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$gradle_version"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
-
-        // Dependencies belong in the individual module build.gradle files
-    }
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt" version "$detekt_version"
-    id "org.jetbrains.dokka" version "$dokka_version"
+    alias libs.plugins.android.application apply false
+    alias libs.plugins.android.library apply false
+    alias libs.plugins.kotlin.android apply false
+    alias libs.plugins.kotlin.kapt apply false
+    alias libs.plugins.versions
+    alias libs.plugins.versionsCatalogUpdate
+    alias libs.plugins.detekt
+    alias libs.plugins.dokka apply false //Globally
+}
+
+def isNonStable = { String version ->
+    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
+    def regex = /^[0-9,.v-]+(-r)?$/
+    return !stableKeyword && !(version ==~ regex)
+}
+
+tasks.named("dependencyUpdates").configure {
+    rejectVersionIf {
+        isNonStable(it.candidate.version)
+    }
+}
+
+versionCatalogUpdate {
+    sortByKey = false
 }
 
 tasks.named("detekt").configure {
@@ -43,11 +49,11 @@ tasks.named("detekt").configure {
 }
 
 subprojects {
-    apply plugin: 'io.gitlab.arturbosch.detekt'
+    apply plugin: 'io.gitlab.arturbosch.detekt' //Is there a way to use version catalog?
     detekt {
         // Version of Detekt that will be used. When unspecified the latest detekt
         // version found will be used. Override to stay on the same version.
-        toolVersion = "$detekt_version"
+        toolVersion = libs.versions.detekt.get()
 
         // Builds the AST in parallel. Rules are always executed in parallel.
         // Can lead to speedups in larger projects. `false` by default.

@@ -19,17 +19,13 @@ import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
-import com.gabrieldrn.konstellation.charts.function.*
+import com.gabrieldrn.konstellation.charts.function.FunctionPlotter
 import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartComposable
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
 import com.gabrieldrn.konstellationdemo.linechartdemo.getChartProperties
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
-import com.google.accompanist.insets.ui.TopAppBar
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,34 +38,37 @@ import kotlin.math.sin
 private val injector = object : KoinComponent {}
 private val mainTextStyle by injector.inject<TextDrawStyle>(QF_MAIN_TEXT_STYLE)
 
-@ExperimentalMaterialApi
-@ExperimentalComposeUiApi
+private const val DarkIconsLuminanceThreshold = 0.5f
+
 class MainActivity : AppCompatActivity() {
 
     private val lineChartViewModel by viewModel<LineChartDemoViewModel> {
         parametersOf(getChartProperties())
     }
 
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lineChartViewModel // Trigger instantiation.
+
         WindowCompat.setDecorFitsSystemWindows(window, false)
         ResourcesCompat.getFont(this, R.font.manrope_medium)?.let {
             mainTextStyle.typeface = it
         }
 
         setContent {
-            val systemUiController = rememberSystemUiController()
-            val useDarkIcons = isSystemInDarkTheme()
-            SideEffect {
-                systemUiController.setSystemBarsColor(
-                    color = Color.Transparent,
-                    darkIcons = useDarkIcons
-                )
-            }
             KonstellationTheme {
-                ProvideWindowInsets {
-                    Content(lineChartViewModel)
+                val systemUiController = rememberSystemUiController()
+                val useDarkIcons =
+                    MaterialTheme.colors.primary.luminance() > DarkIconsLuminanceThreshold
+                SideEffect {
+                    systemUiController.setSystemBarsColor(
+                        color = Color.Transparent,
+                        darkIcons = useDarkIcons
+                    )
                 }
+                Content()
             }
         }
     }
@@ -81,14 +80,13 @@ enum class DemoContent(val chartName: String) {
 }
 
 @ExperimentalMaterialApi
-@ExperimentalComposeUiApi
 @Composable
-fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
+fun Content() {
     var contentSelection by rememberSaveable { mutableStateOf(DemoContent.values().first()) }
     val scope = rememberCoroutineScope()
 
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    val insetsPaddingValues = rememberInsetsPaddingValues(LocalWindowInsets.current.statusBars)
+    val insetsPaddingValues = WindowInsets.statusBars.asPaddingValues()
 
     LaunchedEffect(scaffoldState) {
         scaffoldState.conceal()
@@ -97,9 +95,7 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
         scaffoldState = scaffoldState,
         appBar = {
             TopAppBar(
-                title = {
-                    Text(text = "Konstellation", fontWeight = FontWeight.Bold)
-                },
+                title = { Text(text = "Konstellation", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     if (scaffoldState.isConcealed) {
                         IconButton(onClick = { scope.launch { scaffoldState.reveal() } }) {
@@ -113,9 +109,10 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
                 },
                 elevation = 0.dp,
                 backgroundColor = Color.Transparent,
-                contentPadding = insetsPaddingValues
+                modifier = Modifier.padding(insetsPaddingValues),
             )
         },
+        gesturesEnabled = false,
         peekHeight = BackdropScaffoldDefaults.PeekHeight + insetsPaddingValues.calculateTopPadding(),
         backLayerContent = {
             LazyColumn {
@@ -134,17 +131,20 @@ fun Content(lineChartDemoViewModel: LineChartDemoViewModel) {
                     )
                 }
             }
-        }, frontLayerContent = {
+        },
+        frontLayerContent = {
             Box(Modifier.fillMaxSize()) {
                 when (contentSelection) {
-                    DemoContent.LINE -> LineChartComposable(lineChartDemoViewModel)
+                    DemoContent.LINE -> LineChartComposable()
                     DemoContent.FUNCTION -> AnimatedFunctionChart()
                 }
             }
-        })
+        }
+    )
 }
 
 @Composable
+@Suppress("MagicNumber")
 fun AnimatedFunctionChart() {
     var animate by rememberSaveable { mutableStateOf(false) }
     val infiniteTransition = rememberInfiniteTransition()
@@ -180,13 +180,10 @@ fun AnimatedFunctionChart() {
 }
 
 @ExperimentalMaterialApi
-@ExperimentalComposeUiApi
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     KonstellationTheme {
-        Content(LineChartDemoViewModel(
-            getChartProperties()
-        ))
+        Content()
     }
 }

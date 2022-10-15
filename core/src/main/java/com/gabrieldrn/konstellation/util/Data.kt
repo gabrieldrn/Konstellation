@@ -20,8 +20,9 @@ val samplePoints = listOf(
  */
 @Suppress("MagicNumber")
 fun randomDataSet() = mutableListOf<Point>().apply {
-    (-10..10).forEach {
-        add(it.toFloat() by Random.nextInt(-10..10).toFloat())
+    val range = 10
+    (-range..range).forEach {
+        add(it.toFloat() by Random.nextInt(-range..range).toFloat())
     }
 } as Dataset
 
@@ -32,7 +33,7 @@ fun randomDataSet() = mutableListOf<Point>().apply {
 fun randomFancyDataSet() = mutableListOf<Point>().apply {
     val range = 10
     var y = Random.nextInt(-range..range)
-    (-10..10).forEach {
+    (-range / 2 ..range / 2).forEach {
         y = Random.nextInt(y-1..y+1).coerceIn(-range..range)
         add(it.toFloat() by y.toFloat())
     }

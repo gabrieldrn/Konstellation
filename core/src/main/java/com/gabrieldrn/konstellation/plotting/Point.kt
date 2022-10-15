@@ -7,7 +7,7 @@ import kotlin.math.abs
 /**
  * Convenience type alias for a set of [Point]s.
  */
-typealias Dataset = Collection<Point>
+typealias Dataset = List<Point>
 
 /**
  * A class representing a point in a chart.
