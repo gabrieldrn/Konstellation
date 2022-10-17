@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         lineChartViewModel // Trigger instantiation.
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        ResourcesCompat.getFont(this, R.font.manrope_medium)?.let {
+        ResourcesCompat.getFont(this, R.font.figtree_medium)?.let {
             mainTextStyle.typeface = it
         }
 
