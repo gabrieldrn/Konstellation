@@ -7,9 +7,9 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
@@ -27,7 +27,6 @@ import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
 import com.gabrieldrn.konstellationdemo.linechartdemo.getChartProperties
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -46,7 +45,6 @@ class MainActivity : AppCompatActivity() {
         parametersOf(getChartProperties())
     }
 
-    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,86 +59,17 @@ class MainActivity : AppCompatActivity() {
             KonstellationTheme {
                 val systemUiController = rememberSystemUiController()
                 val useDarkIcons =
-                    MaterialTheme.colors.primary.luminance() > DarkIconsLuminanceThreshold
+                    MaterialTheme.colorScheme.background.luminance() > DarkIconsLuminanceThreshold
                 SideEffect {
                     systemUiController.setSystemBarsColor(
                         color = Color.Transparent,
                         darkIcons = useDarkIcons
                     )
                 }
-                Content()
+                LineChartComposable()
             }
         }
     }
-}
-
-enum class DemoContent(val chartName: String) {
-    LINE("Line chart"),
-    FUNCTION("Function chart")
-}
-
-@ExperimentalMaterialApi
-@Composable
-fun Content() {
-    var contentSelection by rememberSaveable { mutableStateOf(DemoContent.values().first()) }
-    val scope = rememberCoroutineScope()
-
-    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    val insetsPaddingValues = WindowInsets.statusBars.asPaddingValues()
-
-    LaunchedEffect(scaffoldState) {
-        scaffoldState.conceal()
-    }
-    BackdropScaffold(
-        scaffoldState = scaffoldState,
-        appBar = {
-            TopAppBar(
-                title = { Text(text = "Konstellation", fontWeight = FontWeight.Bold) },
-                navigationIcon = {
-                    if (scaffoldState.isConcealed) {
-                        IconButton(onClick = { scope.launch { scaffoldState.reveal() } }) {
-                            Icon(Icons.Default.Menu, contentDescription = null)
-                        }
-                    } else {
-                        IconButton(onClick = { scope.launch { scaffoldState.conceal() } }) {
-                            Icon(Icons.Default.Close, contentDescription = null)
-                        }
-                    }
-                },
-                elevation = 0.dp,
-                backgroundColor = Color.Transparent,
-                modifier = Modifier.padding(insetsPaddingValues),
-            )
-        },
-        gesturesEnabled = false,
-        peekHeight = BackdropScaffoldDefaults.PeekHeight + insetsPaddingValues.calculateTopPadding(),
-        backLayerContent = {
-            LazyColumn {
-                items(DemoContent.values()) { item ->
-                    ListItem(
-                        modifier = Modifier.clickable {
-                            contentSelection = item
-                            scope.launch { scaffoldState.conceal() }
-                        },
-                        text = {
-                            Text(
-                                text = item.chartName,
-                                fontWeight = if (contentSelection == item) FontWeight.Bold else null
-                            )
-                        },
-                    )
-                }
-            }
-        },
-        frontLayerContent = {
-            Box(Modifier.fillMaxSize()) {
-                when (contentSelection) {
-                    DemoContent.LINE -> LineChartComposable()
-                    DemoContent.FUNCTION -> AnimatedFunctionChart()
-                }
-            }
-        }
-    )
 }
 
 @Composable
@@ -157,11 +86,11 @@ fun AnimatedFunctionChart() {
         )
     )
     Column {
-        Surface(Modifier.weight(1f), color = MaterialTheme.colors.background) {
+        Surface(Modifier.weight(1f)) {
             FunctionPlotter(
                 pointSpacing = 5,
-                lineStyle = LineDrawStyle(color = MaterialTheme.colors.primary),
-                textStyle = mainTextStyle.copy(color = MaterialTheme.colors.primary),
+                lineStyle = LineDrawStyle(color = MaterialTheme.colorScheme.primary),
+                textStyle = mainTextStyle.copy(color = MaterialTheme.colorScheme.primary),
                 dataXRange = -PI.toFloat() + (if (animate) m else 0f)..PI.toFloat() + (if (animate) m else 0f),
                 dataYRange = -2f..2f
             ) {
@@ -179,11 +108,10 @@ fun AnimatedFunctionChart() {
     }
 }
 
-@ExperimentalMaterialApi
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     KonstellationTheme {
-        Content()
+
     }
 }

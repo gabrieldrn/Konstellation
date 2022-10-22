@@ -2,7 +2,7 @@ package com.gabrieldrn.konstellationdemo.linechartdemo
 
 import android.graphics.Paint
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
@@ -25,9 +25,11 @@ internal fun getChartProperties() = LineChartProperties(
     datasetOffsets = DatasetOffsets(
         xStartOffset = 2f,
         xEndOffset = 2f,
-        yStartOffset = 0.5f,
-        yEndOffset = 0.5f
-    )
+        yStartOffset = 1f,
+        yEndOffset = 1f
+    ),
+//    drawFrame = false,
+//    drawZeroLines = false
 )
 
 @Composable
@@ -41,19 +43,18 @@ internal fun getChartStyles(
     }
 ) = LineChartStyles(
     highlightTextStyle = mainTextStyle.copy(
-        color = MaterialTheme.colors.primary,
-        textAlign = Paint.Align.CENTER,
-        offsetY = -25f
+        textAlign = Paint.Align.CENTER
     )
 ).apply {
-    lineStyle.color = MaterialTheme.colors.primaryVariant
-    pointStyle.color = MaterialTheme.colors.primaryVariant
-    textStyle.color = MaterialTheme.colors.onBackground
-    highlightLineStyle?.color = MaterialTheme.colors.onBackground
+    lineStyle.color = MaterialTheme.colorScheme.primary
+    pointStyle.color = MaterialTheme.colorScheme.primary
+    textStyle.color = MaterialTheme.colorScheme.primary
+    highlightLineStyle?.color = MaterialTheme.colorScheme.secondary
     highlightPointStyle.run {
-        color = MaterialTheme.colors.primaryVariant.copy(alpha = 0.3f)
+        color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
         radius = 6.dp
     }
-    setAxesColor(MaterialTheme.colors.onBackground)
+    highlightTextStyle.color = MaterialTheme.colorScheme.onSecondaryContainer
+    setAxesColor(MaterialTheme.colorScheme.outline)
     setAxesTypeface(mainTextStyle.typeface)
 }

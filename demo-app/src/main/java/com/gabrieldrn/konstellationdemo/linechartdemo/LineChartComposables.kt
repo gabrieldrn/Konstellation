@@ -3,7 +3,7 @@ package com.gabrieldrn.konstellationdemo.linechartdemo
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
@@ -21,40 +21,43 @@ import com.gabrieldrn.konstellation.highlighting.HighlightPopup
 import com.gabrieldrn.konstellation.highlighting.horizontalHLPositions
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
-import com.gabrieldrn.konstellationdemo.DemoContent
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
 @Composable
-fun LineChartComposable() {
-
-    val chartStyles = getChartStyles()
-
+fun LineChartComposable(modifier: Modifier = Modifier) {
     Column(
-        Modifier
+        modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(color = MaterialTheme.colors.background)
-            .navigationBarsPadding(),
+            .background(color = MaterialTheme.colorScheme.background)
+            .systemBarsPadding(),
     ) {
-        DemoContent(chartStyles)
+        Text(
+            text = "Konstellation",
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 16.dp)
+        )
+        DemoContent()
         LineChartSettingsContent()
     }
 }
 
 @Composable
-private fun DemoContent(
-    chartStyles: LineChartStyles,
-) {
+private fun DemoContent() {
     Text(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 16.dp, top = 16.dp),
-        text = DemoContent.LINE.chartName.uppercase(),
-        style = MaterialTheme.typography.h4,
-        fontWeight = FontWeight.ExtraBold,
+        text = "Line chart",
+        color = MaterialTheme.colorScheme.secondary,
+        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
     )
     Surface(
         shape = RoundedCornerShape(16.dp),
+        tonalElevation = 1.dp,
         modifier = Modifier
             .padding(top = 16.dp)
             .padding(horizontal = 16.dp)
@@ -65,21 +68,22 @@ private fun DemoContent(
                 .aspectRatio(1f), //Keep the chart square
             dataset = viewModel<LineChartDemoViewModel>().dataset,
             properties = viewModel<LineChartDemoViewModel>().properties,
-            styles = chartStyles,
+            styles = getChartStyles(),
             highlightContent = {
                 HighlightPopup(
-                    backgroundColor = MaterialTheme.colors.primary
+                    color = MaterialTheme.colorScheme.inverseSurface
                 ) {
                     Text(
                         modifier = Modifier
                             .padding(8.dp)
                             .align(Alignment.Center),
                         text = if (contentPosition in horizontalHLPositions) {
-                            "x -> ${point.x.toInt()}"
+                            "x = ${point.x.toInt()}"
                         } else {
-                            "y -> ${point.y.toInt()}"
+                            "y = ${point.y.toInt()}"
                         },
-                        style = MaterialTheme.typography.body1,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.inverseOnSurface,
                         textAlign = TextAlign.Start
                     )
                 }
@@ -101,9 +105,9 @@ fun LineChartWithCustomPropertiesPreview() {
         )
     )
     val chartStyles = LineChartStyles().apply {
-        lineStyle.color = MaterialTheme.colors.primary
-        pointStyle.color = MaterialTheme.colors.primary
-        textStyle.color = MaterialTheme.colors.primary
+        lineStyle.color = MaterialTheme.colorScheme.primary
+        pointStyle.color = MaterialTheme.colorScheme.primary
+        textStyle.color = MaterialTheme.colorScheme.primary
         setAxesColor(Color.Black)
     }
 

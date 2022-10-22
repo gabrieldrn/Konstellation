@@ -52,7 +52,7 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.androidx.compose.ui
     implementation libs.androidx.compose.uiTooling
-    implementation libs.androidx.compose.material
+    implementation libs.androidx.compose.material3
     implementation libs.material
     testImplementation libs.junit
     androidTestImplementation libs.androidx.test.ext

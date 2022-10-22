@@ -2,15 +2,19 @@
 
 package com.gabrieldrn.konstellationdemo.ui.theme
 
-import androidx.compose.material.Typography
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.*
-import androidx.compose.ui.text.style.*
-import androidx.compose.ui.unit.sp
 import com.gabrieldrn.konstellationdemo.R
 
 /**
- * [Figtree](https://fonts.google.com/specimen/Figtree) font.
+ * [Krona One](https://fonts.google.com/specimen/Krona+One) typeface for display and headlines.
+ */
+private val KronaOneFamily = FontFamily(
+    Font(R.font.krona_one_regular)
+)
+
+/**
+ * [Figtree](https://fonts.google.com/specimen/Figtree) typeface for contents.
  * Geometric, with beautiful numbers.
  */
 private val FigtreeFamily = FontFamily(
@@ -26,4 +30,22 @@ private val FigtreeFamily = FontFamily(
 /**
  * Typography definition for Konstellation.
  */
-val Typography = Typography(defaultFontFamily = FigtreeFamily)
+val Typography = Typography().run {
+    copy(
+        displayLarge = displayLarge.copy(fontFamily = KronaOneFamily),
+        displayMedium = displayMedium.copy(fontFamily = KronaOneFamily),
+        displaySmall = displaySmall.copy(fontFamily = KronaOneFamily),
+        headlineLarge = headlineLarge.copy(fontFamily = KronaOneFamily),
+        headlineMedium = headlineMedium.copy(fontFamily = KronaOneFamily),
+        headlineSmall = headlineSmall.copy(fontFamily = KronaOneFamily),
+        titleLarge = titleLarge.copy(fontFamily = FigtreeFamily),
+        titleMedium = titleMedium.copy(fontFamily = FigtreeFamily),
+        titleSmall = titleSmall.copy(fontFamily = FigtreeFamily),
+        bodyLarge = bodyLarge.copy(fontFamily = FigtreeFamily),
+        bodyMedium = bodyMedium.copy(fontFamily = FigtreeFamily),
+        bodySmall = bodySmall.copy(fontFamily = FigtreeFamily),
+        labelLarge = labelLarge.copy(fontFamily = FigtreeFamily),
+        labelMedium = labelMedium.copy(fontFamily = FigtreeFamily),
+        labelSmall = labelSmall.copy(fontFamily = FigtreeFamily)
+    )
+}

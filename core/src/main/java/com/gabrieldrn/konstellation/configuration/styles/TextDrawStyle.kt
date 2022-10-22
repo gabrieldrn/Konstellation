@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.*
  *
  * @param color Text color.
  * @param typeface See [Typeface].
- * @param textSize Size of text. TODO Use a dimension instead of Float
+ * @param textSize Size of text.
  * @param textAlign Text alignment. See [Paint.Align]
  * @param offsetX An offset applied to the X-position of the text.
  * @param offsetY An offset applied to the Y-position of the text.

@@ -4,6 +4,7 @@ import android.graphics.Paint
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
+import androidx.compose.ui.text.android.*
 import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import com.gabrieldrn.konstellation.util.toInt
 
@@ -21,7 +22,7 @@ fun DrawScope.drawText(
         point.y + style.offsetY,
         Paint().apply {
             textAlign = style.textAlign
-            textSize = style.textSize.value
+            textSize = style.textSize.toPx()
             color = style.color.toInt()
             typeface = style.typeface
             flags = Paint.ANTI_ALIAS_FLAG

@@ -7,10 +7,10 @@ import androidx.compose.foundation.interaction.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.*
 import androidx.compose.foundation.shape.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.ripple.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
@@ -25,10 +25,10 @@ fun ToggleIconButton(
     toggled: Boolean,
     onToggleChange: (Boolean) -> Unit,
     imageVector: ImageVector,
-    toggledColor: Color = MaterialTheme.colors.primary,
-    disabledColor: Color = MaterialTheme.colors.onSurface.copy(alpha = 0.12f),
-    toggledImageVectorTint: Color = MaterialTheme.colors.onPrimary,
-    disabledImageVectorTint: Color = MaterialTheme.colors.onSurface,
+    toggledColor: Color = MaterialTheme.colorScheme.primary,
+    disabledColor: Color = LocalContentColor.current.copy(alpha = 0.12f),
+    toggledImageVectorTint: Color = MaterialTheme.colorScheme.onPrimary,
+    disabledImageVectorTint: Color = LocalContentColor.current,
     modifier: Modifier = Modifier
 ) {
     val background by animateColorAsState(

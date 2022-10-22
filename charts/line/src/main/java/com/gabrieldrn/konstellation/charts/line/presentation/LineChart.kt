@@ -80,7 +80,9 @@ fun LineChart(
                     )
                 }
         ) {
-            drawFrame()
+            if (properties.drawFrame) {
+                drawFrame()
+            }
 
             dataset.createOffsets(
                 drawScope = this,
@@ -88,7 +90,9 @@ fun LineChart(
                 dataSetYRange = yDrawRange
             )
 
-            drawZeroLines(xDrawRange, yDrawRange)
+            if (properties.drawZeroLines) {
+                drawZeroLines(xDrawRange, yDrawRange)
+            }
 
             with(styles) {
                 clipRect {

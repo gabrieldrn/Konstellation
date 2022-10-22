@@ -3,10 +3,10 @@ package com.gabrieldrn.konstellationdemo.linechartdemo
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
@@ -74,6 +74,7 @@ fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = vie
     }
     HorizontalPagerIndicator(
         pagerState = pagerState,
+        activeColor = MaterialTheme.colorScheme.secondary,
         modifier = Modifier
             .align(Alignment.CenterHorizontally)
             .padding(top = 4.dp),
@@ -93,9 +94,42 @@ private fun SettingSurface(
                 .fillMaxWidth()
                 .padding(16.dp)
                 .height(SettingSurfaceHeight),
-            content = content
+            content = content,
+            color = MaterialTheme.colorScheme.secondaryContainer,
+            tonalElevation = 1.dp
         )
-        Text(title, modifier = Modifier.align(Alignment.CenterHorizontally))
+        Text(
+            title,
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+    }
+}
+
+@Composable
+private fun SettingIconButton(
+    onClick: () -> Unit,
+    icon: ImageVector,
+    text: String? = null
+) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        IconButton(
+            onClick = onClick,
+            Modifier.background(
+                color = MaterialTheme.colorScheme.primary,
+                shape = CircleShape
+            )
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+        if (!text.isNullOrEmpty()) {
+            Text(text = text, textAlign = TextAlign.Center)
+        }
     }
 }
 
@@ -111,38 +145,12 @@ private fun LineChartDatasetSelector(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(
-                    onClick = onGenerateRandomDataset,
-                    Modifier.background(
-                        color = MaterialTheme.colors.primary,
-                        shape = CircleShape
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Shuffle,
-                        contentDescription = null,
-                        tint = MaterialTheme.colors.onPrimary
-                    )
-                }
-                Text(text = "Random", textAlign = TextAlign.Center)
-            }
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(
-                    onClick = onGenerateFancyDataset,
-                    Modifier.background(
-                        color = MaterialTheme.colors.primary,
-                        shape = CircleShape
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.AutoGraph,
-                        contentDescription = null,
-                        tint = MaterialTheme.colors.onPrimary
-                    )
-                }
-                Text(text = "Fancy", textAlign = TextAlign.Center)
-            }
+            SettingIconButton(
+                onClick = onGenerateRandomDataset, icon = Icons.Default.Shuffle, text = "Random"
+            )
+            SettingIconButton(
+                onClick = onGenerateFancyDataset, icon = Icons.Default.AutoGraph, text = "Fancy"
+            )
         }
     }
 }
@@ -191,7 +199,7 @@ private fun LineChartDataDrawingSetting(
                 Modifier
                     .fillMaxHeight()
                     .width(1.dp)
-                    .background(MaterialTheme.colors.onSurface.copy(alpha = 0.12f))
+                    .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
             )
 
             Column(
@@ -199,24 +207,15 @@ private fun LineChartDataDrawingSetting(
                 verticalArrangement = Arrangement.Center
             ) {
                 val methods by remember { mutableStateOf(Smoothing.values()) }
-                IconButton(
+                SettingIconButton(
                     onClick = {
                         val index = (methods.indexOf(smoothing) + 1)
                             .takeIf { it in methods.indices } ?: 0
                         onChangeSmoothing(methods[index])
                     },
-                    Modifier.background(
-                        color = MaterialTheme.colors.primary,
-                        shape = CircleShape
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.AutoAwesome,
-                        contentDescription = null,
-                        tint = MaterialTheme.colors.onPrimary
-                    )
-                }
-                Text(text = "Smoothing", textAlign = TextAlign.Center)
+                    icon = Icons.Default.AutoAwesome,
+                    text = "Smoothing"
+                )
             }
         }
     }
@@ -228,9 +227,9 @@ private fun LineChartFillingSetting(
     onChangeBrush: (Brush?) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val solidColor = SolidColor(MaterialTheme.colors.primary.copy(alpha = .75f))
+    val solidColor = SolidColor(MaterialTheme.colorScheme.primary.copy(alpha = .75f))
     val gradientBrush = Brush.verticalGradient(
-        colors = listOf(MaterialTheme.colors.primary, Color.Transparent)
+        colors = listOf(MaterialTheme.colorScheme.primary, Color.Transparent)
     )
     SettingSurface(title = "Filling", modifier = modifier) {
         Row(
@@ -295,7 +294,7 @@ private fun LineChartHighlightSetting(
                 Modifier
                     .height(48.dp)
                     .width(1.dp)
-                    .background(MaterialTheme.colors.onSurface.copy(alpha = 0.12f))
+                    .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
             )
             PositionToggleButton(HighlightContentPosition.Point, Icons.Default.PushPin)
         }
@@ -332,7 +331,7 @@ private fun LineChartAxisSelectorSetting(
                 Modifier
                     .height(48.dp)
                     .width(1.dp)
-                    .background(MaterialTheme.colors.onSurface.copy(alpha = 0.12f))
+                    .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
             )
             AxisToggleButton(Axes.yLeft, Icons.Default.BorderLeft)
             AxisToggleButton(Axes.yRight, Icons.Default.BorderRight)
@@ -346,7 +345,7 @@ fun SettingsPreviews() {
     KonstellationTheme {
         Column(
             modifier = Modifier
-                .background(MaterialTheme.colors.background)
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
         ) {
             LineChartDatasetSelector({}, {})

@@ -1,7 +1,7 @@
 package com.gabrieldrn.konstellation.highlighting
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
@@ -51,31 +51,38 @@ fun BoxScope.BoxedPopup(
     }
 }
 
+// TODO Move all the highlighting code to another module and duplicate it to provide M2 + M3
+//   versions.
 /**
  * Creates a popup to highlight content from the chart with a [shape]. The default shape, a
  * [HighlightPopupShape], is a rounded card with an arrow placed in accordance with the positions
  * of the highlight defined in the chart composable parameters, so as it will point towards the
- * highlighted value. The background of this shape is customizable by modifying [backgroundColor].
+ * highlighted value.
+ * The popup is using the material 3 [Surface], so the arguments of this popup are the same as the
+ * ones from [Surface].
  * Contents of the highlighting popup are defined in [content].
  */
 @Composable
 fun HighlightScope.HighlightPopup(
     modifier: Modifier = Modifier,
     shape: HighlightPopupShape = HighlightPopupShape(contentPosition),
-    backgroundColor: Color = if (MaterialTheme.colors.isLight) Color.White else Color.Black,
+    color: Color = MaterialTheme.colorScheme.surface,
+    tonalElevation: Dp = 0.dp,
+    shadowElevation: Dp = 5.dp,
     content: @Composable BoxScope.() -> Unit
 ) {
-    Card(
-        modifier
+    Surface(
+        modifier = modifier
             .padding(shape.arrowSize)
             .sizeIn(
                 minWidth = shape.suggestedMinWidth,
                 minHeight = shape.suggestedMinHeight
             )
             .then(modifier),
-        backgroundColor = backgroundColor,
+        color = color,
         shape = shape,
-        elevation = 4.dp
+        tonalElevation = tonalElevation,
+        shadowElevation = shadowElevation
     ) {
         Box(content = content)
     }

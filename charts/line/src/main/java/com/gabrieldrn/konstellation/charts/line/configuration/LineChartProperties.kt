@@ -22,6 +22,9 @@ import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
  * popups as there are positions.
  * @property highlightLinePosition Where highlight lines will be placed. See enum values for more
  * insight. A null value means not drawing any highlight line.
+ * @property drawAxes Either to draw the given [axes] or not.
+ * @property drawFrame Either to draw the lines delimiting the chart or not.
+ * @property drawZeroLines Either to draw the lines indicating the zero on X and Y axes or not.
  * @property drawLines Either to draw lines (as described by [LineChartStyles.lineStyle]) or not.
  * @property drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
  * @property smoothing The style of the lines drawing between the data points.
@@ -29,13 +32,15 @@ import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
  * the data lines.
  */
 data class LineChartProperties(
-    override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
-    val chartPaddingValues: PaddingValues = PaddingValues(44.dp),
+    override val axes: Set<ChartAxis> = setOf(),
+    val chartPaddingValues: PaddingValues = PaddingValues(0.dp),
     val datasetOffsets: DatasetOffsets? = null,
     val highlightContentPositions: Set<HighlightContentPosition> = setOf(
         HighlightContentPosition.Point
     ),
     val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.Relative,
+    override val drawFrame: Boolean = true,
+    override val drawZeroLines: Boolean = true,
     val drawLines: Boolean = true,
     val drawPoints: Boolean = false,
     override val smoothing: Smoothing = Smoothing.values().first(),
