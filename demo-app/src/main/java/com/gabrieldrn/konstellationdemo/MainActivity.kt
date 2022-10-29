@@ -2,6 +2,7 @@ package com.gabrieldrn.konstellationdemo
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
@@ -24,13 +25,10 @@ import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartComposable
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
-import com.gabrieldrn.konstellationdemo.linechartdemo.getChartProperties
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.core.parameter.parametersOf
 import kotlin.math.PI
 import kotlin.math.sin
 
@@ -41,9 +39,7 @@ private const val DarkIconsLuminanceThreshold = 0.5f
 
 class MainActivity : AppCompatActivity() {
 
-    private val lineChartViewModel by viewModel<LineChartDemoViewModel> {
-        parametersOf(getChartProperties())
-    }
+    private val lineChartViewModel by viewModels<LineChartDemoViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

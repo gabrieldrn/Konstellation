@@ -39,6 +39,7 @@ data class LineChartProperties(
         HighlightContentPosition.Point
     ),
     val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.Relative,
+    override val hapticHighlight: Boolean = true,
     override val drawFrame: Boolean = true,
     override val drawZeroLines: Boolean = true,
     val drawLines: Boolean = true,

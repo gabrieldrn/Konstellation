@@ -13,7 +13,7 @@ import com.gabrieldrn.konstellation.util.randomDataSet
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 
 class LineChartDemoViewModel(
-    properties: LineChartProperties = LineChartProperties()
+    properties: LineChartProperties = getChartProperties()
 ) : ViewModel() {
 
     var dataset: Dataset by mutableStateOf(datasetOf())

@@ -50,36 +50,13 @@ fun LineChart(
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
-    val hapticLocal = LocalHapticFeedback.current
-    var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
-
     val (xDrawRange, yDrawRange) = properties.datasetOffsets.applyDatasetOffsets(
         xDrawRange = dataset.xRange,
         yDrawRange = dataset.yRange
     )
 
     Box {
-        Canvas(
-            modifier
-                .padding(properties.chartPaddingValues)
-                .pointerInput(dataset) {
-                    detectDragGesturesAfterLongPress(
-                        onDragStart = {
-                            hapticLocal.performHapticFeedback(HapticFeedbackType.LongPress)
-                            highlightedValue = dataset.nearestPointByX(it.x)
-                            onHighlightChange?.invoke(highlightedValue)
-                        },
-                        onDragEnd = {
-                            highlightedValue = null
-                            onHighlightChange?.invoke(highlightedValue)
-                        },
-                        onDrag = { change, _ ->
-                            highlightedValue = dataset.nearestPointByX(change.position.x)
-                            onHighlightChange?.invoke(highlightedValue)
-                        }
-                    )
-                }
-        ) {
+        Canvas(modifier.padding(properties.chartPaddingValues)) {
             if (properties.drawFrame) {
                 drawFrame()
             }
@@ -123,25 +100,72 @@ fun LineChart(
                     if (properties.drawPoints) {
                         dataset.forEach { drawPoint(it, pointStyle) }
                     }
-
-                    // Highlight
-                    highlightedValue?.let {
-                        highlightPoint(
-                            point = it,
-                            contentPositions = properties.highlightContentPositions,
-                            pointStyle = highlightPointStyle,
-                            linePosition = properties.highlightLinePosition,
-                            lineStyle = highlightLineStyle
-                        )
-                    }
                 }
                 drawScaledAxis(properties, styles, xDrawRange, yDrawRange)
             }
         }
 
-        highlightedValue?.let { point ->
-            ComposeHighlightPopup(highlightContent, point, properties)
+        HighlightCanvas(
+            modifier = modifier,
+            properties = properties,
+            dataset = dataset,
+            styles = styles,
+            highlightContent = highlightContent,
+            onHighlightChange = onHighlightChange
+        )
+    }
+}
+
+@Composable
+private fun BoxScope.HighlightCanvas(
+    modifier: Modifier,
+    properties: LineChartProperties,
+    dataset: Dataset,
+    styles: LineChartStyles,
+    highlightContent: @Composable (HighlightScope.() -> Unit)?,
+    onHighlightChange: ((Point?) -> Unit)? = null
+) {
+    val hapticLocal = LocalHapticFeedback.current
+    var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
+
+    LaunchedEffect(highlightedValue) {
+        if (properties.hapticHighlight && highlightedValue != null) {
+            hapticLocal.performHapticFeedback(HapticFeedbackType.LongPress)
         }
+        onHighlightChange?.invoke(highlightedValue)
+    }
+
+    Canvas(
+        modifier = modifier
+            .padding(properties.chartPaddingValues)
+            .pointerInput(dataset) {
+                detectDragGesturesAfterLongPress(
+                    onDragStart = {
+                        highlightedValue = dataset.nearestPointByX(it.x)
+                    },
+                    onDragEnd = {
+                        highlightedValue = null
+                    },
+                    onDrag = { change, _ ->
+                        highlightedValue = dataset.nearestPointByX(change.position.x)
+                    }
+                )
+            }
+    ) {
+        // Highlight
+        highlightedValue?.let {
+            highlightPoint(
+                point = it,
+                contentPositions = properties.highlightContentPositions,
+                pointStyle = styles.highlightPointStyle,
+                linePosition = properties.highlightLinePosition,
+                lineStyle = styles.highlightLineStyle
+            )
+        }
+    }
+
+    highlightedValue?.let { point ->
+        ComposeHighlightPopup(highlightContent, point, properties)
     }
 }
 
