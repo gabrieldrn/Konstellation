@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.configuration.properties.Smoothing
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.plotting.Axes
@@ -29,6 +30,7 @@ import com.google.accompanist.pager.rememberPagerState
 private val SettingSurfaceHeight = 148.dp
 
 @OptIn(ExperimentalPagerApi::class)
+@Suppress("LongMethod") // TODO Try to simplify this composable.
 @Composable
 fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = viewModel()) {
     val pagerState = rememberPagerState()
@@ -49,30 +51,66 @@ fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = vie
                 drawLines = viewModel.properties.drawLines,
                 drawPoints = viewModel.properties.drawPoints,
                 smoothing = viewModel.properties.smoothing,
-                onToggleDrawLines = viewModel::updateDrawLines,
-                onToggleDrawPoints = viewModel::updateDrawPoints,
-                onChangeSmoothing = viewModel::changeSmoothing
+                onToggleDrawLines = {
+                    viewModel.updateProperty(LineChartProperties::drawLines, it)
+                },
+                onToggleDrawPoints = {
+                    viewModel.updateProperty(LineChartProperties::drawPoints, it)
+                },
+                onChangeSmoothing = {
+                    viewModel.updateProperty(LineChartProperties::smoothing, it)
+                }
             )
 
             2 -> LineChartFillingSetting(
                 brush = viewModel.properties.fillingBrush,
-                onChangeBrush = viewModel::changeFillingBrush
+                onChangeBrush = {
+                    viewModel.updateProperty(LineChartProperties::fillingBrush, it)
+                }
             )
 
             3 -> LineChartHighlightSetting(
                 highlightPositions = viewModel.properties.highlightContentPositions,
-                onAddHighlightPosition = viewModel::addHighlightPosition,
-                onRemoveHighlightPosition = viewModel::removeHighlightPosition
+                onAddHighlightPosition = {
+                     viewModel.updateProperty(
+                         LineChartProperties::highlightContentPositions,
+                         viewModel.properties.highlightContentPositions
+                             .toMutableSet().apply { add(it) }
+                     )
+                },
+                onRemoveHighlightPosition = {
+                    viewModel.updateProperty(
+                        LineChartProperties::highlightContentPositions,
+                        viewModel.properties.highlightContentPositions
+                            .toMutableSet().apply { remove(it) }
+                    )
+                }
             )
 
             4 -> LineChartAxisSelectorSetting(
                 axes = viewModel.properties.axes,
                 drawFrame = viewModel.properties.drawFrame,
                 drawZeroLines = viewModel.properties.drawZeroLines,
-                onAddAxis = viewModel::addAxis,
-                onRemoveAxis = viewModel::removeAxis,
-                onChangeDrawFrame = viewModel::updateDrawFrame,
-                onChangeDrawZeroLines = viewModel::updateDrawZeroLines,
+                onAddAxis = {
+                    viewModel.updateProperty(
+                        LineChartProperties::axes,
+                        viewModel.properties.axes
+                            .toMutableSet().apply { add(it) }
+                    )
+                },
+                onRemoveAxis = {
+                    viewModel.updateProperty(
+                        LineChartProperties::axes,
+                        viewModel.properties.axes
+                            .toMutableSet().apply { remove(it) }
+                    )
+                },
+                onChangeDrawFrame = {
+                    viewModel.updateProperty(LineChartProperties::drawFrame, it)
+                },
+                onChangeDrawZeroLines = {
+                    viewModel.updateProperty(LineChartProperties::drawZeroLines, it)
+                },
             )
         }
     }
