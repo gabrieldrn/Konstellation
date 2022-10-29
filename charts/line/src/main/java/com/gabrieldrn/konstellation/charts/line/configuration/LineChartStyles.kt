@@ -23,7 +23,6 @@ import com.gabrieldrn.konstellation.configuration.styles.setColor
  * @property highlightPointStyle Appearance of the highlighted data point.
  * @property highlightLineStyle Appearance of the lines drawn on the highlighted point. Their
  * orientation depends on the provided highlighting positions in the LineChart composable.
- * @property highlightTextStyle Text appearance of the text shown in the highlight popup.
  */
 data class LineChartStyles(
     override val lineStyle: LineDrawStyle = defaultLineStyle,
@@ -35,7 +34,6 @@ data class LineChartStyles(
     val textStyle: TextDrawStyle = defaultTextStyle,
     val highlightPointStyle: PointDrawStyle = defaultHighlightPointStyle,
     val highlightLineStyle: LineDrawStyle? = defaultHighlightLineStyle,
-    val highlightTextStyle: TextDrawStyle = defaultHighlightTextStyle,
 ) : ChartStyles {
 
     /**
@@ -53,7 +51,6 @@ data class LineChartStyles(
         val defaultTextStyle = TextDrawStyle()
         val defaultHighlightPointStyle = PointDrawStyle()
         val defaultHighlightLineStyle = LineDrawStyle(strokeWidth = 1.dp, dashed = true)
-        val defaultHighlightTextStyle = TextDrawStyle()
     }
 }
 

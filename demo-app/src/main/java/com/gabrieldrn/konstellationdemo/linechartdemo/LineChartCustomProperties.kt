@@ -1,6 +1,5 @@
 package com.gabrieldrn.konstellationdemo.linechartdemo
 
-import android.graphics.Paint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -41,11 +40,7 @@ internal fun getChartStyles(
         //Koin not initialized.
         TextDrawStyle()
     }
-) = LineChartStyles(
-    highlightTextStyle = mainTextStyle.copy(
-        textAlign = Paint.Align.CENTER
-    )
-).apply {
+) = LineChartStyles().apply {
     lineStyle.color = MaterialTheme.colorScheme.primary
     pointStyle.color = MaterialTheme.colorScheme.primary
     textStyle.color = MaterialTheme.colorScheme.primary
@@ -54,7 +49,6 @@ internal fun getChartStyles(
         color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
         radius = 6.dp
     }
-    highlightTextStyle.color = MaterialTheme.colorScheme.onSecondaryContainer
     setAxesColor(MaterialTheme.colorScheme.outline)
     setAxesTypeface(mainTextStyle.typeface)
 }

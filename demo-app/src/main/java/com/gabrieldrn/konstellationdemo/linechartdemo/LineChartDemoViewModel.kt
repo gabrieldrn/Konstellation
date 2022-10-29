@@ -65,6 +65,14 @@ class LineChartDemoViewModel(
         )
     }
 
+    fun updateDrawFrame(value: Boolean) {
+        properties = properties.copy(drawFrame = value)
+    }
+
+    fun updateDrawZeroLines(value: Boolean) {
+        properties = properties.copy(drawZeroLines = value)
+    }
+
     fun updateDrawLines(value: Boolean) {
         properties = properties.copy(drawLines = value)
     }

@@ -21,6 +21,7 @@ import com.gabrieldrn.konstellation.highlighting.HighlightPopup
 import com.gabrieldrn.konstellation.highlighting.horizontalHLPositions
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
+import com.gabrieldrn.konstellationdemo.linechartdemo.settings.LineChartSettingsContent
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
 @Composable

@@ -20,6 +20,11 @@ import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
+/**
+ * Fixed size for a [ToggleIconButton].
+ */
+val toggleIconButtonSize = 48.dp
+
 @Composable
 fun ToggleIconButton(
     toggled: Boolean,
@@ -41,7 +46,7 @@ fun ToggleIconButton(
     )
     Box(
         modifier = modifier
-            .size(48.dp)
+            .size(toggleIconButtonSize)
             .background(
                 color = background,
                 shape = CircleShape
