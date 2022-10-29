@@ -19,7 +19,7 @@ import java.lang.IllegalStateException
 private val injector = object : KoinComponent {}
 
 internal fun getChartProperties() = LineChartProperties(
-//    chartPaddingValues = PaddingValues(44.dp),
+    chartPaddingValues = PaddingValues(44.dp),
     axes = setOf(Axes.xBottom, Axes.yLeft),
     datasetOffsets = DatasetOffsets(
         xStartOffset = 2f,
