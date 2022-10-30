@@ -9,14 +9,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.vector.*
 import androidx.compose.ui.unit.*
+import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
+import kotlin.reflect.KProperty1
 
 @Composable
 internal fun LineChartHighlightSetting(
     highlightPositions: Set<HighlightContentPosition>,
-    onAddHighlightPosition: (HighlightContentPosition) -> Unit,
-    onRemoveHighlightPosition: (HighlightContentPosition) -> Unit,
+    onUpdateProperty: (KProperty1<LineChartProperties, Any>, Any) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingSurface(title = "Highlight popup positions", modifier = modifier) {
@@ -25,8 +26,13 @@ internal fun LineChartHighlightSetting(
             ToggleIconButton(
                 toggled = highlightPositions.contains(position),
                 onToggleChange = { toggled ->
-                    if (toggled) onAddHighlightPosition(position)
-                    else onRemoveHighlightPosition(position)
+                    onUpdateProperty(
+                        LineChartProperties::highlightContentPositions,
+                        highlightPositions.toMutableSet().apply {
+                            if (toggled) add(position)
+                            else remove(position)
+                        }
+                    )
                 },
                 imageVector = imageVector
             )

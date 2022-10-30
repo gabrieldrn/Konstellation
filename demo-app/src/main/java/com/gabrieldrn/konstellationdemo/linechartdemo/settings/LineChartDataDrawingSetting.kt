@@ -10,17 +10,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
+import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.configuration.properties.Smoothing
 import com.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
+import kotlin.reflect.KProperty1
 
 @Composable
 internal fun LineChartDataDrawingSetting(
     drawLines: Boolean,
     drawPoints: Boolean,
     smoothing: Smoothing,
-    onToggleDrawLines: (Boolean) -> Unit,
-    onToggleDrawPoints: (Boolean) -> Unit,
-    onChangeSmoothing: (Smoothing) -> Unit,
+    onUpdateProperty: (KProperty1<LineChartProperties, Any>, Any) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingSurface(title = "Data drawing", modifier = modifier) {
@@ -35,7 +35,9 @@ internal fun LineChartDataDrawingSetting(
             ) {
                 ToggleIconButton(
                     toggled = drawLines,
-                    onToggleChange = onToggleDrawLines,
+                    onToggleChange = {
+                        onUpdateProperty(LineChartProperties::drawLines, it)
+                    },
                     imageVector = Icons.Outlined.ShowChart
                 )
                 Text(text = "Lines", textAlign = TextAlign.Center)
@@ -47,7 +49,9 @@ internal fun LineChartDataDrawingSetting(
             ) {
                 ToggleIconButton(
                     toggled = drawPoints,
-                    onToggleChange = onToggleDrawPoints,
+                    onToggleChange =
+                    { onUpdateProperty(LineChartProperties::drawPoints, it)
+                    },
                     imageVector = Icons.Outlined.Commit
                 )
                 Text(text = "Points", textAlign = TextAlign.Center)
@@ -69,7 +73,7 @@ internal fun LineChartDataDrawingSetting(
                     onClick = {
                         val index = (methods.indexOf(smoothing) + 1)
                             .takeIf { it in methods.indices } ?: 0
-                        onChangeSmoothing(methods[index])
+                        onUpdateProperty(LineChartProperties::smoothing, methods[index])
                     },
                     icon = Icons.Default.AutoAwesome,
                     text = "Smoothing"
