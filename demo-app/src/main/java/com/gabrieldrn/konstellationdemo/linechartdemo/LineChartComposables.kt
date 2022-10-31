@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gabrieldrn.konstellation.charts.line.presentation.LineChart
+import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.highlighting.HighlightPopup
 import com.gabrieldrn.konstellation.highlighting.horizontalHLPositions
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
@@ -33,6 +34,32 @@ private fun DemoContent() {
             .padding(top = 16.dp)
             .padding(horizontal = 16.dp)
     ) {
+        val distanceHighlight: @Composable (Int) -> Unit = { dist ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Text(
+                    text = "🥾 ${dist}km",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                    textAlign = TextAlign.Start,
+                )
+            }
+        }
+        val altitudeHighlight: @Composable (Int) -> Unit = { alt ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(8.dp)
+            ) {
+                Text(
+                    text = "⛰️ ${alt}m",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                    textAlign = TextAlign.Start,
+                )
+            }
+        }
         LineChart(
             modifier = Modifier
                 .fillMaxWidth()
@@ -42,19 +69,14 @@ private fun DemoContent() {
             styles = getChartStyles(),
             highlightContent = {
                 HighlightPopup(color = MaterialTheme.colorScheme.inverseSurface) {
-                    Text(
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .align(Alignment.Center),
-                        text = if (contentPosition in horizontalHLPositions) {
-                            "x = ${point.x.toInt()}"
-                        } else {
-                            "y = ${point.y.toInt()}"
-                        },
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.inverseOnSurface,
-                        textAlign = TextAlign.Start
-                    )
+                    when (contentPosition) {
+                        HighlightContentPosition.Point -> Column {
+                            distanceHighlight(point.x.toInt())
+                            altitudeHighlight(point.y.toInt())
+                        }
+                        in horizontalHLPositions -> altitudeHighlight(point.y.toInt())
+                        else -> distanceHighlight(point.x.toInt())
+                    }
                 }
             }
         )

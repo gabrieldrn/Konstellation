@@ -3,32 +3,31 @@ package com.gabrieldrn.konstellationdemo.linechartdemo
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
-import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.configuration.setAxesColor
 import com.gabrieldrn.konstellation.charts.line.configuration.setAxesTypeface
-import com.gabrieldrn.konstellation.plotting.Axes
+import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
+import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellationdemo.QF_MAIN_TEXT_STYLE
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
-import java.lang.IllegalStateException
 
 private val injector = object : KoinComponent {}
 
 internal fun getChartProperties() = LineChartProperties(
-    chartPaddingValues = PaddingValues(44.dp),
-    axes = setOf(Axes.xBottom, Axes.yLeft),
+    highlightContentPositions = setOf(HighlightContentPosition.Top, HighlightContentPosition.Start),
     datasetOffsets = DatasetOffsets(
-        xStartOffset = 2f,
-        xEndOffset = 2f,
-        yStartOffset = 1f,
-        yEndOffset = 1f
+        xStartOffset = 0f,
+        xEndOffset = 0f,
+        yStartOffset = 4000f,
+        yEndOffset = 4000f
     ),
-//    drawFrame = false,
-//    drawZeroLines = false
+    drawFrame = false,
+    drawZeroLines = false
 )
 
 @Composable

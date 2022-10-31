@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.*
 import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.configuration.properties.Smoothing
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.plotting.Axes
@@ -34,7 +35,7 @@ fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = vie
     val pagerState = rememberPagerState()
 
     HorizontalPager(
-        count = 5,
+        count = 6,
         state = pagerState,
         verticalAlignment = Alignment.Top
     ) { page ->
@@ -67,6 +68,12 @@ fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = vie
                 drawFrame = viewModel.properties.drawFrame,
                 drawZeroLines = viewModel.properties.drawZeroLines,
                 onUpdateProperty = viewModel::updateProperty,
+            )
+
+            5 -> LineChartPaddingsSetting(
+                chartPaddingValues = viewModel.properties.chartPaddingValues,
+                datasetOffsets = viewModel.properties.datasetOffsets,
+                onUpdateProperty = viewModel::updateProperty
             )
         }
     }
@@ -177,6 +184,12 @@ fun SettingsPreviews() {
                 drawFrame = false,
                 drawZeroLines = false,
                 { _, _ -> },
+            )
+
+            LineChartPaddingsSetting(
+                chartPaddingValues = PaddingValues(44.dp),
+                datasetOffsets = DatasetOffsets(),
+                onUpdateProperty = { _, _ -> }
             )
         }
     }

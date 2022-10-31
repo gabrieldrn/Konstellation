@@ -3,13 +3,12 @@ package com.gabrieldrn.konstellation.charts.line.configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
-import com.gabrieldrn.konstellation.plotting.Axes
-import com.gabrieldrn.konstellation.plotting.ChartAxis
 import com.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.configuration.properties.Smoothing
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
+import com.gabrieldrn.konstellation.plotting.ChartAxis
 
 /**
  * Class defining features of a Konstellation line chart.
@@ -22,7 +21,8 @@ import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
  * popups as there are positions.
  * @property highlightLinePosition Where highlight lines will be placed. See enum values for more
  * insight. A null value means not drawing any highlight line.
- * @property drawAxes Either to draw the given [axes] or not.
+ * @property hapticHighlight Either to perform haptic feedbacks every time a new value is
+ * highlighted.
  * @property drawFrame Either to draw the lines delimiting the chart or not.
  * @property drawZeroLines Either to draw the lines indicating the zero on X and Y axes or not.
  * @property drawLines Either to draw lines (as described by [LineChartStyles.lineStyle]) or not.
@@ -39,7 +39,7 @@ data class LineChartProperties(
         HighlightContentPosition.Point
     ),
     val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.Relative,
-    override val hapticHighlight: Boolean = true,
+    override val hapticHighlight: Boolean = false,
     override val drawFrame: Boolean = true,
     override val drawZeroLines: Boolean = true,
     val drawLines: Boolean = true,

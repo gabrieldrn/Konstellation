@@ -35,6 +35,7 @@ import com.gabrieldrn.konstellation.util.randomFancyDataSet
  * @param dataset Your set of points.
  * @param modifier Your classic Jetpack-Compose modifier.
  * @param properties The DNA of your chart. See [LineChartProperties].
+ * @param styles Visual styles to be applied to the chart. See [LineChartStyles].
  * @param highlightContent Classic Composable scope defining the content to be shown inside
  * highlight popup(s). This is optional.
  * @param onHighlightChange Callback invoked each time the highlighted value changes. This is
@@ -130,7 +131,7 @@ private fun BoxScope.HighlightCanvas(
 
     LaunchedEffect(highlightedValue) {
         if (properties.hapticHighlight && highlightedValue != null) {
-            hapticLocal.performHapticFeedback(HapticFeedbackType.LongPress)
+            hapticLocal.performHapticFeedback(HapticFeedbackType.TextHandleMove)
         }
         onHighlightChange?.invoke(highlightedValue)
     }
