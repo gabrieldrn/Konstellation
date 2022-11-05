@@ -14,7 +14,7 @@ material3 = "1.0.0-rc01"
 accompanist = "0.25.1"
 koin = "3.2.2"
 junit = "4.13.2"
-android-gradle = "7.3.0"
+android-gradle = "7.3.1"
 versionsPlugin = "0.42.0"
 #https://github.com/littlerobots/version-catalog-update-plugin
 versionsCatalogUpdatePlugin = "0.6.1"
