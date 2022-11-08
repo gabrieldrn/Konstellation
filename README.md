@@ -11,9 +11,13 @@ A plotting library based on Jetpack Compose.
 
 **This library is still a work in progress and is being actively worked on.**
 
-![Screenshot_20220927_003134_framed](https://user-images.githubusercontent.com/22205373/192433407-087166f9-9e96-4f66-bbc9-daef829dab9f.png#gh-light-mode-only)
-![Screenshot_20220927_003116_framed](https://user-images.githubusercontent.com/22205373/192433474-6384bd39-751f-4120-b206-e839bba60e28.png#gh-dark-mode-only)
-
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/22205373/200699663-3e5a6a26-2cb5-4afb-8724-fb9a3b2bc9b5.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/22205373/200699641-26583508-51ed-4e9e-b3de-1ab992df5c33.png">
+    <img alt="Demo preview" src="https://user-images.githubusercontent.com/22205373/200699663-3e5a6a26-2cb5-4afb-8724-fb9a3b2bc9b5.png" width="50%">
+  </picture>
+</p>
 
 ## Usage example of a function chart
 
