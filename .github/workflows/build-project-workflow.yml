@@ -1,15 +1,15 @@
-name: CI 
+name: Build 
 
 on: [push, pull_request]
 
 jobs:
-  build:
+  Build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Grant execute permission for gradlew
+    - name: Grant execute permission for gradlew script
       run: chmod +x gradlew
       
     - name: Clean
@@ -18,7 +18,7 @@ jobs:
     - name: Detekt
       run: ./gradlew detekt
       
-    - name: Detekt
+    - name: Unit tests
       run: ./gradlew test
 
     - name: Build
