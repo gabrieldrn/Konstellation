@@ -12,7 +12,7 @@ typealias Dataset = List<Point>
 /**
  * A class representing a point in a chart.
  */
-data class Point(
+data class Point internal constructor(
 
     /**
      * X point from the data set.
@@ -32,7 +32,14 @@ data class Point(
 
 ): Serializable {
 
+    /**
+     * Returns the x value of [offset].
+     */
     val xPos get() = offset.x
+
+    /**
+     * Returns the y value of [offset].
+     */
     val yPos get() = offset.y
 
     override fun toString() = "[($x;$y), $offset]"
@@ -54,9 +61,9 @@ fun datasetOf(vararg elements: Point): Dataset =
     if (elements.isNotEmpty()) elements.asList() else emptyList()
 
 /**
- * Returns a point with the nearest X-coordinate from the given position [x].
+ * Casts this list of [Point]s as a [Dataset].
  */
-fun Dataset.nearestPointByX(x: Float) = minByOrNull { abs(it.offset.x - x) }
+fun List<Point>.asDataset(): Dataset = this
 
 /**
  * Converts a collection Float pairs to a list of [Point]s, assuming that the first element is X
@@ -70,6 +77,11 @@ fun Collection<Pair<Float, Float>>.toDataset(): Dataset = map { it.first by it.s
  * composition.
  */
 val Dataset.offsets get() = map { it.offset }
+
+/**
+ * Returns a point with the nearest X-coordinate from the given position [x].
+ */
+fun Dataset.nearestPointByX(x: Float) = minByOrNull { abs(it.offset.x - x) }
 
 /**
  * The highest X ([Point.x]) value of all the [Point]s from the current list.

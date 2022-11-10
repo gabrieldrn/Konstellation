@@ -44,44 +44,49 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             KonstellationTheme {
-                val systemUiController = rememberSystemUiController()
-                val useDarkIcons =
-                    MaterialTheme.colorScheme.background.luminance() > DarkIconsLuminanceThreshold
-                SideEffect {
-                    systemUiController.setSystemBarsColor(
-                        color = Color.Transparent,
-                        darkIcons = useDarkIcons
-                    )
-                }
-                Column(
-                    Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .background(color = MaterialTheme.colorScheme.background)
-                        .systemBarsPadding(),
-                ) {
-                    Text(
-                        text = "Konstellation",
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(top = 16.dp)
-                    )
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, top = 16.dp),
-                        text = "Line chart",
-                        color = MaterialTheme.colorScheme.secondary,
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
-                    )
-                    LineChartDemo()
-                }
+                MainContent()
             }
         }
+    }
+}
+
+@Composable
+private fun MainContent() {
+    val systemUiController = rememberSystemUiController()
+    val useDarkIcons =
+        MaterialTheme.colorScheme.background.luminance() > DarkIconsLuminanceThreshold
+    SideEffect {
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = useDarkIcons
+        )
+    }
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .background(color = MaterialTheme.colorScheme.background)
+            .systemBarsPadding(),
+    ) {
+        Text(
+            text = "Konstellation",
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 16.dp)
+        )
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, top = 16.dp),
+            text = "Line chart",
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.headlineSmall.copy(
+                fontWeight = FontWeight.Bold
+            ),
+        )
+        LineChartDemo()
     }
 }
 
@@ -89,6 +94,6 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun DefaultPreview() {
     KonstellationTheme {
-
+        MainContent()
     }
 }

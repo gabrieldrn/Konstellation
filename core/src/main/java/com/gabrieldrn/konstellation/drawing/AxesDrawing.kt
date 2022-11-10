@@ -162,11 +162,11 @@ fun DrawScope.drawZeroLines(
     var zero: Float
 
     if (horizontalLine && 0f in datasetYRange) {
-        zero = 0f.map(datasetYRange, size.height..0f) + size.height
+        zero = (0f map (datasetYRange to size.height..0f)) + size.height
         drawLine(Offset(0f, zero), Offset(size.width, zero), lineStyle)
     }
     if (verticalLine && 0f in datasetXRange) {
-        zero = 0f.map(datasetXRange, 0f..size.width)
+        zero = 0f map (datasetXRange to 0f..size.width)
         drawLine(Offset(zero, 0f), Offset(zero, size.height), lineStyle)
     }
 }

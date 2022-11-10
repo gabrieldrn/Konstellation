@@ -55,6 +55,8 @@ dependencies {
     implementation libs.androidx.compose.material3
     implementation libs.material
     testImplementation libs.junit
+    testImplementation libs.kotlin.test.junit
+    testImplementation libs.androidx.test.core
     androidTestImplementation libs.androidx.test.ext
     androidTestImplementation libs.androidx.test.espresso
 }

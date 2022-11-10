@@ -31,11 +31,22 @@ fun Float.map(
     fromRange: ClosedRange<Float>,
     toRange: ClosedRange<Float>
 ): Float {
-    val offsetRange = if (toRange.start < 0f) abs(toRange.start) else 0f
-    return (((toRange.endInclusive + offsetRange) - (toRange.start + offsetRange))
-            * (this - fromRange.start) / (fromRange.endInclusive - fromRange.start)
-            ) - offsetRange
+    require(this in fromRange) { "$this is not within the bounds of $fromRange" }
+    return (if (toRange.start < 0f) abs(toRange.start) else 0f).let { offsetRange ->
+        (((toRange.endInclusive + offsetRange) - (toRange.start + offsetRange))
+                * (this - fromRange.start) / (fromRange.endInclusive - fromRange.start)
+                ) - offsetRange
+    }
 }
+
+/**
+ * Infix function for [map], offering a more explicit usage of the latter.
+ *
+ * For example, `10f mapFrom (0f..20f to 0f..40f)`, linearly maps the number 10 from the range
+ * [[0, 20]] to [[0, 40]].
+ */
+infix fun Float.map(to: Pair<ClosedRange<Float>, ClosedRange<Float>>) =
+    this@map.map(to.first, to.second)
 
 /**
  * Sets the offset attribute of each [Point] of the receiving collection, based on the bounds of the
