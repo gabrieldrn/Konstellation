@@ -13,6 +13,8 @@ import androidx.compose.ui.platform.*
 import androidx.compose.ui.tooling.preview.*
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
+import com.gabrieldrn.konstellation.charts.line.drawing.drawLinePath
+import com.gabrieldrn.konstellation.charts.line.drawing.toLinePath
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.drawing.drawFrame
 import com.gabrieldrn.konstellation.drawing.drawPoint
@@ -73,6 +75,8 @@ fun LineChart(
             }
 
             with(styles) {
+                drawScaledAxis(properties, styles, xDrawRange, yDrawRange)
+
                 clipRect {
 
                     // Background filling
@@ -102,7 +106,6 @@ fun LineChart(
                         dataset.forEach { drawPoint(it, pointStyle) }
                     }
                 }
-                drawScaledAxis(properties, styles, xDrawRange, yDrawRange)
             }
         }
 
