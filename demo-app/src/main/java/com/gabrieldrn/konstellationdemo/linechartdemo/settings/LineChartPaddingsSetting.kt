@@ -45,7 +45,7 @@ internal fun LineChartPaddingsSetting(
                 )
                 Slider(
                     value = datasetOffsets?.xStartOffset ?: 0f,
-                    valueRange = 0f..100f,
+                    valueRange = 0f..10f,
                     onValueChange = {
                         onUpdateProperty(
                             LineChartProperties::datasetOffsets,
@@ -62,7 +62,7 @@ internal fun LineChartPaddingsSetting(
                 )
                 Slider(
                     value = datasetOffsets?.yStartOffset ?: 0f,
-                    valueRange = 0f..5000f,
+                    valueRange = 0f..10f,
                     onValueChange = {
                         onUpdateProperty(
                             LineChartProperties::datasetOffsets,

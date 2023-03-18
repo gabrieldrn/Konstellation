@@ -12,6 +12,7 @@ import com.gabrieldrn.konstellation.charts.line.configuration.setAxesTypeface
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
+import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellationdemo.QF_MAIN_TEXT_STYLE
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -19,13 +20,10 @@ import org.koin.core.component.get
 private val injector = object : KoinComponent {}
 
 internal fun getChartProperties() = LineChartProperties(
+    axes = Axes.all,
     highlightContentPositions = setOf(HighlightContentPosition.Top, HighlightContentPosition.Start),
-    datasetOffsets = DatasetOffsets(
-        xStartOffset = 0f,
-        xEndOffset = 0f,
-        yStartOffset = 4000f,
-        yEndOffset = 4000f
-    ),
+    chartPaddingValues = PaddingValues(40.dp),
+    datasetOffsets = DatasetOffsets(1f, 1f, 1f, 1f),
     drawFrame = false,
     drawZeroLines = false
 )

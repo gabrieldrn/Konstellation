@@ -69,4 +69,6 @@ object Axes {
             textAlign = Paint.Align.LEFT
         )
     )
+
+    val all = setOf(xBottom, xTop, yLeft, yRight)
 }

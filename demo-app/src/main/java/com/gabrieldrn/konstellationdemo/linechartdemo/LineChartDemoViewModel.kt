@@ -12,6 +12,7 @@ import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
 import com.gabrieldrn.konstellation.plotting.ChartAxis
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.datasetOf
+import com.gabrieldrn.konstellation.plotting.toDataset
 import com.gabrieldrn.konstellation.util.randomDataSet
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 import kotlin.reflect.KProperty1
@@ -26,7 +27,15 @@ class LineChartDemoViewModel(
         private set
 
     init {
-        generateNewFancyDataset()
+//        generateNewFancyDataset()
+        dataset = listOf(
+            1f to 1f,
+            2f to 1f,
+            3f to 4f,
+            4f to 4f,
+            5f to 2f,
+            6f to 2f,
+        ).toDataset()
     }
 
     fun generateNewFancyDataset() {
