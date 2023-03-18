@@ -52,6 +52,7 @@ dependencies {
     implementation libs.androidx.compose.uiTooling
     implementation libs.androidx.compose.material
     implementation libs.material
+    implementation libs.timber
     testImplementation libs.junit
     androidTestImplementation libs.androidx.test.ext
     androidTestImplementation libs.androidx.test.espresso

@@ -15,6 +15,7 @@ androidxEspresso = "3.4.0"
 material = "1.7.0"
 material3 = "1.0.0-rc01"
 accompanist = "0.27.0"
+timber = "5.0.1"
 koin = "3.3.0"
 junit = "4.13.2"
 android-gradle = "7.3.1"
@@ -42,6 +43,7 @@ material = { module = "com.google.android.material:material", version.ref = "mat
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
 accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 koin = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
