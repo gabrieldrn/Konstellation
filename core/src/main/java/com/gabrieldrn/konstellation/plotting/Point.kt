@@ -12,7 +12,7 @@ typealias Dataset = List<Point>
 /**
  * A class representing a point in a chart.
  */
-data class Point internal constructor(
+data class Point constructor(
 
     /**
      * X point from the data set.
