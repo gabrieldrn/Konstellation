@@ -44,6 +44,6 @@ data class LineChartProperties(
     override val drawZeroLines: Boolean = true,
     val drawLines: Boolean = true,
     val drawPoints: Boolean = false,
-    override val smoothing: Smoothing = Smoothing.values().first(),
+    override val smoothing: Smoothing = Smoothing.None,
     val fillingBrush: Brush? = null
 ) : ChartProperties

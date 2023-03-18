@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.charts.line.presentation
+package com.gabrieldrn.konstellation.charts.line.drawing
 
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
@@ -14,34 +14,40 @@ import com.gabrieldrn.konstellation.plotting.Point
  * @return The path representing the dataset into a line a chart.
  */
 internal fun Dataset.toLinePath(smoothing: Smoothing) = Path().apply {
-    var prev: Point
-    forEachIndexed { i, p ->
-        if (i == 0) {
-            moveTo(p.xPos, p.yPos)
-        } else when (smoothing) {
-            Smoothing.None -> lineTo(p.xPos, p.yPos)
-            Smoothing.CubicX -> {
-                prev = get(i - 1)
-                cubicTo(
-                    x1 = p.xPos,
-                    y1 = prev.yPos,
-                    x2 = prev.xPos,
-                    y2 = p.yPos,
-                    x3 = p.xPos,
-                    y3 = p.yPos,
-                )
+    when (smoothing) {
+        Smoothing.CubicX -> {
+            var prev: Point
+            forEachIndexed { i, p ->
+                if (i == 0) moveTo(p.xPos, p.yPos)
+                else {
+                    prev = get(i - 1)
+                    cubicTo(
+                        x1 = p.xPos, y1 = prev.yPos,
+                        x2 = prev.xPos, y2 = p.yPos,
+                        x3 = p.xPos, y3 = p.yPos,
+                    )
+                }
             }
-            Smoothing.CubicY -> {
-                prev = get(i - 1)
-                cubicTo(
-                    x1 = prev.xPos,
-                    y1 = p.yPos,
-                    x2 = p.xPos,
-                    y2 = prev.yPos,
-                    x3 = p.xPos,
-                    y3 = p.yPos,
-                )
+        }
+
+        Smoothing.CubicY -> {
+            var prev: Point
+            forEachIndexed { i, p ->
+                if (i == 0) moveTo(p.xPos, p.yPos)
+                else {
+                    prev = get(i - 1)
+                    cubicTo(
+                        x1 = prev.xPos, y1 = p.yPos,
+                        x2 = p.xPos, y2 = prev.yPos,
+                        x3 = p.xPos, y3 = p.yPos,
+                    )
+                }
             }
+        }
+
+        else -> forEachIndexed { i, p ->
+            if (i == 0) moveTo(p.xPos, p.yPos)
+            else lineTo(p.xPos, p.yPos)
         }
     }
 }
