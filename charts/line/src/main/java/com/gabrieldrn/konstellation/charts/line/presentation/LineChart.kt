@@ -6,16 +6,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
-import androidx.compose.ui.graphics.drawscope.*
+import androidx.compose.ui.graphics.*
 import androidx.compose.ui.hapticfeedback.*
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.tooling.preview.*
+import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.drawing.drawLinePath
-import com.gabrieldrn.konstellation.charts.line.drawing.toLinePath
-import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.drawing.drawFrame
 import com.gabrieldrn.konstellation.drawing.drawPoint
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
@@ -24,11 +23,7 @@ import com.gabrieldrn.konstellation.drawing.highlightPoint
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.highlighting.HighlightScope
 import com.gabrieldrn.konstellation.math.createOffsets
-import com.gabrieldrn.konstellation.plotting.Dataset
-import com.gabrieldrn.konstellation.plotting.Point
-import com.gabrieldrn.konstellation.plotting.nearestPointByX
-import com.gabrieldrn.konstellation.plotting.xRange
-import com.gabrieldrn.konstellation.plotting.yRange
+import com.gabrieldrn.konstellation.plotting.*
 import com.gabrieldrn.konstellation.util.applyDatasetOffsets
 import com.gabrieldrn.konstellation.util.randomFancyDataSet
 
@@ -70,19 +65,19 @@ fun LineChart(
                 dataSetYRange = yDrawRange
             )
 
+            val path = properties.smoothing.interpolator(dataset)
+
             if (properties.drawZeroLines) {
                 drawZeroLines(xDrawRange, yDrawRange)
             }
 
             with(styles) {
                 drawScaledAxis(properties, styles, xDrawRange, yDrawRange)
-
-                clipRect {
-
                     // Background filling
                     properties.fillingBrush?.let { brush ->
                         drawPath(
-                            path = dataset.toLinePath(properties.smoothing).apply {
+                            path = Path().apply {
+                                addPath(path)
                                 // Closing path shape with chart bottom
                                 lineTo(dataset.last().xPos, size.height)
                                 lineTo(dataset[0].xPos, size.height)
@@ -95,8 +90,7 @@ fun LineChart(
                     if (properties.drawLines) {
                         // Lines between data points
                         drawLinePath(
-                            dataset,
-                            properties.smoothing,
+                            path,
                             lineStyle
                         )
                     }
@@ -105,7 +99,6 @@ fun LineChart(
                     if (properties.drawPoints) {
                         dataset.forEach { drawPoint(it, pointStyle) }
                     }
-                }
             }
         }
 
@@ -201,12 +194,8 @@ private fun LineChartPreview() {
             .fillMaxWidth()
             .aspectRatio(1f),
         properties = LineChartProperties(
-            datasetOffsets = DatasetOffsets(
-                xStartOffset = 2f,
-                xEndOffset = 2f,
-                yStartOffset = 0.5f,
-                yEndOffset = 0.5f
-            )
+            axes = Axes.all,
+            chartPaddingValues = PaddingValues(40.dp)
         )
     )
 }

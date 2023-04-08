@@ -11,7 +11,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.text.style.*
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
-import com.gabrieldrn.konstellation.configuration.properties.Smoothing
+import com.gabrieldrn.konstellation.charts.line.drawing.Smoothing
 import com.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
 import kotlin.reflect.KProperty1
 

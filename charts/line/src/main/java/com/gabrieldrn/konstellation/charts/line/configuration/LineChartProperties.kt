@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.unit.*
 import com.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
-import com.gabrieldrn.konstellation.configuration.properties.Smoothing
+import com.gabrieldrn.konstellation.charts.line.drawing.Smoothing
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
 import com.gabrieldrn.konstellation.plotting.ChartAxis
@@ -44,6 +44,6 @@ data class LineChartProperties(
     override val drawZeroLines: Boolean = true,
     val drawLines: Boolean = true,
     val drawPoints: Boolean = false,
-    override val smoothing: Smoothing = Smoothing.None,
+    val smoothing: Smoothing = Smoothing.Linear,
     val fillingBrush: Brush? = null
 ) : ChartProperties

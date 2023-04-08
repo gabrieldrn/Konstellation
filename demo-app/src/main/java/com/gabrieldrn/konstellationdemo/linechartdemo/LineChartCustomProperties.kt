@@ -10,6 +10,7 @@ import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.configuration.setAxesColor
 import com.gabrieldrn.konstellation.charts.line.configuration.setAxesTypeface
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
+import com.gabrieldrn.konstellation.charts.line.drawing.Smoothing
 import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.plotting.Axes
@@ -25,7 +26,9 @@ internal fun getChartProperties() = LineChartProperties(
     chartPaddingValues = PaddingValues(40.dp),
     datasetOffsets = DatasetOffsets(1f, 1f, 1f, 1f),
     drawFrame = false,
-    drawZeroLines = false
+    drawZeroLines = false,
+    drawPoints = true,
+    smoothing = Smoothing.MonotonicX
 )
 
 @Composable

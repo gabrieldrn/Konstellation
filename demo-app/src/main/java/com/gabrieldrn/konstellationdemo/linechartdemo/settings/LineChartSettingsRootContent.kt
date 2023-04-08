@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.*
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
-import com.gabrieldrn.konstellation.configuration.properties.Smoothing
+import com.gabrieldrn.konstellation.charts.line.drawing.Smoothing
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
@@ -172,7 +172,7 @@ fun SettingsPreviews() {
             LineChartDatasetSelector({}, {})
 
             LineChartDataDrawingSetting(
-                drawLines = true, drawPoints = true, Smoothing.None, { _, _ -> }
+                drawLines = true, drawPoints = true, Smoothing.Linear, { _, _ -> }
             )
 
             LineChartFillingSetting(null, { _, _ -> })

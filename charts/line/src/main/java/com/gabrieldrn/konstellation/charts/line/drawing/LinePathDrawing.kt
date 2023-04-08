@@ -2,58 +2,12 @@ package com.gabrieldrn.konstellation.charts.line.drawing
 
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
-import com.gabrieldrn.konstellation.configuration.properties.Smoothing
 import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import com.gabrieldrn.konstellation.plotting.Dataset
-import com.gabrieldrn.konstellation.plotting.Point
 
 /**
- * Converts a received [Dataset] into an unclosed [Path] which plots the dataset into a line chart
- * path to be drawn.
- * @param smoothing The smoothing effect to be applied to the path between each data point.
- * @return The path representing the dataset into a line a chart.
- */
-internal fun Dataset.toLinePath(smoothing: Smoothing) = Path().apply {
-    when (smoothing) {
-        Smoothing.CubicX -> {
-            var prev: Point
-            forEachIndexed { i, p ->
-                if (i == 0) moveTo(p.xPos, p.yPos)
-                else {
-                    prev = get(i - 1)
-                    cubicTo(
-                        x1 = p.xPos, y1 = prev.yPos,
-                        x2 = prev.xPos, y2 = p.yPos,
-                        x3 = p.xPos, y3 = p.yPos,
-                    )
-                }
-            }
-        }
-
-        Smoothing.CubicY -> {
-            var prev: Point
-            forEachIndexed { i, p ->
-                if (i == 0) moveTo(p.xPos, p.yPos)
-                else {
-                    prev = get(i - 1)
-                    cubicTo(
-                        x1 = prev.xPos, y1 = p.yPos,
-                        x2 = p.xPos, y2 = prev.yPos,
-                        x3 = p.xPos, y3 = p.yPos,
-                    )
-                }
-            }
-        }
-
-        else -> forEachIndexed { i, p ->
-            if (i == 0) moveTo(p.xPos, p.yPos)
-            else lineTo(p.xPos, p.yPos)
-        }
-    }
-}
-
-/**
- * Converts a [dataset] into a [Path] (see [toLinePath]) and draws it into the received [DrawScope].
+ * Converts a [dataset] into an unclosed [Path], with an [PathInterpolator] described by [smoothing],
+ * and draws it into the received [DrawScope].
  * @param dataset The dataset to be converted and drawn into a line chart.
  * @param smoothing The smoothing effect to be applied to the path between each data point.
  * @param lineStyle The drawing style to be applied to the drawn line chart path.
@@ -64,13 +18,13 @@ internal fun DrawScope.drawLinePath(
     lineStyle: LineDrawStyle,
 ) {
     drawLinePath(
-        path = dataset.toLinePath(smoothing),
+        path = smoothing.interpolator(dataset),
         lineStyle = lineStyle
     )
 }
 
 /**
- * Draws a given [path] (considered as a line chart path) into the received [DrawScope].
+ * Draws a [path] according to a [lineStyle].
  * @param path The path to be drawn.
  * @param lineStyle The drawing style to be applied to the drawn line chart path.
  */
