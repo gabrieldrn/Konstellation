@@ -43,6 +43,7 @@ class LineChartDemoViewModel(
         dataset = randomDataSet()
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun <T> updateProperty(property: KProperty1<LineChartProperties, T>, newValue: T) {
         properties = when (property) {
             LineChartProperties::axes -> properties
