@@ -15,12 +15,12 @@ enum class HighlightLinePosition {
     Relative,
 
     /**
-     * Horizontally-oriented line, independent of highlight content orientation
+     * Horizontally-oriented line, independent of highlight content orientation.
      */
     Horizontal,
 
     /**
-     * Vertically-oriented line, independent of highlight content orientation
+     * Vertically-oriented line, independent of highlight content orientation.
      */
     Vertical,
 

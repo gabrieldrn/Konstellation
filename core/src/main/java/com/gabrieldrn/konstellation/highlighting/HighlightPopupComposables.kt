@@ -22,17 +22,11 @@ fun BoxScope.BoxedPopup(
             -IntOffset(p.width / 2, scope.point.yPos.toInt() + scope.paddingTop)
         HighlightContentPosition.Bottom ->
             -IntOffset(p.width / 2, 0)
-        HighlightContentPosition.Start, HighlightContentPosition.End ->
+        HighlightContentPosition.Start,
+        HighlightContentPosition.End ->
             -IntOffset(0, p.height / 2) + IntOffset(0, scope.paddingTop)
         HighlightContentPosition.Point ->
             -IntOffset(p.width / 2, p.height)
-    }
-
-    val popupLayoutModifier: MeasureScope.(Measurable, Constraints) -> MeasureResult = { m, c ->
-        val placeable = m.measure(c)
-        layout(placeable.width, placeable.height) {
-            placeable.placeRelative(getPlacementOffset(placeable))
-        }
     }
 
     fun getAlignment() = when (scope.contentPosition) {
@@ -43,9 +37,14 @@ fun BoxScope.BoxedPopup(
 
     Box(
         Modifier
-            .offset(scope.popupPositioner)
+            .offset { scope.getContentOffset() }
             .align(getAlignment())
-            .layout(popupLayoutModifier)
+            .layout { m, c ->
+                val placeable = m.measure(c)
+                layout(placeable.width, placeable.height) {
+                    placeable.placeRelative(getPlacementOffset(placeable))
+                }
+            }
     ) {
         content(scope)
     }

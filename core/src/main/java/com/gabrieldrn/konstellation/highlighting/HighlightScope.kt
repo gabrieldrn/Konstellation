@@ -9,7 +9,8 @@ import com.gabrieldrn.konstellation.plotting.Point
 /**
  * A scope providing placement and contents data for a highlighted composed content.
  * @param point The [Point] to highlight.
- * @param contentPosition Where the content will be gravitating in front of the chart.
+ * @param contentPosition Where the content will be gravitating around the point, in front of the
+ * chart.
  */
 class HighlightScope(
     val point: Point,
@@ -19,18 +20,20 @@ class HighlightScope(
     internal var paddingTop = 0
     internal var paddingStart = 0
 
-    val popupPositioner: Density.() -> IntOffset = {
-        when (contentPosition) {
-            HighlightContentPosition.Top, HighlightContentPosition.Point -> {
-                IntOffset(
-                    point.xPos.toInt() + paddingStart,
-                    point.yPos.toInt() + paddingTop
-                )
-            }
-            HighlightContentPosition.Bottom -> IntOffset(point.xPos.toInt() + paddingStart, 0)
-            HighlightContentPosition.Start -> IntOffset(0, point.yPos.toInt())
-            HighlightContentPosition.End -> IntOffset(0, point.yPos.toInt())
-        }
+    /**
+     * Returns an offset helping to place the highlight content near the highlighted point
+     * depending on the [contentPosition].
+     */
+    fun getContentOffset(): IntOffset = when (contentPosition) {
+        HighlightContentPosition.Top,
+        HighlightContentPosition.Point ->
+            IntOffset(point.xPos.toInt() + paddingStart, point.yPos.toInt() + paddingTop)
+        HighlightContentPosition.Bottom ->
+            IntOffset(point.xPos.toInt() + paddingStart, 0)
+        HighlightContentPosition.Start ->
+            IntOffset(0, point.yPos.toInt())
+        HighlightContentPosition.End ->
+            IntOffset(0, point.yPos.toInt())
     }
 
     @Composable
