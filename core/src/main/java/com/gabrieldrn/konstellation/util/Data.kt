@@ -24,14 +24,14 @@ fun randomDataSet() = mutableListOf<Point>().apply {
 }.asDataset()
 
 /**
- * Generates a random fancy data set of 100 points with a y value between `0f` and `1000f`,
- * stepped by 100.
+ * Generates a random fancy data set of 15 points with a y value between `0f` and `10f`,
+ * stepped by 1.
  */
 fun randomFancyDataSet() = mutableListOf<Point>().apply {
     val range = 0..10
     var y = 0
-    repeat(100) {
+    repeat(15) {
         y = Random.nextInt(y-1..y+1).coerceIn(range)
-        add((it+1).toFloat() by y.times(100).toFloat())
+        add((it+1).toFloat() by y.times(1).toFloat())
     }
 }.asDataset()
