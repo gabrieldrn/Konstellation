@@ -1,7 +1,10 @@
 package com.gabrieldrn.konstellation.configuration.styles
 
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 /**
  * Defines drawing style for lines into charts.
@@ -16,15 +19,15 @@ import androidx.compose.ui.unit.*
  * @property dashedEffectPhase Pixel offset into the intervals array
  */
 data class LineDrawStyle(
-    override var color: Color = DefaultLineColor,
-    var strokeWidth: Dp = DefaultStrokeWidth,
-    var cap: StrokeCap = DefaultLineCap,
-    var dashed: Boolean = DefaultDashed,
-    var dashedEffectIntervals: FloatArray = floatArrayOf(
+    override val color: Color = DefaultLineColor,
+    val strokeWidth: Dp = DefaultStrokeWidth,
+    val cap: StrokeCap = DefaultLineCap,
+    val dashed: Boolean = DefaultDashed,
+    val dashedEffectIntervals: FloatArray = floatArrayOf(
         DefaultHighlightDashedLineOn,
         DefaultHighlightDashedLineOff
     ),
-    var dashedEffectPhase: Float = DefaultHighlightDashedLinePhase,
+    val dashedEffectPhase: Float = DefaultHighlightDashedLinePhase,
 ) : DrawStyle {
 
     override fun equals(other: Any?): Boolean {

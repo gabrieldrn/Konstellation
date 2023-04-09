@@ -15,7 +15,7 @@ import com.gabrieldrn.konstellation.util.randomFancyDataSet
 import kotlin.reflect.KProperty1
 
 class LineChartDemoViewModel(
-    properties: LineChartProperties = getChartProperties()
+    properties: LineChartProperties = getDemoChartProperties()
 ) : ViewModel() {
 
     var dataset: Dataset by mutableStateOf(datasetOf())
