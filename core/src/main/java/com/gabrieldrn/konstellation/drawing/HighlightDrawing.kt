@@ -48,9 +48,6 @@ fun DrawScope.highlightPoint(
         }
         HighlightLinePosition.Horizontal -> horizontalLine()
         HighlightLinePosition.Vertical -> verticalLine()
-        HighlightLinePosition.Both -> {
-            horizontalLine()
-            verticalLine()
-        }
+        HighlightLinePosition.Both -> { horizontalLine(); verticalLine() }
     }
 }

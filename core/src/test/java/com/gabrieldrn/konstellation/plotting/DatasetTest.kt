@@ -67,8 +67,8 @@ class DatasetTest {
     }
 
     @Test fun dataset_nearestPointByX_returnsCorrectValue() {
-        val dataset = baseDataset.onEach {
-            it.offset = Offset(it.x, it.y)
+        val dataset = baseDataset.map {
+            it.copy(offset = Offset(it.x, it.y))
         }
         dataset.forEachIndexed { index, _ ->
             assertEquals(

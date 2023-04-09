@@ -1,31 +1,28 @@
 package com.gabrieldrn.konstellation.charts.line.presentation
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.*
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
-import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.hapticfeedback.*
-import androidx.compose.ui.input.pointer.*
-import androidx.compose.ui.platform.*
-import androidx.compose.ui.tooling.preview.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.*
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.drawing.drawLinePath
-import com.gabrieldrn.konstellation.drawing.drawFrame
-import com.gabrieldrn.konstellation.drawing.drawPoint
-import com.gabrieldrn.konstellation.drawing.drawScaledAxis
-import com.gabrieldrn.konstellation.drawing.drawZeroLines
-import com.gabrieldrn.konstellation.drawing.highlightPoint
+import com.gabrieldrn.konstellation.drawing.*
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.highlighting.HighlightScope
 import com.gabrieldrn.konstellation.math.createOffsets
 import com.gabrieldrn.konstellation.plotting.*
 import com.gabrieldrn.konstellation.util.applyDatasetOffsets
-import com.gabrieldrn.konstellation.util.randomFancyDataSet
 
 /**
  * Konstellation composable function drawing a line chart.
@@ -53,19 +50,33 @@ fun LineChart(
         yDrawRange = dataset.yRange
     )
 
+    var computedDataset by rememberSaveable { mutableStateOf(dataset) }
+
+    // This layout helps to compute the offsets for the dataset during the first layout pass.
     Box {
-        Canvas(modifier.padding(properties.chartPaddingValues)) {
+        Canvas(
+            modifier
+                .padding(properties.chartPaddingValues)
+                .layout { measurable, constraints ->
+                    val placeable = measurable.measure(constraints)
+                    computedDataset = dataset.createOffsets(
+                        size = Size(
+                            constraints.maxWidth.toFloat(),
+                            constraints.maxHeight.toFloat()
+                        ),
+                        dataSetXRange = xDrawRange,
+                        dataSetYRange = yDrawRange
+                    )
+                    layout(constraints.maxWidth, constraints.maxHeight) {
+                        placeable.place(0, 0)
+                    }
+                }
+        ) {
             if (properties.drawFrame) {
                 drawFrame()
             }
 
-            dataset.createOffsets(
-                drawScope = this,
-                dataSetXRange = xDrawRange,
-                dataSetYRange = yDrawRange
-            )
-
-            val path = properties.smoothing.interpolator(dataset)
+            val path = properties.smoothing.interpolator(computedDataset)
 
             if (properties.drawZeroLines) {
                 drawZeroLines(xDrawRange, yDrawRange)
@@ -73,39 +84,39 @@ fun LineChart(
 
             with(styles) {
                 drawScaledAxis(properties, styles, xDrawRange, yDrawRange)
-                    // Background filling
-                    properties.fillingBrush?.let { brush ->
-                        drawPath(
-                            path = Path().apply {
-                                addPath(path)
-                                // Closing path shape with chart bottom
-                                lineTo(dataset.last().xPos, size.height)
-                                lineTo(dataset[0].xPos, size.height)
-                                close()
-                            },
-                            brush = brush
-                        )
-                    }
+                // Background filling
+                properties.fillingBrush?.let { brush ->
+                    drawPath(
+                        path = Path().apply {
+                            addPath(path)
+                            // Closing path shape with chart bottom
+                            lineTo(computedDataset.last().xPos, size.height)
+                            lineTo(computedDataset[0].xPos, size.height)
+                            close()
+                        },
+                        brush = brush
+                    )
+                }
 
-                    if (properties.drawLines) {
-                        // Lines between data points
-                        drawLinePath(
-                            path,
-                            lineStyle
-                        )
-                    }
+                if (properties.drawLines) {
+                    // Chart line path
+                    drawLinePath(
+                        path,
+                        lineStyle
+                    )
+                }
 
-                    // Points
-                    if (properties.drawPoints) {
-                        dataset.forEach { drawPoint(it, pointStyle) }
-                    }
+                // Points
+                if (properties.drawPoints) {
+                    computedDataset.forEach { drawPoint(it, pointStyle) }
+                }
             }
         }
 
         HighlightCanvas(
             modifier = modifier,
             properties = properties,
-            dataset = dataset,
+            dataset = { computedDataset },
             styles = styles,
             highlightContent = highlightContent,
             onHighlightChange = onHighlightChange
@@ -117,19 +128,25 @@ fun LineChart(
 private fun BoxScope.HighlightCanvas(
     modifier: Modifier,
     properties: LineChartProperties,
-    dataset: Dataset,
+    dataset: () -> Dataset,
     styles: LineChartStyles,
     highlightContent: @Composable (HighlightScope.() -> Unit)?,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
     val hapticLocal = LocalHapticFeedback.current
-    var highlightedValue by rememberSaveable { mutableStateOf<Point?>(null) }
 
-    LaunchedEffect(highlightedValue) {
-        if (properties.hapticHighlight && highlightedValue != null) {
+    var pointerValue by rememberSaveable { mutableStateOf<Float?>(null) }
+    val highlightedPoint by remember {
+        derivedStateOf {
+            pointerValue?.let { dataset().nearestPointByX(it) }
+        }
+    }
+
+    LaunchedEffect(highlightedPoint) {
+        if (properties.hapticHighlight && highlightedPoint != null) {
             hapticLocal.performHapticFeedback(HapticFeedbackType.TextHandleMove)
         }
-        onHighlightChange?.invoke(highlightedValue)
+        onHighlightChange?.invoke(highlightedPoint)
     }
 
     Canvas(
@@ -137,20 +154,14 @@ private fun BoxScope.HighlightCanvas(
             .padding(properties.chartPaddingValues)
             .pointerInput(dataset) {
                 detectDragGesturesAfterLongPress(
-                    onDragStart = {
-                        highlightedValue = dataset.nearestPointByX(it.x)
-                    },
-                    onDragEnd = {
-                        highlightedValue = null
-                    },
-                    onDrag = { change, _ ->
-                        highlightedValue = dataset.nearestPointByX(change.position.x)
-                    }
+                    onDragStart = { pointerValue = it.x },
+                    onDragEnd = { pointerValue = null },
+                    onDrag = { change, _ -> pointerValue = change.position.x }
                 )
             }
     ) {
         // Highlight
-        highlightedValue?.let {
+        highlightedPoint?.let {
             highlightPoint(
                 point = it,
                 contentPositions = properties.highlightContentPositions,
@@ -161,7 +172,7 @@ private fun BoxScope.HighlightCanvas(
         }
     }
 
-    highlightedValue?.let { point ->
+    highlightedPoint?.let { point ->
         ComposeHighlightPopup(highlightContent, point, properties)
     }
 }
@@ -189,7 +200,15 @@ private fun BoxScope.ComposeHighlightPopup(
 @Composable
 private fun LineChartPreview() {
     LineChart(
-        dataset = randomFancyDataSet(),
+        dataset = datasetOf(
+            0f by 0f,
+            1f by 1f,
+            2f by 1f,
+            3f by 3f,
+            4f by 3f,
+            5f by 2f,
+            6f by 2f,
+        ),
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f),

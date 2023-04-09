@@ -9,17 +9,31 @@ import kotlin.math.pow
  * This class computes the human-readable numbers for chart labels. After [compute] is executed,
  * the values [tickSpacing], [axisRange], [niceMin], [niceMax] will be updated.
  *
- * @param dataRange Range of the data to compute tickers from.
- * @param maxTicks (Optional) Number of desired ticks. Default = 5
+ * @property dataRange Range of the data to compute tickers from.
+ * @property maxTicks (Optional) Number of desired ticks. Default = 5
  */
 class NiceScale(var dataRange: ClosedFloatingPointRange<Float>, var maxTicks: Int = 5) {
 
+    /**
+     * Range of the axis.
+     */
+    private var axisRange = 0f
+
+    /**
+     * Spacing between each tick.
+     */
     var tickSpacing = 0f
         private set
-    var axisRange = 0f
-        private set
+
+    /**
+     * Nice minimum value.
+     */
     var niceMin = 0f
         private set
+
+    /**
+     * Nice maximum value.
+     */
     var niceMax = 0f
         private set
 
@@ -42,9 +56,9 @@ class NiceScale(var dataRange: ClosedFloatingPointRange<Float>, var maxTicks: In
      * Returns a "nice" number approximately equal to [range]. Rounds the number if [round] = true.
      * Takes the ceiling otherwise.
      *
-     * @param range Data range
-     * @param round Whether to round the result
-     * @return A "nice" number to be used for the data range
+     * @param range Data range.
+     * @param round Whether to round the result.
+     * @return A "nice" number to be used for the data range.
      */
     @Suppress("MagicNumber")
     private fun niceNum(range: Float, round: Boolean): Float {

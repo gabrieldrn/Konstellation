@@ -45,11 +45,11 @@ fun FunctionPlotter(
         }
         addPoint(size.width, function(dataXRange.endInclusive))
 
-        points.createOffsets(this, dataSetYRange = dataYRange)
+        val computedDataSet = points.createOffsets(size, dataSetYRange = dataYRange)
 
         drawFrame()
         drawZeroLines(dataXRange, dataYRange)
-        drawLines(points, lineStyle, pointStyle, false)
+        drawLines(computedDataSet, lineStyle, pointStyle, false)
         drawMinMaxAxisValues(
             dataXRange.start,
             dataXRange.endInclusive,

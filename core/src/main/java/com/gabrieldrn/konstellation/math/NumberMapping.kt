@@ -33,7 +33,7 @@ fun Float.map(
 ): Float {
     require(this in fromRange) { "$this is not within the bounds of $fromRange" }
     return (if (toRange.start < 0f) abs(toRange.start) else 0f).let { offsetRange ->
-        (((toRange.endInclusive + offsetRange) - (toRange.start + offsetRange))
+        ((toRange.endInclusive + offsetRange - (toRange.start + offsetRange))
                 * (this - fromRange.start) / (fromRange.endInclusive - fromRange.start)
                 ) - offsetRange
     }
@@ -60,16 +60,18 @@ infix fun Float.map(to: Pair<ClosedRange<Float>, ClosedRange<Float>>) =
  * the Y range of the receiving collection.
  */
 fun Dataset.createOffsets(
-    drawScope: DrawScope,
-    dataSetXRange: ClosedRange<Float> = this.xRange,
-    dataSetYRange: ClosedRange<Float> = this.yRange
-) {
-    val canvasYRange = drawScope.size.height..0f //Inverting to draw from bottom to top
-    val canvasXRange = 0f..drawScope.size.width
-    forEach {
-        it.offset = Offset(
-            x = it.x.map(dataSetXRange, canvasXRange),
-            y = it.y.map(dataSetYRange, canvasYRange) + drawScope.size.height,
+    size: Size,
+    dataSetXRange: ClosedRange<Float> = xRange,
+    dataSetYRange: ClosedRange<Float> = yRange
+) : Dataset {
+    val canvasYRange = size.height..0f //Inverting to draw from bottom to top
+    val canvasXRange = 0f..size.width
+    return map {
+        it.copy(
+            offset = Offset(
+                x = it.x.map(dataSetXRange, canvasXRange),
+                y = it.y.map(dataSetYRange, canvasYRange) + size.height,
+            )
         )
     }
 }

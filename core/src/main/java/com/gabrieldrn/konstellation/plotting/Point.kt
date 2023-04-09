@@ -15,20 +15,19 @@ typealias Dataset = List<Point>
 data class Point constructor(
 
     /**
-     * X point from the data set.
+     * X point value from the data set.
      */
-    var x: Float,
+    val x: Float,
 
     /**
-     * Y point from the data set.
+     * Y point value from the data set.
      */
-    var y: Float,
+    val y: Float,
 
     /**
-     * Offset corresponding to [x] and [y] into the related chart. This attribute is managed by
-     * Konstellation.
+     * Offset corresponding to the position of the point into a chart.
      */
-    internal var offset: Offset = Offset(0f, 0f),
+    val offset: Offset = Offset(0f, 0f),
 
 ): Serializable {
 

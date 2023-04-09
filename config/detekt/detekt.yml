@@ -756,3 +756,5 @@ style:
       - 'java.util.*'
       - 'androidx.compose.foundation.layout.*'
       - 'androidx.compose.runtime.*'
+      - 'androidx.compose.ui.geometry.*'
+      - 'androidx.compose.ui.graphics.drawscope.*'

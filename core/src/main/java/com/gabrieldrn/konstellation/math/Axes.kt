@@ -35,9 +35,9 @@ internal fun DrawScope.calculateAxisOffsets(
         else -> size.height
     }
     //Space between left canvas border and left chart "window" depending on chart values
-    val startSpace = (length * (range.start - chartScale.niceMin)) / range.rawRange
+    val startSpace = length * (range.start - chartScale.niceMin) / range.rawRange
     //Space between right chart "window" and right canvas border depending on chart values
-    val endSpace = (length * (chartScale.niceMax - range.endInclusive)) / range.rawRange
+    val endSpace = length * (chartScale.niceMax - range.endInclusive) / range.rawRange
     //Number of ticks
     val tickCount = (chartScale.niceMax - chartScale.niceMin) / chartScale.tickSpacing + 1
 
