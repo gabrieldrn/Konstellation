@@ -34,14 +34,8 @@ internal fun getDemoChartProperties() = LineChartProperties(
 )
 
 @Composable
-@Suppress("SwallowedException") // No need of caught exception
 internal fun getChartStyles(
-    mainTextStyle: TextDrawStyle = try {
-        injector.get(QF_MAIN_TEXT_STYLE)
-    } catch (iae: IllegalStateException) {
-        //Koin not initialized.
-        TextDrawStyle()
-    }
+    mainTextStyle: TextDrawStyle = injector.get(QF_MAIN_TEXT_STYLE)
 ) = LineChartStyles(
     lineStyle = LineDrawStyle(color = MaterialTheme.colorScheme.primary),
     pointStyle = PointDrawStyle(color = MaterialTheme.colorScheme.primary),

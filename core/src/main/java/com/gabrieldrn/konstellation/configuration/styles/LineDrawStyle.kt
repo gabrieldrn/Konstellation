@@ -19,15 +19,15 @@ import androidx.compose.ui.unit.dp
  * @property dashedEffectPhase Pixel offset into the intervals array
  */
 data class LineDrawStyle(
-    override val color: Color = DefaultLineColor,
-    val strokeWidth: Dp = DefaultStrokeWidth,
-    val cap: StrokeCap = DefaultLineCap,
-    val dashed: Boolean = DefaultDashed,
+    override val color: Color = Color.Black,
+    val strokeWidth: Dp = 1.5.dp,
+    val cap: StrokeCap = StrokeCap.Square,
+    val dashed: Boolean = false,
     val dashedEffectIntervals: FloatArray = floatArrayOf(
-        DefaultHighlightDashedLineOn,
-        DefaultHighlightDashedLineOff
+        defaultHighlightDashedLineOn,
+        defaultHighlightDashedLineOff
     ),
-    val dashedEffectPhase: Float = DefaultHighlightDashedLinePhase,
+    val dashedEffectPhase: Float = 0f,
 ) : DrawStyle {
 
     override fun equals(other: Any?): Boolean {
@@ -55,12 +55,7 @@ data class LineDrawStyle(
     }
 
     companion object {
-        val DefaultLineColor = Color.Black
-        val DefaultStrokeWidth = 1.5.dp
-        val DefaultLineCap = StrokeCap.Square
-        const val DefaultDashed = false
-        const val DefaultHighlightDashedLineOn = 10f
-        const val DefaultHighlightDashedLineOff = 20f
-        const val DefaultHighlightDashedLinePhase = 0f
+        private const val defaultHighlightDashedLineOn = 10f
+        private const val defaultHighlightDashedLineOff = 20f
     }
 }

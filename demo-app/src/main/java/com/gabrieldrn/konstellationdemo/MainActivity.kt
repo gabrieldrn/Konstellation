@@ -12,18 +12,11 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.*
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowCompat
-import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemo
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-
-private val injector = object : KoinComponent {}
-private val mainTextStyle by injector.inject<TextDrawStyle>(QF_MAIN_TEXT_STYLE)
 
 private const val DarkIconsLuminanceThreshold = 0.5f
 
@@ -37,9 +30,6 @@ class MainActivity : AppCompatActivity() {
         lineChartViewModel // Trigger instantiation.
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        ResourcesCompat.getFont(this, R.font.figtree_medium)?.let {
-            mainTextStyle.typeface = it
-        }
 
         setContent {
             KonstellationTheme {
