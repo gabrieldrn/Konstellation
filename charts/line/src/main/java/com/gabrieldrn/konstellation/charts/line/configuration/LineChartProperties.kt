@@ -3,7 +3,8 @@ package com.gabrieldrn.konstellation.charts.line.configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
-import com.gabrieldrn.konstellation.charts.line.drawing.Smoothing
+import com.gabrieldrn.konstellation.charts.line.math.MonotoneXPathInterpolator
+import com.gabrieldrn.konstellation.charts.line.math.PathInterpolator
 import com.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
@@ -27,7 +28,7 @@ import com.gabrieldrn.konstellation.plotting.ChartAxis
  * @property drawZeroLines Either to draw the lines indicating the zero on X and Y axes or not.
  * @property drawLines Either to draw lines (as described by [LineChartStyles.lineStyle]) or not.
  * @property drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
- * @property smoothing The style of the lines drawing between the data points.
+ * @property pathInterpolator The interpolator to use when drawing the lines.
  * @property fillingBrush The brush to apply to the filling content from the bottom of the chart to
  * the data lines.
  */
@@ -44,6 +45,6 @@ data class LineChartProperties(
     override val drawZeroLines: Boolean = true,
     val drawLines: Boolean = true,
     val drawPoints: Boolean = false,
-    val smoothing: Smoothing = Smoothing.Linear,
+    val pathInterpolator: PathInterpolator = MonotoneXPathInterpolator(),
     val fillingBrush: Brush? = null
 ) : ChartProperties

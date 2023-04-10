@@ -1,23 +1,29 @@
 package com.gabrieldrn.konstellationdemo.linechartdemo.settings
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.*
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoGraph
+import androidx.compose.material.icons.filled.Shuffle
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.vector.*
-import androidx.compose.ui.layout.*
-import androidx.compose.ui.text.style.*
-import androidx.compose.ui.tooling.preview.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.gabrieldrn.konstellation.charts.line.math.LinearPathInterpolator
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
-import com.gabrieldrn.konstellation.charts.line.drawing.Smoothing
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
@@ -49,7 +55,7 @@ fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = vie
             1 -> LineChartDataDrawingSetting(
                 drawLines = viewModel.properties.drawLines,
                 drawPoints = viewModel.properties.drawPoints,
-                smoothing = viewModel.properties.smoothing,
+                interpolator = viewModel.properties.pathInterpolator,
                 onUpdateProperty = viewModel::updateProperty,
             )
 
@@ -162,7 +168,7 @@ private fun LineChartDatasetSelector(
 
 @Preview
 @Composable
-fun SettingsPreviews() {
+private fun SettingsPreviews() {
     KonstellationTheme {
         Column(
             modifier = Modifier
@@ -172,7 +178,7 @@ fun SettingsPreviews() {
             LineChartDatasetSelector({}, {})
 
             LineChartDataDrawingSetting(
-                drawLines = true, drawPoints = true, Smoothing.Linear, { _, _ -> }
+                drawLines = true, drawPoints = true, LinearPathInterpolator(), { _, _ -> }
             )
 
             LineChartFillingSetting(null, { _, _ -> })

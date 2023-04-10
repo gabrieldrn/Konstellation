@@ -87,7 +87,7 @@ fun LineChart(
                 drawFrame()
             }
 
-            val path = properties.smoothing.interpolator(computedDataset)
+            val path = properties.pathInterpolator(computedDataset)
 
             if (properties.drawZeroLines) {
                 drawZeroLines(xDrawRange, yDrawRange)

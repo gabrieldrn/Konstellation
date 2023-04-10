@@ -5,8 +5,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.*
 import androidx.lifecycle.ViewModel
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
+import com.gabrieldrn.konstellation.charts.line.math.PathInterpolator
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
-import com.gabrieldrn.konstellation.charts.line.drawing.Smoothing
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
 import com.gabrieldrn.konstellation.plotting.*
@@ -66,8 +66,8 @@ class LineChartDemoViewModel(
                 .copy(drawLines = newValue as Boolean)
             LineChartProperties::drawPoints -> properties
                 .copy(drawPoints = newValue as Boolean)
-            LineChartProperties::smoothing -> properties
-                .copy(smoothing = newValue as Smoothing)
+            LineChartProperties::pathInterpolator -> properties
+                .copy(pathInterpolator = newValue as PathInterpolator)
             LineChartProperties::fillingBrush -> properties
                 .copy(fillingBrush = newValue as Brush?)
             else -> properties

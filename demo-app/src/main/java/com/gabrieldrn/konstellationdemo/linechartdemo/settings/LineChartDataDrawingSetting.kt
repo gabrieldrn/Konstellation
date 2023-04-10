@@ -1,17 +1,24 @@
 package com.gabrieldrn.konstellationdemo.linechartdemo.settings
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.outlined.Commit
+import androidx.compose.material.icons.outlined.ShowChart
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.text.style.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
-import com.gabrieldrn.konstellation.charts.line.drawing.Smoothing
+import com.gabrieldrn.konstellation.charts.line.math.CubicXPathInterpolator
+import com.gabrieldrn.konstellation.charts.line.math.CubicYPathInterpolator
+import com.gabrieldrn.konstellation.charts.line.math.LinearPathInterpolator
+import com.gabrieldrn.konstellation.charts.line.math.MonotoneXPathInterpolator
+import com.gabrieldrn.konstellation.charts.line.math.PathInterpolator
 import com.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
 import kotlin.reflect.KProperty1
 
@@ -19,7 +26,7 @@ import kotlin.reflect.KProperty1
 internal fun LineChartDataDrawingSetting(
     drawLines: Boolean,
     drawPoints: Boolean,
-    smoothing: Smoothing,
+    interpolator: PathInterpolator,
     onUpdateProperty: (KProperty1<LineChartProperties, Any>, Any) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -50,7 +57,8 @@ internal fun LineChartDataDrawingSetting(
                 ToggleIconButton(
                     toggled = drawPoints,
                     onToggleChange =
-                    { onUpdateProperty(LineChartProperties::drawPoints, it)
+                    {
+                        onUpdateProperty(LineChartProperties::drawPoints, it)
                     },
                     imageVector = Icons.Outlined.Commit
                 )
@@ -68,12 +76,26 @@ internal fun LineChartDataDrawingSetting(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                val methods by remember { mutableStateOf(Smoothing.values()) }
+                val interpolators by remember {
+                    mutableStateOf(
+                        listOf(
+                            MonotoneXPathInterpolator(),
+                            LinearPathInterpolator(),
+                            CubicXPathInterpolator(),
+                            CubicYPathInterpolator()
+                        )
+                    )
+                }
                 SettingIconButton(
                     onClick = {
-                        val index = (methods.indexOf(smoothing) + 1)
-                            .takeIf { it in methods.indices } ?: 0
-                        onUpdateProperty(LineChartProperties::smoothing, methods[index])
+                        val index = interpolators
+                            .indexOfFirst { it::class.java == interpolator::class.java }
+                            .plus(1)
+                            .takeIf { it in interpolators.indices }
+                            ?: 0
+                        onUpdateProperty(
+                            LineChartProperties::pathInterpolator, interpolators[index]
+                        )
                     },
                     icon = Icons.Default.AutoAwesome,
                     text = "Smoothing"

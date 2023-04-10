@@ -6,7 +6,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
-import com.gabrieldrn.konstellation.charts.line.drawing.Smoothing
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
@@ -29,8 +28,7 @@ internal fun getDemoChartProperties() = LineChartProperties(
     datasetOffsets = DatasetOffsets(0f, 0f, 5f, 5f),
     drawFrame = false,
     drawZeroLines = false,
-    drawPoints = true,
-    smoothing = Smoothing.MonotonicX
+    drawPoints = true
 )
 
 @Composable
