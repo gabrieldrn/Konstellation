@@ -32,8 +32,7 @@ enum class Smoothing(val interpolator: PathInterpolator) {
 
     /**
      * The drawing will result in a cubic spline preserving monotonicity in Y while assuming X is
-     * monotonic, as proposed by M. Steffen in
-     * [A Simple Method for Monotonic Interpolation in One Dimension](https://adsabs.harvard.edu/full/1990A%26A...239..443S).
+     * monotonic.
      */
     MonotonicX(MonotoneXPathInterpolator());
 }

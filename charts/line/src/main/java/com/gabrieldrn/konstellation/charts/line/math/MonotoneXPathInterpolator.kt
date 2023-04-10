@@ -9,8 +9,8 @@ import kotlin.math.sign
 
 /**
  * Produces a monotonic cubic Hermite spline through a given dataset, preserving monotonicity in Y
- * while assuming X is monotonic, as proposed by M. Steffen in
- * [A Simple Method for Monotonic Interpolation in One Dimension](https://adsabs.harvard.edu/full/1990A%26A...239..443S).
+ * while assuming X is monotonic
+ * [as proposed by M. Steffen](https://adsabs.harvard.edu/full/1990A%26A...239..443S).
  * This implementation is inspired by the
  * [D3-shape.js](https://github.com/d3/d3-shape/blob/main/src/curve/monotone.js) library.
  */
