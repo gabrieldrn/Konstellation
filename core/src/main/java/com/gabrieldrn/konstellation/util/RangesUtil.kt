@@ -31,7 +31,7 @@ fun DatasetOffsets?.applyDatasetOffsets(
  */
 fun ClosedFloatingPointRange<Float>.incStart(other: Float): ClosedFloatingPointRange<Float> {
     require(start + other <= endInclusive)
-    return (start + other)..endInclusive
+    return start + other..endInclusive
 }
 
 /**
@@ -40,7 +40,7 @@ fun ClosedFloatingPointRange<Float>.incStart(other: Float): ClosedFloatingPointR
  */
 fun ClosedFloatingPointRange<Float>.incEnd(other: Float): ClosedFloatingPointRange<Float> {
     require(endInclusive + other >= start)
-    return start..(endInclusive + other)
+    return start..endInclusive + other
 }
 
 /**
@@ -49,7 +49,7 @@ fun ClosedFloatingPointRange<Float>.incEnd(other: Float): ClosedFloatingPointRan
  */
 fun ClosedFloatingPointRange<Float>.decStart(other: Float): ClosedFloatingPointRange<Float> {
     require(start - other <= endInclusive)
-    return (start - other)..endInclusive
+    return start - other..endInclusive
 }
 
 /**
@@ -58,5 +58,5 @@ fun ClosedFloatingPointRange<Float>.decStart(other: Float): ClosedFloatingPointR
  */
 fun ClosedFloatingPointRange<Float>.decEnd(other: Float): ClosedFloatingPointRange<Float> {
     require(endInclusive - other >= start)
-    return start..(endInclusive - other)
+    return start..endInclusive - other
 }

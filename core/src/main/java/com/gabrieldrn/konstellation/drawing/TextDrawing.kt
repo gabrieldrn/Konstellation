@@ -2,9 +2,8 @@ package com.gabrieldrn.konstellation.drawing
 
 import android.graphics.Paint
 import androidx.compose.ui.geometry.*
-import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.*
-import androidx.compose.ui.text.android.*
+import androidx.compose.ui.graphics.nativeCanvas
 import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import com.gabrieldrn.konstellation.util.toInt
 

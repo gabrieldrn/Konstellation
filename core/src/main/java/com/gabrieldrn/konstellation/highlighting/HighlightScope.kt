@@ -2,15 +2,17 @@ package com.gabrieldrn.konstellation.highlighting
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.platform.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.LayoutDirection
 import com.gabrieldrn.konstellation.plotting.Point
 
 /**
  * A scope providing placement and contents data for a highlighted composed content.
- * @param point The [Point] to highlight.
- * @param contentPosition Where the content will be gravitating around the point, in front of the
+ * @property point The [Point] to highlight.
+ * @property contentPosition Where the content will be gravitating around the point, in front of the
  * chart.
+ * @property chartPaddings The chart's paddings.
  */
 class HighlightScope(
     val point: Point,
@@ -36,6 +38,9 @@ class HighlightScope(
             IntOffset(0, point.yPos.toInt())
     }
 
+    /**
+     * Computes the paddings to be used when placing the highlight content.
+     */
     @Composable
     fun ComputePaddings() {
         LocalDensity.current.run {

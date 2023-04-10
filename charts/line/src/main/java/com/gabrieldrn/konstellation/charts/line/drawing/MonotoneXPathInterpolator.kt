@@ -1,6 +1,6 @@
 package com.gabrieldrn.konstellation.charts.line.drawing
 
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Path
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.by
@@ -14,7 +14,10 @@ import kotlin.math.sign
  * This implementation is inspired by the
  * [D3-shape.js](https://github.com/d3/d3-shape/blob/main/src/curve/monotone.js) library.
  */
-@Suppress("MagicNumber")
+@Suppress(
+    "MagicNumber",
+    "VariableNaming" // No real gain in renaming variables to comply with naming conventions.
+)
 class MonotoneXPathInterpolator : PathInterpolator {
 
     override operator fun invoke(dataset: Dataset) = Path().apply {
@@ -35,12 +38,12 @@ class MonotoneXPathInterpolator : PathInterpolator {
         var p0 = 0f by 0f
         var p1 = 0f by 0f
         var t0 = 0f
+        var i = 0
 
-        dataset.forEachIndexed { i, p ->
+        for (p in dataset) {
             var t1 = 0f
 
-            if (p.xPos == p1.xPos && p.yPos == p1.yPos)
-                return@forEachIndexed // Ignore coincident points.
+            if (p.xPos == p1.xPos && p.yPos == p1.yPos) continue // Ignore coincident points.
 
             when (i) {
                 0 -> moveTo(p.xPos, p.yPos)
@@ -59,12 +62,14 @@ class MonotoneXPathInterpolator : PathInterpolator {
             p1 = p
             t0 = t1
 
-            if (i == dataset.lastIndex) {
-                when (i) {
-                    2 -> lineTo(p.xPos, p.yPos)
-                    else -> hermiteCubicTo(p0, p1, t0, slope2(p0, p1, t0))
-                }
-            }
+            i++
+        }
+
+        val p = dataset.last()
+        if (i == 2) {
+            lineTo(p.xPos, p.yPos)
+        } else {
+            hermiteCubicTo(p0, p1, t0, slope2(p0, p1, t0))
         }
     }
 
@@ -78,8 +83,8 @@ class MonotoneXPathInterpolator : PathInterpolator {
     private fun slope3(p0: Point, p1: Point, p2: Point): Float {
         val h0 = p1.xPos - p0.xPos
         val h1 = p2.xPos - p1.xPos
-        val s0 = (p1.yPos - p0.yPos) / (h0.coerceAtLeast(h1 * -1))
-        val s1 = (p2.yPos - p1.yPos) / (h1.coerceAtLeast(h0 * -1))
+        val s0 = (p1.yPos - p0.yPos) / h0.coerceAtLeast(h1 * -1)
+        val s1 = (p2.yPos - p1.yPos) / h1.coerceAtLeast(h0 * -1)
         val p = (s0 * h1 + s1 * h0) / (h0 + h1)
         return (s0.sign + s1.sign) * minOf(abs(s0), abs(s1), 0.5f * abs(p))
     }

@@ -1,12 +1,12 @@
 package com.gabrieldrn.konstellation.drawing
 
 import androidx.compose.ui.geometry.*
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.*
-import com.gabrieldrn.konstellation.plotting.Dataset
-import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
+import com.gabrieldrn.konstellation.plotting.Dataset
+import com.gabrieldrn.konstellation.plotting.Point
 
 /**
  * Draws a line between the given offsets using the given style. The line is stroked.
@@ -20,9 +20,9 @@ fun DrawScope.drawLine(
     cap = lineStyle.cap,
     start = start,
     end = end,
-    pathEffect = if (lineStyle.dashed)
+    pathEffect = if (lineStyle.dashed) {
         PathEffect.dashPathEffect(lineStyle.dashedEffectIntervals, lineStyle.dashedEffectPhase)
-    else null
+    } else null
 )
 
 /**

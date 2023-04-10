@@ -42,18 +42,18 @@ fun Float.map(
 /**
  * Infix function for [map], offering a more explicit usage of the latter.
  *
- * For example, `10f mapFrom (0f..20f to 0f..40f)`, linearly maps the number 10 from the range
+ * For example, `10f map (0f..20f to 0f..40f)`, linearly maps the number 10 from the range
  * [[0, 20]] to [[0, 40]].
  */
 infix fun Float.map(to: Pair<ClosedRange<Float>, ClosedRange<Float>>) =
     this@map.map(to.first, to.second)
 
 /**
- * Sets the offset attribute of each [Point] of the receiving collection, based on the bounds of the
- * passed [drawScope]. A specific range can be given with [dataSetXRange] and [dataSetYRange].
+ * Sets the offset attribute of each [Point] of the receiving collection, based on a given canvas
+ * [size]. A specific range can be specified with [dataSetXRange] and [dataSetYRange].
  *
  * @receiver The current collection of points within which to establish the offsets.
- * @param drawScope The draw scope of the chart in which drawing the future offsets.
+ * @param size The size of the canvas to draw on.
  * @param dataSetXRange (optional) A specific range of values on the X-axis to consider instead of
  * the X range of the receiving collection.
  * @param dataSetYRange (optional) A specific range of values on the Y-axis to consider instead of

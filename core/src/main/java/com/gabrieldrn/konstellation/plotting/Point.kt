@@ -44,6 +44,7 @@ data class Point constructor(
     override fun toString() = "[($x;$y), $offset]"
 
     companion object {
+        /** Required by [Serializable]. */
         const val serialVersionUID = 1L
     }
 }

@@ -1,12 +1,16 @@
 package com.gabrieldrn.konstellation.highlighting
 
 import androidx.compose.ui.geometry.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 
 /**
  * Rounded shape used by a composable highlighting a selected value on a chart.
- * @param contentPosition Position of this popup in front of the chart.
+ * @property contentPosition Position of this popup in front of the chart.
  */
 open class HighlightPopupShape(private val contentPosition: HighlightContentPosition) : Shape {
 
@@ -20,12 +24,22 @@ open class HighlightPopupShape(private val contentPosition: HighlightContentPosi
      */
     open var arrowSize = 8f.dp
 
+    /**
+     * The suggested minimum width for this popup to be appropriately displayed.
+     */
     val suggestedMinWidth
         get() = if (contentPosition.isVertical) arrowSize * 2 else 0.dp
 
+    /**
+     * The suggested minimum height for this popup to be appropriately displayed.
+     */
     val suggestedMinHeight
         get() = if (contentPosition.isHorizontal) arrowSize * 2 else 0.dp
 
+    /**
+     * Creates the outline for this popup shape.
+     */
+    @Suppress("CognitiveComplexMethod") // This function stays legible enough.
     final override fun createOutline(
         size: Size,
         layoutDirection: LayoutDirection,
@@ -36,9 +50,11 @@ open class HighlightPopupShape(private val contentPosition: HighlightContentPosi
         val minBorderLength = cornerRadiusPx * 2 + arrowSizePx * 2
         val len = if (contentPosition.isVertical) size.width else size.height
         val invLen = if (contentPosition.isVertical) size.height else size.width
-        val isOnTopOrOnPoint = contentPosition in arrayOf(HighlightContentPosition.Point, HighlightContentPosition.Top)
+        val isOnTopOrOnPoint = contentPosition in arrayOf(
+            HighlightContentPosition.Point, HighlightContentPosition.Top
+        )
         if (minBorderLength > len) {
-            cornerRadiusPx = cornerRadiusPx.coerceAtMost((len - (2 * arrowSizePx)) / 2)
+            cornerRadiusPx = cornerRadiusPx.coerceAtMost((len - 2 * arrowSizePx) / 2)
             if (cornerRadiusPx * 2 > invLen) {
                 cornerRadiusPx = cornerRadiusPx.coerceAtMost(invLen / 2)
             }
@@ -129,9 +145,9 @@ open class HighlightPopupShape(private val contentPosition: HighlightContentPosi
      * @param arrowSizePx Computed arrow size in pixels.
      */
     open fun Path.createLeftArrow(size: Size, arrowSizePx: Float) {
-        lineTo(0f, (size.height / 2) + arrowSizePx)
+        lineTo(0f, size.height / 2 + arrowSizePx)
         lineTo(-arrowSizePx, size.height / 2)
-        lineTo(0f, (size.height / 2) - arrowSizePx)
+        lineTo(0f, size.height / 2 - arrowSizePx)
     }
 
     /**
@@ -140,9 +156,9 @@ open class HighlightPopupShape(private val contentPosition: HighlightContentPosi
      * @param arrowSizePx Computed arrow size in pixels.
      */
     open fun Path.createBottomArrow(size: Size, arrowSizePx: Float) {
-        lineTo((size.width / 2) + arrowSizePx, size.height)
+        lineTo(size.width / 2 + arrowSizePx, size.height)
         lineTo(size.width / 2, size.height + arrowSizePx)
-        lineTo((size.width / 2) - arrowSizePx, size.height)
+        lineTo(size.width / 2 - arrowSizePx, size.height)
     }
 
     /**
@@ -151,9 +167,9 @@ open class HighlightPopupShape(private val contentPosition: HighlightContentPosi
      * @param arrowSizePx Computed arrow size in pixels.
      */
     open fun Path.createRightArrow(size: Size, arrowSizePx: Float) {
-        lineTo(size.width, (size.height / 2) - arrowSizePx)
+        lineTo(size.width, size.height / 2 - arrowSizePx)
         lineTo(size.width + arrowSizePx, size.height / 2)
-        lineTo(size.width, (size.height / 2) + arrowSizePx)
+        lineTo(size.width, size.height / 2 + arrowSizePx)
     }
 
     /**
@@ -162,9 +178,9 @@ open class HighlightPopupShape(private val contentPosition: HighlightContentPosi
      * @param arrowSizePx Computed arrow size in pixels.
      */
     open fun Path.createTopArrow(size: Size, arrowSizePx: Float) {
-        lineTo((size.width / 2) - arrowSizePx, 0f)
+        lineTo(size.width / 2 - arrowSizePx, 0f)
         lineTo(size.width / 2, -arrowSizePx)
-        lineTo((size.width / 2) + arrowSizePx, 0f)
+        lineTo(size.width / 2 + arrowSizePx, 0f)
     }
 
     /**

@@ -1,7 +1,10 @@
 @file:Suppress("MagicNumber", "ForEachOnRange")
 package com.gabrieldrn.konstellation.util
 
-import com.gabrieldrn.konstellation.plotting.*
+import com.gabrieldrn.konstellation.plotting.Point
+import com.gabrieldrn.konstellation.plotting.asDataset
+import com.gabrieldrn.konstellation.plotting.by
+import com.gabrieldrn.konstellation.plotting.datasetOf
 import kotlin.random.Random
 import kotlin.random.nextInt
 

@@ -31,12 +31,14 @@ class PointTest {
         assertEquals(
             expected = x,
             actual = result.x,
-            message = "The x value of the created Point should be the receiver of the 'by' infix function."
+            message = "The x value of the created Point should be the receiver of the 'by' " +
+                    "infix function."
         )
         assertEquals(
             expected = y,
             actual = result.y,
-            message = "The y value of the created Point should be the parameter of the 'by' infix function."
+            message = "The y value of the created Point should be the parameter of the 'by' " +
+                    "infix function."
         )
     }
 }

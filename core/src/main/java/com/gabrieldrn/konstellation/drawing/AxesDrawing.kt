@@ -2,20 +2,22 @@ package com.gabrieldrn.konstellation.drawing
 
 import android.graphics.Paint
 import androidx.compose.ui.geometry.*
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.*
-import androidx.compose.ui.unit.*
-import com.gabrieldrn.konstellation.math.*
-import com.gabrieldrn.konstellation.math.calculateAxisOffsets
-import com.gabrieldrn.konstellation.math.getAxisDrawingPoints
-import com.gabrieldrn.konstellation.plotting.Axis
-import com.gabrieldrn.konstellation.plotting.ChartAxis
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.configuration.properties.ChartProperties
-import com.gabrieldrn.konstellation.plotting.NiceScale
 import com.gabrieldrn.konstellation.configuration.styles.AxisDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.ChartStyles
 import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.getAxisStyleByType
+import com.gabrieldrn.konstellation.math.calculateAxisOffsets
+import com.gabrieldrn.konstellation.math.getAxisDrawingPoints
+import com.gabrieldrn.konstellation.math.map
+import com.gabrieldrn.konstellation.plotting.Axis
+import com.gabrieldrn.konstellation.plotting.ChartAxis
+import com.gabrieldrn.konstellation.plotting.NiceScale
 import com.gabrieldrn.konstellation.util.toInt
 
 /**
@@ -122,8 +124,8 @@ internal fun DrawScope.drawTick(
         }
         it.nativeCanvas.drawText(
             label,
-            (position.x + style.tickTextStyle.offsetX) + xMetricsOffset,
-            (position.y + style.tickTextStyle.offsetY) + yMetricsOffset,
+            position.x + style.tickTextStyle.offsetX + xMetricsOffset,
+            position.y + style.tickTextStyle.offsetY + yMetricsOffset,
             tickLabelPaint
         )
     }
