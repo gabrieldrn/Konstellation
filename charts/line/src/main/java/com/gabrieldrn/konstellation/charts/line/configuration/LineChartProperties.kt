@@ -1,11 +1,11 @@
 package com.gabrieldrn.konstellation.charts.line.configuration
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.unit.dp
+import com.gabrieldrn.konstellation.charts.line.drawing.Smoothing
 import com.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
-import com.gabrieldrn.konstellation.charts.line.drawing.Smoothing
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
 import com.gabrieldrn.konstellation.plotting.ChartAxis

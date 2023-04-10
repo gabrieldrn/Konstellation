@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.charts.line.drawing
+package com.gabrieldrn.konstellation.charts.line.math
 
 import androidx.compose.ui.graphics.Path
 import com.gabrieldrn.konstellation.plotting.Dataset

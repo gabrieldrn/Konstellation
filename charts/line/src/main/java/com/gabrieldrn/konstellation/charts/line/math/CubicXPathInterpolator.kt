@@ -1,16 +1,20 @@
-package com.gabrieldrn.konstellation.charts.line.drawing
+package com.gabrieldrn.konstellation.charts.line.math
 
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Path
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
 
+/**
+ * Produces a simple cubic Bézier curve effect on the X axis between each data point.
+ */
 class CubicXPathInterpolator : PathInterpolator {
 
     override fun invoke(dataset: Dataset) = Path().apply {
         var prev: Point
         dataset.forEachIndexed { i, p ->
-            if (i == 0) moveTo(p.xPos, p.yPos)
-            else {
+            if (i == 0) {
+                moveTo(p.xPos, p.yPos)
+            } else {
                 prev = dataset[i - 1]
                 cubicTo(
                     x1 = p.xPos, y1 = prev.yPos,

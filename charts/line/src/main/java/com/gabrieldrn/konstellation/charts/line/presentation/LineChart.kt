@@ -17,11 +17,22 @@ import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.drawing.drawLinePath
-import com.gabrieldrn.konstellation.drawing.*
+import com.gabrieldrn.konstellation.drawing.drawFrame
+import com.gabrieldrn.konstellation.drawing.drawPoint
+import com.gabrieldrn.konstellation.drawing.drawScaledAxis
+import com.gabrieldrn.konstellation.drawing.drawZeroLines
+import com.gabrieldrn.konstellation.drawing.highlightPoint
 import com.gabrieldrn.konstellation.highlighting.BoxedPopup
 import com.gabrieldrn.konstellation.highlighting.HighlightScope
 import com.gabrieldrn.konstellation.math.createOffsets
-import com.gabrieldrn.konstellation.plotting.*
+import com.gabrieldrn.konstellation.plotting.Axes
+import com.gabrieldrn.konstellation.plotting.Dataset
+import com.gabrieldrn.konstellation.plotting.Point
+import com.gabrieldrn.konstellation.plotting.by
+import com.gabrieldrn.konstellation.plotting.datasetOf
+import com.gabrieldrn.konstellation.plotting.nearestPointByX
+import com.gabrieldrn.konstellation.plotting.xRange
+import com.gabrieldrn.konstellation.plotting.yRange
 import com.gabrieldrn.konstellation.util.applyDatasetOffsets
 
 /**

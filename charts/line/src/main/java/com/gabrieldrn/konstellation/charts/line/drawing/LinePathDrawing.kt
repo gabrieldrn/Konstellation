@@ -1,13 +1,15 @@
 package com.gabrieldrn.konstellation.charts.line.drawing
 
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.*
 import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import com.gabrieldrn.konstellation.plotting.Dataset
 
 /**
- * Converts a [dataset] into an unclosed [Path], with an [PathInterpolator] described by [smoothing],
- * and draws it into the received [DrawScope].
+ * Converts a [dataset] into an unclosed [Path], with a pre-processing [smoothing] step, then draws
+ * it into the received [DrawScope].
  * @param dataset The dataset to be converted and drawn into a line chart.
  * @param smoothing The smoothing effect to be applied to the path between each data point.
  * @param lineStyle The drawing style to be applied to the drawn line chart path.

@@ -1,6 +1,6 @@
-package com.gabrieldrn.konstellation.charts.line.drawing
+package com.gabrieldrn.konstellation.charts.line.math
 
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Path
 import com.gabrieldrn.konstellation.plotting.Dataset
 
 /**
@@ -11,8 +11,11 @@ class LinearPathInterpolator : PathInterpolator {
 
     override fun invoke(dataset: Dataset) = Path().apply {
         dataset.forEachIndexed { i, p ->
-            if (i == 0) moveTo(p.xPos, p.yPos)
-            else lineTo(p.xPos, p.yPos)
+            if (i == 0) {
+                moveTo(p.xPos, p.yPos)
+            } else {
+                lineTo(p.xPos, p.yPos)
+            }
         }
     }
 }

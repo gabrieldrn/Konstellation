@@ -1,7 +1,15 @@
 package com.gabrieldrn.konstellation.charts.line.drawing
 
+import com.gabrieldrn.konstellation.charts.line.math.CubicXPathInterpolator
+import com.gabrieldrn.konstellation.charts.line.math.CubicYPathInterpolator
+import com.gabrieldrn.konstellation.charts.line.math.LinearPathInterpolator
+import com.gabrieldrn.konstellation.charts.line.math.MonotoneXPathInterpolator
+import com.gabrieldrn.konstellation.charts.line.math.PathInterpolator
+
 /**
  * How plotting shall render.
+ * @property interpolator The interpolator to use as a pre-processing step before drawing the line
+ * chart.
  */
 enum class Smoothing(val interpolator: PathInterpolator) {
 
