@@ -22,9 +22,7 @@ private val injector = object : KoinComponent {}
 
 @Suppress("MagicNumber")
 internal fun getDemoChartProperties() = LineChartProperties(
-    axes = setOf(),
     highlightContentPositions = setOf(HighlightContentPosition.Top, HighlightContentPosition.Start),
-    chartPaddingValues = PaddingValues(),
     datasetOffsets = DatasetOffsets(0f, 0f, 5f, 5f),
     drawFrame = false,
     drawZeroLines = false,

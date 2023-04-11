@@ -9,6 +9,7 @@ import com.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
+import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
 
 /**
@@ -33,8 +34,8 @@ import com.gabrieldrn.konstellation.plotting.ChartAxis
  * the data lines.
  */
 data class LineChartProperties(
-    override val axes: Set<ChartAxis> = setOf(),
-    val chartPaddingValues: PaddingValues = PaddingValues(0.dp),
+    override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
+    val chartPaddingValues: PaddingValues = PaddingValues(40.dp),
     val datasetOffsets: DatasetOffsets? = null,
     val highlightContentPositions: Set<HighlightContentPosition> = setOf(
         HighlightContentPosition.Point
@@ -44,7 +45,7 @@ data class LineChartProperties(
     override val drawFrame: Boolean = true,
     override val drawZeroLines: Boolean = true,
     val drawLines: Boolean = true,
-    val drawPoints: Boolean = false,
+    val drawPoints: Boolean = true,
     val pathInterpolator: PathInterpolator = MonotoneXPathInterpolator(),
     val fillingBrush: Brush? = null
 ) : ChartProperties

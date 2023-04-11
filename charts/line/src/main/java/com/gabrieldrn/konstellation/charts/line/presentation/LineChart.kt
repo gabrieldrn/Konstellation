@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.drawing.drawLinePath
+import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.drawing.drawFrame
 import com.gabrieldrn.konstellation.drawing.drawPoint
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
@@ -224,8 +225,12 @@ private fun LineChartPreview() {
             .fillMaxWidth()
             .aspectRatio(1f),
         properties = LineChartProperties(
-            axes = Axes.all,
-            chartPaddingValues = PaddingValues(40.dp)
+            axes = setOf(Axes.xBottom, Axes.yLeft),
+            chartPaddingValues = PaddingValues(40.dp),
+            datasetOffsets = DatasetOffsets(
+                yStartOffset = 3f,
+                yEndOffset = 3f
+            )
         )
     )
 }
