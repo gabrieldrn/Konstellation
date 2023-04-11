@@ -12,8 +12,8 @@ beautiful and consistent graphs.
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/22205373/200699663-3e5a6a26-2cb5-4afb-8724-fb9a3b2bc9b5.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/22205373/200699641-26583508-51ed-4e9e-b3de-1ab992df5c33.png">
-    <img alt="Demo preview" src="https://user-images.githubusercontent.com/22205373/200699663-3e5a6a26-2cb5-4afb-8724-fb9a3b2bc9b5.png" width="65%">
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/22205373/231069684-b971fbc8-b179-4af9-96e9-14058127f90d.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/22205373/231069733-2176deca-d537-4e79-8195-1cc26b3c9fbc.png">
+    <img alt="Demo preview" src="https://user-images.githubusercontent.com/22205373/200699663-3e5a6a26-2cb5-4afb-8724-fb9a3b2bc9b5.png" width="55%">
   </picture>
 </p>
