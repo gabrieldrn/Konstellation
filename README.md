@@ -2,14 +2,13 @@
 ![Header](https://user-images.githubusercontent.com/22205373/198927777-d3c048e6-ab3a-43dd-b69d-bd593e1db058.png#gh-dark-mode-only)
 
 [![License](https://img.shields.io/badge/License-GNU%20v3.0-white.svg)](LICENSE)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.7.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
-[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.3.0-blue.svg?logo=android)](https://developer.android.com/jetpack/compose)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.8.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.4.1-blue.svg?logo=android)](https://developer.android.com/jetpack/compose)
 
 [![](https://github.com/gabrieldrn/Konstellation/workflows/CI/badge.svg?branch=develop)]()
 
-A plotting library based on Jetpack Compose.
-
-**This library is still a work in progress and is being actively worked on.**
+Konstellation is a Jetpack Compose library that provides a set of components and tools to build
+beautiful and consistent graphs.
 
 <p align="center">
   <picture>
