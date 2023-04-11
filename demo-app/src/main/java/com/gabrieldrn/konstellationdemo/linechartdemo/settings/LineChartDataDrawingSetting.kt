@@ -22,8 +22,12 @@ import com.gabrieldrn.konstellation.charts.line.math.PathInterpolator
 import com.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
 import kotlin.reflect.KProperty1
 
+/**
+ * A setting composable that allows the user to select whether to draw lines and points and which
+ * path interpolator to use.
+ */
 @Composable
-internal fun LineChartDataDrawingSetting(
+fun LineChartDataDrawingSetting(
     drawLines: Boolean,
     drawPoints: Boolean,
     interpolator: PathInterpolator,

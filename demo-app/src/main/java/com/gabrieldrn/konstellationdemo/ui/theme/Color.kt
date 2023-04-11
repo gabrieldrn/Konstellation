@@ -1,3 +1,5 @@
+@file:Suppress("UndocumentedPublicProperty")
+
 package com.gabrieldrn.konstellationdemo.ui.theme
 
 import androidx.compose.ui.graphics.Color

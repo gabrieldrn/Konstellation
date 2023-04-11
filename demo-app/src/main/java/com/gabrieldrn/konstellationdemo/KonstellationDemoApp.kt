@@ -5,6 +5,9 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
+/**
+ * Application class for the demo app.
+ */
 class KonstellationDemoApp : Application() {
 
     override fun onCreate() {

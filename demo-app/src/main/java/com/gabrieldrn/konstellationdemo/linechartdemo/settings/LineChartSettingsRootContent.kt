@@ -35,6 +35,10 @@ import com.google.accompanist.pager.rememberPagerState
 
 private val SettingSurfaceHeight = 148.dp
 
+/**
+ * This is the main composable that will be used to display the line chart demo settings
+ * composables, as a horizontal pager.
+ */
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = viewModel()) {

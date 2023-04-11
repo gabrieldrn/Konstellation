@@ -66,6 +66,9 @@ private val DarkColors = darkColorScheme(
     surfaceTint = md_theme_dark_surfaceTint,
 )
 
+/**
+ * A customized [MaterialTheme] for the demo app.
+ */
 @Composable
 fun KonstellationTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),

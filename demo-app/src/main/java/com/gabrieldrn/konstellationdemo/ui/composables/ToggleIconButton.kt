@@ -1,23 +1,26 @@
 package com.gabrieldrn.konstellationdemo.ui.composables
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.*
-import androidx.compose.foundation.interaction.*
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.*
-import androidx.compose.foundation.shape.*
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material.ripple.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.vector.*
-import androidx.compose.ui.semantics.*
-import androidx.compose.ui.tooling.preview.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
 /**
@@ -25,24 +28,27 @@ import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
  */
 val toggleIconButtonSize = 48.dp
 
+/**
+ * A toggleable icon button that can be used to toggle a setting.
+ */
 @Composable
 fun ToggleIconButton(
     toggled: Boolean,
     onToggleChange: (Boolean) -> Unit,
     imageVector: ImageVector,
+    modifier: Modifier = Modifier,
     toggledColor: Color = MaterialTheme.colorScheme.primary,
     disabledColor: Color = LocalContentColor.current.copy(alpha = 0.12f),
     toggledImageVectorTint: Color = MaterialTheme.colorScheme.onPrimary,
     disabledImageVectorTint: Color = LocalContentColor.current,
-    modifier: Modifier = Modifier
 ) {
     val background by animateColorAsState(
         targetValue = if (toggled) toggledColor else disabledColor,
-        animationSpec = tween()
+        animationSpec = tween(), label = "ToggleIconButtonBackground"
     )
     val imageVectorTint by animateColorAsState(
         targetValue = if (toggled) toggledImageVectorTint else disabledImageVectorTint,
-        animationSpec = tween()
+        animationSpec = tween(), label = "ToggleIconButtonImageVectorTint"
     )
     Box(
         modifier = modifier

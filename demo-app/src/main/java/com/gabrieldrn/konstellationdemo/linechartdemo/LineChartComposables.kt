@@ -23,6 +23,9 @@ import com.gabrieldrn.konstellation.plotting.datasetOf
 import com.gabrieldrn.konstellationdemo.linechartdemo.settings.LineChartSettingsContent
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
+/**
+ * This is the main composable that will be used to display the line chart demo.
+ */
 @Composable
 fun LineChartDemo(
     viewModel: LineChartDemoViewModel,
@@ -56,7 +59,7 @@ private fun DemoContent(
                 .aspectRatio(1f), //Keep the chart square
             dataset = dataset,
             properties = properties,
-            styles = getChartStyles(),
+            styles = getDemoChartStyles(),
             highlightContent = { DemoHighlightPopup() }
         )
     }
@@ -108,7 +111,7 @@ private fun AltitudeHighlight(alt: Int) {
 
 @Preview(showBackground = true)
 @Composable
-fun LineChartWithCustomPropertiesPreview() {
+private fun LineChartWithCustomPropertiesPreview() {
     KonstellationTheme {
         DemoContent(
             dataset = datasetOf(

@@ -1,15 +1,23 @@
 package com.gabrieldrn.konstellationdemo.linechartdemo.settings
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BorderBottom
+import androidx.compose.material.icons.filled.BorderInner
+import androidx.compose.material.icons.filled.BorderLeft
+import androidx.compose.material.icons.filled.BorderOuter
+import androidx.compose.material.icons.filled.BorderRight
+import androidx.compose.material.icons.filled.BorderTop
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.graphics.vector.*
-import androidx.compose.ui.layout.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
@@ -17,8 +25,12 @@ import com.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
 import com.gabrieldrn.konstellationdemo.ui.composables.toggleIconButtonSize
 import kotlin.reflect.KProperty1
 
+/**
+ * A setting composable that allows the user to select which axes to draw and whether to draw the
+ * frame and zero lines.
+ */
 @Composable
-internal fun LineChartAxisSelectorSetting(
+fun LineChartAxisSelectorSetting(
     axes: Set<ChartAxis>,
     drawFrame: Boolean,
     drawZeroLines: Boolean,
@@ -87,8 +99,11 @@ private fun AxesSelector(
                 onUpdateProperty(
                     LineChartProperties::axes,
                     axes.toMutableSet().apply {
-                        if (toggled) add(axis)
-                        else remove(axis)
+                        if (toggled) {
+                            add(axis)
+                        } else {
+                            remove(axis)
+                        }
                     }
                 )
             },
@@ -115,10 +130,10 @@ private fun AxesSelector(
             val layoutSize = 116.dp.roundToPx()
 
             layout(layoutSize, layoutSize) {
-                t.place(IntOffset((layoutSize / 2) - bSizeHalf, 0))
-                b.place(IntOffset((layoutSize / 2) - bSizeHalf, layoutSize - bSize))
-                l.place(IntOffset(0, (layoutSize / 2) - bSizeHalf))
-                r.place(IntOffset(layoutSize - bSize, (layoutSize / 2) - bSizeHalf))
+                t.place(IntOffset(layoutSize / 2 - bSizeHalf, 0))
+                b.place(IntOffset(layoutSize / 2 - bSizeHalf, layoutSize - bSize))
+                l.place(IntOffset(0, layoutSize / 2 - bSizeHalf))
+                r.place(IntOffset(layoutSize - bSize, layoutSize / 2 - bSizeHalf))
             }
         }
     )

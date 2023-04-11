@@ -20,8 +20,11 @@ import org.koin.core.component.get
 
 private val injector = object : KoinComponent {}
 
+/**
+ * Returns a [LineChartProperties] instance with some custom properties for demo purposes.
+ */
 @Suppress("MagicNumber")
-internal fun getDemoChartProperties() = LineChartProperties(
+fun getDemoChartProperties() = LineChartProperties(
     highlightContentPositions = setOf(HighlightContentPosition.Top, HighlightContentPosition.Start),
     datasetOffsets = DatasetOffsets(0f, 0f, 5f, 5f),
     drawFrame = false,
@@ -29,8 +32,11 @@ internal fun getDemoChartProperties() = LineChartProperties(
     drawPoints = true
 )
 
+/**
+ * Returns a [LineChartStyles] instance with some custom styles for demo purposes.
+ */
 @Composable
-internal fun getChartStyles(
+fun getDemoChartStyles(
     mainTextStyle: TextDrawStyle = injector.get(QF_MAIN_TEXT_STYLE)
 ) = LineChartStyles(
     lineStyle = LineDrawStyle(color = MaterialTheme.colorScheme.primary),

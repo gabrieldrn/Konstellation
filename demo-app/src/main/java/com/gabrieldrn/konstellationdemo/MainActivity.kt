@@ -2,27 +2,39 @@ package com.gabrieldrn.konstellationdemo
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.text.font.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemo
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
+import com.gabrieldrn.konstellationdemo.linechartdemo.getDemoChartProperties
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 private const val DarkIconsLuminanceThreshold = 0.5f
 
+/**
+ * This is the main activity of the demo app.
+ */
 class MainActivity : AppCompatActivity() {
 
-    private val lineChartViewModel by viewModels<LineChartDemoViewModel>()
+    private val lineChartViewModel by viewModel<LineChartDemoViewModel> {
+        parametersOf(getDemoChartProperties())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

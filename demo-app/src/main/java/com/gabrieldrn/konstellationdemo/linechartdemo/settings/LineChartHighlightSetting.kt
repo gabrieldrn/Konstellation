@@ -1,21 +1,29 @@
 package com.gabrieldrn.konstellationdemo.linechartdemo.settings
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.*
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.East
+import androidx.compose.material.icons.filled.North
+import androidx.compose.material.icons.filled.PushPin
+import androidx.compose.material.icons.filled.South
+import androidx.compose.material.icons.filled.West
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.graphics.vector.*
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
 import kotlin.reflect.KProperty1
 
+/**
+ * Composable that allows the user to change the highlight popup positions of the LineChart.
+ */
 @Composable
-internal fun LineChartHighlightSetting(
+fun LineChartHighlightSetting(
     highlightPositions: Set<HighlightContentPosition>,
     onUpdateProperty: (KProperty1<LineChartProperties, Any>, Any) -> Unit,
     modifier: Modifier = Modifier
@@ -29,8 +37,11 @@ internal fun LineChartHighlightSetting(
                     onUpdateProperty(
                         LineChartProperties::highlightContentPositions,
                         highlightPositions.toMutableSet().apply {
-                            if (toggled) add(position)
-                            else remove(position)
+                            if (toggled) {
+                                add(position)
+                            } else {
+                                remove(position)
+                            }
                         }
                     )
                 },
