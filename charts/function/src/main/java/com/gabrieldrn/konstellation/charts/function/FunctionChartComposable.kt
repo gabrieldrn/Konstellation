@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.unit.dp
+import com.gabrieldrn.konstellation.api.WipChartApi
 import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
 import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
@@ -23,6 +24,7 @@ import com.gabrieldrn.konstellation.plotting.by
 /**
  * Composable responsible for plotting points from a function and drawing axis.
  */
+@WipChartApi
 @Composable
 @Suppress("LongParameterList") //TODO Remove Suppress
 fun FunctionPlotter(

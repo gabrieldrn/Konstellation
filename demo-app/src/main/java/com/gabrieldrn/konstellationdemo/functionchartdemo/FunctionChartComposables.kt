@@ -7,11 +7,13 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
+import com.gabrieldrn.konstellation.api.WipChartApi
 import com.gabrieldrn.konstellation.charts.function.FunctionPlotter
 import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import kotlin.math.PI
 import kotlin.math.sin
 
+@OptIn(WipChartApi::class)
 @Composable
 @Suppress("MagicNumber")
 fun AnimatedFunctionChart() {
