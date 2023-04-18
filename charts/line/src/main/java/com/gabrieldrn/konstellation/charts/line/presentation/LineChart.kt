@@ -147,7 +147,7 @@ private fun BoxScope.HighlightCanvas(
     highlightContent: @Composable (HighlightScope.() -> Unit)?,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
-    val hapticLocal = LocalHapticFeedback.current
+//    val hapticLocal = LocalHapticFeedback.current
     val density = LocalDensity.current
 
     var pointerValue by rememberSaveable { mutableStateOf<Float?>(null) }
@@ -166,9 +166,11 @@ private fun BoxScope.HighlightCanvas(
     }
 
     LaunchedEffect(highlightedPoint) {
-        if (properties.hapticHighlight && highlightedPoint != null) {
-            hapticLocal.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-        }
+        // FIXME The haptic feedback is called on each frame while the chart properties are
+        //   being changed + when a point is highlighted.
+//        if (properties.hapticHighlight && highlightedPoint != null) {
+//            hapticLocal.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+//        }
         onHighlightChange?.invoke(highlightedPoint)
     }
 

@@ -3,11 +3,17 @@ package com.gabrieldrn.konstellation.highlighting
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -136,8 +142,7 @@ fun HighlightScope.HighlightPopup(
             .sizeIn(
                 minWidth = shape.suggestedMinWidth,
                 minHeight = shape.suggestedMinHeight
-            )
-            .then(modifier),
+            ),
         color = color,
         shape = shape,
         tonalElevation = tonalElevation,
@@ -147,4 +152,36 @@ fun HighlightScope.HighlightPopup(
     }
 }
 
-//TODO Preview highlight popup for every position.
+private class HighlightPositionParameterProvider :
+    PreviewParameterProvider<HighlightContentPosition> {
+    override val values: Sequence<HighlightContentPosition>
+        get() = sequenceOf(
+            HighlightContentPosition.Top,
+            HighlightContentPosition.Bottom,
+            HighlightContentPosition.Start,
+            HighlightContentPosition.End,
+        )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HighlightPopupPreview(
+    @PreviewParameter(HighlightPositionParameterProvider::class) pos: HighlightContentPosition
+) {
+    val point = Point(1f, 2f, Offset(150f, 70f))
+    Box(Modifier.padding(8.dp)) {
+        HighlightBox(
+            scope = HighlightScope(point, pos),
+            chartTopPaddingPx = 0,
+            chartStartPaddingPx = 0
+        ) {
+            HighlightPopup {
+                Text(
+                    text = "📍 ${point.x};${point.y}",
+                    fontFamily = FontFamily.Monospace,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+        }
+    }
+}
