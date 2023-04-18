@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,8 +21,11 @@ import com.gabrieldrn.konstellation.highlighting.horizontalHLPositions
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.by
 import com.gabrieldrn.konstellation.plotting.datasetOf
+import com.gabrieldrn.konstellationdemo.appModule
 import com.gabrieldrn.konstellationdemo.linechartdemo.settings.LineChartSettingsContent
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 /**
  * This is the main composable that will be used to display the line chart demo.
@@ -73,6 +77,7 @@ private fun HighlightScope.DemoHighlightPopup() {
                 DistanceHighlight(point.x.toInt())
                 AltitudeHighlight(point.y.toInt())
             }
+
             in horizontalHLPositions -> AltitudeHighlight(point.y.toInt())
             else -> DistanceHighlight(point.x.toInt())
         }
@@ -112,6 +117,11 @@ private fun AltitudeHighlight(alt: Int) {
 @Preview(showBackground = true)
 @Composable
 private fun LineChartWithCustomPropertiesPreview() {
+    val context = LocalContext.current
+    startKoin {
+        androidContext(context)
+        modules(appModule)
+    }
     KonstellationTheme {
         DemoContent(
             dataset = datasetOf(

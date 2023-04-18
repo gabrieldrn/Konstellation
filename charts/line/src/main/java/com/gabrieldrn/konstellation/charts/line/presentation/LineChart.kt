@@ -11,8 +11,10 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
@@ -23,7 +25,7 @@ import com.gabrieldrn.konstellation.drawing.drawPoint
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
 import com.gabrieldrn.konstellation.drawing.drawZeroLines
 import com.gabrieldrn.konstellation.drawing.highlightPoint
-import com.gabrieldrn.konstellation.highlighting.BoxedPopup
+import com.gabrieldrn.konstellation.highlighting.HighlightBox
 import com.gabrieldrn.konstellation.highlighting.HighlightScope
 import com.gabrieldrn.konstellation.math.createOffsets
 import com.gabrieldrn.konstellation.plotting.Axes
@@ -103,7 +105,7 @@ fun LineChart(
                             addPath(path)
                             // Closing path shape with chart bottom
                             lineTo(computedDataset.last().xPos, size.height)
-                            lineTo(computedDataset[0].xPos, size.height)
+                            lineTo(computedDataset.first().xPos, size.height)
                             close()
                         },
                         brush = brush
@@ -146,12 +148,21 @@ private fun BoxScope.HighlightCanvas(
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
     val hapticLocal = LocalHapticFeedback.current
+    val density = LocalDensity.current
 
     var pointerValue by rememberSaveable { mutableStateOf<Float?>(null) }
     val highlightedPoint by remember {
         derivedStateOf {
             pointerValue?.let { dataset().nearestPointByX(it) }
         }
+    }
+
+    val chartTopPaddingPx = with(density) {
+        properties.chartPaddingValues.calculateTopPadding().toPx().toInt()
+    }
+
+    val chartStartPaddingPx = with(density) {
+        properties.chartPaddingValues.calculateStartPadding(LayoutDirection.Ltr).toPx().toInt()
     }
 
     LaunchedEffect(highlightedPoint) {
@@ -185,24 +196,15 @@ private fun BoxScope.HighlightCanvas(
     }
 
     highlightedPoint?.let { point ->
-        ComposeHighlightPopup(highlightContent, point, properties)
-    }
-}
-
-@Composable
-private fun BoxScope.ComposeHighlightPopup(
-    highlightContent: @Composable (HighlightScope.() -> Unit)?,
-    point: Point,
-    properties: LineChartProperties
-) {
-    if (highlightContent != null) {
-        properties.highlightContentPositions.forEach { position ->
-            BoxedPopup(
-                HighlightScope(
-                    point, position, properties.chartPaddingValues
-                ).apply { ComputePaddings() },
-            ) {
-                highlightContent()
+        if (highlightContent != null) {
+            properties.highlightContentPositions.forEach { position ->
+                HighlightBox(
+                    scope = HighlightScope(point, position),
+                    chartTopPaddingPx = chartTopPaddingPx,
+                    chartStartPaddingPx = chartStartPaddingPx
+                ) {
+                    highlightContent()
+                }
             }
         }
     }

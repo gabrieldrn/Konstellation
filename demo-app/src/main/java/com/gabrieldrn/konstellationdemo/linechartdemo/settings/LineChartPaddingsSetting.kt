@@ -15,6 +15,7 @@ import kotlin.reflect.KProperty1
 /**
  * This composable will be used to display the settings related to the chart paddings.
  */
+@Suppress("MagicNumber")
 @Composable
 fun LineChartPaddingsSetting(
     chartPaddingValues: PaddingValues,
@@ -68,7 +69,7 @@ fun LineChartPaddingsSetting(
                 )
                 Slider(
                     value = datasetOffsets?.yStartOffset ?: 0f,
-                    valueRange = 0f..10f,
+                    valueRange = 0f..15f,
                     onValueChange = {
                         onUpdateProperty(
                             LineChartProperties::datasetOffsets,

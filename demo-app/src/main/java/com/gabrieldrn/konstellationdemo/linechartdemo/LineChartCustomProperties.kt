@@ -27,6 +27,7 @@ private val injector = object : KoinComponent {}
 fun getDemoChartProperties() = LineChartProperties(
     highlightContentPositions = setOf(HighlightContentPosition.Top, HighlightContentPosition.Start),
     datasetOffsets = DatasetOffsets(0f, 0f, 5f, 5f),
+    hapticHighlight = true,
     drawFrame = false,
     drawZeroLines = false,
     drawPoints = true

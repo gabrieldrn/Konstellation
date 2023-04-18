@@ -7,51 +7,106 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.gabrieldrn.konstellation.plotting.Point
 
 /**
  * Creates and places a [Box] ready to compose a highlight popup within a highlighting [scope] with
  * a given [content] provided by the user.
  */
 @Composable
-fun BoxScope.BoxedPopup(
+fun BoxScope.HighlightBox(
     scope: HighlightScope,
+    chartTopPaddingPx: Int,
+    chartStartPaddingPx: Int,
+    modifier: Modifier = Modifier,
     content: @Composable HighlightScope.() -> Unit
 ) {
-    fun getPlacementOffset(p: Placeable) = when (scope.contentPosition) {
-        HighlightContentPosition.Top ->
-            -IntOffset(p.width / 2, scope.point.yPos.toInt() + scope.paddingTop)
-        HighlightContentPosition.Bottom ->
-            -IntOffset(p.width / 2, 0)
-        HighlightContentPosition.Start,
-        HighlightContentPosition.End ->
-            -IntOffset(0, p.height / 2) + IntOffset(0, scope.paddingTop)
-        HighlightContentPosition.Point ->
-            -IntOffset(p.width / 2, p.height)
-    }
-
-    fun getAlignment() = when (scope.contentPosition) {
-        HighlightContentPosition.Bottom -> Alignment.BottomStart
-        HighlightContentPosition.End -> Alignment.TopEnd
-        else -> Alignment.TopStart
-    }
-
     Box(
-        Modifier
-            .offset { scope.getContentOffset() }
-            .align(getAlignment())
-            .layout { m, c ->
-                val placeable = m.measure(c)
-                layout(placeable.width, placeable.height) {
-                    placeable.placeRelative(getPlacementOffset(placeable))
+        modifier = modifier
+            // Moves the popup near the highlighted point.
+            .popupContentOffset(
+                scope.point,
+                scope.contentPosition,
+                chartTopPaddingPx,
+                chartStartPaddingPx
+            )
+            // Helps to place the popup at the bottom or at the end of the chart.
+            .align(
+                when (scope.contentPosition) {
+                    HighlightContentPosition.Bottom -> Alignment.BottomStart
+                    HighlightContentPosition.End -> Alignment.TopEnd
+                    else -> Alignment.TopStart
                 }
-            }
+            )
+            // Centers the popup to align it with the highlighted point.
+            .alignWithPoint(
+                scope.point,
+                scope.contentPosition,
+                chartTopPaddingPx
+            )
     ) {
         content(scope)
+    }
+}
+
+/**
+ * Offset the popup content to place it near the highlighted point.
+ */
+private fun Modifier.popupContentOffset(
+    point: Point,
+    contentPosition: HighlightContentPosition,
+    chartTopPaddingPx: Int,
+    chartStartPaddingPx: Int,
+) = this.offset {
+    when (contentPosition) {
+        HighlightContentPosition.Top,
+        HighlightContentPosition.Point ->
+            IntOffset(
+                point.xPos.toInt() + chartStartPaddingPx,
+                point.yPos.toInt() + chartTopPaddingPx
+            )
+
+        HighlightContentPosition.Bottom ->
+            IntOffset(point.xPos.toInt() + chartStartPaddingPx, 0)
+
+        HighlightContentPosition.Start ->
+            IntOffset(0, point.yPos.toInt())
+
+        HighlightContentPosition.End ->
+            IntOffset(0, point.yPos.toInt())
+    }
+}
+
+/**
+ * Aligns the popup box content with the highlighted point.
+ */
+private fun Modifier.alignWithPoint(
+    point: Point,
+    contentPosition: HighlightContentPosition,
+    chartTopPaddingPx: Int,
+) = this.layout { measurable, constraints ->
+    val placeable = measurable.measure(constraints)
+    layout(placeable.width, placeable.height) {
+        placeable.place(
+            when (contentPosition) {
+                HighlightContentPosition.Top ->
+                    -IntOffset(placeable.width / 2, point.yPos.toInt() + chartTopPaddingPx)
+
+                HighlightContentPosition.Bottom ->
+                    -IntOffset(placeable.width / 2, 0)
+
+                HighlightContentPosition.Start,
+                HighlightContentPosition.End ->
+                    -IntOffset(0, placeable.height / 2) + IntOffset(0, chartTopPaddingPx)
+
+                HighlightContentPosition.Point ->
+                    -IntOffset(placeable.width / 2, placeable.height)
+            }
+        )
     }
 }
 
