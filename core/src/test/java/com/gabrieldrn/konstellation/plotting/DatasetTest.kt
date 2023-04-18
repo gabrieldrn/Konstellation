@@ -15,7 +15,8 @@ class DatasetTest {
         100f by 175f
     )
 
-    @Test fun dataset_datasetOf_createsDataset() {
+    @Test
+    fun dataset_datasetOf_createsDataset() {
         val dataset = baseDataset
         val emptyDataset = datasetOf()
 
@@ -28,7 +29,8 @@ class DatasetTest {
         assert(emptyDataset.isEmpty())
     }
 
-    @Test fun dataset_listOfPoints_asDataset_castsDataset() {
+    @Test
+    fun dataset_listOfPoints_asDataset_castsDataset() {
         val dataset = listOf(
             0f by 0f,
             25f by 50f,
@@ -40,7 +42,8 @@ class DatasetTest {
         assertIs<Dataset>(value = dataset)
     }
 
-    @Test fun dataset_collectionOfFloatPairs_toDataset_mappedAsDataset() {
+    @Test
+    fun dataset_collectionOfFloatPairs_toDataset_mappedAsDataset() {
         val setOfPoints = setOf(
             0f to 0f,
             25f to 50f,
@@ -60,13 +63,15 @@ class DatasetTest {
         assertIs<Dataset>(value = listOfPoints)
     }
 
-    @Test fun dataset_getOffsets_returnsListOfOffsets() {
+    @Test
+    fun dataset_getOffsets_returnsListOfOffsets() {
         val offsets = baseDataset.offsets
 
         assertIs<List<Offset>>(offsets)
     }
 
-    @Test fun dataset_nearestPointByX_returnsCorrectValue() {
+    @Test
+    fun dataset_nearestPointByX_returnsCorrectValue() {
         val dataset = baseDataset.map {
             it.copy(offset = Offset(it.x, it.y))
         }
@@ -90,7 +95,8 @@ class DatasetTest {
         )
     }
 
-    @Test fun dataset_xyMinMaxGetters_returnsCorrectValues() {
+    @Test
+    fun dataset_xyMinMaxGetters_returnsCorrectValues() {
         val dataset = baseDataset
 
         assertEquals(
@@ -111,7 +117,8 @@ class DatasetTest {
         )
     }
 
-    @Test fun dataset_xyRangesGetters_returnsCorrectValues() {
+    @Test
+    fun dataset_xyRangesGetters_returnsCorrectValues() {
         val dataset = baseDataset
 
         assertEquals(

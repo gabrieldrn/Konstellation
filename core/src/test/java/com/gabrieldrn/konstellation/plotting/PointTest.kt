@@ -7,7 +7,8 @@ import kotlin.test.assertIs
 
 class PointTest {
 
-    @Test fun point_xyOffsetPosGetters_returnsCorrectValues() {
+    @Test
+    fun point_xyOffsetPosGetters_returnsCorrectValues() {
         val point = Point(0f, 0f, Offset(1f, 2f))
         assertEquals(
             expected = 1f,
@@ -19,7 +20,8 @@ class PointTest {
         )
     }
 
-    @Test fun point_byInfix_instantiatesPointCorrectly() {
+    @Test
+    fun point_byInfix_instantiatesPointCorrectly() {
         val x = 1f
         val y = 2f
         val result = x by y

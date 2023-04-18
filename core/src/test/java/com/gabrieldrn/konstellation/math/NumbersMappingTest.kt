@@ -6,7 +6,8 @@ import kotlin.test.assertFails
 
 class NumbersMappingTest {
 
-    @Test fun numbersMapping_map_mapsCorrectly() {
+    @Test
+    fun numbersMapping_map_mapsCorrectly() {
         val testCandidates = listOf(
             10f map (0f..20f to 0f..40f) to 20f,
             250f map (0f..500f to 0f..1f) to .5f
@@ -20,7 +21,8 @@ class NumbersMappingTest {
         }
     }
 
-    @Test fun numbersMapping_map_failsOnOutOfBoundsValue() {
+    @Test
+    fun numbersMapping_map_failsOnOutOfBoundsValue() {
         assertFails {
             10f map (20f..30f to 30f..40f)
         }
