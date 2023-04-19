@@ -6,8 +6,8 @@ plugins {
 android {
     namespace "com.gabrieldrn.konstellationdemo"
 
-    compileSdkVersion libs.versions.targetSdk.get() as int
-    buildToolsVersion "30.0.3"
+    compileSdk libs.versions.targetSdk.get() as int
+    buildToolsVersion = libs.versions.buildTools.get()
 
     defaultConfig {
         applicationId "com.gabrieldrn.konstellationdemo"

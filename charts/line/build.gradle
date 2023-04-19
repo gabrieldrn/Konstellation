@@ -6,7 +6,8 @@ plugins {
 android {
     namespace "com.gabrieldrn.konstellation.charts.line"
 
-    compileSdkVersion libs.versions.targetSdk.get() as int
+    compileSdk libs.versions.targetSdk.get() as int
+    buildToolsVersion = libs.versions.buildTools.get()
 
     defaultConfig {
         minSdkVersion libs.versions.minSdk.get() as int
