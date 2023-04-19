@@ -154,13 +154,7 @@ fun HighlightScope.HighlightPopup(
 
 private class HighlightPositionParameterProvider :
     PreviewParameterProvider<HighlightContentPosition> {
-    override val values: Sequence<HighlightContentPosition>
-        get() = sequenceOf(
-            HighlightContentPosition.Top,
-            HighlightContentPosition.Bottom,
-            HighlightContentPosition.Start,
-            HighlightContentPosition.End,
-        )
+    override val values = HighlightContentPosition.values().asSequence()
 }
 
 @Preview(showBackground = true)
@@ -168,13 +162,9 @@ private class HighlightPositionParameterProvider :
 private fun HighlightPopupPreview(
     @PreviewParameter(HighlightPositionParameterProvider::class) pos: HighlightContentPosition
 ) {
-    val point = Point(1f, 2f, Offset(150f, 70f))
+    val point = Point(1f, 2f)
     Box(Modifier.padding(8.dp)) {
-        HighlightBox(
-            scope = HighlightScope(point, pos),
-            chartTopPaddingPx = 0,
-            chartStartPaddingPx = 0
-        ) {
+        HighlightScope(point, pos).run {
             HighlightPopup {
                 Text(
                     text = "📍 ${point.x};${point.y}",
