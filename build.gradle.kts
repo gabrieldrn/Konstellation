@@ -1,4 +1,6 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// Top-level build file where to add configuration options common to all sub-projects/modules.
+import io.gitlab.arturbosch.detekt.Detekt
+
 buildscript {
     repositories {
         google()
@@ -6,43 +8,26 @@ buildscript {
     }
 }
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    alias libs.plugins.android.application apply false
-    alias libs.plugins.android.library apply false
-    alias libs.plugins.kotlin.android apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.jvm) apply false
-    alias libs.plugins.kotlin.kapt apply false
-    alias libs.plugins.versions
-    alias libs.plugins.versionsCatalogUpdate
-    alias libs.plugins.detekt
-    alias libs.plugins.dokka apply false //Globally disabled
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.dokka) apply false //Globally disabled
 }
 
-def isNonStable = { String version ->
-    def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
-    def regex = /^[0-9,.v-]+(-r)?$/
-    return !stableKeyword && !(version ==~ regex)
-}
-
-tasks.named("dependencyUpdates").configure {
-    rejectVersionIf {
-        isNonStable(it.candidate.version)
-    }
-}
-
-versionCatalogUpdate {
-    sortByKey = false
-}
-
-tasks.named("detekt").configure {
+tasks.named<Detekt>("detekt").configure {
     reports {
         xml {
-            required = true
-            outputLocation = file("build/reports/detekt/detekt.xml")
+            required.set(true)
+            outputLocation.set(file("build/reports/detekt/detekt.xml"))
         }
         html {
-            required = true
-            outputLocation = file("build/reports/detekt/detekt.html")
+            required.set(true)
+            outputLocation.set(file("build/reports/detekt/detekt.html"))
         }
         txt.required.set(false)
         sarif.required.set(false)
@@ -50,11 +35,11 @@ tasks.named("detekt").configure {
 }
 
 subprojects {
-    apply plugin: 'io.gitlab.arturbosch.detekt' //Is there a way to use version catalog?
+    apply(plugin = "io.gitlab.arturbosch.detekt")
     detekt {
         // Version of Detekt that will be used. When unspecified the latest detekt
         // version found will be used. Override to stay on the same version.
-        toolVersion = libs.versions.detekt.get()
+        toolVersion = "io.gitlab.arturbosch.detekt"
 
         // Builds the AST in parallel. Rules are always executed in parallel.
         // Can lead to speedups in larger projects. `false` by default.
@@ -85,10 +70,10 @@ subprojects {
 
         // Specify the base path for file paths in the formatted reports.
         // If not set, all file paths reported will be absolute file path.
-        basePath = projectDir
+        basePath = projectDir.absolutePath
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
 }

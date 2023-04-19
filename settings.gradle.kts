@@ -5,6 +5,7 @@ pluginManagement {
         mavenCentral()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -12,9 +13,13 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "Konstellation"
-include ':core'
-include ':core:api'
-include ':charts:line'
-include ':charts:function'
-include ':demo-app'
+
+include(
+    ":core",
+    ":core:api",
+    ":charts:line",
+    ":charts:function",
+    ":demo-app"
+)

@@ -3,6 +3,7 @@ minSdk = "21"
 targetSdk = "33"
 kotlin = "1.8.0"
 buildTools = "31.0.0"
+androidGradlePlugin = "8.0.0"
 androidxAppcompat = "1.6.1"
 androidxCore = "1.10.0"
 androidxLifecycle = "2.6.1"
@@ -19,10 +20,6 @@ accompanist = "0.28.0"
 timber = "5.0.1"
 koin = "3.3.0"
 junit = "4.13.2"
-androidGradlePlugin = "8.0.0"
-versionsPlugin = "0.43.0"
-#https://github.com/littlerobots/version-catalog-update-plugin
-versionsCatalogUpdatePlugin = "0.7.0"
 detekt = "1.22.0"
 dokka = "1.7.20"
 
@@ -55,7 +52,5 @@ android-library = { id = "com.android.library", version.ref = "androidGradlePlug
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-versions = { id = "com.github.ben-manes.versions", version.ref = "versionsPlugin" }
-versionsCatalogUpdate = { id = "nl.littlerobots.version-catalog-update", version.ref = "versionsCatalogUpdatePlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
