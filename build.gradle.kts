@@ -39,7 +39,7 @@ subprojects {
     detekt {
         // Version of Detekt that will be used. When unspecified the latest detekt
         // version found will be used. Override to stay on the same version.
-        toolVersion = "io.gitlab.arturbosch.detekt"
+        toolVersion = "1.22.0"
 
         // Builds the AST in parallel. Rules are always executed in parallel.
         // Can lead to speedups in larger projects. `false` by default.
