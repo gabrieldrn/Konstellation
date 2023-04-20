@@ -1,20 +1,19 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     `kotlin-dsl`
     `maven-publish`
 }
 
-group = "com.gabrieldrn.konstellation"
-version = "0.1.0"
+group = "com.gabrieldrn.konstellation.build-logic"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-@Suppress("UseTomlInstead") // Unavailable here
 dependencies {
-    compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0")
-    compileOnly("com.android.tools.build:gradle:8.0.0")
+    compileOnly(libs.android.gradlePlugin)
+    compileOnly(libs.kotlin.gradlePlugin)
 }
 
 gradlePlugin {
