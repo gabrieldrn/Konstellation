@@ -5,7 +5,7 @@
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.8.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.4.1-blue.svg?logo=android)](https://developer.android.com/jetpack/compose)
 
-[![](https://github.com/gabrieldrn/Konstellation/workflows/CI/badge.svg?branch=develop)]()
+[![](https://github.com/gabrieldrn/Konstellation/workflows/Build/badge.svg?branch=develop)]()
 
 Konstellation is a Jetpack Compose library that provides a set of components and tools to build
 beautiful and consistent graphs.
