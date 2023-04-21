@@ -1,4 +1,8 @@
 import com.android.build.gradle.LibraryExtension
+import com.gabrieldrn.konstellation.buildlogic.configureKotlinAndroidCommon
+import com.gabrieldrn.konstellation.buildlogic.getLibrary
+import com.gabrieldrn.konstellation.buildlogic.getPlugin
+import com.gabrieldrn.konstellation.buildlogic.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -18,16 +22,13 @@ class KonstellationAndroidLibraryConventionPlugin : Plugin<Project> {
             apply(libs.getPlugin("kotlin-android"))
         }
 
-        extensions.configure<LibraryExtension> { // android
+        extensions.configure<LibraryExtension> {
 
-            compileSdk = libs.getVersion("targetSdk").toInt()
-            buildToolsVersion = libs.getVersion("buildTools")
+            configureKotlinAndroidCommon(this)
+
+            // TODO Not sure if proguard/R8 is relevant for libraries.
 
             defaultConfig {
-                minSdk = libs.getVersion("minSdk").toInt()
-
-                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
                 consumerProguardFiles.add(file("consumer-rules.pro"))
             }
 
@@ -39,23 +40,6 @@ class KonstellationAndroidLibraryConventionPlugin : Plugin<Project> {
                         "proguard-rules.pro"
                     )
                 }
-            }
-
-            compileOptions {
-                sourceCompatibility = javaVersion
-                targetCompatibility = javaVersion
-            }
-
-            kotlinOptions {
-                jvmTarget = javaVersion.toString()
-            }
-
-            buildFeatures {
-                compose = true
-            }
-
-            composeOptions {
-                kotlinCompilerExtensionVersion = libs.getVersion("androidxComposeCompiler")
             }
         }
 
