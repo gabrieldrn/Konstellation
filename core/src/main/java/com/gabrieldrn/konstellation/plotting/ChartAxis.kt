@@ -9,12 +9,12 @@ import com.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
  * @property axis Position of the axis within the chart.
  * @property tickCount Maximum number of ticks that will be drawn on this axis.
  */
-data class ChartAxis(val axis: Axis, val tickCount: Int)
+public data class ChartAxis(val axis: Axis, val tickCount: Int)
 
 /**
  * Positions of an axis.
  */
-enum class Axis {
+public enum class Axis {
     X_BOTTOM,
     X_TOP,
     Y_LEFT,
@@ -24,12 +24,12 @@ enum class Axis {
 /**
  * Convenience singleton, providing all default axes for a chart.
  */
-object Axes {
+public object Axes {
 
     /**
      * Default bottom X-axis.
      */
-    val xBottom = ChartAxis(
+    public val xBottom: ChartAxis = ChartAxis(
         axis = Axis.X_BOTTOM,
         tickCount = 5
     )
@@ -37,7 +37,7 @@ object Axes {
     /**
      * Default bottom X-axis style.
      */
-    val xBottomStyle = AxisDrawStyle(
+    public val xBottomStyle: AxisDrawStyle = AxisDrawStyle(
         tickTextStyle = TextDrawStyle(
             textAlign = Paint.Align.CENTER
         )
@@ -46,7 +46,7 @@ object Axes {
     /**
      * Default top axis.
      */
-    val xTop = ChartAxis(
+    public val xTop: ChartAxis = ChartAxis(
         axis = Axis.X_TOP,
         tickCount = 5
     )
@@ -54,7 +54,7 @@ object Axes {
     /**
      * Default top X-axis style.
      */
-    val xTopStyle = AxisDrawStyle(
+    public val xTopStyle: AxisDrawStyle = AxisDrawStyle(
         tickTextStyle = TextDrawStyle(
             textAlign = Paint.Align.CENTER
         )
@@ -63,7 +63,7 @@ object Axes {
     /**
      * Default left Y-axis.
      */
-    val yLeft = ChartAxis(
+    public val yLeft: ChartAxis = ChartAxis(
         axis = Axis.Y_LEFT,
         tickCount = 5
     )
@@ -71,7 +71,7 @@ object Axes {
     /**
      * Default left Y-axis style.
      */
-    val yLeftStyle = AxisDrawStyle(
+    public val yLeftStyle: AxisDrawStyle = AxisDrawStyle(
         tickTextStyle = TextDrawStyle(
             textAlign = Paint.Align.RIGHT
         )
@@ -80,7 +80,7 @@ object Axes {
     /**
      * Default right Y-axis.
      */
-    val yRight = ChartAxis(
+    public val yRight: ChartAxis = ChartAxis(
         axis = Axis.Y_RIGHT,
         tickCount = 5
     )
@@ -88,7 +88,7 @@ object Axes {
     /**
      * Default right Y-axis style.
      */
-    val yRightStyle = AxisDrawStyle(
+    public val yRightStyle: AxisDrawStyle = AxisDrawStyle(
         tickTextStyle = TextDrawStyle(
             textAlign = Paint.Align.LEFT
         )
@@ -97,5 +97,5 @@ object Axes {
     /**
      * Set of all default axes.
      */
-    val all = setOf(xBottom, xTop, yLeft, yRight)
+    public val all: Set<ChartAxis> = setOf(xBottom, xTop, yLeft, yRight)
 }

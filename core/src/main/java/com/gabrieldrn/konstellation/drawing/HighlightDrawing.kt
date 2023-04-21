@@ -14,7 +14,7 @@ import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
  * Highlights a given [point] in the chart by drawing another circle styled with
  * [pointStyle] in front of it and dashed lines based on [contentPositions] and/or [linePosition].
  */
-fun DrawScope.highlightPoint(
+public fun DrawScope.highlightPoint(
     point: Point,
     contentPositions: Set<HighlightContentPosition>,
     linePosition: HighlightLinePosition?,

@@ -27,7 +27,7 @@ import com.gabrieldrn.konstellation.plotting.by
 @WipChartApi
 @Composable
 @Suppress("LongParameterList") //TODO Remove Suppress
-fun FunctionPlotter(
+public fun FunctionPlotter(
     modifier: Modifier = Modifier,
     lineStyle: LineDrawStyle = LineDrawStyle(),
     pointStyle: PointDrawStyle = PointDrawStyle(),

@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
  * @property tickLineStyle Appearance of ticks drawn on the axis.
  * @property tickTextStyle Appearance of ticks text labels.
  */
-data class AxisDrawStyle(
+public data class AxisDrawStyle(
     val axisLineStyle: LineDrawStyle = LineDrawStyle(),
     val tickLineStyle: LineDrawStyle = LineDrawStyle(),
     val tickTextStyle: TextDrawStyle = TextDrawStyle(),
@@ -19,7 +19,7 @@ data class AxisDrawStyle(
 /**
  * Applies given [color] to all sub-styles.
  */
-fun AxisDrawStyle.updateColor(color: Color) = copy(
+public fun AxisDrawStyle.updateColor(color: Color): AxisDrawStyle = copy(
     axisLineStyle = axisLineStyle.copy(color = color),
     tickLineStyle = tickLineStyle.copy(color = color),
     tickTextStyle = tickTextStyle.copy(color = color),
@@ -28,6 +28,6 @@ fun AxisDrawStyle.updateColor(color: Color) = copy(
 /**
  * Applies given [typeface] to the text of ticks labels.
  */
-fun AxisDrawStyle.updateTypeface(typeface: Typeface) = copy(
+public fun AxisDrawStyle.updateTypeface(typeface: Typeface): AxisDrawStyle = copy(
     tickTextStyle = tickTextStyle.copy(typeface = typeface),
 )

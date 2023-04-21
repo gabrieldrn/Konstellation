@@ -12,7 +12,10 @@ import kotlin.math.pow
  * @property dataRange Range of the data to compute tickers from.
  * @property maxTicks (Optional) Number of desired ticks. Default = 5
  */
-class NiceScale(var dataRange: ClosedFloatingPointRange<Float>, var maxTicks: Int = 5) {
+public class NiceScale(
+    public var dataRange: ClosedFloatingPointRange<Float>,
+    public var maxTicks: Int = 5
+) {
 
     /**
      * Range of the axis.
@@ -22,19 +25,19 @@ class NiceScale(var dataRange: ClosedFloatingPointRange<Float>, var maxTicks: In
     /**
      * Spacing between each tick.
      */
-    var tickSpacing = 0f
+    public var tickSpacing: Float = 0f
         private set
 
     /**
      * Nice minimum value.
      */
-    var niceMin = 0f
+    public var niceMin: Float = 0f
         private set
 
     /**
      * Nice maximum value.
      */
-    var niceMax = 0f
+    public var niceMax: Float = 0f
         private set
 
     init {
@@ -45,7 +48,7 @@ class NiceScale(var dataRange: ClosedFloatingPointRange<Float>, var maxTicks: In
      * Computes and update values for tick spacing and nice minimum and maximum data points on the
      * axis.
      */
-    fun compute() {
+    public fun compute() {
         axisRange = niceNum(dataRange.endInclusive - dataRange.start, false)
         tickSpacing = niceNum(axisRange / (maxTicks - 1), true)
         niceMin = floor(dataRange.start / tickSpacing) * tickSpacing

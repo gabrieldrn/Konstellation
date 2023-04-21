@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
  * @property dashedEffectIntervals Array of "on" and "off" distances for the dashed line segments.
  * @property dashedEffectPhase Pixel offset into the intervals array
  */
-data class LineDrawStyle(
+public data class LineDrawStyle(
     override val color: Color = Color.Black,
     val strokeWidth: Dp = 1.5.dp,
     val cap: StrokeCap = StrokeCap.Square,
@@ -54,7 +54,7 @@ data class LineDrawStyle(
         return result
     }
 
-    companion object {
+    public companion object {
         private const val defaultHighlightDashedLineOn = 10f
         private const val defaultHighlightDashedLineOff = 20f
     }

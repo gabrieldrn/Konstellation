@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
  * @property color Point's circle color.
  * @property radius Point's circle radius.
  */
-data class PointDrawStyle(
+public data class PointDrawStyle(
     override val color: Color = Color.Black,
     val radius: Dp = 3.dp
 ) : DrawStyle

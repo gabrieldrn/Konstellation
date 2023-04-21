@@ -1,6 +1,7 @@
 @file:Suppress("MagicNumber", "ForEachOnRange")
 package com.gabrieldrn.konstellation.util
 
+import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.asDataset
 import com.gabrieldrn.konstellation.plotting.by
@@ -19,7 +20,7 @@ internal val samplePoints = datasetOf(
 /**
  * Generates a random data set of 20 points with a y value between `-10f` and `10f`.
  */
-fun randomDataSet() = mutableListOf<Point>().apply {
+public fun randomDataSet(): Dataset = mutableListOf<Point>().apply {
     val range = 10
     (-range..range).forEach {
         add(it.toFloat() by Random.nextInt(-range..range).toFloat())
@@ -30,7 +31,7 @@ fun randomDataSet() = mutableListOf<Point>().apply {
  * Generates a random fancy data set of 15 points with a y value between `0f` and `10f`,
  * stepped by 1.
  */
-fun randomFancyDataSet() = mutableListOf<Point>().apply {
+public fun randomFancyDataSet(): Dataset = mutableListOf<Point>().apply {
     val range = 0..10
     var y = 0
     repeat(16) {

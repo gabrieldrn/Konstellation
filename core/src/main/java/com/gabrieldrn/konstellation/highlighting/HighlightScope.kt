@@ -8,7 +8,7 @@ import com.gabrieldrn.konstellation.plotting.Point
  * @property contentPosition Where the content will be gravitating around the point, in front of the
  * chart.
  */
-data class HighlightScope(
+public data class HighlightScope(
     val point: Point,
     val contentPosition: HighlightContentPosition
 )

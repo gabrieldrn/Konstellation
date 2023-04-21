@@ -7,9 +7,9 @@ import com.gabrieldrn.konstellation.plotting.Dataset
  * Interpolates with a common linear interpolation (lerp), resulting in straight lines between each
  * data point.
  */
-class LinearPathInterpolator : PathInterpolator {
+public class LinearPathInterpolator : PathInterpolator {
 
-    override fun invoke(dataset: Dataset) = Path().apply {
+    override fun invoke(dataset: Dataset): Path = Path().apply {
         dataset.forEachIndexed { i, p ->
             if (i == 0) {
                 moveTo(p.xPos, p.yPos)

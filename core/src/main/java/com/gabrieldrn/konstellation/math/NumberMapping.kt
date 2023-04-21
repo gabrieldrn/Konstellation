@@ -27,7 +27,7 @@ import kotlin.math.abs
  * @param toRange Targeted range.
  * @return The value converted with the targeted range.
  */
-fun Float.map(
+public fun Float.map(
     fromRange: ClosedRange<Float>,
     toRange: ClosedRange<Float>
 ): Float {
@@ -45,7 +45,7 @@ fun Float.map(
  * For example, `10f map (0f..20f to 0f..40f)`, linearly maps the number 10 from the range
  * [[0, 20]] to [[0, 40]].
  */
-infix fun Float.map(to: Pair<ClosedRange<Float>, ClosedRange<Float>>) =
+public infix fun Float.map(to: Pair<ClosedRange<Float>, ClosedRange<Float>>): Float =
     this@map.map(to.first, to.second)
 
 /**
@@ -59,7 +59,7 @@ infix fun Float.map(to: Pair<ClosedRange<Float>, ClosedRange<Float>>) =
  * @param dataSetYRange (optional) A specific range of values on the Y-axis to consider instead of
  * the Y range of the receiving collection.
  */
-fun Dataset.createOffsets(
+public fun Dataset.createOffsets(
     size: Size,
     dataSetXRange: ClosedRange<Float> = xRange,
     dataSetYRange: ClosedRange<Float> = yRange
@@ -83,10 +83,10 @@ fun Dataset.createOffsets(
  * @param canvasPos X position in the current canvas.
  * @param dataRange Range of the dataset
  */
-fun DrawScope.mapCanvasXToDataX(
+public fun DrawScope.mapCanvasXToDataX(
     canvasPos: Float,
     dataRange: ClosedRange<Float>
-) = canvasPos.map(0f..size.width, dataRange)
+): Float = canvasPos.map(0f..size.width, dataRange)
 
 /**
  * Returns a position inside the given data range, relative to a given Y position in the canvas with
@@ -95,7 +95,7 @@ fun DrawScope.mapCanvasXToDataX(
  * @param canvasPos Y position in the current canvas.
  * @param dataRange Range of the dataset
  */
-fun DrawScope.mapCanvasYToDataY(
+public fun DrawScope.mapCanvasYToDataY(
     canvasPos: Float,
     dataRange: ClosedRange<Float>
-) = canvasPos.map(0f..size.height, dataRange)
+): Float = canvasPos.map(0f..size.height, dataRange)

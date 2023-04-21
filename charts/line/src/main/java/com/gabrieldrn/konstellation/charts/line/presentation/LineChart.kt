@@ -49,7 +49,7 @@ import com.gabrieldrn.konstellation.util.applyDatasetOffsets
  * without having to draw content above the chart.
  */
 @Composable
-fun LineChart(
+public fun LineChart(
     dataset: Dataset,
     modifier: Modifier = Modifier,
     properties: LineChartProperties = LineChartProperties(),

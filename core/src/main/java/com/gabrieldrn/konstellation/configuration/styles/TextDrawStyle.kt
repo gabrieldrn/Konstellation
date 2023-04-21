@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
  * @property offsetX An offset applied to the X-position of the text.
  * @property offsetY An offset applied to the Y-position of the text.
  */
-data class TextDrawStyle(
+public data class TextDrawStyle(
     override val color: Color = Color.Black,
     val typeface: Typeface = Typeface.DEFAULT,
     val textSize: TextUnit = 32.sp,

@@ -7,9 +7,9 @@ import com.gabrieldrn.konstellation.plotting.Point
 /**
  * Produces a simple cubic Bézier curve effect on the X axis between each data point.
  */
-class CubicXPathInterpolator : PathInterpolator {
+public class CubicXPathInterpolator : PathInterpolator {
 
-    override fun invoke(dataset: Dataset) = Path().apply {
+    override fun invoke(dataset: Dataset): Path = Path().apply {
         var prev: Point
         dataset.forEachIndexed { i, p ->
             if (i == 0) {

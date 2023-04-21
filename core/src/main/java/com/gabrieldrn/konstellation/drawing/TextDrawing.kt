@@ -10,21 +10,23 @@ import com.gabrieldrn.konstellation.util.toInt
 /**
  * Draws a text into the current DrawScope.
  */
-fun DrawScope.drawText(
+public fun DrawScope.drawText(
     point: Offset,
     text: String,
     style: TextDrawStyle = TextDrawStyle()
-) = drawIntoCanvas {
-    it.nativeCanvas.drawText(
-        text,
-        point.x + style.offsetX,
-        point.y + style.offsetY,
-        Paint().apply {
-            textAlign = style.textAlign
-            textSize = style.textSize.toPx()
-            color = style.color.toInt()
-            typeface = style.typeface
-            flags = Paint.ANTI_ALIAS_FLAG
-        }
-    )
+) {
+    drawIntoCanvas {
+        it.nativeCanvas.drawText(
+            text,
+            point.x + style.offsetX,
+            point.y + style.offsetY,
+            Paint().apply {
+                textAlign = style.textAlign
+                textSize = style.textSize.toPx()
+                color = style.color.toInt()
+                typeface = style.typeface
+                flags = Paint.ANTI_ALIAS_FLAG
+            }
+        )
+    }
 }

@@ -21,7 +21,7 @@ import com.gabrieldrn.konstellation.plotting.Axes
  * @property highlightLineStyle Appearance of the lines drawn on the highlighted point. Their
  * orientation depends on the provided highlighting positions in the LineChart composable.
  */
-data class LineChartStyles(
+public data class LineChartStyles(
     override val lineStyle: LineDrawStyle = LineDrawStyle(),
     override val pointStyle: PointDrawStyle = PointDrawStyle(),
     override val xAxisBottomStyle: AxisDrawStyle = Axes.xBottomStyle,

@@ -34,7 +34,7 @@ private val tickLabelPaint = Paint()
  * Draws axis and labels of a chart based on a given [properties] and axis ranges [xRange],
  * [yRange].
  */
-fun DrawScope.drawScaledAxis(
+public fun DrawScope.drawScaledAxis(
     properties: ChartProperties,
     styles: ChartStyles,
     xRange: ClosedFloatingPointRange<Float>,
@@ -134,7 +134,7 @@ internal fun DrawScope.drawTick(
 /**
  * Draws lines alongside canvas bounds.
  */
-fun DrawScope.drawFrame(
+public fun DrawScope.drawFrame(
     lineStyle: LineDrawStyle = LineDrawStyle(
         color = Color.LightGray,
         strokeWidth = 1.5f.dp,
@@ -150,7 +150,7 @@ fun DrawScope.drawFrame(
 /**
  * Draws the 0-axis inside the chart.
  */
-fun DrawScope.drawZeroLines(
+public fun DrawScope.drawZeroLines(
     datasetXRange: ClosedRange<Float>,
     datasetYRange: ClosedRange<Float>,
     horizontalLine: Boolean = true,

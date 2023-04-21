@@ -24,7 +24,7 @@ import com.gabrieldrn.konstellation.plotting.Point
  * a given [content] provided by the user.
  */
 @Composable
-fun BoxScope.HighlightBox(
+public fun BoxScope.HighlightBox(
     scope: HighlightScope,
     chartTopPaddingPx: Int,
     chartStartPaddingPx: Int,
@@ -128,7 +128,7 @@ private fun Modifier.alignWithPoint(
  * Contents of the highlighting popup are defined in [content].
  */
 @Composable
-fun HighlightScope.HighlightPopup(
+public fun HighlightScope.HighlightPopup(
     modifier: Modifier = Modifier,
     shape: HighlightPopupShape = HighlightPopupShape(contentPosition),
     color: Color = MaterialTheme.colorScheme.surface,

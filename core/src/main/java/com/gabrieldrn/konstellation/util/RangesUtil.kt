@@ -5,13 +5,13 @@ import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 /**
  * Distance between the first and last value (end - start).
  */
-val ClosedFloatingPointRange<Float>.rawRange get() = endInclusive - start
+public val ClosedFloatingPointRange<Float>.rawRange: Float get() = endInclusive - start
 
 /**
  * Applies a receiving [DatasetOffsets] to X and Y from given drawing ranges then returns them
  * modified in a pair [x-range, y-range].
  */
-fun DatasetOffsets?.applyDatasetOffsets(
+public fun DatasetOffsets?.applyDatasetOffsets(
     xDrawRange: ClosedFloatingPointRange<Float>,
     yDrawRange: ClosedFloatingPointRange<Float>,
 ): Pair<ClosedFloatingPointRange<Float>, ClosedFloatingPointRange<Float>> {
@@ -29,7 +29,7 @@ fun DatasetOffsets?.applyDatasetOffsets(
  * Returns a new [ClosedFloatingPointRange] with start value increased by [other].
  * @throws IllegalArgumentException If increased start value is greater than end value.
  */
-fun ClosedFloatingPointRange<Float>.incStart(other: Float): ClosedFloatingPointRange<Float> {
+public fun ClosedFloatingPointRange<Float>.incStart(other: Float): ClosedFloatingPointRange<Float> {
     require(start + other <= endInclusive)
     return start + other..endInclusive
 }
@@ -38,7 +38,7 @@ fun ClosedFloatingPointRange<Float>.incStart(other: Float): ClosedFloatingPointR
  * Returns a new [ClosedFloatingPointRange] with end value increased by [other].
  * @throws IllegalArgumentException If increased end value is lower than start value.
  */
-fun ClosedFloatingPointRange<Float>.incEnd(other: Float): ClosedFloatingPointRange<Float> {
+public fun ClosedFloatingPointRange<Float>.incEnd(other: Float): ClosedFloatingPointRange<Float> {
     require(endInclusive + other >= start)
     return start..endInclusive + other
 }
@@ -47,7 +47,7 @@ fun ClosedFloatingPointRange<Float>.incEnd(other: Float): ClosedFloatingPointRan
  * Returns a new [ClosedFloatingPointRange] with start value decreased by [other].
  * @throws IllegalArgumentException If increased start value is greater than end value.
  */
-fun ClosedFloatingPointRange<Float>.decStart(other: Float): ClosedFloatingPointRange<Float> {
+public fun ClosedFloatingPointRange<Float>.decStart(other: Float): ClosedFloatingPointRange<Float> {
     require(start - other <= endInclusive)
     return start - other..endInclusive
 }
@@ -56,7 +56,7 @@ fun ClosedFloatingPointRange<Float>.decStart(other: Float): ClosedFloatingPointR
  * Returns a new [ClosedFloatingPointRange] with end value decreased by [other].
  * @throws IllegalArgumentException If increased end value is lower than start value.
  */
-fun ClosedFloatingPointRange<Float>.decEnd(other: Float): ClosedFloatingPointRange<Float> {
+public fun ClosedFloatingPointRange<Float>.decEnd(other: Float): ClosedFloatingPointRange<Float> {
     require(endInclusive - other >= start)
     return start..endInclusive - other
 }

@@ -3,6 +3,7 @@ import com.gabrieldrn.konstellation.buildlogic.configureKotlinAndroidCommon
 import com.gabrieldrn.konstellation.buildlogic.getLibrary
 import com.gabrieldrn.konstellation.buildlogic.getPlugin
 import com.gabrieldrn.konstellation.buildlogic.libs
+import com.gabrieldrn.konstellation.buildlogic.setupExplicitApi
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -25,6 +26,8 @@ class KonstellationAndroidLibraryConventionPlugin : Plugin<Project> {
         extensions.configure<LibraryExtension> {
 
             configureKotlinAndroidCommon(this)
+
+            setupExplicitApi()
 
             // TODO Not sure if proguard/R8 is relevant for libraries.
 

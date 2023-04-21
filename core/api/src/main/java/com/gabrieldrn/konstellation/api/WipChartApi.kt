@@ -8,4 +8,4 @@ package com.gabrieldrn.konstellation.api
     level = RequiresOptIn.Level.ERROR
 )
 @Retention(AnnotationRetention.BINARY)
-annotation class WipChartApi
+public annotation class WipChartApi

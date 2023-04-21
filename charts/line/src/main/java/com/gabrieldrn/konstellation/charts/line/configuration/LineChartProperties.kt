@@ -33,7 +33,7 @@ import com.gabrieldrn.konstellation.plotting.ChartAxis
  * @property fillingBrush The brush to apply to the filling content from the bottom of the chart to
  * the data lines.
  */
-data class LineChartProperties(
+public data class LineChartProperties(
     override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
     val chartPaddingValues: PaddingValues = PaddingValues(40.dp),
     val datasetOffsets: DatasetOffsets? = null,

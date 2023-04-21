@@ -18,9 +18,9 @@ import kotlin.math.sign
     "MagicNumber",
     "VariableNaming" // No real gain in renaming variables to comply with naming conventions.
 )
-class MonotoneXPathInterpolator : PathInterpolator {
+public class MonotoneXPathInterpolator : PathInterpolator {
 
-    override operator fun invoke(dataset: Dataset) = Path().apply {
+    override operator fun invoke(dataset: Dataset): Path = Path().apply {
 
         /**
          * Appends a cubic Hermite spline from [p0] to [p1] with the given tangents [t0] and [t1] to
