@@ -2,7 +2,7 @@
 ![Header](https://user-images.githubusercontent.com/22205373/198927777-d3c048e6-ab3a-43dd-b69d-bd593e1db058.png#gh-dark-mode-only)
 
 [![License](https://img.shields.io/badge/License-GNU%20v3.0-white.svg)](LICENSE)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.8.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.8.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
 [![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-1.4.1-blue.svg?logo=android)](https://developer.android.com/jetpack/compose)
 
 [![](https://github.com/gabrieldrn/Konstellation/workflows/Build/badge.svg?branch=develop)]()

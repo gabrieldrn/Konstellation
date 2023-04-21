@@ -4,7 +4,7 @@ plugins {
     `maven-publish`
 }
 
-group = "com.gabrieldrn.konstellation.build-logic"
+group = "com.gabrieldrn.konstellation.buildlogic"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -21,6 +21,11 @@ gradlePlugin {
         register("androidLibrary") {
             id = "konstellation.android.library"
             implementationClass = "KonstellationAndroidLibraryConventionPlugin"
+        }
+
+        register("javaLibrary") {
+            id = "konstellation.java.library"
+            implementationClass = "KonstellationJavaLibraryConventionPlugin"
         }
 
         // TODO Android application plugin
