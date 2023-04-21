@@ -17,6 +17,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.dokka) apply false //Globally disabled
+    alias(libs.plugins.binaryCompatibilityValidator)
 }
 
 tasks.named<Detekt>("detekt").configure {
@@ -72,6 +73,13 @@ subprojects {
         // If not set, all file paths reported will be absolute file path.
         basePath = projectDir.absolutePath
     }
+}
+
+apiValidation {
+    /**
+     * Sub-projects that are excluded from API validation
+     */
+    ignoredProjects.addAll(listOf("demo-app"))
 }
 
 tasks.register("clean", Delete::class) {

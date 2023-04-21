@@ -29,7 +29,6 @@
             <option value="$PROJECT_DIR$/charts/function" />
             <option value="$PROJECT_DIR$/charts/line" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/core/api" />
             <option value="$PROJECT_DIR$/demo-app" />
           </set>
         </option>

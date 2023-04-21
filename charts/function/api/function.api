@@ -1,0 +1,14 @@
+public final class com/gabrieldrn/konstellation/charts/function/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+
+public final class com/gabrieldrn/konstellation/charts/function/FunctionChartComposableKt {
+	public static final fun FunctionPlotter (Landroidx/compose/ui/Modifier;Lcom/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Lcom/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Lcom/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;ILkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public abstract interface annotation class com/gabrieldrn/konstellation/charts/function/WipChartApi : java/lang/annotation/Annotation {
+}
+

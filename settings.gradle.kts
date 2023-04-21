@@ -19,7 +19,6 @@ rootProject.name = "Konstellation"
 
 include(
     ":core",
-    ":core:api",
     ":charts:line",
     ":charts:function",
     ":demo-app"

@@ -16,7 +16,7 @@ import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.gabrieldrn.konstellation.api.WipChartApi
+import com.gabrieldrn.konstellation.charts.function.WipChartApi
 import com.gabrieldrn.konstellation.charts.function.FunctionPlotter
 import com.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import kotlin.math.PI

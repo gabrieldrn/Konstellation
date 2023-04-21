@@ -1,4 +1,4 @@
-package com.gabrieldrn.konstellation.api
+package com.gabrieldrn.konstellation.charts.function
 
 /**
  * Indicates that the annotated API is still under development and may change in the future.
