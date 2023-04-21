@@ -1,7 +1,7 @@
 [versions]
 minSdk = "21"
 targetSdk = "33"
-kotlin = "1.8.0"
+kotlin = "1.8.20"
 buildTools = "31.0.0"
 androidGradlePlugin = "8.0.0"
 androidxAppcompat = "1.6.1"
@@ -9,7 +9,8 @@ androidxCore = "1.10.0"
 androidxLifecycle = "2.6.1"
 androidxActivity = "1.7.0"
 #https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
-androidxComposeCompiler = "1.4.1"
+#https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+androidxComposeCompiler = "1.4.6"
 androidxCompose = "1.4.1"
 androidxTestCore = "1.5.0"
 androidxTestExtJunit = "1.1.5"

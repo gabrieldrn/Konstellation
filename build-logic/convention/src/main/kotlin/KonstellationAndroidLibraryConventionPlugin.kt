@@ -28,6 +28,7 @@ class KonstellationAndroidLibraryConventionPlugin : Plugin<Project> {
                 minSdk = libs.getVersion("minSdk").toInt()
 
                 testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
                 consumerProguardFiles.add(file("consumer-rules.pro"))
             }
 
@@ -40,13 +41,20 @@ class KonstellationAndroidLibraryConventionPlugin : Plugin<Project> {
                     )
                 }
             }
+
             compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_17
                 targetCompatibility = JavaVersion.VERSION_17
             }
+
+            kotlinOptions {
+                jvmTarget = JavaVersion.VERSION_17.toString()
+            }
+
             buildFeatures {
                 compose = true
             }
+
             composeOptions {
                 kotlinCompilerExtensionVersion = libs.getVersion("androidxComposeCompiler")
             }
