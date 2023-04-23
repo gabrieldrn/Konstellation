@@ -151,8 +151,8 @@ public fun DrawScope.drawFrame(
  * Draws the 0-axis inside the chart.
  */
 public fun DrawScope.drawZeroLines(
-    datasetXRange: ClosedRange<Float>,
-    datasetYRange: ClosedRange<Float>,
+    datasetXRange: ClosedFloatingPointRange<Float>,
+    datasetYRange: ClosedFloatingPointRange<Float>,
     horizontalLine: Boolean = true,
     verticalLine: Boolean = true,
     lineStyle: LineDrawStyle = LineDrawStyle(

@@ -48,7 +48,7 @@ public fun FunctionPlotter(
         }
         addPoint(size.width, function(dataXRange.endInclusive))
 
-        val computedDataSet = points.createOffsets(size, dataSetYRange = dataYRange)
+        val computedDataSet = points.createOffsets(size, xWindowRange = dataYRange)
 
         drawFrame()
         drawZeroLines(dataXRange, dataYRange)

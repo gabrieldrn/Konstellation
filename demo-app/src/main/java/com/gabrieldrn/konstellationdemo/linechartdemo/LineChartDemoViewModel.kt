@@ -29,13 +29,13 @@ class LineChartDemoViewModel(
      */
     var dataset: Dataset by mutableStateOf(
         datasetOf(
-            0f by 0f,
-            1f by 1f,
+            -3f by -1f,
+            -2f by 0f,
+            -1f by 0f,
+            0f by 2f,
+            1f by 2f,
             2f by 1f,
-            3f by 3f,
-            4f by 3f,
-            5f by 2f,
-            6f by 2f,
+            3f by 1f,
         )
     ) ; private set
 

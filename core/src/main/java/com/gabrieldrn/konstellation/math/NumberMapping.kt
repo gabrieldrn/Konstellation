@@ -6,6 +6,7 @@ import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.xRange
 import com.gabrieldrn.konstellation.plotting.yRange
+import com.gabrieldrn.konstellation.util.rawRange
 import kotlin.math.abs
 
 /**
@@ -22,20 +23,18 @@ import kotlin.math.abs
  *
  * Given a range A [[0.0; 500.0]] and a range B [[0.0;1.0]], if P1 = 250 then P2 = 0.5.
  *
- * @receiver The initial value into, must be bounded into [fromRange].
+ * @receiver The value to be mapped to the targeted range.
  * @param fromRange Initial range of the receiver.
  * @param toRange Targeted range.
  * @return The value converted with the targeted range.
  */
 public fun Float.map(
-    fromRange: ClosedRange<Float>,
-    toRange: ClosedRange<Float>
+    fromRange: ClosedFloatingPointRange<Float>,
+    toRange: ClosedFloatingPointRange<Float>
 ): Float {
-    require(this in fromRange) { "$this is not within the bounds of $fromRange" }
     return (if (toRange.start < 0f) abs(toRange.start) else 0f).let { offsetRange ->
         ((toRange.endInclusive + offsetRange - (toRange.start + offsetRange))
-                * (this - fromRange.start) / (fromRange.endInclusive - fromRange.start)
-                ) - offsetRange
+                * (this - fromRange.start) / fromRange.rawRange) - offsetRange
     }
 }
 
@@ -45,32 +44,31 @@ public fun Float.map(
  * For example, `10f map (0f..20f to 0f..40f)`, linearly maps the number 10 from the range
  * [[0, 20]] to [[0, 40]].
  */
-public infix fun Float.map(to: Pair<ClosedRange<Float>, ClosedRange<Float>>): Float =
-    this@map.map(to.first, to.second)
+public infix fun Float.map(
+    to: Pair<ClosedFloatingPointRange<Float>, ClosedFloatingPointRange<Float>>
+): Float = this@map.map(to.first, to.second)
 
 /**
  * Sets the offset attribute of each [Point] of the receiving collection, based on a given canvas
- * [size]. A specific range can be specified with [dataSetXRange] and [dataSetYRange].
+ * [size]. A specific range can be specified with [xWindowRange] and [yWindowRange].
  *
  * @receiver The current collection of points within which to establish the offsets.
  * @param size The size of the canvas to draw on.
- * @param dataSetXRange (optional) A specific range of values on the X-axis to consider instead of
- * the X range of the receiving collection.
- * @param dataSetYRange (optional) A specific range of values on the Y-axis to consider instead of
- * the Y range of the receiving collection.
+ * @param xWindowRange (optional) The x-range from the chart visualization window.
+ * @param yWindowRange (optional) The y-range from the chart visualization window.
  */
 public fun Dataset.createOffsets(
     size: Size,
-    dataSetXRange: ClosedRange<Float> = xRange,
-    dataSetYRange: ClosedRange<Float> = yRange
+    xWindowRange: ClosedFloatingPointRange<Float> = xRange,
+    yWindowRange: ClosedFloatingPointRange<Float> = yRange
 ) : Dataset {
     val canvasYRange = size.height..0f //Inverting to draw from bottom to top
     val canvasXRange = 0f..size.width
     return map {
         it.copy(
             offset = Offset(
-                x = it.x.map(dataSetXRange, canvasXRange),
-                y = it.y.map(dataSetYRange, canvasYRange) + size.height,
+                x = it.x.map(xWindowRange, canvasXRange),
+                y = it.y.map(yWindowRange, canvasYRange) + size.height,
             )
         )
     }
@@ -85,7 +83,7 @@ public fun Dataset.createOffsets(
  */
 public fun DrawScope.mapCanvasXToDataX(
     canvasPos: Float,
-    dataRange: ClosedRange<Float>
+    dataRange: ClosedFloatingPointRange<Float>
 ): Float = canvasPos.map(0f..size.width, dataRange)
 
 /**
@@ -97,5 +95,5 @@ public fun DrawScope.mapCanvasXToDataX(
  */
 public fun DrawScope.mapCanvasYToDataY(
     canvasPos: Float,
-    dataRange: ClosedRange<Float>
+    dataRange: ClosedFloatingPointRange<Float>
 ): Float = canvasPos.map(0f..size.height, dataRange)

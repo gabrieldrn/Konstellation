@@ -57,7 +57,7 @@ public fun LineChart(
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
-    val (xDrawRange, yDrawRange) = properties.datasetOffsets.applyDatasetOffsets(
+    val (xWindowRange, yWindowRange) = properties.datasetOffsets.applyDatasetOffsets(
         xDrawRange = dataset.xRange,
         yDrawRange = dataset.yRange
     )
@@ -71,13 +71,14 @@ public fun LineChart(
                 .padding(properties.chartPaddingValues)
                 .layout { measurable, constraints ->
                     val placeable = measurable.measure(constraints)
+                    val size = Size(
+                        constraints.maxWidth.toFloat(),
+                        constraints.maxHeight.toFloat()
+                    )
                     computedDataset = dataset.createOffsets(
-                        size = Size(
-                            constraints.maxWidth.toFloat(),
-                            constraints.maxHeight.toFloat()
-                        ),
-                        dataSetXRange = xDrawRange,
-                        dataSetYRange = yDrawRange
+                        size = size,
+                        xWindowRange = xWindowRange,
+                        yWindowRange = yWindowRange
                     )
                     layout(constraints.maxWidth, constraints.maxHeight) {
                         placeable.place(0, 0)
@@ -91,11 +92,11 @@ public fun LineChart(
             val path = properties.pathInterpolator(computedDataset)
 
             if (properties.drawZeroLines) {
-                drawZeroLines(xDrawRange, yDrawRange)
+                drawZeroLines(xWindowRange, yWindowRange)
             }
 
             with(styles) {
-                drawScaledAxis(properties, styles, xDrawRange, yDrawRange)
+                drawScaledAxis(properties, styles, xWindowRange, yWindowRange)
                 // Background filling
                 properties.fillingBrush?.let { brush ->
                     drawPath(
