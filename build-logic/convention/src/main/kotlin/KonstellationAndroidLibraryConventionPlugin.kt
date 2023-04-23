@@ -6,6 +6,8 @@ import com.gabrieldrn.konstellation.buildlogic.libs
 import com.gabrieldrn.konstellation.buildlogic.setupExplicitApi
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
@@ -42,6 +44,24 @@ class KonstellationAndroidLibraryConventionPlugin : Plugin<Project> {
                         getDefaultProguardFile("proguard-android-optimize.txt"),
                         "proguard-rules.pro"
                     )
+                }
+            }
+
+            testOptions {
+                unitTests.all {
+                    it.testLogging {
+                        events = setOf(
+                            TestLogEvent.PASSED,
+                            TestLogEvent.SKIPPED,
+                            TestLogEvent.FAILED
+                        ) //, "standardOut", "standardError"
+                        exceptionFormat = TestExceptionFormat.FULL
+                        showStandardStreams = true
+                        showExceptions = true
+                        showCauses = true
+                        showStackTraces = true
+                        showStandardStreams = true
+                    }
                 }
             }
         }

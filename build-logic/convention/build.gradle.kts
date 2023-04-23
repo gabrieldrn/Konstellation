@@ -23,6 +23,7 @@ gradlePlugin {
             implementationClass = "KonstellationAndroidLibraryConventionPlugin"
         }
 
+        // Not used yet, but it's here for potential future use.
         register("javaLibrary") {
             id = "konstellation.java.library"
             implementationClass = "KonstellationJavaLibraryConventionPlugin"
