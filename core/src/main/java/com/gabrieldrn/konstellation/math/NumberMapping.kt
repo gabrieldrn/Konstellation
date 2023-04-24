@@ -7,7 +7,6 @@ import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.xRange
 import com.gabrieldrn.konstellation.plotting.yRange
 import com.gabrieldrn.konstellation.util.rawRange
-import kotlin.math.abs
 
 /**
  * Linearly maps a number that falls inside [fromRange] to [toRange].
@@ -31,12 +30,9 @@ import kotlin.math.abs
 public fun Float.map(
     fromRange: ClosedFloatingPointRange<Float>,
     toRange: ClosedFloatingPointRange<Float>
-): Float {
-    return (if (toRange.start < 0f) abs(toRange.start) else 0f).let { offsetRange ->
-        ((toRange.endInclusive + offsetRange - (toRange.start + offsetRange))
-                * (this - fromRange.start) / fromRange.rawRange) - offsetRange
-    }
-}
+): Float =
+    // ratio = (value - from.start) / (from.end - from.start)
+    toRange.start + (this - fromRange.start) / fromRange.rawRange * toRange.rawRange
 
 /**
  * Infix function for [map], offering a more explicit usage of the latter.
@@ -68,7 +64,7 @@ public fun Dataset.createOffsets(
         it.copy(
             offset = Offset(
                 x = it.x.map(xWindowRange, canvasXRange),
-                y = it.y.map(yWindowRange, canvasYRange) + size.height,
+                y = it.y.map(yWindowRange, canvasYRange),
             )
         )
     }

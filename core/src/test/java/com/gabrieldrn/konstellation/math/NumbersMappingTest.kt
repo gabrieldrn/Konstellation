@@ -64,13 +64,13 @@ class NumbersMappingTest {
                 expected = offsets.first.x,
                 actual = offsets.second.x,
                 absoluteTolerance = 0.1f,
-                message = "At index $index,"
+                message = "At index $index"
             )
             assertEquals(
                 expected = offsets.first.y,
                 actual = offsets.second.y,
                 absoluteTolerance = 0.1f,
-                message = "At index $index,"
+                message = "At index $index"
             )
         }
     }

@@ -164,7 +164,7 @@ public fun DrawScope.drawZeroLines(
     var zero: Float
 
     if (horizontalLine && 0f in datasetYRange) {
-        zero = (0f map (datasetYRange to size.height..0f)) + size.height
+        zero = 0f map (datasetYRange to size.height..0f)
         drawLine(Offset(0f, zero), Offset(size.width, zero), lineStyle)
     }
     if (verticalLine && 0f in datasetXRange) {
