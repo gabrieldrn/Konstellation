@@ -141,8 +141,8 @@ public final class com/gabrieldrn/konstellation/drawing/AxesDrawingKt {
 	public static final fun drawFrame (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lcom/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)V
 	public static synthetic fun drawFrame$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lcom/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)V
 	public static final fun drawScaledAxis (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lcom/gabrieldrn/konstellation/configuration/properties/ChartProperties;Lcom/gabrieldrn/konstellation/configuration/styles/ChartStyles;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;)V
-	public static final fun drawZeroLines (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lkotlin/ranges/ClosedRange;Lkotlin/ranges/ClosedRange;ZZLcom/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)V
-	public static synthetic fun drawZeroLines$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lkotlin/ranges/ClosedRange;Lkotlin/ranges/ClosedRange;ZZLcom/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)V
+	public static final fun drawZeroLines (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ZZLcom/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)V
+	public static synthetic fun drawZeroLines$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ZZLcom/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)V
 }
 
 public final class com/gabrieldrn/konstellation/drawing/HighlightDrawingKt {
@@ -240,12 +240,12 @@ public final class com/gabrieldrn/konstellation/highlighting/HighlightScope {
 }
 
 public final class com/gabrieldrn/konstellation/math/NumberMappingKt {
-	public static final fun createOffsets-x_KDEd0 (Ljava/util/List;JLkotlin/ranges/ClosedRange;Lkotlin/ranges/ClosedRange;)Ljava/util/List;
-	public static synthetic fun createOffsets-x_KDEd0$default (Ljava/util/List;JLkotlin/ranges/ClosedRange;Lkotlin/ranges/ClosedRange;ILjava/lang/Object;)Ljava/util/List;
+	public static final fun createOffsets-x_KDEd0 (Ljava/util/List;JLkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;)Ljava/util/List;
+	public static synthetic fun createOffsets-x_KDEd0$default (Ljava/util/List;JLkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ILjava/lang/Object;)Ljava/util/List;
 	public static final fun map (FLkotlin/Pair;)F
-	public static final fun map (FLkotlin/ranges/ClosedRange;Lkotlin/ranges/ClosedRange;)F
-	public static final fun mapCanvasXToDataX (Landroidx/compose/ui/graphics/drawscope/DrawScope;FLkotlin/ranges/ClosedRange;)F
-	public static final fun mapCanvasYToDataY (Landroidx/compose/ui/graphics/drawscope/DrawScope;FLkotlin/ranges/ClosedRange;)F
+	public static final fun map (FLkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;)F
+	public static final fun mapCanvasXToDataX (Landroidx/compose/ui/graphics/drawscope/DrawScope;FLkotlin/ranges/ClosedFloatingPointRange;)F
+	public static final fun mapCanvasYToDataY (Landroidx/compose/ui/graphics/drawscope/DrawScope;FLkotlin/ranges/ClosedFloatingPointRange;)F
 }
 
 public final class com/gabrieldrn/konstellation/plotting/Axes {

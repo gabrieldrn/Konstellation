@@ -37,8 +37,8 @@ fun LineChartDemo(
 ) {
     Column(modifier) {
         DemoContent(
-            dataset = viewModel.dataset,
-            properties = viewModel.properties
+            dataset = viewModel.uiState.dataset,
+            properties = viewModel.uiState.properties
         )
         LineChartSettingsContent(viewModel)
     }

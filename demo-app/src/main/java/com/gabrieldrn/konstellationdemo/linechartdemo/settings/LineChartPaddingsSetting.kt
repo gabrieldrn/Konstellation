@@ -8,18 +8,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.gabrieldrn.konstellation.charts.line.configuration.ChartWindow
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
-import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import kotlin.reflect.KProperty1
 
 /**
  * This composable will be used to display the settings related to the chart paddings.
  */
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "UNUSED_PARAMETER")
 @Composable
 fun LineChartPaddingsSetting(
+    datasetXRange: ClosedFloatingPointRange<Float>,
+    datasetYRange: ClosedFloatingPointRange<Float>,
     chartPaddingValues: PaddingValues,
-    datasetOffsets: DatasetOffsets?,
+    chartWindow: ChartWindow?,
     onUpdateProperty: (KProperty1<LineChartProperties, Any?>, Any?) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -47,35 +49,27 @@ fun LineChartPaddingsSetting(
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "X offset\n${datasetOffsets?.xStartOffset?.toInt() ?: 0}",
+                    text = "X offset\n${0}", // TODO
                     style = MaterialTheme.typography.bodySmall,
                 )
                 Slider(
-                    value = datasetOffsets?.xStartOffset ?: 0f,
+                    enabled = false,
+                    value = 0f, // TODO
                     valueRange = 0f..10f,
-                    onValueChange = {
-                        onUpdateProperty(
-                            LineChartProperties::datasetOffsets,
-                            datasetOffsets?.copy(xStartOffset = it, xEndOffset = it)
-                        )
-                    },
+                    onValueChange = { TODO() },
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "Y offset\n${datasetOffsets?.yStartOffset?.toInt() ?: 0}",
+                    text = "Y offset\n${0}", // TODO
                     style = MaterialTheme.typography.bodySmall,
                 )
                 Slider(
-                    value = datasetOffsets?.yStartOffset ?: 0f,
-                    valueRange = 0f..15f,
-                    onValueChange = {
-                        onUpdateProperty(
-                            LineChartProperties::datasetOffsets,
-                            datasetOffsets?.copy(yStartOffset = it, yEndOffset = it)
-                        )
-                    },
+                    enabled = false,
+                    value = 0f, // TODO
+                    valueRange = 0f..10f,
+                    onValueChange = { TODO() },
                     modifier = Modifier.padding(start = 16.dp)
                 )
             }

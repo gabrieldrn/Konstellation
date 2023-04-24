@@ -5,29 +5,48 @@ public final class com/gabrieldrn/konstellation/charts/line/BuildConfig {
 	public fun <init> ()V
 }
 
+public final class com/gabrieldrn/konstellation/charts/line/configuration/ChartWindow : java/io/Serializable {
+	public static final field $stable I
+	public static final field Companion Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow$Companion;
+	public fun <init> (Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;)V
+	public final fun component1 ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public final fun component2 ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public final fun copy (Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;)Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
+	public static synthetic fun copy$default (Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ILjava/lang/Object;)Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getXWindow ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public final fun getYWindow ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/gabrieldrn/konstellation/charts/line/configuration/ChartWindow$Companion {
+	public final fun fromDataset (Ljava/util/List;)Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
+}
+
 public final class com/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties : com/gabrieldrn/konstellation/configuration/properties/ChartProperties {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/configuration/properties/DatasetOffsets;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;)V
-	public synthetic fun <init> (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/configuration/properties/DatasetOffsets;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;)V
+	public synthetic fun <init> (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/util/Set;
 	public final fun component10 ()Z
 	public final fun component11 ()Lcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;
 	public final fun component12 ()Landroidx/compose/ui/graphics/Brush;
 	public final fun component2 ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun component3 ()Lcom/gabrieldrn/konstellation/configuration/properties/DatasetOffsets;
+	public final fun component3 ()Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
 	public final fun component4 ()Ljava/util/Set;
 	public final fun component5 ()Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;
 	public final fun component6 ()Z
 	public final fun component7 ()Z
 	public final fun component8 ()Z
 	public final fun component9 ()Z
-	public final fun copy (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/configuration/properties/DatasetOffsets;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;)Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;
-	public static synthetic fun copy$default (Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/configuration/properties/DatasetOffsets;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;ILjava/lang/Object;)Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;
+	public final fun copy (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;)Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;
+	public static synthetic fun copy$default (Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;ILjava/lang/Object;)Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getAxes ()Ljava/util/Set;
 	public final fun getChartPaddingValues ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun getDatasetOffsets ()Lcom/gabrieldrn/konstellation/configuration/properties/DatasetOffsets;
+	public final fun getChartWindow ()Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
 	public fun getDrawFrame ()Z
 	public final fun getDrawLines ()Z
 	public final fun getDrawPoints ()Z

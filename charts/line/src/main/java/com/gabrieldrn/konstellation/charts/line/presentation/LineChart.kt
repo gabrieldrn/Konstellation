@@ -9,15 +9,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
+import com.gabrieldrn.konstellation.charts.line.configuration.ChartWindow
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
 import com.gabrieldrn.konstellation.charts.line.drawing.drawLinePath
-import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.drawing.drawFrame
 import com.gabrieldrn.konstellation.drawing.drawPoint
 import com.gabrieldrn.konstellation.drawing.drawScaledAxis
@@ -32,9 +33,6 @@ import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.by
 import com.gabrieldrn.konstellation.plotting.datasetOf
 import com.gabrieldrn.konstellation.plotting.nearestPointByX
-import com.gabrieldrn.konstellation.plotting.xRange
-import com.gabrieldrn.konstellation.plotting.yRange
-import com.gabrieldrn.konstellation.util.applyDatasetOffsets
 
 /**
  * Konstellation composable function drawing a line chart.
@@ -57,33 +55,30 @@ public fun LineChart(
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
-    val (xWindowRange, yWindowRange) = properties.datasetOffsets.applyDatasetOffsets(
-        xDrawRange = dataset.xRange,
-        yDrawRange = dataset.yRange
-    )
+    var size by remember { mutableStateOf(Size.Zero) }
 
-    var computedDataset by rememberSaveable { mutableStateOf(dataset) }
+    val window by remember(dataset, properties) {
+        derivedStateOf {
+            properties.chartWindow ?: ChartWindow.fromDataset(dataset)
+        }
+    }
+
+    val computedDataset by remember(dataset, properties, window, size) {
+        derivedStateOf {
+            dataset.createOffsets(
+                size = size,
+                xWindowRange = window.xWindow,
+                yWindowRange = window.yWindow
+            )
+        }
+    }
 
     // This layout helps to compute the offsets for the dataset during the first layout pass.
     Box {
         Canvas(
             modifier
                 .padding(properties.chartPaddingValues)
-                .layout { measurable, constraints ->
-                    val placeable = measurable.measure(constraints)
-                    val size = Size(
-                        constraints.maxWidth.toFloat(),
-                        constraints.maxHeight.toFloat()
-                    )
-                    computedDataset = dataset.createOffsets(
-                        size = size,
-                        xWindowRange = xWindowRange,
-                        yWindowRange = yWindowRange
-                    )
-                    layout(constraints.maxWidth, constraints.maxHeight) {
-                        placeable.place(0, 0)
-                    }
-                }
+                .onSizeChanged { size = it.toSize() }
         ) {
             if (properties.drawFrame) {
                 drawFrame()
@@ -92,11 +87,11 @@ public fun LineChart(
             val path = properties.pathInterpolator(computedDataset)
 
             if (properties.drawZeroLines) {
-                drawZeroLines(xWindowRange, yWindowRange)
+                drawZeroLines(window.xWindow, window.yWindow)
             }
 
             with(styles) {
-                drawScaledAxis(properties, styles, xWindowRange, yWindowRange)
+                drawScaledAxis(properties, styles, window.xWindow, window.yWindow)
                 // Background filling
                 properties.fillingBrush?.let { brush ->
                     drawPath(
@@ -129,7 +124,7 @@ public fun LineChart(
         HighlightCanvas(
             modifier = modifier,
             properties = properties,
-            dataset = { computedDataset },
+            dataset = computedDataset,
             styles = styles,
             highlightContent = highlightContent,
             onHighlightChange = onHighlightChange
@@ -141,7 +136,7 @@ public fun LineChart(
 private fun BoxScope.HighlightCanvas(
     modifier: Modifier,
     properties: LineChartProperties,
-    dataset: () -> Dataset,
+    dataset: Dataset,
     styles: LineChartStyles,
     highlightContent: @Composable (HighlightScope.() -> Unit)?,
     onHighlightChange: ((Point?) -> Unit)? = null
@@ -150,9 +145,9 @@ private fun BoxScope.HighlightCanvas(
     val density = LocalDensity.current
 
     var pointerValue by rememberSaveable { mutableStateOf<Float?>(null) }
-    val highlightedPoint by remember {
+    val highlightedPoint by remember(dataset) {
         derivedStateOf {
-            pointerValue?.let { dataset().nearestPointByX(it) }
+            pointerValue?.let { dataset.nearestPointByX(it) }
         }
     }
 
@@ -176,7 +171,7 @@ private fun BoxScope.HighlightCanvas(
     Canvas(
         modifier = modifier
             .padding(properties.chartPaddingValues)
-            .pointerInput(dataset) {
+            .pointerInput(Unit) {
                 detectDragGesturesAfterLongPress(
                     onDragStart = { pointerValue = it.x },
                     onDragEnd = { pointerValue = null },
@@ -211,7 +206,7 @@ private fun BoxScope.HighlightCanvas(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun LineChartPreview() {
     LineChart(
@@ -230,10 +225,10 @@ private fun LineChartPreview() {
         properties = LineChartProperties(
             axes = setOf(Axes.xBottom, Axes.yLeft),
             chartPaddingValues = PaddingValues(40.dp),
-            datasetOffsets = DatasetOffsets(
-                yStartOffset = 3f,
-                yEndOffset = 3f
-            )
+            chartWindow = ChartWindow(
+                xWindow = -1f..7f,
+                yWindow = -3f..6f
+            ),
         )
     )
 }

@@ -23,9 +23,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gabrieldrn.konstellation.charts.line.math.LinearPathInterpolator
-import com.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.plotting.Axes
+import com.gabrieldrn.konstellation.plotting.xRange
+import com.gabrieldrn.konstellation.plotting.yRange
 import com.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
 import com.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -57,32 +58,34 @@ fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = vie
             )
 
             1 -> LineChartDataDrawingSetting(
-                drawLines = viewModel.properties.drawLines,
-                drawPoints = viewModel.properties.drawPoints,
-                interpolator = viewModel.properties.pathInterpolator,
+                drawLines = viewModel.uiState.properties.drawLines,
+                drawPoints = viewModel.uiState.properties.drawPoints,
+                interpolator = viewModel.uiState.properties.pathInterpolator,
                 onUpdateProperty = viewModel::updateProperty,
             )
 
             2 -> LineChartFillingSetting(
-                brush = viewModel.properties.fillingBrush,
+                brush = viewModel.uiState.properties.fillingBrush,
                 onUpdateProperty = viewModel::updateProperty
             )
 
             3 -> LineChartHighlightSetting(
-                highlightPositions = viewModel.properties.highlightContentPositions,
+                highlightPositions = viewModel.uiState.properties.highlightContentPositions,
                 onUpdateProperty = viewModel::updateProperty
             )
 
             4 -> LineChartAxisSelectorSetting(
-                axes = viewModel.properties.axes,
-                drawFrame = viewModel.properties.drawFrame,
-                drawZeroLines = viewModel.properties.drawZeroLines,
+                axes = viewModel.uiState.properties.axes,
+                drawFrame = viewModel.uiState.properties.drawFrame,
+                drawZeroLines = viewModel.uiState.properties.drawZeroLines,
                 onUpdateProperty = viewModel::updateProperty,
             )
 
             5 -> LineChartPaddingsSetting(
-                chartPaddingValues = viewModel.properties.chartPaddingValues,
-                datasetOffsets = viewModel.properties.datasetOffsets,
+                datasetXRange = viewModel.uiState.dataset.xRange,
+                datasetYRange = viewModel.uiState.dataset.yRange,
+                chartPaddingValues = viewModel.uiState.properties.chartPaddingValues,
+                chartWindow = viewModel.uiState.properties.chartWindow,
                 onUpdateProperty = viewModel::updateProperty
             )
         }
@@ -197,8 +200,10 @@ private fun SettingsPreviews() {
             )
 
             LineChartPaddingsSetting(
+                datasetXRange = 0f..1f,
+                datasetYRange = 0f..1f,
                 chartPaddingValues = PaddingValues(44.dp),
-                datasetOffsets = DatasetOffsets(),
+                chartWindow = null,
                 onUpdateProperty = { _, _ -> }
             )
         }
