@@ -1,6 +1,7 @@
 package com.gabrieldrn.konstellation.charts.line.presentation
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -27,12 +28,16 @@ import com.gabrieldrn.konstellation.drawing.highlightPoint
 import com.gabrieldrn.konstellation.highlighting.HighlightBox
 import com.gabrieldrn.konstellation.highlighting.HighlightScope
 import com.gabrieldrn.konstellation.math.createOffsets
+import com.gabrieldrn.konstellation.math.map
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
 import com.gabrieldrn.konstellation.plotting.by
 import com.gabrieldrn.konstellation.plotting.datasetOf
 import com.gabrieldrn.konstellation.plotting.nearestPointByX
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Konstellation composable function drawing a line chart.
@@ -57,9 +62,30 @@ public fun LineChart(
 ) {
     var size by remember { mutableStateOf(Size.Zero) }
 
-    val window by remember(dataset, properties) {
+    var panningData by remember { mutableStateOf(PanningData(0f, 0f)) }
+
+    val initWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset)
+
+    val window by remember(dataset, properties, panningData) {
+        // This is the window that will be used to compute the offsets for the dataset, and to draw
+        // the chart axes.
+        // It's computed by always taking the initial window and applying the panning amount.
         derivedStateOf {
-            properties.chartWindow ?: ChartWindow.fromDataset(dataset)
+            val xPan = panningData.x
+                .takeIf { it != 0f }
+                ?.map(0f..size.width, initWindow.xWindow)
+                ?.times(-1)
+                ?.takeIf { it.isFinite() }
+                ?: 0f
+            val yPan = panningData.y
+                .takeIf { it != 0f }
+                ?.map(0f..size.height, initWindow.yWindow)
+                ?.takeIf { it.isFinite() }
+                ?: 0f
+            initWindow.copy(
+                xWindow = initWindow.xWindow.start + xPan..initWindow.xWindow.endInclusive + xPan,
+                yWindow = initWindow.yWindow.start + yPan..initWindow.yWindow.endInclusive + yPan
+            )
         }
     }
 
@@ -69,7 +95,14 @@ public fun LineChart(
                 size = size,
                 xWindowRange = window.xWindow,
                 yWindowRange = window.yWindow
-            )
+            ).also {
+                if (!panningData.hasPanned) {
+                    panningData = PanningData(
+                        x = size.width / 2,
+                        y = size.height / 2
+                    )
+                }
+            }
         }
     }
 
@@ -127,7 +160,14 @@ public fun LineChart(
             dataset = computedDataset,
             styles = styles,
             highlightContent = highlightContent,
-            onHighlightChange = onHighlightChange
+            onHighlightChange = onHighlightChange,
+            onUpdateWindowOffsets = { dragAmount ->
+                panningData = panningData.copy(
+                    x = panningData.x + dragAmount.x,
+                    y = panningData.y + dragAmount.y,
+                    hasPanned = true
+                )
+            }
         )
     }
 }
@@ -139,7 +179,8 @@ private fun BoxScope.HighlightCanvas(
     dataset: Dataset,
     styles: LineChartStyles,
     highlightContent: @Composable (HighlightScope.() -> Unit)?,
-    onHighlightChange: ((Point?) -> Unit)? = null
+    onHighlightChange: ((Point?) -> Unit)? = null,
+    onUpdateWindowOffsets: ((dragAmount: Offset) -> Unit)
 ) {
 //    val hapticLocal = LocalHapticFeedback.current
     val density = LocalDensity.current
@@ -172,11 +213,22 @@ private fun BoxScope.HighlightCanvas(
         modifier = modifier
             .padding(properties.chartPaddingValues)
             .pointerInput(Unit) {
-                detectDragGesturesAfterLongPress(
-                    onDragStart = { pointerValue = it.x },
-                    onDragEnd = { pointerValue = null },
-                    onDrag = { change, _ -> pointerValue = change.position.x }
-                )
+                withContext(Dispatchers.Main) {
+                    launch {
+                        // Highlighting
+                        detectDragGesturesAfterLongPress(
+                            onDragStart = { pointerValue = it.x },
+                            onDragEnd = { pointerValue = null },
+                            onDrag = { change, _ -> pointerValue = change.position.x }
+                        )
+                    }
+                    launch {
+                        // Panning
+                        detectDragGestures { _, dragAmount ->
+                            onUpdateWindowOffsets(dragAmount)
+                        }
+                    }
+                }
             }
     ) {
         // Highlight
@@ -205,6 +257,12 @@ private fun BoxScope.HighlightCanvas(
         }
     }
 }
+
+private data class PanningData(
+    val x: Float,
+    val y: Float,
+    val hasPanned: Boolean = false
+)
 
 @Preview
 @Composable
