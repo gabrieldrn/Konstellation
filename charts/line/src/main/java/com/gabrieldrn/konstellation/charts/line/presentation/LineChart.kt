@@ -5,7 +5,6 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.Path
@@ -51,6 +50,7 @@ import kotlinx.coroutines.withContext
  * optional, and it's a light alternative to [highlightContent] to have feedback on highlighting
  * without having to draw content above the chart.
  */
+@Suppress("CognitiveComplexMethod") // FIXME Try to simplify
 @Composable
 public fun LineChart(
     dataset: Dataset,
@@ -61,12 +61,11 @@ public fun LineChart(
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
     var size by remember { mutableStateOf(Size.Zero) }
-
     var panningData by remember { mutableStateOf(PanningData(0f, 0f)) }
 
     val initWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset)
 
-    val window by remember(dataset, properties, panningData) {
+    val window by remember(dataset, properties) {
         // This is the window that will be used to compute the offsets for the dataset, and to draw
         // the chart axes.
         // It's computed by always taking the initial window and applying the panning amount.
@@ -89,7 +88,7 @@ public fun LineChart(
         }
     }
 
-    val computedDataset by remember(dataset, properties, window, size) {
+    val computedDataset by remember(dataset) {
         derivedStateOf {
             dataset.createOffsets(
                 size = size,
@@ -106,11 +105,11 @@ public fun LineChart(
         }
     }
 
-    // This layout helps to compute the offsets for the dataset during the first layout pass.
     Box {
         Canvas(
             modifier
                 .padding(properties.chartPaddingValues)
+                // This helps to compute the offsets for the dataset during the first layout pass.
                 .onSizeChanged { size = it.toSize() }
         ) {
             if (properties.drawFrame) {
@@ -157,7 +156,7 @@ public fun LineChart(
         HighlightCanvas(
             modifier = modifier,
             properties = properties,
-            dataset = computedDataset,
+            dataset = { computedDataset },
             styles = styles,
             highlightContent = highlightContent,
             onHighlightChange = onHighlightChange,
@@ -176,7 +175,7 @@ public fun LineChart(
 private fun BoxScope.HighlightCanvas(
     modifier: Modifier,
     properties: LineChartProperties,
-    dataset: Dataset,
+    dataset: () -> Dataset,
     styles: LineChartStyles,
     highlightContent: @Composable (HighlightScope.() -> Unit)?,
     onHighlightChange: ((Point?) -> Unit)? = null,
@@ -185,11 +184,11 @@ private fun BoxScope.HighlightCanvas(
 //    val hapticLocal = LocalHapticFeedback.current
     val density = LocalDensity.current
 
-    var pointerValue by rememberSaveable { mutableStateOf<Float?>(null) }
+    var pointerValue by remember {
+        mutableStateOf<Float?>(null)
+    }
     val highlightedPoint by remember(dataset) {
-        derivedStateOf {
-            pointerValue?.let { dataset.nearestPointByX(it) }
-        }
+        derivedStateOf { pointerValue?.let { dataset().nearestPointByX(it) } }
     }
 
     val chartTopPaddingPx = with(density) {
@@ -258,6 +257,13 @@ private fun BoxScope.HighlightCanvas(
     }
 }
 
+/**
+ * Data to keep track of the panning offset.
+ * @property x The x offset.
+ * @property y The y offset.
+ * @property hasPanned Whether the chart has been panned. When false, this means that the chart has
+ * not been panned yet and the initial panning offset should be set to the center of the chart.
+ */
 private data class PanningData(
     val x: Float,
     val y: Float,
