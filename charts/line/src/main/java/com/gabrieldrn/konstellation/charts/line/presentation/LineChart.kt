@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -61,7 +62,7 @@ public fun LineChart(
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
     var size by remember { mutableStateOf(Size.Zero) }
-    var panningData by remember { mutableStateOf(PanningData(0f, 0f)) }
+    var panningState by remember { mutableStateOf(PanningState(0f, 0f)) }
 
     val initWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset)
 
@@ -70,16 +71,14 @@ public fun LineChart(
         // the chart axes.
         // It's computed by always taking the initial window and applying the panning amount.
         derivedStateOf {
-            val xPan = panningData.x
+            val xPan = panningState.x
                 .takeIf { it != 0f }
                 ?.map(0f..size.width, initWindow.xWindow)
                 ?.times(-1)
-                ?.takeIf { it.isFinite() }
                 ?: 0f
-            val yPan = panningData.y
+            val yPan = panningState.y
                 .takeIf { it != 0f }
                 ?.map(0f..size.height, initWindow.yWindow)
-                ?.takeIf { it.isFinite() }
                 ?: 0f
             initWindow.copy(
                 xWindow = initWindow.xWindow.start + xPan..initWindow.xWindow.endInclusive + xPan,
@@ -95,8 +94,8 @@ public fun LineChart(
                 xWindowRange = window.xWindow,
                 yWindowRange = window.yWindow
             ).also {
-                if (!panningData.hasPanned) {
-                    panningData = PanningData(
+                if (!panningState.hasPanned) {
+                    panningState = PanningState(
                         x = size.width / 2,
                         y = size.height / 2
                     )
@@ -161,9 +160,9 @@ public fun LineChart(
             highlightContent = highlightContent,
             onHighlightChange = onHighlightChange,
             onUpdateWindowOffsets = { dragAmount ->
-                panningData = panningData.copy(
-                    x = panningData.x + dragAmount.x,
-                    y = panningData.y + dragAmount.y,
+                panningState = panningState.copy(
+                    x = panningState.x + dragAmount.x,
+                    y = panningState.y + dragAmount.y,
                     hasPanned = true
                 )
             }
@@ -199,6 +198,27 @@ private fun BoxScope.HighlightCanvas(
         properties.chartPaddingValues.calculateStartPadding(LayoutDirection.Ltr).toPx().toInt()
     }
 
+    val gesturesPointerInputScope: suspend PointerInputScope.() -> Unit = {
+        withContext(Dispatchers.Main) {
+            launch {
+                // Highlighting
+                detectDragGesturesAfterLongPress(
+                    onDragStart = { pointerValue = it.x },
+                    onDragEnd = { pointerValue = null },
+                    onDrag = { change, _ -> pointerValue = change.position.x }
+                )
+            }
+            if (properties.enablePanning) {
+                launch {
+                    // Panning
+                    detectDragGestures { _, dragAmount ->
+                        onUpdateWindowOffsets(dragAmount)
+                    }
+                }
+            }
+        }
+    }
+
     LaunchedEffect(highlightedPoint) {
         // FIXME The haptic feedback is called on each frame while the chart properties are
         //   being changed + when a point is highlighted.
@@ -211,24 +231,7 @@ private fun BoxScope.HighlightCanvas(
     Canvas(
         modifier = modifier
             .padding(properties.chartPaddingValues)
-            .pointerInput(Unit) {
-                withContext(Dispatchers.Main) {
-                    launch {
-                        // Highlighting
-                        detectDragGesturesAfterLongPress(
-                            onDragStart = { pointerValue = it.x },
-                            onDragEnd = { pointerValue = null },
-                            onDrag = { change, _ -> pointerValue = change.position.x }
-                        )
-                    }
-                    launch {
-                        // Panning
-                        detectDragGestures { _, dragAmount ->
-                            onUpdateWindowOffsets(dragAmount)
-                        }
-                    }
-                }
-            }
+            .pointerInput(Unit, gesturesPointerInputScope)
     ) {
         // Highlight
         highlightedPoint?.let {
@@ -258,13 +261,13 @@ private fun BoxScope.HighlightCanvas(
 }
 
 /**
- * Data to keep track of the panning offset.
+ * State to keep track of the panning offset.
  * @property x The x offset.
  * @property y The y offset.
  * @property hasPanned Whether the chart has been panned. When false, this means that the chart has
  * not been panned yet and the initial panning offset should be set to the center of the chart.
  */
-private data class PanningData(
+private data class PanningState(
     val x: Float,
     val y: Float,
     val hasPanned: Boolean = false

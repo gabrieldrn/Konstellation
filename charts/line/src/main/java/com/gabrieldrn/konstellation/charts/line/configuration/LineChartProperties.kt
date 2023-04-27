@@ -31,6 +31,7 @@ import com.gabrieldrn.konstellation.plotting.ChartAxis
  * @property pathInterpolator The interpolator to use when drawing the lines.
  * @property fillingBrush The brush to apply to the filling content from the bottom of the chart to
  * the data lines.
+ * @property enablePanning Either to enable panning or not.
  */
 public data class LineChartProperties(
     override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
@@ -46,5 +47,6 @@ public data class LineChartProperties(
     val drawLines: Boolean = true,
     val drawPoints: Boolean = true,
     val pathInterpolator: PathInterpolator = MonotoneXPathInterpolator(),
-    val fillingBrush: Brush? = null
+    val fillingBrush: Brush? = null,
+    val enablePanning: Boolean = true,
 ) : ChartProperties
