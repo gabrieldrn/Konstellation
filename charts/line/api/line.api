@@ -27,12 +27,13 @@ public final class com/gabrieldrn/konstellation/charts/line/configuration/ChartW
 public final class com/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties : com/gabrieldrn/konstellation/configuration/properties/ChartProperties {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;)V
-	public synthetic fun <init> (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;Z)V
+	public synthetic fun <init> (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/util/Set;
 	public final fun component10 ()Z
 	public final fun component11 ()Lcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;
 	public final fun component12 ()Landroidx/compose/ui/graphics/Brush;
+	public final fun component13 ()Z
 	public final fun component2 ()Landroidx/compose/foundation/layout/PaddingValues;
 	public final fun component3 ()Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
 	public final fun component4 ()Ljava/util/Set;
@@ -41,8 +42,8 @@ public final class com/gabrieldrn/konstellation/charts/line/configuration/LineCh
 	public final fun component7 ()Z
 	public final fun component8 ()Z
 	public final fun component9 ()Z
-	public final fun copy (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;)Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;
-	public static synthetic fun copy$default (Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;ILjava/lang/Object;)Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;
+	public final fun copy (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;Z)Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;
+	public static synthetic fun copy$default (Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Lcom/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Lcom/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLcom/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;ZILjava/lang/Object;)Lcom/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getAxes ()Ljava/util/Set;
 	public final fun getChartPaddingValues ()Landroidx/compose/foundation/layout/PaddingValues;
@@ -51,6 +52,7 @@ public final class com/gabrieldrn/konstellation/charts/line/configuration/LineCh
 	public final fun getDrawLines ()Z
 	public final fun getDrawPoints ()Z
 	public fun getDrawZeroLines ()Z
+	public final fun getEnablePanning ()Z
 	public final fun getFillingBrush ()Landroidx/compose/ui/graphics/Brush;
 	public fun getHapticHighlight ()Z
 	public final fun getHighlightContentPositions ()Ljava/util/Set;
