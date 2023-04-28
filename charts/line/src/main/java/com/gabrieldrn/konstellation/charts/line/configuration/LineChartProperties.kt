@@ -10,6 +10,7 @@ import com.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import com.gabrieldrn.konstellation.highlighting.HighlightLinePosition
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.ChartAxis
+import java.io.Serializable
 
 /**
  * Class defining features of a Konstellation line chart.
@@ -49,4 +50,8 @@ public data class LineChartProperties(
     val pathInterpolator: PathInterpolator = MonotoneXPathInterpolator(),
     val fillingBrush: Brush? = null,
     val enablePanning: Boolean = true,
-) : ChartProperties
+) : ChartProperties, Serializable {
+    private companion object {
+        private const val serialVersionUID: Long = 1L
+    }
+}

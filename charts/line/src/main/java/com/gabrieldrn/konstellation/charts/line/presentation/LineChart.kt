@@ -15,7 +15,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
 import com.gabrieldrn.konstellation.charts.line.configuration.ChartWindow
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import com.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
@@ -27,8 +26,6 @@ import com.gabrieldrn.konstellation.drawing.drawZeroLines
 import com.gabrieldrn.konstellation.drawing.highlightPoint
 import com.gabrieldrn.konstellation.highlighting.HighlightBox
 import com.gabrieldrn.konstellation.highlighting.HighlightScope
-import com.gabrieldrn.konstellation.math.createOffsets
-import com.gabrieldrn.konstellation.math.map
 import com.gabrieldrn.konstellation.plotting.Axes
 import com.gabrieldrn.konstellation.plotting.Dataset
 import com.gabrieldrn.konstellation.plotting.Point
@@ -42,7 +39,7 @@ import kotlinx.coroutines.withContext
 /**
  * Konstellation composable function drawing a line chart.
  * @param dataset Your set of points.
- * @param modifier Your classic Jetpack-Compose modifier.
+ * @param modifier The modifier to be applied to the chart.
  * @param properties The DNA of your chart. See [LineChartProperties].
  * @param styles Visual styles to be applied to the chart. See [LineChartStyles].
  * @param highlightContent Classic Composable scope defining the content to be shown inside
@@ -51,7 +48,6 @@ import kotlinx.coroutines.withContext
  * optional, and it's a light alternative to [highlightContent] to have feedback on highlighting
  * without having to draw content above the chart.
  */
-@Suppress("CognitiveComplexMethod") // FIXME Try to simplify
 @Composable
 public fun LineChart(
     dataset: Dataset,
@@ -61,83 +57,70 @@ public fun LineChart(
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
-    var size by remember { mutableStateOf(Size.Zero) }
-    var panningState by remember { mutableStateOf(PanningState(0f, 0f)) }
+    LineChart(
+        state = rememberLineChartState(dataset, properties, styles),
+        modifier = modifier,
+        highlightContent = highlightContent,
+        onHighlightChange = onHighlightChange
+    )
+}
 
-    val initWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset)
-
-    val window by remember(dataset, properties) {
-        // This is the window that will be used to compute the offsets for the dataset, and to draw
-        // the chart axes.
-        // It's computed by always taking the initial window and applying the panning amount.
-        derivedStateOf {
-            val xPan = panningState.x
-                .takeIf { it != 0f }
-                ?.map(0f..size.width, initWindow.xWindow)
-                ?.times(-1)
-                ?: 0f
-            val yPan = panningState.y
-                .takeIf { it != 0f }
-                ?.map(0f..size.height, initWindow.yWindow)
-                ?: 0f
-            initWindow.copy(
-                xWindow = initWindow.xWindow.start + xPan..initWindow.xWindow.endInclusive + xPan,
-                yWindow = initWindow.yWindow.start + yPan..initWindow.yWindow.endInclusive + yPan
-            )
-        }
-    }
-
-    val computedDataset by remember(dataset) {
-        derivedStateOf {
-            dataset.createOffsets(
-                size = size,
-                xWindowRange = window.xWindow,
-                yWindowRange = window.yWindow
-            ).also {
-                if (!panningState.hasPanned) {
-                    panningState = PanningState(
-                        x = size.width / 2,
-                        y = size.height / 2
-                    )
-                }
-            }
-        }
-    }
-
+/**
+ * Konstellation composable function drawing a line chart.
+ * @param state The state of the chart. See [LineChartState].
+ * @param modifier The modifier to be applied to the chart.
+ * @param highlightContent Classic Composable scope defining the content to be shown inside
+ * highlight popup(s). This is optional.
+ * @param onHighlightChange Callback invoked each time the highlighted value changes. This is
+ * optional, and it's a light alternative to [highlightContent] to have feedback on highlighting
+ * without having to draw content above the chart.
+ */
+@Composable
+public fun LineChart(
+    state: LineChartState,
+    modifier: Modifier = Modifier,
+    highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
+    onHighlightChange: ((Point?) -> Unit)? = null
+) {
+    // This layout helps to compute the offsets for the dataset during the first layout pass.
     Box {
         Canvas(
             modifier
-                .padding(properties.chartPaddingValues)
-                // This helps to compute the offsets for the dataset during the first layout pass.
-                .onSizeChanged { size = it.toSize() }
+                .padding(state.properties.chartPaddingValues)
+                .onSizeChanged(state::updateSize)
         ) {
-            if (properties.drawFrame) {
+            if (state.properties.drawFrame) {
                 drawFrame()
             }
 
-            val path = properties.pathInterpolator(computedDataset)
+            val path = state.properties.pathInterpolator(state.computedDataset)
 
-            if (properties.drawZeroLines) {
-                drawZeroLines(window.xWindow, window.yWindow)
+            if (state.properties.drawZeroLines) {
+                drawZeroLines(state.window.xWindow, state.window.yWindow)
             }
 
-            with(styles) {
-                drawScaledAxis(properties, styles, window.xWindow, window.yWindow)
+            with(state.styles) {
+                drawScaledAxis(
+                    state.properties,
+                    state.styles,
+                    state.window.xWindow,
+                    state.window.yWindow
+                )
                 // Background filling
-                properties.fillingBrush?.let { brush ->
+                state.properties.fillingBrush?.let { brush ->
                     drawPath(
                         path = Path().apply {
                             addPath(path)
                             // Closing path shape with chart bottom
-                            lineTo(computedDataset.last().xPos, size.height)
-                            lineTo(computedDataset.first().xPos, size.height)
+                            lineTo(state.computedDataset.last().xPos, size.height)
+                            lineTo(state.computedDataset.first().xPos, size.height)
                             close()
                         },
                         brush = brush
                     )
                 }
 
-                if (properties.drawLines) {
+                if (state.properties.drawLines) {
                     // Chart line path
                     drawLinePath(
                         path,
@@ -146,27 +129,23 @@ public fun LineChart(
                 }
 
                 // Points
-                if (properties.drawPoints) {
-                    computedDataset.forEach { drawPoint(it, pointStyle) }
+                if (state.properties.drawPoints) {
+                    state.computedDataset.forEach { drawPoint(it, pointStyle) }
                 }
             }
         }
 
-        HighlightCanvas(
-            modifier = modifier,
-            properties = properties,
-            dataset = { computedDataset },
-            styles = styles,
-            highlightContent = highlightContent,
-            onHighlightChange = onHighlightChange,
-            onUpdateWindowOffsets = { dragAmount ->
-                panningState = panningState.copy(
-                    x = panningState.x + dragAmount.x,
-                    y = panningState.y + dragAmount.y,
-                    hasPanned = true
-                )
-            }
-        )
+        key(state) {
+            HighlightCanvas(
+                modifier = modifier,
+                properties = state.properties,
+                dataset = { state.computedDataset },
+                styles = state.styles,
+                highlightContent = highlightContent,
+                onHighlightChange = onHighlightChange,
+                onUpdateWindowOffsets = state::pan
+            )
+        }
     }
 }
 
@@ -259,19 +238,6 @@ private fun BoxScope.HighlightCanvas(
         }
     }
 }
-
-/**
- * State to keep track of the panning offset.
- * @property x The x offset.
- * @property y The y offset.
- * @property hasPanned Whether the chart has been panned. When false, this means that the chart has
- * not been panned yet and the initial panning offset should be set to the center of the chart.
- */
-private data class PanningState(
-    val x: Float,
-    val y: Float,
-    val hasPanned: Boolean = false
-)
 
 @Preview
 @Composable
