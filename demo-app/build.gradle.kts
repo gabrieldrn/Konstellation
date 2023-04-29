@@ -3,10 +3,10 @@ plugins {
 }
 
 android {
-    namespace = "com.gabrieldrn.konstellationdemo"
+    namespace = "dev.gabrieldrn.konstellationdemo"
 
     defaultConfig {
-        applicationId = "com.gabrieldrn.konstellationdemo"
+        applicationId = "dev.gabrieldrn.konstellationdemo"
         versionCode = 1
         versionName = "0.1"
     }

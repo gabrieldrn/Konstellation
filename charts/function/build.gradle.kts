@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.gabrieldrn.konstellation.charts.function"
+    namespace = "dev.gabrieldrn.konstellation.charts.function"
 }
 
 // ! Excluded as implementation is not sufficient enough.

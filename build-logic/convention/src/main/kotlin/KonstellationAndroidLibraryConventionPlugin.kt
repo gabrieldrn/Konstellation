@@ -1,9 +1,9 @@
 import com.android.build.gradle.LibraryExtension
-import com.gabrieldrn.konstellation.buildlogic.configureKotlinAndroidCommon
-import com.gabrieldrn.konstellation.buildlogic.getLibrary
-import com.gabrieldrn.konstellation.buildlogic.getPlugin
-import com.gabrieldrn.konstellation.buildlogic.libs
-import com.gabrieldrn.konstellation.buildlogic.setupExplicitApi
+import dev.gabrieldrn.konstellation.buildlogic.configureKotlinAndroidCommon
+import dev.gabrieldrn.konstellation.buildlogic.getLibrary
+import dev.gabrieldrn.konstellation.buildlogic.getPlugin
+import dev.gabrieldrn.konstellation.buildlogic.libs
+import dev.gabrieldrn.konstellation.buildlogic.setupExplicitApi
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat

@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.gabrieldrn.konstellation"
+    namespace = "dev.gabrieldrn.konstellation"
 }
 
 //dokkaHtml.configure {

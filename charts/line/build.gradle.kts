@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.gabrieldrn.konstellation.charts.line"
+    namespace = "dev.gabrieldrn.konstellation.charts.line"
 }
 
 //dokkaHtml.configure {

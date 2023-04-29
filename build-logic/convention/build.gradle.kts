@@ -4,7 +4,7 @@ plugins {
     `maven-publish`
 }
 
-group = "com.gabrieldrn.konstellation.buildlogic"
+group = "dev.gabrieldrn.konstellation.buildlogic"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
