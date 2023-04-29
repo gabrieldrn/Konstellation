@@ -2,11 +2,10 @@ package dev.gabrieldrn.konstellationdemo.linechartdemo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Brush
 import androidx.lifecycle.ViewModel
-import dev.gabrieldrn.konstellation.charts.line.configuration.ChartWindow
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import dev.gabrieldrn.konstellation.charts.line.math.PathInterpolator
+import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import dev.gabrieldrn.konstellation.highlighting.HighlightLinePosition
 import dev.gabrieldrn.konstellation.plotting.ChartAxis
@@ -120,9 +119,6 @@ class LineChartDemoViewModel(
             LineChartProperties::pathInterpolator -> uiState.properties
                 .copy(pathInterpolator = newValue as PathInterpolator)
 
-            LineChartProperties::fillingBrush -> uiState.properties
-                .copy(fillingBrush = newValue as? Brush?)
-
             else -> null
         }?.let {
             uiState = uiState.copy(properties = it)
@@ -131,6 +127,7 @@ class LineChartDemoViewModel(
 
     /**
      * Data class representing the UI state of the LineChartDemoActivity.
+     *
      * @property dataset The dataset to be drawn in the chart.
      * @property properties The properties of the chart.
      */

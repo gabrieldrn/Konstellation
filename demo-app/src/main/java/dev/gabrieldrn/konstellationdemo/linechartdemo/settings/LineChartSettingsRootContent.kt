@@ -21,18 +21,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.gabrieldrn.konstellation.charts.line.math.LinearPathInterpolator
-import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
-import dev.gabrieldrn.konstellation.plotting.Axes
-import dev.gabrieldrn.konstellation.plotting.xRange
-import dev.gabrieldrn.konstellation.plotting.yRange
-import dev.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
-import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import dev.gabrieldrn.konstellation.charts.line.math.LinearPathInterpolator
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
+import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
+import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
+import dev.gabrieldrn.konstellation.plotting.Axes
+import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
+import kotlin.reflect.KProperty1
 
 private val SettingSurfaceHeight = 148.dp
 
@@ -42,7 +41,14 @@ private val SettingSurfaceHeight = 148.dp
  */
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = viewModel()) {
+fun ColumnScope.LineChartSettingsContent(
+    properties: LineChartProperties,
+    styles: LineChartStyles,
+    onGenerateRandomDataset: () -> Unit,
+    onGenerateFancyDataset: () -> Unit,
+    onUpdateProperty: (KProperty1<LineChartProperties, Any?>, Any?) -> Unit,
+    onStyleChange: (LineChartStyles) -> Unit,
+) {
     val pagerState = rememberPagerState()
 
     HorizontalPager(
@@ -52,42 +58,51 @@ fun ColumnScope.LineChartSettingsContent(viewModel: LineChartDemoViewModel = vie
     ) { page ->
         @Suppress("MagicNumber")
         when (page) {
+
+            // region Properties
+
             0 -> LineChartDatasetSelector(
-                onGenerateRandomDataset = viewModel::generateNewRandomDataset,
-                onGenerateFancyDataset = viewModel::generateNewFancyDataset
+                onGenerateRandomDataset = onGenerateRandomDataset,
+                onGenerateFancyDataset = onGenerateFancyDataset,
             )
 
             1 -> LineChartDataDrawingSetting(
-                drawLines = viewModel.uiState.properties.drawLines,
-                drawPoints = viewModel.uiState.properties.drawPoints,
-                interpolator = viewModel.uiState.properties.pathInterpolator,
-                onUpdateProperty = viewModel::updateProperty,
+                drawLines = properties.drawLines,
+                drawPoints = properties.drawPoints,
+                interpolator = properties.pathInterpolator,
+                onUpdateProperty = onUpdateProperty,
             )
 
-            2 -> LineChartFillingSetting(
-                brush = viewModel.uiState.properties.fillingBrush,
-                onUpdateProperty = viewModel::updateProperty
+            2 -> LineChartHighlightSetting(
+                highlightPositions = properties.highlightContentPositions,
+                onUpdateProperty = onUpdateProperty
             )
 
-            3 -> LineChartHighlightSetting(
-                highlightPositions = viewModel.uiState.properties.highlightContentPositions,
-                onUpdateProperty = viewModel::updateProperty
+            3 -> LineChartAxisSelectorSetting(
+                axes = properties.axes,
+                drawFrame = properties.drawFrame,
+                drawZeroLines = properties.drawZeroLines,
+                onUpdateProperty = onUpdateProperty,
             )
 
-            4 -> LineChartAxisSelectorSetting(
-                axes = viewModel.uiState.properties.axes,
-                drawFrame = viewModel.uiState.properties.drawFrame,
-                drawZeroLines = viewModel.uiState.properties.drawZeroLines,
-                onUpdateProperty = viewModel::updateProperty,
+            4 -> LineChartPaddingsSetting(
+//                datasetXRange = dataset.xRange,
+//                datasetYRange = dataset.yRange,
+                chartPaddingValues = properties.chartPaddingValues,
+                chartWindow = properties.chartWindow,
+                onUpdateProperty = onUpdateProperty
             )
 
-            5 -> LineChartPaddingsSetting(
-                datasetXRange = viewModel.uiState.dataset.xRange,
-                datasetYRange = viewModel.uiState.dataset.yRange,
-                chartPaddingValues = viewModel.uiState.properties.chartPaddingValues,
-                chartWindow = viewModel.uiState.properties.chartWindow,
-                onUpdateProperty = viewModel::updateProperty
+            // endregion
+
+            // region Styles
+
+            5 -> LineChartFillingSetting(
+                brush = styles.fillingBrush,
+                onUpdateBrush = { brush -> onStyleChange(styles.copy(fillingBrush = brush)) },
             )
+
+            // styles
         }
     }
     HorizontalPagerIndicator(
@@ -188,8 +203,6 @@ private fun SettingsPreviews() {
                 drawLines = true, drawPoints = true, LinearPathInterpolator(), { _, _ -> }
             )
 
-            LineChartFillingSetting(null, { _, _ -> })
-
             LineChartHighlightSetting(setOf(HighlightContentPosition.Point), { _, _ -> })
 
             LineChartAxisSelectorSetting(
@@ -200,12 +213,14 @@ private fun SettingsPreviews() {
             )
 
             LineChartPaddingsSetting(
-                datasetXRange = 0f..1f,
-                datasetYRange = 0f..1f,
+//                datasetXRange = 0f..1f,
+//                datasetYRange = 0f..1f,
                 chartPaddingValues = PaddingValues(44.dp),
                 chartWindow = null,
                 onUpdateProperty = { _, _ -> }
             )
+
+            LineChartFillingSetting(null, { _ -> })
         }
     }
 }

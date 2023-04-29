@@ -4,9 +4,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
-import dev.gabrieldrn.konstellation.charts.line.configuration.ChartWindow
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
+import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.math.createOffsets
 import dev.gabrieldrn.konstellation.math.map
 import dev.gabrieldrn.konstellation.plotting.Dataset
@@ -28,14 +27,12 @@ import dev.gabrieldrn.konstellation.plotting.Dataset
  *
  * @property dataset Your set of points.
  * @property properties The properties of the line chart. See [LineChartProperties].
- * @property styles Visual styles to be applied to the chart. See [LineChartStyles].
  * @throws IllegalArgumentException If the dataset presents invalid values.
  */
 @Stable
 public class LineChartState(
     public val dataset: Dataset,
     public val properties: LineChartProperties,
-    public val styles: LineChartStyles = LineChartStyles(),
 ) {
     init {
         with(dataset) {
@@ -101,7 +98,8 @@ public class LineChartState(
     }
 
     /**
-     * Updates the size of the chart.
+     * Registers the new size of the canvas that draws the chart. The chart offsets must be
+     * recomputed when the size changes.
      */
     public fun updateSize(newSize: IntSize) {
         size = newSize.toSize()
@@ -130,20 +128,19 @@ public class LineChartState(
 }
 
 /**
- * Remembers a [LineChartState] that will be recomposed whenever the given [dataset],
- * [chartProperties] or [chartStyles] change.
+ * Remembers a [LineChartState] that will be recomposed whenever the given [dataset] or
+ * [chartProperties] change.
  */
 @Composable
 public fun rememberLineChartState(
     dataset: Dataset,
-    chartProperties: LineChartProperties,
-    chartStyles: LineChartStyles
+    chartProperties: LineChartProperties
 ): LineChartState = remember(
-    dataset, chartProperties, chartStyles
+    dataset,
+    chartProperties
 ) {
     LineChartState(
         dataset = dataset,
         properties = chartProperties,
-        styles = chartStyles
     )
 }

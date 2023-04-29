@@ -8,8 +8,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.charts.line.configuration.ChartWindow
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
+import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import kotlin.reflect.KProperty1
 
 /**
@@ -18,8 +18,8 @@ import kotlin.reflect.KProperty1
 @Suppress("MagicNumber", "UNUSED_PARAMETER")
 @Composable
 fun LineChartPaddingsSetting(
-    datasetXRange: ClosedFloatingPointRange<Float>,
-    datasetYRange: ClosedFloatingPointRange<Float>,
+//    datasetXRange: ClosedFloatingPointRange<Float>,
+//    datasetYRange: ClosedFloatingPointRange<Float>,
     chartPaddingValues: PaddingValues,
     chartWindow: ChartWindow?,
     onUpdateProperty: (KProperty1<LineChartProperties, Any?>, Any?) -> Unit,

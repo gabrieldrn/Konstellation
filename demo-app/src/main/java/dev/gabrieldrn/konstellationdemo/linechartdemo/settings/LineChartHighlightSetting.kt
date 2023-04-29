@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
 import kotlin.reflect.KProperty1

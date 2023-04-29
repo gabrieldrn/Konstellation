@@ -15,9 +15,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.charts.line.configuration.ChartWindow
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
+import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
+import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.charts.line.drawing.drawLinePath
 import dev.gabrieldrn.konstellation.drawing.drawFrame
 import dev.gabrieldrn.konstellation.drawing.drawPoint
@@ -41,7 +41,8 @@ import kotlinx.coroutines.withContext
  * @param dataset Your set of points.
  * @param modifier The modifier to be applied to the chart.
  * @param properties The DNA of your chart. See [LineChartProperties].
- * @param styles Visual styles to be applied to the chart. See [LineChartStyles].
+ * @param styles Visual styles to be applied to the chart. Changing the styles will not trigger a
+ * recomposition of the chart.
  * @param highlightContent Classic Composable scope defining the content to be shown inside
  * highlight popup(s). This is optional.
  * @param onHighlightChange Callback invoked each time the highlighted value changes. This is
@@ -58,8 +59,9 @@ public fun LineChart(
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
     LineChart(
-        state = rememberLineChartState(dataset, properties, styles),
+        state = rememberLineChartState(dataset, properties),
         modifier = modifier,
+        styles = styles,
         highlightContent = highlightContent,
         onHighlightChange = onHighlightChange
     )
@@ -69,6 +71,8 @@ public fun LineChart(
  * Konstellation composable function drawing a line chart.
  * @param state The state of the chart. See [LineChartState].
  * @param modifier The modifier to be applied to the chart.
+ * @param styles Visual styles to be applied to the chart. Changing the styles will not trigger a
+ * recomposition of the chart.
  * @param highlightContent Classic Composable scope defining the content to be shown inside
  * highlight popup(s). This is optional.
  * @param onHighlightChange Callback invoked each time the highlighted value changes. This is
@@ -79,6 +83,7 @@ public fun LineChart(
 public fun LineChart(
     state: LineChartState,
     modifier: Modifier = Modifier,
+    styles: LineChartStyles = LineChartStyles(),
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
@@ -99,15 +104,15 @@ public fun LineChart(
                 drawZeroLines(state.window.xWindow, state.window.yWindow)
             }
 
-            with(state.styles) {
+            with(styles) {
                 drawScaledAxis(
                     state.properties,
-                    state.styles,
+                    styles,
                     state.window.xWindow,
                     state.window.yWindow
                 )
                 // Background filling
-                state.properties.fillingBrush?.let { brush ->
+                styles.fillingBrush?.let { brush ->
                     drawPath(
                         path = Path().apply {
                             addPath(path)
@@ -140,7 +145,7 @@ public fun LineChart(
                 modifier = modifier,
                 properties = state.properties,
                 dataset = { state.computedDataset },
-                styles = state.styles,
+                styles = styles,
                 highlightContent = highlightContent,
                 onHighlightChange = onHighlightChange,
                 onUpdateWindowOffsets = state::pan

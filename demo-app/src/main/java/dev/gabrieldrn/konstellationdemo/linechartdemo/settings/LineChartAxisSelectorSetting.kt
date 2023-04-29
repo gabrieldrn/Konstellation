@@ -18,7 +18,7 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.plotting.Axes
 import dev.gabrieldrn.konstellation.plotting.ChartAxis
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton

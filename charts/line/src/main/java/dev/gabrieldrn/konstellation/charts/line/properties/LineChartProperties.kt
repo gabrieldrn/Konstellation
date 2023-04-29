@@ -1,7 +1,6 @@
-package dev.gabrieldrn.konstellation.charts.line.configuration
+package dev.gabrieldrn.konstellation.charts.line.properties
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.charts.line.math.MonotoneXPathInterpolator
 import dev.gabrieldrn.konstellation.charts.line.math.PathInterpolator
@@ -10,10 +9,15 @@ import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import dev.gabrieldrn.konstellation.highlighting.HighlightLinePosition
 import dev.gabrieldrn.konstellation.plotting.Axes
 import dev.gabrieldrn.konstellation.plotting.ChartAxis
-import java.io.Serializable
 
 /**
- * Class defining features of a Konstellation line chart.
+ * ⚙️ Class defining the properties of a Konstellation line chart, affecting how the chart is
+ * computed and what is drawn.
+ *
+ * ⚠️ **Changing a property implies recomputing then recomposing the chart.**
+ *
+ * They do not affect the data itself.
+ *
  * @property axes Axes to be drawn on the chart.
  * @property chartPaddingValues Paddings applied to the bounds of the chart (from "view" bounds to
  * axes).
@@ -30,8 +34,6 @@ import java.io.Serializable
  * @property drawLines Either to draw lines (as described by [LineChartStyles.lineStyle]) or not.
  * @property drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
  * @property pathInterpolator The interpolator to use when drawing the lines.
- * @property fillingBrush The brush to apply to the filling content from the bottom of the chart to
- * the data lines.
  * @property enablePanning Either to enable panning or not.
  */
 public data class LineChartProperties(
@@ -48,10 +50,5 @@ public data class LineChartProperties(
     val drawLines: Boolean = true,
     val drawPoints: Boolean = true,
     val pathInterpolator: PathInterpolator = MonotoneXPathInterpolator(),
-    val fillingBrush: Brush? = null,
     val enablePanning: Boolean = true,
-) : ChartProperties, Serializable {
-    private companion object {
-        private const val serialVersionUID: Long = 1L
-    }
-}
+) : ChartProperties

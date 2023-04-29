@@ -14,9 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
-import kotlin.reflect.KProperty1
 
 /**
  * Composable that allows the user to change the filling of the LineChart.
@@ -24,7 +22,7 @@ import kotlin.reflect.KProperty1
 @Composable
 fun LineChartFillingSetting(
     brush: Brush?,
-    onUpdateProperty: (KProperty1<LineChartProperties, Any?>, Any?) -> Unit,
+    onUpdateBrush: (Brush?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val solidColor = SolidColor(MaterialTheme.colorScheme.primary.copy(alpha = .75f))
@@ -39,24 +37,18 @@ fun LineChartFillingSetting(
         ) {
             ToggleIconButton(
                 toggled = brush is SolidColor,
-                onToggleChange = {
-                    onUpdateProperty(LineChartProperties::fillingBrush, solidColor)
-                },
-                imageVector = Icons.Default.FormatColorFill
+                onToggleChange = { onUpdateBrush(solidColor) },
+                imageVector = Icons.Default.FormatColorFill,
             )
             ToggleIconButton(
                 toggled = brush is ShaderBrush,
-                onToggleChange = {
-                    onUpdateProperty(LineChartProperties::fillingBrush, gradientBrush)
-                },
-                imageVector = Icons.Default.Gradient
+                onToggleChange = { onUpdateBrush(gradientBrush) },
+                imageVector = Icons.Default.Gradient,
             )
             ToggleIconButton(
                 toggled = brush == null,
-                onToggleChange = {
-                    onUpdateProperty(LineChartProperties::fillingBrush, null)
-                },
-                imageVector = Icons.Default.FormatColorReset
+                onToggleChange = { onUpdateBrush(null) },
+                imageVector = Icons.Default.FormatColorReset,
             )
         }
     }

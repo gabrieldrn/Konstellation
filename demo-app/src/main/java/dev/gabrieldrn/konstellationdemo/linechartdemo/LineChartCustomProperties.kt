@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartStyles
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
+import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.TextDrawStyle

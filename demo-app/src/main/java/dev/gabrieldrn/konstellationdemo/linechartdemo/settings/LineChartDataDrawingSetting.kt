@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.charts.line.configuration.LineChartProperties
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.charts.line.math.CubicXPathInterpolator
 import dev.gabrieldrn.konstellation.charts.line.math.CubicYPathInterpolator
 import dev.gabrieldrn.konstellation.charts.line.math.LinearPathInterpolator
