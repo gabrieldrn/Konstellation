@@ -3,7 +3,6 @@ package dev.gabrieldrn.konstellationdemo.linechartdemo
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
-import dev.gabrieldrn.konstellation.charts.line.math.PathInterpolator
 import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
@@ -109,15 +108,6 @@ class LineChartDemoViewModel(
 
             LineChartProperties::drawZeroLines -> uiState.properties
                 .copy(drawZeroLines = newValue as Boolean)
-
-            LineChartProperties::drawLines -> uiState.properties
-                .copy(drawLines = newValue as Boolean)
-
-            LineChartProperties::drawPoints -> uiState.properties
-                .copy(drawPoints = newValue as Boolean)
-
-            LineChartProperties::pathInterpolator -> uiState.properties
-                .copy(pathInterpolator = newValue as PathInterpolator)
 
             else -> null
         }?.let {

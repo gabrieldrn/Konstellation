@@ -25,7 +25,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
-import dev.gabrieldrn.konstellation.charts.line.math.LinearPathInterpolator
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
@@ -47,7 +46,7 @@ fun ColumnScope.LineChartSettingsContent(
     onGenerateRandomDataset: () -> Unit,
     onGenerateFancyDataset: () -> Unit,
     onUpdateProperty: (KProperty1<LineChartProperties, Any?>, Any?) -> Unit,
-    onStyleChange: (LineChartStyles) -> Unit,
+    onUpdateStyles: (LineChartStyles) -> Unit,
 ) {
     val pagerState = rememberPagerState()
 
@@ -66,26 +65,19 @@ fun ColumnScope.LineChartSettingsContent(
                 onGenerateFancyDataset = onGenerateFancyDataset,
             )
 
-            1 -> LineChartDataDrawingSetting(
-                drawLines = properties.drawLines,
-                drawPoints = properties.drawPoints,
-                interpolator = properties.pathInterpolator,
-                onUpdateProperty = onUpdateProperty,
-            )
-
-            2 -> LineChartHighlightSetting(
+            1 -> LineChartHighlightSetting(
                 highlightPositions = properties.highlightContentPositions,
                 onUpdateProperty = onUpdateProperty
             )
 
-            3 -> LineChartAxisSelectorSetting(
+            2 -> LineChartAxisSelectorSetting(
                 axes = properties.axes,
                 drawFrame = properties.drawFrame,
                 drawZeroLines = properties.drawZeroLines,
                 onUpdateProperty = onUpdateProperty,
             )
 
-            4 -> LineChartPaddingsSetting(
+            3 -> LineChartPaddingsSetting(
 //                datasetXRange = dataset.xRange,
 //                datasetYRange = dataset.yRange,
                 chartPaddingValues = properties.chartPaddingValues,
@@ -97,9 +89,14 @@ fun ColumnScope.LineChartSettingsContent(
 
             // region Styles
 
+            4 -> LineChartDataDrawingSetting(
+                styles = styles,
+                onUpdateStyles = onUpdateStyles,
+            )
+
             5 -> LineChartFillingSetting(
                 brush = styles.fillingBrush,
-                onUpdateBrush = { brush -> onStyleChange(styles.copy(fillingBrush = brush)) },
+                onUpdateBrush = { brush -> onUpdateStyles(styles.copy(fillingBrush = brush)) },
             )
 
             // styles
@@ -199,10 +196,6 @@ private fun SettingsPreviews() {
         ) {
             LineChartDatasetSelector({}, {})
 
-            LineChartDataDrawingSetting(
-                drawLines = true, drawPoints = true, LinearPathInterpolator(), { _, _ -> }
-            )
-
             LineChartHighlightSetting(setOf(HighlightContentPosition.Point), { _, _ -> })
 
             LineChartAxisSelectorSetting(
@@ -218,6 +211,11 @@ private fun SettingsPreviews() {
                 chartPaddingValues = PaddingValues(44.dp),
                 chartWindow = null,
                 onUpdateProperty = { _, _ -> }
+            )
+
+            LineChartDataDrawingSetting(
+                styles = LineChartStyles(),
+                onUpdateStyles = { _ -> }
             )
 
             LineChartFillingSetting(null, { _ -> })

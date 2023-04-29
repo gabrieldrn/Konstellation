@@ -98,7 +98,7 @@ public fun LineChart(
                 drawFrame()
             }
 
-            val path = state.properties.pathInterpolator(state.computedDataset)
+            val path = styles.pathInterpolator(state.computedDataset)
 
             if (state.properties.drawZeroLines) {
                 drawZeroLines(state.window.xWindow, state.window.yWindow)
@@ -125,7 +125,7 @@ public fun LineChart(
                     )
                 }
 
-                if (state.properties.drawLines) {
+                if (styles.drawLines) {
                     // Chart line path
                     drawLinePath(
                         path,
@@ -134,7 +134,7 @@ public fun LineChart(
                 }
 
                 // Points
-                if (state.properties.drawPoints) {
+                if (styles.drawPoints) {
                     state.computedDataset.forEach { drawPoint(it, pointStyle) }
                 }
             }

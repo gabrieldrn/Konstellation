@@ -27,7 +27,6 @@ fun getDemoChartProperties() = LineChartProperties(
     highlightContentPositions = setOf(HighlightContentPosition.Top, HighlightContentPosition.Start),
     hapticHighlight = true,
     drawFrame = false,
-    drawPoints = true
 )
 
 /**

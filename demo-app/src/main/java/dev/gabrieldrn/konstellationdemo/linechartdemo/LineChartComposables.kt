@@ -43,7 +43,7 @@ fun LineChartDemo(
     }
 
     Column(modifier) {
-        DemoContent(
+        DemoLineChart(
             dataset = viewModel.uiState.dataset,
             properties = viewModel.uiState.properties,
             styles = lineChartStyles
@@ -54,13 +54,13 @@ fun LineChartDemo(
             onGenerateRandomDataset = viewModel::generateNewRandomDataset,
             onGenerateFancyDataset = viewModel::generateNewFancyDataset,
             onUpdateProperty = viewModel::updateProperty,
-            onStyleChange = { lineChartStyles = it }
+            onUpdateStyles = { lineChartStyles = it }
         )
     }
 }
 
 @Composable
-private fun DemoContent(
+private fun DemoLineChart(
     dataset: Dataset,
     properties: LineChartProperties,
     styles: LineChartStyles,
@@ -139,7 +139,7 @@ private fun LineChartWithCustomPropertiesPreview() {
         modules(appModule)
     }
     KonstellationTheme {
-        DemoContent(
+        DemoLineChart(
             dataset = datasetOf(
                 0f by 0f,
                 1f by 1f,

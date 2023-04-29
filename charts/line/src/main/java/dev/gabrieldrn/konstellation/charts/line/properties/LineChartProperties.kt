@@ -2,8 +2,6 @@ package dev.gabrieldrn.konstellation.charts.line.properties
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.charts.line.math.MonotoneXPathInterpolator
-import dev.gabrieldrn.konstellation.charts.line.math.PathInterpolator
 import dev.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import dev.gabrieldrn.konstellation.highlighting.HighlightLinePosition
@@ -31,9 +29,6 @@ import dev.gabrieldrn.konstellation.plotting.ChartAxis
  * highlighted.
  * @property drawFrame Either to draw the lines delimiting the chart or not.
  * @property drawZeroLines Either to draw the lines indicating the zero on X and Y axes or not.
- * @property drawLines Either to draw lines (as described by [LineChartStyles.lineStyle]) or not.
- * @property drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
- * @property pathInterpolator The interpolator to use when drawing the lines.
  * @property enablePanning Either to enable panning or not.
  */
 public data class LineChartProperties(
@@ -47,8 +42,5 @@ public data class LineChartProperties(
     override val hapticHighlight: Boolean = false,
     override val drawFrame: Boolean = true,
     override val drawZeroLines: Boolean = true,
-    val drawLines: Boolean = true,
-    val drawPoints: Boolean = true,
-    val pathInterpolator: PathInterpolator = MonotoneXPathInterpolator(),
     val enablePanning: Boolean = true,
 ) : ChartProperties
