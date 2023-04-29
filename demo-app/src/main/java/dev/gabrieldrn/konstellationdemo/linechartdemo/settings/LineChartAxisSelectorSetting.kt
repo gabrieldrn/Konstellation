@@ -18,12 +18,11 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
+import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.plotting.Axes
 import dev.gabrieldrn.konstellation.plotting.ChartAxis
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
 import dev.gabrieldrn.konstellationdemo.ui.composables.toggleIconButtonSize
-import kotlin.reflect.KProperty1
 
 /**
  * A setting composable that allows the user to select which axes to draw and whether to draw the
@@ -31,10 +30,8 @@ import kotlin.reflect.KProperty1
  */
 @Composable
 fun LineChartAxisSelectorSetting(
-    axes: Set<ChartAxis>,
-    drawFrame: Boolean,
-    drawZeroLines: Boolean,
-    onUpdateProperty: (KProperty1<LineChartProperties, Any>, Any) -> Unit,
+    styles: LineChartStyles,
+    onUpdateStyles: (LineChartStyles) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingSurface(title = "Axes & framing", modifier = modifier) {
@@ -44,8 +41,8 @@ fun LineChartAxisSelectorSetting(
                 .fillMaxWidth()
         ) {
             AxesSelector(
-                axes = axes,
-                onUpdateProperty = onUpdateProperty,
+                axes = styles.axes,
+                onUpdateAxes = { onUpdateStyles(styles.copy(axes = it)) },
                 modifier = Modifier.weight(1f)
             )
             Box(
@@ -62,17 +59,13 @@ fun LineChartAxisSelectorSetting(
                     .fillMaxSize()
             ) {
                 ToggleIconButton(
-                    toggled = drawFrame,
-                    onToggleChange = {
-                        onUpdateProperty(LineChartProperties::drawFrame, it)
-                    },
+                    toggled = styles.drawFrame,
+                    onToggleChange = { onUpdateStyles(styles.copy(drawFrame = it)) },
                     imageVector = Icons.Default.BorderOuter
                 )
                 ToggleIconButton(
-                    toggled = drawZeroLines,
-                    onToggleChange = {
-                        onUpdateProperty(LineChartProperties::drawZeroLines, it)
-                    },
+                    toggled = styles.drawZeroLines,
+                    onToggleChange = { onUpdateStyles(styles.copy(drawZeroLines = it)) },
                     imageVector = Icons.Default.BorderInner
                 )
             }
@@ -83,7 +76,7 @@ fun LineChartAxisSelectorSetting(
 @Composable
 private fun AxesSelector(
     axes: Set<ChartAxis>,
-    onUpdateProperty: (KProperty1<LineChartProperties, Any>, Any) -> Unit,
+    onUpdateAxes: (Set<ChartAxis>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     @Composable
@@ -96,8 +89,7 @@ private fun AxesSelector(
             modifier = modifier,
             toggled = axes.contains(axis),
             onToggleChange = { toggled ->
-                onUpdateProperty(
-                    LineChartProperties::axes,
+                onUpdateAxes(
                     axes.toMutableSet().apply {
                         if (toggled) {
                             add(axis)

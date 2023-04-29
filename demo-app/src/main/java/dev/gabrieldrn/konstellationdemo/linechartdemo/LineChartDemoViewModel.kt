@@ -7,7 +7,6 @@ import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import dev.gabrieldrn.konstellation.highlighting.HighlightLinePosition
-import dev.gabrieldrn.konstellation.plotting.ChartAxis
 import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.by
 import dev.gabrieldrn.konstellation.plotting.datasetOf
@@ -85,9 +84,6 @@ class LineChartDemoViewModel(
     @Suppress("UNCHECKED_CAST", "CyclomaticComplexMethod")
     fun <T> updateProperty(property: KProperty1<LineChartProperties, T>, newValue: T) {
         when (property) {
-            LineChartProperties::axes -> uiState.properties
-                .copy(axes = newValue as Set<ChartAxis>)
-
             LineChartProperties::chartPaddingValues -> uiState.properties
                 .copy(chartPaddingValues = newValue as PaddingValues)
 
@@ -102,12 +98,6 @@ class LineChartDemoViewModel(
 
             LineChartProperties::hapticHighlight -> uiState.properties
                 .copy(hapticHighlight = newValue as Boolean)
-
-            LineChartProperties::drawFrame -> uiState.properties
-                .copy(drawFrame = newValue as Boolean)
-
-            LineChartProperties::drawZeroLines -> uiState.properties
-                .copy(drawZeroLines = newValue as Boolean)
 
             else -> null
         }?.let {

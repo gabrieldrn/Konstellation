@@ -94,19 +94,18 @@ public fun LineChart(
                 .padding(state.properties.chartPaddingValues)
                 .onSizeChanged(state::updateSize)
         ) {
-            if (state.properties.drawFrame) {
+            if (styles.drawFrame) {
                 drawFrame()
             }
 
-            val path = styles.pathInterpolator(state.computedDataset)
+            val path = styles.pathInterpolator(state.calculatedDataset)
 
-            if (state.properties.drawZeroLines) {
+            if (styles.drawZeroLines) {
                 drawZeroLines(state.window.xWindow, state.window.yWindow)
             }
 
             with(styles) {
                 drawScaledAxis(
-                    state.properties,
                     styles,
                     state.window.xWindow,
                     state.window.yWindow
@@ -117,8 +116,8 @@ public fun LineChart(
                         path = Path().apply {
                             addPath(path)
                             // Closing path shape with chart bottom
-                            lineTo(state.computedDataset.last().xPos, size.height)
-                            lineTo(state.computedDataset.first().xPos, size.height)
+                            lineTo(state.calculatedDataset.last().xPos, size.height)
+                            lineTo(state.calculatedDataset.first().xPos, size.height)
                             close()
                         },
                         brush = brush
@@ -135,7 +134,7 @@ public fun LineChart(
 
                 // Points
                 if (styles.drawPoints) {
-                    state.computedDataset.forEach { drawPoint(it, pointStyle) }
+                    state.calculatedDataset.forEach { drawPoint(it, pointStyle) }
                 }
             }
         }
@@ -144,7 +143,7 @@ public fun LineChart(
             HighlightCanvas(
                 modifier = modifier,
                 properties = state.properties,
-                dataset = { state.computedDataset },
+                dataset = { state.calculatedDataset },
                 styles = styles,
                 highlightContent = highlightContent,
                 onHighlightChange = onHighlightChange,
@@ -261,12 +260,14 @@ private fun LineChartPreview() {
             .fillMaxWidth()
             .aspectRatio(1f),
         properties = LineChartProperties(
-            axes = setOf(Axes.xBottom, Axes.yLeft),
             chartPaddingValues = PaddingValues(40.dp),
             chartWindow = ChartWindow(
                 xWindow = -1f..7f,
                 yWindow = -3f..6f
             ),
+        ),
+        styles = LineChartStyles(
+            axes = setOf(Axes.xBottom, Axes.yLeft)
         )
     )
 }

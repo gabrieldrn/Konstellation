@@ -26,7 +26,6 @@ private val injector = object : KoinComponent {}
 fun getDemoChartProperties() = LineChartProperties(
     highlightContentPositions = setOf(HighlightContentPosition.Top, HighlightContentPosition.Start),
     hapticHighlight = true,
-    drawFrame = false,
 )
 
 /**
@@ -38,6 +37,7 @@ fun getDemoChartStyles(
 ) = LineChartStyles(
     lineStyle = LineDrawStyle(color = MaterialTheme.colorScheme.primary),
     pointStyle = PointDrawStyle(color = MaterialTheme.colorScheme.primary),
+    drawFrame = false,
     xAxisBottomStyle = Axes.xBottomStyle
         .updateColor(MaterialTheme.colorScheme.outline)
         .updateTypeface(mainTextStyle.typeface),

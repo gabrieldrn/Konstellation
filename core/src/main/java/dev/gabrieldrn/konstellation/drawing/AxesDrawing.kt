@@ -7,7 +7,6 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import dev.gabrieldrn.konstellation.configuration.styles.AxisDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.ChartStyles
 import dev.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
@@ -31,18 +30,16 @@ private val chartScale = NiceScale(0f..1f)
 private val tickLabelPaint = Paint()
 
 /**
- * Draws axis and labels of a chart based on a given [properties] and axis ranges [xRange],
- * [yRange].
+ * Draws axis and labels of a chart based on its [styles] and axis ranges [xRange], [yRange].
  */
 public fun DrawScope.drawScaledAxis(
-    properties: ChartProperties,
     styles: ChartStyles,
     xRange: ClosedFloatingPointRange<Float>,
     yRange: ClosedFloatingPointRange<Float>,
 ) {
     var range: ClosedFloatingPointRange<Float>
     var style: AxisDrawStyle
-    properties.axes.forEach { axis ->
+    styles.axes.forEach { axis ->
         range = when (axis.axis) {
             Axis.X_TOP, Axis.X_BOTTOM -> xRange
             Axis.Y_LEFT, Axis.Y_RIGHT -> yRange

@@ -83,7 +83,7 @@ public class LineChartState(
     /**
      * The dataset with the offsets applied.
      */
-    public val computedDataset: Dataset by derivedStateOf {
+    public val calculatedDataset: Dataset by derivedStateOf {
         if (!hasPanned) {
             panningState = panningState.copy(
                 x = size.width / 2f,
@@ -121,6 +121,7 @@ public class LineChartState(
      * @property x The x offset.
      * @property y The y offset.
      */
+    @Stable
     private data class PanningState(
         val x: Float,
         val y: Float,

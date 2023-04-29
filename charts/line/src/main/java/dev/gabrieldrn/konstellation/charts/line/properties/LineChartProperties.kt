@@ -1,22 +1,19 @@
 package dev.gabrieldrn.konstellation.charts.line.properties
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.configuration.properties.ChartProperties
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import dev.gabrieldrn.konstellation.highlighting.HighlightLinePosition
-import dev.gabrieldrn.konstellation.plotting.Axes
-import dev.gabrieldrn.konstellation.plotting.ChartAxis
 
 /**
  * ⚙️ Class defining the properties of a Konstellation line chart, affecting how the chart is
- * computed and what is drawn.
+ * calculated. They do not affect the data itself.
  *
- * ⚠️ **Changing a property implies recomputing then recomposing the chart.**
+ * ⚠️ **Calculating the chart is an expensive process. Changing a property implies to recalculate
+ * the entire chart.**
  *
- * They do not affect the data itself.
- *
- * @property axes Axes to be drawn on the chart.
  * @property chartPaddingValues Paddings applied to the bounds of the chart (from "view" bounds to
  * axes).
  * @property chartWindow The visualization window of the chart. If null, the chart will be drawn
@@ -27,12 +24,10 @@ import dev.gabrieldrn.konstellation.plotting.ChartAxis
  * insight. A null value means not drawing any highlight line.
  * @property hapticHighlight Either to perform haptic feedbacks every time a new value is
  * highlighted.
- * @property drawFrame Either to draw the lines delimiting the chart or not.
- * @property drawZeroLines Either to draw the lines indicating the zero on X and Y axes or not.
  * @property enablePanning Either to enable panning or not.
  */
+@Stable
 public data class LineChartProperties(
-    override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
     val chartPaddingValues: PaddingValues = PaddingValues(40.dp),
     val chartWindow: ChartWindow? = null,
     val highlightContentPositions: Set<HighlightContentPosition> = setOf(
@@ -40,7 +35,5 @@ public data class LineChartProperties(
     ),
     val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.Relative,
     override val hapticHighlight: Boolean = false,
-    override val drawFrame: Boolean = true,
-    override val drawZeroLines: Boolean = true,
     val enablePanning: Boolean = true,
 ) : ChartProperties

@@ -28,7 +28,6 @@ import com.google.accompanist.pager.rememberPagerState
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
-import dev.gabrieldrn.konstellation.plotting.Axes
 import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlin.reflect.KProperty1
 
@@ -70,14 +69,7 @@ fun ColumnScope.LineChartSettingsContent(
                 onUpdateProperty = onUpdateProperty
             )
 
-            2 -> LineChartAxisSelectorSetting(
-                axes = properties.axes,
-                drawFrame = properties.drawFrame,
-                drawZeroLines = properties.drawZeroLines,
-                onUpdateProperty = onUpdateProperty,
-            )
-
-            3 -> LineChartPaddingsSetting(
+            2 -> LineChartPaddingsSetting(
 //                datasetXRange = dataset.xRange,
 //                datasetYRange = dataset.yRange,
                 chartPaddingValues = properties.chartPaddingValues,
@@ -88,6 +80,10 @@ fun ColumnScope.LineChartSettingsContent(
             // endregion
 
             // region Styles
+            3 -> LineChartAxisSelectorSetting(
+                styles = styles,
+                onUpdateStyles = onUpdateStyles,
+            )
 
             4 -> LineChartDataDrawingSetting(
                 styles = styles,
@@ -198,13 +194,6 @@ private fun SettingsPreviews() {
 
             LineChartHighlightSetting(setOf(HighlightContentPosition.Point), { _, _ -> })
 
-            LineChartAxisSelectorSetting(
-                axes = setOf(Axes.yLeft, Axes.xBottom),
-                drawFrame = false,
-                drawZeroLines = false,
-                { _, _ -> },
-            )
-
             LineChartPaddingsSetting(
 //                datasetXRange = 0f..1f,
 //                datasetYRange = 0f..1f,
@@ -213,12 +202,20 @@ private fun SettingsPreviews() {
                 onUpdateProperty = { _, _ -> }
             )
 
+            LineChartAxisSelectorSetting(
+                styles = LineChartStyles(),
+                onUpdateStyles = { _ -> }
+            )
+
             LineChartDataDrawingSetting(
                 styles = LineChartStyles(),
                 onUpdateStyles = { _ -> }
             )
 
-            LineChartFillingSetting(null, { _ -> })
+            LineChartFillingSetting(
+                brush = null,
+                onUpdateBrush = { _ -> }
+            )
         }
     }
 }

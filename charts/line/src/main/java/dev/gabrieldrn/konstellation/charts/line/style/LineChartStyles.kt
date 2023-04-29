@@ -1,5 +1,6 @@
 package dev.gabrieldrn.konstellation.charts.line.style
 
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.charts.line.math.MonotoneXPathInterpolator
@@ -10,13 +11,17 @@ import dev.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import dev.gabrieldrn.konstellation.plotting.Axes
+import dev.gabrieldrn.konstellation.plotting.ChartAxis
 
 /**
- * 🎨 Class defining the visual styles of a LineChart. They only affect the appearance of the
- * chart, not its behavior.
+ * 🎨 Class defining the visual styles of a Konstellation line chart. They only affect the
+ * appearance of the chart.
  *
+ * @property axes Axes to be drawn on the chart.
  * @property drawLines Either to draw lines (as described by [LineChartStyles.lineStyle]) or not.
  * @property drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
+ * @property drawFrame Either to draw the lines delimiting the chart or not.
+ * @property drawZeroLines Either to draw the lines indicating the zero on X and Y axes or not.
  * @property lineStyle Appearance of the lines connecting data points.
  * @property pointStyle Appearance of data points.
  * @property xAxisBottomStyle Appearance of the bottom axis.
@@ -31,9 +36,13 @@ import dev.gabrieldrn.konstellation.plotting.Axes
  * @property highlightLineStyle Appearance of the lines drawn on the highlighted point. Their
  * orientation depends on the provided highlighting positions in the LineChart composable.
  */
+@Stable
 public data class LineChartStyles(
+    override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
     val drawLines: Boolean = true,
     val drawPoints: Boolean = true,
+    override val drawFrame: Boolean = true,
+    override val drawZeroLines: Boolean = true,
     override val lineStyle: LineDrawStyle = LineDrawStyle(),
     override val pointStyle: PointDrawStyle = PointDrawStyle(),
     override val xAxisBottomStyle: AxisDrawStyle = Axes.xBottomStyle,

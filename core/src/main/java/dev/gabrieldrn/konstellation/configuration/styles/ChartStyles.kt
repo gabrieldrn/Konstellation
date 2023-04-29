@@ -9,6 +9,21 @@ import dev.gabrieldrn.konstellation.plotting.ChartAxis
 public interface ChartStyles {
 
     /**
+     * Axes to be drawn on the chart.
+     */
+    public val axes: Set<ChartAxis>
+
+    /**
+     * Either to draw the lines delimiting the chart or not.
+     */
+    public val drawFrame: Boolean
+
+    /**
+     * Either to draw the lines indicating the zero on X and Y axes or not.
+     */
+    public val drawZeroLines: Boolean
+
+    /**
      * Appearance of the lines connecting points.
      */
     public val lineStyle: LineDrawStyle
