@@ -288,6 +288,22 @@ public final class dev/gabrieldrn/konstellation/plotting/ChartAxis {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class dev/gabrieldrn/konstellation/plotting/DatasetKt {
+	public static final fun asDataset (Ljava/util/List;)Ljava/util/List;
+	public static final fun by (FF)Ldev/gabrieldrn/konstellation/plotting/Point;
+	public static final fun datasetOf ([Ldev/gabrieldrn/konstellation/plotting/Point;)Ljava/util/List;
+	public static final fun getOffsets (Ljava/util/List;)Ljava/util/List;
+	public static final fun getXMax (Ljava/util/List;)F
+	public static final fun getXMin (Ljava/util/List;)F
+	public static final fun getXRange (Ljava/util/List;)Lkotlin/ranges/ClosedFloatingPointRange;
+	public static final fun getYMax (Ljava/util/List;)F
+	public static final fun getYMin (Ljava/util/List;)F
+	public static final fun getYRange (Ljava/util/List;)Lkotlin/ranges/ClosedFloatingPointRange;
+	public static final fun nearestPointByX (Ljava/util/List;F)Ldev/gabrieldrn/konstellation/plotting/Point;
+	public static final fun toDataset (Ljava/util/Collection;)Ljava/util/List;
+	public static final fun validate (Ljava/util/List;)V
+}
+
 public final class dev/gabrieldrn/konstellation/plotting/NiceScale {
 	public static final field $stable I
 	public fun <init> (Lkotlin/ranges/ClosedFloatingPointRange;I)V
@@ -324,22 +340,6 @@ public final class dev/gabrieldrn/konstellation/plotting/Point : java/io/Seriali
 }
 
 public final class dev/gabrieldrn/konstellation/plotting/Point$Companion {
-}
-
-public final class dev/gabrieldrn/konstellation/plotting/PointKt {
-	public static final fun asDataset (Ljava/util/List;)Ljava/util/List;
-	public static final fun by (FF)Ldev/gabrieldrn/konstellation/plotting/Point;
-	public static final fun datasetOf ([Ldev/gabrieldrn/konstellation/plotting/Point;)Ljava/util/List;
-	public static final fun getOffsets (Ljava/util/List;)Ljava/util/List;
-	public static final fun getXMax (Ljava/util/List;)F
-	public static final fun getXMin (Ljava/util/List;)F
-	public static final fun getXRange (Ljava/util/List;)Lkotlin/ranges/ClosedFloatingPointRange;
-	public static final fun getYMax (Ljava/util/List;)F
-	public static final fun getYMin (Ljava/util/List;)F
-	public static final fun getYRange (Ljava/util/List;)Lkotlin/ranges/ClosedFloatingPointRange;
-	public static final fun nearestPointByX (Ljava/util/List;F)Ldev/gabrieldrn/konstellation/plotting/Point;
-	public static final fun toDataset (Ljava/util/Collection;)Ljava/util/List;
-	public static final fun validate (Ljava/util/List;)V
 }
 
 public final class dev/gabrieldrn/konstellation/util/DataKt {
