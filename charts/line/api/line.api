@@ -5,93 +5,6 @@ public final class dev/gabrieldrn/konstellation/charts/line/BuildConfig {
 	public fun <init> ()V
 }
 
-public final class dev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow {
-	public static final field $stable I
-	public static final field Companion Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow$Companion;
-	public fun <init> (Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;)V
-	public final fun component1 ()Lkotlin/ranges/ClosedFloatingPointRange;
-	public final fun component2 ()Lkotlin/ranges/ClosedFloatingPointRange;
-	public final fun copy (Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;)Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
-	public static synthetic fun copy$default (Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ILjava/lang/Object;)Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getXWindow ()Lkotlin/ranges/ClosedFloatingPointRange;
-	public final fun getYWindow ()Lkotlin/ranges/ClosedFloatingPointRange;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class dev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow$Companion {
-	public final fun fromDataset (Ljava/util/List;)Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
-}
-
-public final class dev/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties : dev/gabrieldrn/konstellation/configuration/properties/ChartProperties, java/io/Serializable {
-	public static final field $stable I
-	public fun <init> ()V
-	public fun <init> (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Ldev/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLdev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;Z)V
-	public synthetic fun <init> (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Ldev/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLdev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Ljava/util/Set;
-	public final fun component10 ()Z
-	public final fun component11 ()Ldev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;
-	public final fun component12 ()Landroidx/compose/ui/graphics/Brush;
-	public final fun component13 ()Z
-	public final fun component2 ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun component3 ()Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
-	public final fun component4 ()Ljava/util/Set;
-	public final fun component5 ()Ldev/gabrieldrn/konstellation/highlighting/HighlightLinePosition;
-	public final fun component6 ()Z
-	public final fun component7 ()Z
-	public final fun component8 ()Z
-	public final fun component9 ()Z
-	public final fun copy (Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Ldev/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLdev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;Z)Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;
-	public static synthetic fun copy$default (Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;Ljava/util/Set;Landroidx/compose/foundation/layout/PaddingValues;Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;Ljava/util/Set;Ldev/gabrieldrn/konstellation/highlighting/HighlightLinePosition;ZZZZZLdev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;Landroidx/compose/ui/graphics/Brush;ZILjava/lang/Object;)Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getAxes ()Ljava/util/Set;
-	public final fun getChartPaddingValues ()Landroidx/compose/foundation/layout/PaddingValues;
-	public final fun getChartWindow ()Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
-	public fun getDrawFrame ()Z
-	public final fun getDrawLines ()Z
-	public final fun getDrawPoints ()Z
-	public fun getDrawZeroLines ()Z
-	public final fun getEnablePanning ()Z
-	public final fun getFillingBrush ()Landroidx/compose/ui/graphics/Brush;
-	public fun getHapticHighlight ()Z
-	public final fun getHighlightContentPositions ()Ljava/util/Set;
-	public final fun getHighlightLinePosition ()Ldev/gabrieldrn/konstellation/highlighting/HighlightLinePosition;
-	public final fun getPathInterpolator ()Ldev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class dev/gabrieldrn/konstellation/charts/line/configuration/LineChartStyles : dev/gabrieldrn/konstellation/configuration/styles/ChartStyles {
-	public static final field $stable I
-	public fun <init> ()V
-	public fun <init> (Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)V
-	public synthetic fun <init> (Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;
-	public final fun component2 ()Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;
-	public final fun component3 ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
-	public final fun component4 ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
-	public final fun component5 ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
-	public final fun component6 ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
-	public final fun component7 ()Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;
-	public final fun component8 ()Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;
-	public final fun component9 ()Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;
-	public final fun copy (Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartStyles;
-	public static synthetic fun copy$default (Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartStyles;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartStyles;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getHighlightLineStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;
-	public final fun getHighlightPointStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;
-	public fun getLineStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;
-	public fun getPointStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;
-	public final fun getTextStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;
-	public fun getXAxisBottomStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
-	public fun getXAxisTopStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
-	public fun getYAxisLeftStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
-	public fun getYAxisRightStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class dev/gabrieldrn/konstellation/charts/line/math/CubicXPathInterpolator : dev/gabrieldrn/konstellation/charts/line/math/PathInterpolator {
 	public static final field $stable I
 	public fun <init> ()V
@@ -121,24 +34,119 @@ public abstract interface class dev/gabrieldrn/konstellation/charts/line/math/Pa
 }
 
 public final class dev/gabrieldrn/konstellation/charts/line/presentation/LineChartKt {
-	public static final fun LineChart (Ldev/gabrieldrn/konstellation/charts/line/presentation/LineChartState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-	public static final fun LineChart (Ljava/util/List;Landroidx/compose/ui/Modifier;Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartStyles;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LineChart (Ldev/gabrieldrn/konstellation/charts/line/presentation/LineChartState;Landroidx/compose/ui/Modifier;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartProperties;Ldev/gabrieldrn/konstellation/charts/line/style/LineChartStyles;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartHighlightConfig;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LineChart (Ljava/util/List;Landroidx/compose/ui/Modifier;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartProperties;Ldev/gabrieldrn/konstellation/charts/line/style/LineChartStyles;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartHighlightConfig;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class dev/gabrieldrn/konstellation/charts/line/presentation/LineChartState {
 	public static final field $stable I
-	public fun <init> (Ljava/util/List;Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartStyles;)V
-	public synthetic fun <init> (Ljava/util/List;Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartStyles;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun getComputedDataset ()Ljava/util/List;
-	public final fun getDataset ()Ljava/util/List;
-	public final fun getProperties ()Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;
-	public final fun getStyles ()Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartStyles;
-	public final fun getWindow ()Ldev/gabrieldrn/konstellation/charts/line/configuration/ChartWindow;
+	public fun <init> (Ljava/util/List;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartProperties;)V
+	public final fun getCalculatedDataset ()Ljava/util/List;
+	public final fun getWindow ()Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;
 	public final fun pan-k-4lQ0M (J)V
 	public final fun updateSize-ozmzZPI (J)V
 }
 
 public final class dev/gabrieldrn/konstellation/charts/line/presentation/LineChartStateKt {
-	public static final fun rememberLineChartState (Ljava/util/List;Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartProperties;Ldev/gabrieldrn/konstellation/charts/line/configuration/LineChartStyles;Landroidx/compose/runtime/Composer;I)Ldev/gabrieldrn/konstellation/charts/line/presentation/LineChartState;
+	public static final fun rememberLineChartState (Ljava/util/List;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartProperties;Landroidx/compose/runtime/Composer;I)Ldev/gabrieldrn/konstellation/charts/line/presentation/LineChartState;
+}
+
+public final class dev/gabrieldrn/konstellation/charts/line/properties/ChartWindow {
+	public static final field $stable I
+	public static final field Companion Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow$Companion;
+	public fun <init> (Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;)V
+	public final fun component1 ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public final fun component2 ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public final fun copy (Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;)Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;
+	public static synthetic fun copy$default (Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ILjava/lang/Object;)Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getXWindow ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public final fun getYWindow ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/gabrieldrn/konstellation/charts/line/properties/ChartWindow$Companion {
+	public final fun fromDataset (Ljava/util/List;)Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;
+}
+
+public final class dev/gabrieldrn/konstellation/charts/line/properties/LineChartHighlightConfig : dev/gabrieldrn/konstellation/highlighting/HighlightConfig {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Set;Ldev/gabrieldrn/konstellation/highlighting/HighlightLinesPlacement;ZLdev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)V
+	public synthetic fun <init> (Ljava/util/Set;Ldev/gabrieldrn/konstellation/highlighting/HighlightLinesPlacement;ZLdev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/Set;
+	public final fun component2 ()Ldev/gabrieldrn/konstellation/highlighting/HighlightLinesPlacement;
+	public final fun component3 ()Z
+	public final fun component4 ()Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;
+	public final fun component5 ()Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;
+	public final fun copy (Ljava/util/Set;Ldev/gabrieldrn/konstellation/highlighting/HighlightLinesPlacement;ZLdev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartHighlightConfig;
+	public static synthetic fun copy$default (Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartHighlightConfig;Ljava/util/Set;Ldev/gabrieldrn/konstellation/highlighting/HighlightLinesPlacement;ZLdev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartHighlightConfig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentPositions ()Ljava/util/Set;
+	public fun getEnableHapticFeedback ()Z
+	public final fun getLineStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;
+	public final fun getLinesPlacement ()Ldev/gabrieldrn/konstellation/highlighting/HighlightLinesPlacement;
+	public final fun getPointStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/gabrieldrn/konstellation/charts/line/properties/LineChartProperties : dev/gabrieldrn/konstellation/configuration/properties/ChartProperties {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Landroidx/compose/foundation/layout/PaddingValues;Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;Z)V
+	public synthetic fun <init> (Landroidx/compose/foundation/layout/PaddingValues;Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun component2 ()Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;
+	public final fun component3 ()Z
+	public final fun copy (Landroidx/compose/foundation/layout/PaddingValues;Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;Z)Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartProperties;
+	public static synthetic fun copy$default (Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartProperties;Landroidx/compose/foundation/layout/PaddingValues;Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;ZILjava/lang/Object;)Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartProperties;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getChartPaddingValues ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getChartWindow ()Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;
+	public final fun getEnablePanning ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/gabrieldrn/konstellation/charts/line/style/LineChartStyles : dev/gabrieldrn/konstellation/configuration/styles/ChartStyles {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Set;ZZZZLdev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;Landroidx/compose/ui/graphics/Brush;Ldev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;)V
+	public synthetic fun <init> (Ljava/util/Set;ZZZZLdev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;Landroidx/compose/ui/graphics/Brush;Ldev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/Set;
+	public final fun component10 ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
+	public final fun component11 ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
+	public final fun component12 ()Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;
+	public final fun component13 ()Landroidx/compose/ui/graphics/Brush;
+	public final fun component14 ()Ldev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun component6 ()Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;
+	public final fun component7 ()Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;
+	public final fun component8 ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
+	public final fun component9 ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
+	public final fun copy (Ljava/util/Set;ZZZZLdev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;Landroidx/compose/ui/graphics/Brush;Ldev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;)Ldev/gabrieldrn/konstellation/charts/line/style/LineChartStyles;
+	public static synthetic fun copy$default (Ldev/gabrieldrn/konstellation/charts/line/style/LineChartStyles;Ljava/util/Set;ZZZZLdev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;Landroidx/compose/ui/graphics/Brush;Ldev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;ILjava/lang/Object;)Ldev/gabrieldrn/konstellation/charts/line/style/LineChartStyles;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAxes ()Ljava/util/Set;
+	public fun getDrawFrame ()Z
+	public final fun getDrawLines ()Z
+	public final fun getDrawPoints ()Z
+	public fun getDrawZeroLines ()Z
+	public final fun getFillingBrush ()Landroidx/compose/ui/graphics/Brush;
+	public fun getLineStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;
+	public final fun getPathInterpolator ()Ldev/gabrieldrn/konstellation/charts/line/math/PathInterpolator;
+	public fun getPointStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;
+	public final fun getTextStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;
+	public fun getXAxisBottomStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
+	public fun getXAxisTopStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
+	public fun getYAxisLeftStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
+	public fun getYAxisRightStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
