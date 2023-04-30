@@ -1,6 +1,7 @@
 package dev.gabrieldrn.konstellation.plotting
 
 import android.graphics.Paint
+import androidx.compose.runtime.*
 import dev.gabrieldrn.konstellation.configuration.styles.AxisDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 
@@ -9,6 +10,7 @@ import dev.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
  * @property axis Position of the axis within the chart.
  * @property tickCount Maximum number of ticks that will be drawn on this axis.
  */
+@Immutable
 public data class ChartAxis(val axis: Axis, val tickCount: Int)
 
 /**
@@ -24,6 +26,7 @@ public enum class Axis {
 /**
  * Convenience singleton, providing all default axes for a chart.
  */
+@Immutable
 public object Axes {
 
     /**

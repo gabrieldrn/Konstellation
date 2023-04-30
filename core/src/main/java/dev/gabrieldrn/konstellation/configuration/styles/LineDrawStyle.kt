@@ -1,5 +1,6 @@
 package dev.gabrieldrn.konstellation.configuration.styles
 
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
  * @property dashedEffectIntervals Array of "on" and "off" distances for the dashed line segments.
  * @property dashedEffectPhase Pixel offset into the intervals array
  */
+@Immutable
 public data class LineDrawStyle(
     override val color: Color = Color.Black,
     val strokeWidth: Dp = 1.5.dp,

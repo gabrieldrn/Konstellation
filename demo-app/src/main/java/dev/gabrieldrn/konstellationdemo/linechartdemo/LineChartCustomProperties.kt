@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartHighlightConfig
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
@@ -23,10 +24,7 @@ private val injector = object : KoinComponent {}
  * Returns a [LineChartProperties] instance with some custom properties for demo purposes.
  */
 @Suppress("MagicNumber")
-fun getDemoChartProperties() = LineChartProperties(
-    highlightContentPositions = setOf(HighlightContentPosition.Top, HighlightContentPosition.Start),
-    hapticHighlight = true,
-)
+fun getDemoChartProperties() = LineChartProperties()
 
 /**
  * Returns a [LineChartStyles] instance with some custom styles for demo purposes.
@@ -50,13 +48,22 @@ fun getDemoChartStyles(
     yAxisRightStyle = Axes.yRightStyle
         .updateColor(MaterialTheme.colorScheme.outline)
         .updateTypeface(mainTextStyle.typeface),
-    textStyle = TextDrawStyle(color = MaterialTheme.colorScheme.primary),
-    highlightLineStyle = LineDrawStyle(
+    textStyle = TextDrawStyle(color = MaterialTheme.colorScheme.primary)
+)
+
+/**
+ * Returns a [LineChartHighlightConfig] instance with some custom properties for demo purposes.
+ */
+@Composable
+fun getDemoHighlightConfig() = LineChartHighlightConfig(
+    contentPositions = setOf(HighlightContentPosition.Top, HighlightContentPosition.Start),
+    enableHapticFeedback = true,
+    lineStyle = LineDrawStyle(
         strokeWidth = 1.dp,
         dashed = true,
         color = MaterialTheme.colorScheme.secondary
     ),
-    highlightPointStyle = PointDrawStyle(
+    pointStyle = PointDrawStyle(
         color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f),
         radius = 6.dp
     )

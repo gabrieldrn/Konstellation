@@ -2,6 +2,7 @@ package dev.gabrieldrn.konstellation.configuration.styles
 
 import android.graphics.Paint
 import android.graphics.Typeface
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.sp
  * @property offsetX An offset applied to the X-position of the text.
  * @property offsetY An offset applied to the Y-position of the text.
  */
+@Immutable
 public data class TextDrawStyle(
     override val color: Color = Color.Black,
     val typeface: Typeface = Typeface.DEFAULT,

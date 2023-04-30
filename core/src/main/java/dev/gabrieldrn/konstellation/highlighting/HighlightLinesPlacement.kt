@@ -1,10 +1,10 @@
 package dev.gabrieldrn.konstellation.highlighting
 
 /**
- * Positions of highlight lines, drawn across the whole chart and above the highlighted point.
+ * Placement of highlight lines, drawn above the whole chart and the highlighted point.
  * Check the documentation of each enumeration for their related logic.
  */
-public enum class HighlightLinePosition {
+public enum class HighlightLinesPlacement {
 
     /**
      * The lines will correspond to the position of the highlighted content (popups). For example,

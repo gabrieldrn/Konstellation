@@ -5,8 +5,6 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
-import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
-import dev.gabrieldrn.konstellation.highlighting.HighlightLinePosition
 import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.by
 import dev.gabrieldrn.konstellation.plotting.datasetOf
@@ -30,7 +28,7 @@ private val initialDataset = datasetOf(
  * ViewModel for the LineChartDemoActivity.
  */
 class LineChartDemoViewModel(
-    properties: LineChartProperties
+    properties: LineChartProperties = LineChartProperties(),
 ) : ViewModel() {
 
     /**
@@ -38,10 +36,10 @@ class LineChartDemoViewModel(
      */
     var uiState: UiState by mutableStateOf(
         UiState(
+            dataset = initialDataset,
             properties = properties.copy(
                 chartWindow = getWindowFromDataset(initialDataset)
-            ),
-            dataset = initialDataset
+            )
         )
     )
 
@@ -81,7 +79,6 @@ class LineChartDemoViewModel(
     /**
      * Updates the chart properties with the given [newValue] for the given [property].
      */
-    @Suppress("UNCHECKED_CAST", "CyclomaticComplexMethod")
     fun <T> updateProperty(property: KProperty1<LineChartProperties, T>, newValue: T) {
         when (property) {
             LineChartProperties::chartPaddingValues -> uiState.properties
@@ -89,15 +86,6 @@ class LineChartDemoViewModel(
 
             LineChartProperties::chartWindow -> uiState.properties
                 .copy(chartWindow = newValue as ChartWindow)
-
-            LineChartProperties::highlightContentPositions -> uiState.properties
-                .copy(highlightContentPositions = newValue as Set<HighlightContentPosition>)
-
-            LineChartProperties::highlightLinePosition -> uiState.properties
-                .copy(highlightLinePosition = newValue as HighlightLinePosition)
-
-            LineChartProperties::hapticHighlight -> uiState.properties
-                .copy(hapticHighlight = newValue as Boolean)
 
             else -> null
         }?.let {

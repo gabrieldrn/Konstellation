@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.configuration.properties.ChartProperties
-import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
-import dev.gabrieldrn.konstellation.highlighting.HighlightLinePosition
 
 /**
  * ⚙️ Class defining the properties of a Konstellation line chart, affecting how the chart is
@@ -18,22 +16,11 @@ import dev.gabrieldrn.konstellation.highlighting.HighlightLinePosition
  * axes).
  * @property chartWindow The visualization window of the chart. If null, the chart will be drawn
  * with a window that fits all the data.
- * @property highlightContentPositions Where to place highlighting popups. There will be as many
- * popups as there are positions.
- * @property highlightLinePosition Where highlight lines will be placed. See enum values for more
- * insight. A null value means not drawing any highlight line.
- * @property hapticHighlight Either to perform haptic feedbacks every time a new value is
- * highlighted.
  * @property enablePanning Either to enable panning or not.
  */
-@Stable
+@Immutable
 public data class LineChartProperties(
     val chartPaddingValues: PaddingValues = PaddingValues(40.dp),
     val chartWindow: ChartWindow? = null,
-    val highlightContentPositions: Set<HighlightContentPosition> = setOf(
-        HighlightContentPosition.Point
-    ),
-    val highlightLinePosition: HighlightLinePosition? = HighlightLinePosition.Relative,
-    override val hapticHighlight: Boolean = false,
     val enablePanning: Boolean = true,
 ) : ChartProperties

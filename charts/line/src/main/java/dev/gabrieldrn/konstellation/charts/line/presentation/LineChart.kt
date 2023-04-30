@@ -14,11 +14,10 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
+import dev.gabrieldrn.konstellation.charts.line.drawing.drawLinePath
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartHighlightConfig
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
-import dev.gabrieldrn.konstellation.charts.line.drawing.drawLinePath
 import dev.gabrieldrn.konstellation.drawing.drawFrame
 import dev.gabrieldrn.konstellation.drawing.drawPoint
 import dev.gabrieldrn.konstellation.drawing.drawScaledAxis
@@ -26,7 +25,6 @@ import dev.gabrieldrn.konstellation.drawing.drawZeroLines
 import dev.gabrieldrn.konstellation.drawing.highlightPoint
 import dev.gabrieldrn.konstellation.highlighting.HighlightBox
 import dev.gabrieldrn.konstellation.highlighting.HighlightScope
-import dev.gabrieldrn.konstellation.plotting.Axes
 import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.Point
 import dev.gabrieldrn.konstellation.plotting.by
@@ -38,11 +36,12 @@ import kotlinx.coroutines.withContext
 
 /**
  * Konstellation composable function drawing a line chart.
+ *
  * @param dataset Your set of points.
  * @param modifier The modifier to be applied to the chart.
  * @param properties The DNA of your chart. See [LineChartProperties].
- * @param styles Visual styles to be applied to the chart. Changing the styles will not trigger a
- * recomposition of the chart.
+ * @param styles Visual styles to be applied to the chart.
+ * @param highlightConfig Configuration of the highlight feature. See [LineChartHighlightConfig].
  * @param highlightContent Classic Composable scope defining the content to be shown inside
  * highlight popup(s). This is optional.
  * @param onHighlightChange Callback invoked each time the highlighted value changes. This is
@@ -55,6 +54,7 @@ public fun LineChart(
     modifier: Modifier = Modifier,
     properties: LineChartProperties = LineChartProperties(),
     styles: LineChartStyles = LineChartStyles(),
+    highlightConfig: LineChartHighlightConfig = LineChartHighlightConfig(),
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
@@ -62,6 +62,7 @@ public fun LineChart(
         state = rememberLineChartState(dataset, properties),
         modifier = modifier,
         styles = styles,
+        highlightConfig = highlightConfig,
         highlightContent = highlightContent,
         onHighlightChange = onHighlightChange
     )
@@ -69,10 +70,11 @@ public fun LineChart(
 
 /**
  * Konstellation composable function drawing a line chart.
+ *
  * @param state The state of the chart. See [LineChartState].
  * @param modifier The modifier to be applied to the chart.
- * @param styles Visual styles to be applied to the chart. Changing the styles will not trigger a
- * recomposition of the chart.
+ * @param styles Visual styles to be applied to the chart.
+ * @param highlightConfig Configuration of the highlight feature. See [LineChartHighlightConfig].
  * @param highlightContent Classic Composable scope defining the content to be shown inside
  * highlight popup(s). This is optional.
  * @param onHighlightChange Callback invoked each time the highlighted value changes. This is
@@ -84,6 +86,7 @@ public fun LineChart(
     state: LineChartState,
     modifier: Modifier = Modifier,
     styles: LineChartStyles = LineChartStyles(),
+    highlightConfig: LineChartHighlightConfig = LineChartHighlightConfig(),
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
@@ -144,7 +147,7 @@ public fun LineChart(
                 modifier = modifier,
                 properties = state.properties,
                 dataset = { state.calculatedDataset },
-                styles = styles,
+                highlightConfig = highlightConfig,
                 highlightContent = highlightContent,
                 onHighlightChange = onHighlightChange,
                 onUpdateWindowOffsets = state::pan
@@ -158,7 +161,7 @@ private fun BoxScope.HighlightCanvas(
     modifier: Modifier,
     properties: LineChartProperties,
     dataset: () -> Dataset,
-    styles: LineChartStyles,
+    highlightConfig: LineChartHighlightConfig,
     highlightContent: @Composable (HighlightScope.() -> Unit)?,
     onHighlightChange: ((Point?) -> Unit)? = null,
     onUpdateWindowOffsets: ((dragAmount: Offset) -> Unit)
@@ -220,17 +223,17 @@ private fun BoxScope.HighlightCanvas(
         highlightedPoint?.let {
             highlightPoint(
                 point = it,
-                contentPositions = properties.highlightContentPositions,
-                pointStyle = styles.highlightPointStyle,
-                linePosition = properties.highlightLinePosition,
-                lineStyle = styles.highlightLineStyle
+                contentPositions = highlightConfig.contentPositions,
+                pointStyle = highlightConfig.pointStyle,
+                linesPlacement = highlightConfig.linesPlacement,
+                lineStyle = highlightConfig.lineStyle
             )
         }
     }
 
     highlightedPoint?.let { point ->
         if (highlightContent != null) {
-            properties.highlightContentPositions.forEach { position ->
+            highlightConfig.contentPositions.forEach { position ->
                 HighlightBox(
                     scope = HighlightScope(point, position),
                     chartTopPaddingPx = chartTopPaddingPx,
@@ -259,15 +262,7 @@ private fun LineChartPreview() {
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(1f),
-        properties = LineChartProperties(
-            chartPaddingValues = PaddingValues(40.dp),
-            chartWindow = ChartWindow(
-                xWindow = -1f..7f,
-                yWindow = -3f..6f
-            ),
-        ),
-        styles = LineChartStyles(
-            axes = setOf(Axes.xBottom, Axes.yLeft)
-        )
+        properties = LineChartProperties(),
+        styles = LineChartStyles()
     )
 }

@@ -8,22 +8,22 @@ import dev.gabrieldrn.konstellation.highlighting.verticalHLPositions
 import dev.gabrieldrn.konstellation.plotting.Point
 import dev.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.PointDrawStyle
-import dev.gabrieldrn.konstellation.highlighting.HighlightLinePosition
+import dev.gabrieldrn.konstellation.highlighting.HighlightLinesPlacement
 
 /**
  * Highlights a given [point] in the chart by drawing another circle styled with
- * [pointStyle] in front of it and dashed lines based on [contentPositions] and/or [linePosition].
+ * [pointStyle] in front of it and dashed lines based on [contentPositions] and/or [linesPlacement].
  */
 public fun DrawScope.highlightPoint(
     point: Point,
     contentPositions: Set<HighlightContentPosition>,
-    linePosition: HighlightLinePosition?,
+    linesPlacement: HighlightLinesPlacement?,
     pointStyle: PointDrawStyle,
     lineStyle: LineDrawStyle?
 ) {
     drawPoint(point, pointStyle)
 
-    if (lineStyle == null || linePosition == null) return
+    if (lineStyle == null || linesPlacement == null) return
 
     fun horizontalLine() = drawLine(
         Offset(0f, point.yPos),
@@ -37,8 +37,8 @@ public fun DrawScope.highlightPoint(
         lineStyle
     )
 
-    when (linePosition) {
-        HighlightLinePosition.Relative -> {
+    when (linesPlacement) {
+        HighlightLinesPlacement.Relative -> {
             if (contentPositions.any { it in verticalHLPositions }) {
                 verticalLine()
             }
@@ -46,8 +46,8 @@ public fun DrawScope.highlightPoint(
                 horizontalLine()
             }
         }
-        HighlightLinePosition.Horizontal -> horizontalLine()
-        HighlightLinePosition.Vertical -> verticalLine()
-        HighlightLinePosition.Both -> { horizontalLine(); verticalLine() }
+        HighlightLinesPlacement.Horizontal -> horizontalLine()
+        HighlightLinesPlacement.Vertical -> verticalLine()
+        HighlightLinesPlacement.Both -> { horizontalLine(); verticalLine() }
     }
 }

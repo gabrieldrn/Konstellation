@@ -25,6 +25,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartHighlightConfig
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
@@ -42,10 +43,12 @@ private val SettingSurfaceHeight = 148.dp
 fun ColumnScope.LineChartSettingsContent(
     properties: LineChartProperties,
     styles: LineChartStyles,
+    highlightConfig: LineChartHighlightConfig,
     onGenerateRandomDataset: () -> Unit,
     onGenerateFancyDataset: () -> Unit,
     onUpdateProperty: (KProperty1<LineChartProperties, Any?>, Any?) -> Unit,
     onUpdateStyles: (LineChartStyles) -> Unit,
+    onUpdateHighlightConfig: (LineChartHighlightConfig) -> Unit,
 ) {
     val pagerState = rememberPagerState()
 
@@ -64,12 +67,7 @@ fun ColumnScope.LineChartSettingsContent(
                 onGenerateFancyDataset = onGenerateFancyDataset,
             )
 
-            1 -> LineChartHighlightSetting(
-                highlightPositions = properties.highlightContentPositions,
-                onUpdateProperty = onUpdateProperty
-            )
-
-            2 -> LineChartPaddingsSetting(
+            1 -> LineChartPaddingsSetting(
 //                datasetXRange = dataset.xRange,
 //                datasetYRange = dataset.yRange,
                 chartPaddingValues = properties.chartPaddingValues,
@@ -80,22 +78,34 @@ fun ColumnScope.LineChartSettingsContent(
             // endregion
 
             // region Styles
-            3 -> LineChartAxisSelectorSetting(
+
+            2 -> LineChartAxisSelectorSetting(
                 styles = styles,
                 onUpdateStyles = onUpdateStyles,
             )
 
-            4 -> LineChartDataDrawingSetting(
+            3 -> LineChartDataDrawingSetting(
                 styles = styles,
                 onUpdateStyles = onUpdateStyles,
             )
 
-            5 -> LineChartFillingSetting(
+            4 -> LineChartFillingSetting(
                 brush = styles.fillingBrush,
                 onUpdateBrush = { brush -> onUpdateStyles(styles.copy(fillingBrush = brush)) },
             )
 
-            // styles
+            // endregion
+
+            // region Highlighting
+
+            5 -> LineChartHighlightSetting(
+                contentPositions = highlightConfig.contentPositions,
+                onUpdateHighlightConfig = { positions ->
+                    onUpdateHighlightConfig(highlightConfig.copy(contentPositions = positions))
+                }
+            )
+
+            // endregion
         }
     }
     HorizontalPagerIndicator(
@@ -192,8 +202,6 @@ private fun SettingsPreviews() {
         ) {
             LineChartDatasetSelector({}, {})
 
-            LineChartHighlightSetting(setOf(HighlightContentPosition.Point), { _, _ -> })
-
             LineChartPaddingsSetting(
 //                datasetXRange = 0f..1f,
 //                datasetYRange = 0f..1f,
@@ -216,6 +224,8 @@ private fun SettingsPreviews() {
                 brush = null,
                 onUpdateBrush = { _ -> }
             )
+
+            LineChartHighlightSetting(setOf(HighlightContentPosition.Point), { _ -> })
         }
     }
 }

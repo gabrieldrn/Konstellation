@@ -2,7 +2,6 @@ package dev.gabrieldrn.konstellation.charts.line.style
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.charts.line.math.MonotoneXPathInterpolator
 import dev.gabrieldrn.konstellation.charts.line.math.PathInterpolator
 import dev.gabrieldrn.konstellation.configuration.styles.AxisDrawStyle
@@ -32,11 +31,8 @@ import dev.gabrieldrn.konstellation.plotting.ChartAxis
  * @property fillingBrush The brush to apply to the filling content from the bottom of the chart to
  * the data lines. If null, no filling is applied.
  * @property pathInterpolator The interpolator to use when drawing the lines.
- * @property highlightPointStyle Appearance of the highlighted data point.
- * @property highlightLineStyle Appearance of the lines drawn on the highlighted point. Their
- * orientation depends on the provided highlighting positions in the LineChart composable.
  */
-@Stable
+@Immutable
 public data class LineChartStyles(
     override val axes: Set<ChartAxis> = setOf(Axes.xBottom, Axes.yLeft),
     val drawLines: Boolean = true,
@@ -52,6 +48,4 @@ public data class LineChartStyles(
     val textStyle: TextDrawStyle = TextDrawStyle(),
     val fillingBrush: Brush? = null,
     val pathInterpolator: PathInterpolator = MonotoneXPathInterpolator(),
-    val highlightPointStyle: PointDrawStyle = PointDrawStyle(),
-    val highlightLineStyle: LineDrawStyle? = LineDrawStyle(strokeWidth = 1.dp, dashed = true),
 ) : ChartStyles

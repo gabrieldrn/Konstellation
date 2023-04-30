@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.charts.line.presentation.LineChart
+import dev.gabrieldrn.konstellation.charts.line.properties.LineChartHighlightConfig
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import dev.gabrieldrn.konstellation.highlighting.HighlightPopup
@@ -37,24 +38,31 @@ fun LineChartDemo(
     modifier: Modifier = Modifier
 ) {
     val lineChartStylesBaseline = getDemoChartStyles()
+    val lineChartHighlightConfigBaseline = getDemoHighlightConfig()
 
     var lineChartStyles by remember {
         mutableStateOf(lineChartStylesBaseline)
+    }
+    var lineChartHighlightConfig by remember {
+        mutableStateOf(lineChartHighlightConfigBaseline)
     }
 
     Column(modifier) {
         DemoLineChart(
             dataset = viewModel.uiState.dataset,
             properties = viewModel.uiState.properties,
-            styles = lineChartStyles
+            styles = lineChartStyles,
+            highlightConfig = lineChartHighlightConfig
         )
         LineChartSettingsContent(
             properties = viewModel.uiState.properties,
             styles = lineChartStyles,
+            highlightConfig = lineChartHighlightConfig,
             onGenerateRandomDataset = viewModel::generateNewRandomDataset,
             onGenerateFancyDataset = viewModel::generateNewFancyDataset,
             onUpdateProperty = viewModel::updateProperty,
-            onUpdateStyles = { lineChartStyles = it }
+            onUpdateStyles = { lineChartStyles = it },
+            onUpdateHighlightConfig = { lineChartHighlightConfig = it }
         )
     }
 }
@@ -64,6 +72,7 @@ private fun DemoLineChart(
     dataset: Dataset,
     properties: LineChartProperties,
     styles: LineChartStyles,
+    highlightConfig: LineChartHighlightConfig,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -80,6 +89,7 @@ private fun DemoLineChart(
             dataset = dataset,
             properties = properties,
             styles = styles,
+            highlightConfig = highlightConfig,
             highlightContent = { DemoHighlightPopup() }
         )
     }
@@ -151,6 +161,7 @@ private fun LineChartWithCustomPropertiesPreview() {
             ),
             properties = LineChartProperties(),
             styles = getDemoChartStyles(),
+            highlightConfig = LineChartHighlightConfig(),
         )
     }
 }

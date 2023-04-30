@@ -14,34 +14,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
-import kotlin.reflect.KProperty1
 
 /**
  * Composable that allows the user to change the highlight popup positions of the LineChart.
  */
 @Composable
 fun LineChartHighlightSetting(
-    highlightPositions: Set<HighlightContentPosition>,
-    onUpdateProperty: (KProperty1<LineChartProperties, Any>, Any) -> Unit,
+    contentPositions: Set<HighlightContentPosition>,
+    onUpdateHighlightConfig: (Set<HighlightContentPosition>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     SettingSurface(title = "Highlight popup positions", modifier = modifier) {
         @Composable
         fun PositionToggleButton(position: HighlightContentPosition, imageVector: ImageVector) {
             ToggleIconButton(
-                toggled = highlightPositions.contains(position),
+                toggled = contentPositions.contains(position),
                 onToggleChange = { toggled ->
-                    onUpdateProperty(
-                        LineChartProperties::highlightContentPositions,
-                        highlightPositions.toMutableSet().apply {
-                            if (toggled) {
-                                add(position)
-                            } else {
-                                remove(position)
-                            }
+                    onUpdateHighlightConfig(
+                         if (toggled) {
+                            contentPositions + position
+                        } else {
+                            contentPositions - position
                         }
                     )
                 },
