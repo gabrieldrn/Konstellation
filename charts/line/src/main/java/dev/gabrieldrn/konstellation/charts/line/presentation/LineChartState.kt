@@ -9,53 +9,22 @@ import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.math.createOffsets
 import dev.gabrieldrn.konstellation.math.map
 import dev.gabrieldrn.konstellation.plotting.Dataset
+import dev.gabrieldrn.konstellation.plotting.validate
+import kotlin.jvm.Throws
 
 /**
- * State of a line chart. This is the main class used by the composable function, and it contains
- * all the data needed to draw the chart. It maintains rendering optimizations, such as caching
- * the drawing process by only redrawing when needed, and doing recomposions only when necessary.
- * It is also used to store the state of the chart (e.g. panning). This class is not meant to be
- * used directly, but rather to be created by the composable function. See [LineChart].
+ * State of a line chart. This is the main class used by the composable function, and it stores
+ * states needed to draw the chart (e.g. panning). This class is not meant to be used directly, but
+ * rather to be created by the composable function. See [LineChart].
  *
- * The dataset is validated upon creation, and an [IllegalArgumentException] is thrown if it is
- * invalid. The validation checks for:
- *  - Non-emptiness
- *  - Monotonicity on the x-axis (xi < xi+1)
- *  - Duplicate values on the x-axis
- *  - NaN values
- *  - Infinite values
- *
- * @property dataset Your set of points.
- * @property properties The properties of the line chart. See [LineChartProperties].
- * @throws IllegalArgumentException If the dataset presents invalid values.
+ * @param dataset Your set of points.
+ * @param properties The properties of the line chart. See [LineChartProperties].
  */
 @Stable
 public class LineChartState(
-    public val dataset: Dataset,
-    public val properties: LineChartProperties,
+    dataset: Dataset,
+    properties: LineChartProperties,
 ) {
-    init {
-        with(dataset) {
-            require(isNotEmpty()) { "Dataset must not be empty" }
-            // Check for duplicates on the x-axis
-            require(map { it.x }.distinct().size == size) {
-                "Dataset must not have duplicate values on the x-axis"
-            }
-            // Check monotonicity
-            require(zipWithNext().all { (a, b) -> a.x < b.x }) {
-                "Dataset must be monotonically increasing on the x-axis"
-            }
-            // Check for NaNs
-            require(all { !it.x.isNaN() && !it.y.isNaN() }) {
-                "Dataset must not have NaN values"
-            }
-            // Check for infinite values
-            require(all { !it.x.isInfinite() && !it.y.isInfinite() }) {
-                "Dataset must not have infinite values"
-            }
-        }
-    }
-
     private val initialWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset)
     private var size by mutableStateOf(Size.Zero)
     private var panningState by mutableStateOf(PanningState(0f, 0f))
@@ -84,6 +53,9 @@ public class LineChartState(
      * The dataset with the offsets applied.
      */
     public val calculatedDataset: Dataset by derivedStateOf {
+        check(size != Size.Zero) {
+            "Size must be set to calculate the dataset"
+        }
         if (!hasPanned) {
             panningState = panningState.copy(
                 x = size.width / 2f,
@@ -131,8 +103,11 @@ public class LineChartState(
 /**
  * Remembers a [LineChartState] that will be recomposed whenever the given [dataset] or
  * [chartProperties] change.
+ *
+ * @throws IllegalArgumentException If the dataset presents invalid values.
  */
 @Composable
+@Throws(IllegalArgumentException::class)
 public fun rememberLineChartState(
     dataset: Dataset,
     chartProperties: LineChartProperties
@@ -140,6 +115,7 @@ public fun rememberLineChartState(
     dataset,
     chartProperties
 ) {
+    dataset.validate()
     LineChartState(
         dataset = dataset,
         properties = chartProperties,

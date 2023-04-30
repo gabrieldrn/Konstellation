@@ -72,6 +72,36 @@ public fun List<Point>.asDataset(): Dataset = this
 public fun Collection<Pair<Float, Float>>.toDataset(): Dataset = map { it.first by it.second }
 
 /**
+ * Checks if this [Dataset] is valid. The validation checks for:
+ *  - Non-emptiness
+ *  - Monotonicity on the x-axis (xi < xi+1)
+ *  - Duplicate values on the x-axis
+ *  - NaN values
+ *  - Infinite values
+ *
+ *  @throws IllegalArgumentException If the dataset is invalid.
+ */
+public fun Dataset.validate() {
+    require(isNotEmpty()) { "Dataset must not be empty" }
+    // Check for duplicates on the x-axis
+    require(map { it.x }.distinct().size == size) {
+        "Dataset must not have duplicate values on the x-axis"
+    }
+    // Check monotonicity
+    require(zipWithNext().all { (a, b) -> a.x < b.x }) {
+        "Dataset must be monotonically increasing on the x-axis"
+    }
+    // Check for NaNs
+    require(all { !it.x.isNaN() && !it.y.isNaN() }) {
+        "Dataset must not have NaN values"
+    }
+    // Check for infinite values
+    require(all { !it.x.isInfinite() && !it.y.isInfinite() }) {
+        "Dataset must not have infinite values"
+    }
+}
+
+/**
  * A list of all the [Offset]s of every [Point] of this list. Please note offsets are managed by
  * Konstellation and may be uninitialized depending on the state of the chart calculations and
  * composition.
