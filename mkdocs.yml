@@ -1,0 +1,4 @@
+site_name: Konstellation
+theme:
+  name: material
+  custom_dir: overrides
