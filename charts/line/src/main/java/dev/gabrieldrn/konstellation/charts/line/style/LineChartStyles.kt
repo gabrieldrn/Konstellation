@@ -13,8 +13,8 @@ import dev.gabrieldrn.konstellation.plotting.Axes
 import dev.gabrieldrn.konstellation.plotting.ChartAxis
 
 /**
- * 🎨 Class defining the visual styles of a Konstellation line chart. They only affect the
- * appearance of the chart.
+ * 🎨 Class defining the visual styles of a Konstellation line chart. They only affect what and how
+ * the chart is drawn.
  *
  * @property axes Axes to be drawn on the chart.
  * @property drawLines Either to draw lines (as described by [LineChartStyles.lineStyle]) or not.

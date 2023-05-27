@@ -1,4 +1,4 @@
-package dev.gabrieldrn.konstellation.charts.line.presentation
+package dev.gabrieldrn.konstellation.charts.line
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.*

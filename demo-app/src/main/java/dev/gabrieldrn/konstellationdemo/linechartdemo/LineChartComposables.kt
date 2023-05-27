@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
-import dev.gabrieldrn.konstellation.charts.line.presentation.LineChart
+import dev.gabrieldrn.konstellation.charts.line.LineChart
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartHighlightConfig
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
