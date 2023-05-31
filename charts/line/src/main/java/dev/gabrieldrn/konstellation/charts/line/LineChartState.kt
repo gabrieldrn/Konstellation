@@ -10,6 +10,7 @@ import dev.gabrieldrn.konstellation.math.createOffsets
 import dev.gabrieldrn.konstellation.math.map
 import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.validate
+import dev.gabrieldrn.konstellation.util.rawRange
 import kotlin.jvm.Throws
 
 /**
@@ -58,7 +59,9 @@ public class LineChartState(
         }
         if (!hasPanned) {
             panningState = panningState.copy(
-                x = size.width / 2f,
+                x = initialWindow.xWindow.rawRange
+                    .map(initialWindow.xWindow, size.width..0f)
+                    .times(-1f),
                 y = size.height / 2f
             )
         }
