@@ -6,7 +6,7 @@ import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.Point
 import dev.gabrieldrn.konstellation.plotting.xRange
 import dev.gabrieldrn.konstellation.plotting.yRange
-import dev.gabrieldrn.konstellation.util.rawRange
+import dev.gabrieldrn.konstellation.util.distance
 
 /**
  * Linearly maps a number that falls inside [fromRange] to [toRange].
@@ -32,7 +32,7 @@ public fun Float.map(
     toRange: ClosedFloatingPointRange<Float>
 ): Float =
     // ratio = (value - from.start) / (from.end - from.start)
-    toRange.start + (this - fromRange.start) / fromRange.rawRange * toRange.rawRange
+    toRange.start + (this - fromRange.start) / fromRange.distance * toRange.distance
 
 /**
  * Infix function for [map], offering a more explicit usage of the latter.

@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.drawscope.*
 import dev.gabrieldrn.konstellation.plotting.Axis
 import dev.gabrieldrn.konstellation.plotting.ChartAxis
 import dev.gabrieldrn.konstellation.plotting.NiceScale
-import dev.gabrieldrn.konstellation.util.rawRange
+import dev.gabrieldrn.konstellation.util.distance
 
 /**
  * Returns the raw positions between where this [axis] should be drawn. The first offset is the
@@ -35,9 +35,9 @@ internal fun DrawScope.calculateAxisOffsets(
         else -> size.height
     }
     //Space between left canvas border and left chart "window" depending on chart values
-    val startSpace = length * (range.start - chartScale.niceMin) / range.rawRange
+    val startSpace = length * (range.start - chartScale.niceMin) / range.distance
     //Space between right chart "window" and right canvas border depending on chart values
-    val endSpace = length * (chartScale.niceMax - range.endInclusive) / range.rawRange
+    val endSpace = length * (chartScale.niceMax - range.endInclusive) / range.distance
     //Number of ticks
     val tickCount = (chartScale.niceMax - chartScale.niceMin) / chartScale.tickSpacing + 1
 

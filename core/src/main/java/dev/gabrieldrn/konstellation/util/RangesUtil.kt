@@ -5,7 +5,7 @@ import dev.gabrieldrn.konstellation.configuration.properties.DatasetOffsets
 /**
  * Distance between the first and last value (end - start).
  */
-public val ClosedFloatingPointRange<Float>.rawRange: Float get() = endInclusive - start
+public val ClosedFloatingPointRange<Float>.distance: Float get() = endInclusive - start
 
 /**
  * Applies a receiving [DatasetOffsets] to X and Y from given drawing ranges then returns them
