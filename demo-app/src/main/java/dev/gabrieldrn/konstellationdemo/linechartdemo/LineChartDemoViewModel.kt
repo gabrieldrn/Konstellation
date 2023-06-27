@@ -9,9 +9,9 @@ import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.by
 import dev.gabrieldrn.konstellation.plotting.datasetOf
 import dev.gabrieldrn.konstellation.plotting.yRange
+import dev.gabrieldrn.konstellation.util.distance
 import dev.gabrieldrn.konstellation.util.randomDataSet
 import dev.gabrieldrn.konstellation.util.randomFancyDataSet
-import dev.gabrieldrn.konstellation.util.distance
 import kotlin.reflect.KProperty1
 
 private val initialDataset = datasetOf(
@@ -86,6 +86,9 @@ class LineChartDemoViewModel(
 
             LineChartProperties::chartWindow -> uiState.properties
                 .copy(chartWindow = newValue as ChartWindow)
+
+            LineChartProperties::panningEnabled -> uiState.properties
+                .copy(panningEnabled = newValue as Boolean)
 
             else -> null
         }?.let {

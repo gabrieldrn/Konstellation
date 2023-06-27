@@ -67,11 +67,12 @@ fun ColumnScope.LineChartSettingsContent(
                 onGenerateFancyDataset = onGenerateFancyDataset,
             )
 
-            1 -> LineChartPaddingsSetting(
+            1 -> LineChartPropertiesSetting(
 //                datasetXRange = dataset.xRange,
 //                datasetYRange = dataset.yRange,
                 chartPaddingValues = properties.chartPaddingValues,
                 chartWindow = properties.chartWindow,
+                panningEnabled = properties.panningEnabled,
                 onUpdateProperty = onUpdateProperty
             )
 
@@ -202,11 +203,12 @@ private fun SettingsPreviews() {
         ) {
             LineChartDatasetSelector({}, {})
 
-            LineChartPaddingsSetting(
+            LineChartPropertiesSetting(
 //                datasetXRange = 0f..1f,
 //                datasetYRange = 0f..1f,
                 chartPaddingValues = PaddingValues(44.dp),
                 chartWindow = null,
+                panningEnabled = true,
                 onUpdateProperty = { _, _ -> }
             )
 
