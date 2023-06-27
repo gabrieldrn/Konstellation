@@ -196,7 +196,7 @@ private fun BoxScope.HighlightCanvas(
                     onDrag = { change, _ -> pointerValue = change.position.x }
                 )
             }
-            if (properties.enablePanning) {
+            if (properties.panningEnabled) {
                 launch {
                     // Panning
                     detectDragGestures { _, dragAmount ->

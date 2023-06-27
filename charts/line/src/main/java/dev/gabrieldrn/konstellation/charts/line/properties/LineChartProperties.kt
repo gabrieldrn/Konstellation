@@ -16,11 +16,11 @@ import dev.gabrieldrn.konstellation.configuration.properties.ChartProperties
  * axes).
  * @property chartWindow The visualization window of the chart. If null, the chart will be drawn
  * with a window that fits all the data.
- * @property enablePanning Either to enable panning or not.
+ * @property panningEnabled Either to enable panning or not.
  */
 @Immutable
 public data class LineChartProperties(
     val chartPaddingValues: PaddingValues = PaddingValues(40.dp),
     val chartWindow: ChartWindow? = null,
-    val enablePanning: Boolean = true,
+    val panningEnabled: Boolean = true,
 ) : ChartProperties

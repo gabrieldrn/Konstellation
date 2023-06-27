@@ -32,6 +32,11 @@ public class LineChartState(
     private val initialWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset)
 
     /**
+     * Whether panning is enabled.
+     */
+    private val panningEnabled = properties.panningEnabled
+
+    /**
      * Canvas size.
      */
     private var size by mutableStateOf(Size.Zero)
@@ -106,6 +111,7 @@ public class LineChartState(
      * Pans the chart by the given amount.
      */
     public fun pan(amount: Offset) {
+        if (!panningEnabled) return
         panningState = panningState.copy(
             x = panningState.x + amount.x,
             y = panningState.y + amount.y
