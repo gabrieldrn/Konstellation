@@ -35,7 +35,8 @@ public fun Float.map(
     toRange.start + (this - fromRange.start) / fromRange.distance * toRange.distance
 
 /**
- * Infix function for [map], offering a more explicit usage of the latter.
+ * Infix function for [map], resulting in a more textual usage of the latter:
+ * `value map (fromRange to toRange)` instead of `value.map(fromRange, toRange)`.
  *
  * For example, `10f map (0f..20f to 0f..40f)`, linearly maps the number 10 from the range
  * [[0, 20]] to [[0, 40]].

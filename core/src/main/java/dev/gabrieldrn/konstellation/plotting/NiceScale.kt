@@ -6,8 +6,9 @@ import kotlin.math.log10
 import kotlin.math.pow
 
 /**
- * This class computes the human-readable numbers for chart labels. After [compute] is executed,
- * the values [tickSpacing], [axisRange], [niceMin], [niceMax] will be updated.
+ * This class computes the human-readable numbers for chart labels with a logarithmic method.
+ * After [compute] is executed, the values [tickSpacing], [axisRange], [niceMin], [niceMax] will be
+ * updated.
  *
  * @property dataRange Range of the data to compute tickers from.
  * @property maxTicks (Optional) Number of desired ticks. Default = 5
