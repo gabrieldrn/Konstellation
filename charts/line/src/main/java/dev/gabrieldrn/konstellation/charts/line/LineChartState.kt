@@ -26,10 +26,26 @@ public class LineChartState(
     dataset: Dataset,
     properties: LineChartProperties,
 ) {
+    /**
+     * The initial window of the chart, before any panning.
+     */
     private val initialWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset)
+
+    /**
+     * Canvas size.
+     */
     private var size by mutableStateOf(Size.Zero)
-    private var panningState by mutableStateOf(PanningState(0f, 0f))
-    private var hasPanned = false
+
+    /**
+     * The reference point for the y-axis where half of the chart size is half of the y-range
+     * distance.
+     */
+    private var yReferential by mutableStateOf(0f)
+
+    /**
+     * The current panning state.
+     */
+    private var panningState by mutableStateOf(PANNING_STATE_ZERO)
 
     /**
      * The current [ChartWindow] of the chart, taking into account the panning state.
@@ -43,6 +59,8 @@ public class LineChartState(
         val yPan = panningState.y
             .takeIf { it != 0f }
             ?.map(0f..size.height, initialWindow.yWindow)
+            // Referential is the middle of the chart, so it needs to be subtracted from the pan.
+            ?.minus(yReferential)
             ?: 0f
         initialWindow.copy(
             xWindow = initialWindow.xWindow.start + xPan..initialWindow.xWindow.endInclusive + xPan,
@@ -57,12 +75,16 @@ public class LineChartState(
         check(size != Size.Zero) {
             "Size must be set to calculate the dataset"
         }
-        if (!hasPanned) {
+        if (panningState === PANNING_STATE_ZERO) {
+            yReferential = initialWindow.yWindow.distance
+                .div(2f)
+                .plus(initialWindow.yWindow.start)
             panningState = panningState.copy(
                 x = initialWindow.xWindow.distance
                     .map(initialWindow.xWindow, size.width..0f)
                     .times(-1f),
-                y = size.height / 2f
+                y = yReferential
+                    .map(initialWindow.yWindow, 0f..size.height)
             )
         }
         dataset.createOffsets(
@@ -84,7 +106,6 @@ public class LineChartState(
      * Pans the chart by the given amount.
      */
     public fun pan(amount: Offset) {
-        hasPanned = true
         panningState = panningState.copy(
             x = panningState.x + amount.x,
             y = panningState.y + amount.y
@@ -101,11 +122,15 @@ public class LineChartState(
         val x: Float,
         val y: Float,
     )
+
+    private companion object {
+        private val PANNING_STATE_ZERO = PanningState(0f, 0f)
+    }
 }
 
 /**
  * Remembers a [LineChartState] that will be recomposed whenever the given [dataset] or
- * [chartProperties] change.
+ * [chartProperties] changes.
  *
  * @throws IllegalArgumentException If the dataset presents invalid values.
  */
