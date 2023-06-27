@@ -53,8 +53,10 @@ class KonstellationAndroidLibraryConventionPlugin : Plugin<Project> {
                         events = setOf(
                             TestLogEvent.PASSED,
                             TestLogEvent.SKIPPED,
-                            TestLogEvent.FAILED
-                        ) //, "standardOut", "standardError"
+                            TestLogEvent.FAILED,
+//                            TestLogEvent.STANDARD_OUT,
+//                            TestLogEvent.STANDARD_ERROR
+                        )
                         exceptionFormat = TestExceptionFormat.FULL
                         showStandardStreams = true
                         showExceptions = true

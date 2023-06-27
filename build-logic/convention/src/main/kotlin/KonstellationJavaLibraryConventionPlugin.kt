@@ -21,8 +21,8 @@ class KonstellationJavaLibraryConventionPlugin : Plugin<Project> {
         }
 
         extensions.configure<JavaPluginExtension> {
-            sourceCompatibility = dev.gabrieldrn.konstellation.buildlogic.javaVersion
-            targetCompatibility = dev.gabrieldrn.konstellation.buildlogic.javaVersion
+            sourceCompatibility = javaVersion
+            targetCompatibility = javaVersion
         }
 
         setupExplicitApi()

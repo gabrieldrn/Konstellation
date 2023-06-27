@@ -18,12 +18,12 @@ internal fun Project.configureKotlinAndroidCommon(
     }
 
     compileOptions {
-        sourceCompatibility = dev.gabrieldrn.konstellation.buildlogic.javaVersion
-        targetCompatibility = dev.gabrieldrn.konstellation.buildlogic.javaVersion
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
 
     kotlinOptions {
-        jvmTarget = dev.gabrieldrn.konstellation.buildlogic.javaVersion.toString()
+        jvmTarget = javaVersion.toString()
     }
 
     buildFeatures {

@@ -25,9 +25,9 @@ internal fun Project.setupExplicitApi() {
             it is KotlinCompile && !it.name.contains("test", ignoreCase = true)
         }
         .matching {
-            !(it as KotlinCompile).kotlinOptions.freeCompilerArgs.contains(dev.gabrieldrn.konstellation.buildlogic.STRICT_API_COMPILER_ARG)
+            !(it as KotlinCompile).kotlinOptions.freeCompilerArgs.contains(STRICT_API_COMPILER_ARG)
         }
         .configureEach {
-            (this as KotlinCompile).kotlinOptions.freeCompilerArgs += dev.gabrieldrn.konstellation.buildlogic.STRICT_API_COMPILER_ARG
+            (this as KotlinCompile).kotlinOptions.freeCompilerArgs += STRICT_API_COMPILER_ARG
         }
 }
