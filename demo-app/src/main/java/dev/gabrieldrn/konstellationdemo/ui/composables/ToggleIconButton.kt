@@ -1,5 +1,7 @@
 package dev.gabrieldrn.konstellationdemo.ui.composables
 
+import android.content.Context
+import android.media.AudioManager
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -18,10 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
+import kotlinx.coroutines.launch
 
 /**
  * Fixed size for a [ToggleIconButton].
@@ -50,6 +54,8 @@ fun ToggleIconButton(
         targetValue = if (toggled) toggledImageVectorTint else disabledImageVectorTint,
         animationSpec = tween(), label = "ToggleIconButtonImageVectorTint"
     )
+    val audioManager = LocalContext.current.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    val buttonScope = rememberCoroutineScope()
     Box(
         modifier = modifier
             .size(toggleIconButtonSize)
@@ -58,7 +64,12 @@ fun ToggleIconButton(
                 shape = CircleShape
             )
             .toggleable(
-                onValueChange = onToggleChange,
+                onValueChange = {
+                    buttonScope.launch {
+                        audioManager.playSoundEffect(AudioManager.FX_KEY_CLICK, 1.0f)
+                    }
+                    onToggleChange(it)
+                },
                 value = toggled,
                 role = Role.Button,
                 interactionSource = remember { MutableInteractionSource() },
