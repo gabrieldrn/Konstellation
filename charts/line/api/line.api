@@ -105,7 +105,7 @@ public final class dev/gabrieldrn/konstellation/charts/line/properties/LineChart
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getChartPaddingValues ()Landroidx/compose/foundation/layout/PaddingValues;
 	public final fun getChartWindow ()Ldev/gabrieldrn/konstellation/charts/line/properties/ChartWindow;
-	public final fun getEnablePanning ()Z
+	public final fun getPanningEnabled ()Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
