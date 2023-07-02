@@ -85,7 +85,7 @@ class DotsBrush(
     override fun createShader(size: Size): Shader {
         return BitmapShader(
             ResourcesCompat
-                .getDrawable(resources, R.drawable.ic_circle, null)!!
+                .getDrawable(resources, R.drawable.ic_dots, null)!!
                 .apply { setTint(primaryColor.toArgb()) }
                 .toBitmap(),
             Shader.TileMode.REPEAT,
