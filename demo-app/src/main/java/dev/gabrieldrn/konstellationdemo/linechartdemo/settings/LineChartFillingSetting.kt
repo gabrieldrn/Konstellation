@@ -26,28 +26,6 @@ import dev.gabrieldrn.konstellationdemo.R
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
 
 /**
- * Brush that uses a bitmap shader to draw dots.
- * @param resources The resources to use to get the bitmap.
- * @param primaryColor The color to tint the bitmap with.
- */
-class DotsBrush(
-    private val resources: Resources,
-    private val primaryColor: Color
-) : ShaderBrush() {
-
-    override fun createShader(size: Size): Shader {
-        return BitmapShader(
-            ResourcesCompat
-                .getDrawable(resources, R.drawable.ic_circle, null)!!
-                .apply { setTint(primaryColor.toArgb()) }
-                .toBitmap(),
-            Shader.TileMode.REPEAT,
-            Shader.TileMode.REPEAT
-        )
-    }
-}
-
-/**
  * Composable that allows the user to change the filling of the LineChart.
  */
 @Composable
@@ -91,5 +69,27 @@ fun LineChartFillingSetting(
                 imageVector = Icons.Default.FormatColorReset,
             )
         }
+    }
+}
+
+/**
+ * Brush that uses a bitmap shader to draw dots.
+ * @property resources The resources to use to get the bitmap.
+ * @property primaryColor The color to tint the bitmap with.
+ */
+class DotsBrush(
+    private val resources: Resources,
+    private val primaryColor: Color
+) : ShaderBrush() {
+
+    override fun createShader(size: Size): Shader {
+        return BitmapShader(
+            ResourcesCompat
+                .getDrawable(resources, R.drawable.ic_circle, null)!!
+                .apply { setTint(primaryColor.toArgb()) }
+                .toBitmap(),
+            Shader.TileMode.REPEAT,
+            Shader.TileMode.REPEAT
+        )
     }
 }
