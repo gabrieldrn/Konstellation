@@ -19,12 +19,12 @@ import kotlin.jvm.Throws
  * rather to be created by the composable function. See [LineChart].
  *
  * @param dataset Your set of points.
- * @param properties The properties of the line chart. See [LineChartProperties].
+ * @property properties The properties of the line chart. See [LineChartProperties].
  */
 @Stable
 public class LineChartState(
     dataset: Dataset,
-    properties: LineChartProperties,
+    public val properties: LineChartProperties,
 ) {
     /**
      * The initial window of the chart, before any panning.

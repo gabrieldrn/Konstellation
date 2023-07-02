@@ -71,9 +71,9 @@ public fun LineChart(
 /**
  * Konstellation composable function drawing a line chart.
  *
- * @param state The state of the chart. See [LineChartState].
+ * @param state The state of the chart. See [LineChartState]. A change in the state will trigger
+ * a recomposition of the chart.
  * @param modifier The modifier to be applied to the chart.
- * @param properties The DNA of your chart. See [LineChartProperties].
  * @param styles Visual styles to be applied to the chart.
  * @param highlightConfig Configuration of the highlight feature. See [LineChartHighlightConfig].
  * @param highlightContent Classic Composable scope defining the content to be shown inside
@@ -86,7 +86,6 @@ public fun LineChart(
 public fun LineChart(
     state: LineChartState,
     modifier: Modifier = Modifier,
-    properties: LineChartProperties = LineChartProperties(),
     styles: LineChartStyles = LineChartStyles(),
     highlightConfig: LineChartHighlightConfig = LineChartHighlightConfig(),
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
@@ -96,7 +95,7 @@ public fun LineChart(
     Box {
         Canvas(
             modifier
-                .padding(properties.chartPaddingValues)
+                .padding(state.properties.chartPaddingValues)
                 .onSizeChanged(state::updateSize)
         ) {
             if (styles.drawFrame) {
@@ -147,7 +146,7 @@ public fun LineChart(
         key(state) {
             HighlightCanvas(
                 modifier = modifier,
-                properties = properties,
+                properties = state.properties,
                 dataset = { state.calculatedDataset },
                 highlightConfig = highlightConfig,
                 highlightContent = highlightContent,
