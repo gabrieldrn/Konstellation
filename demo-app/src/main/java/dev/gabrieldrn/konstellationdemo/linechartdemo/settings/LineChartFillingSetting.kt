@@ -25,6 +25,11 @@ import androidx.core.graphics.drawable.toBitmap
 import dev.gabrieldrn.konstellationdemo.R
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
 
+/**
+ * Brush that uses a bitmap shader to draw dots.
+ * @param resources The resources to use to get the bitmap.
+ * @param primaryColor The color to tint the bitmap with.
+ */
 class DotsBrush(
     private val resources: Resources,
     private val primaryColor: Color
