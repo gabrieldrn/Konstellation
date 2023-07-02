@@ -26,11 +26,41 @@ public fun DatasetOffsets?.applyDatasetOffsets(
 }
 
 /**
+ * Returns a new [ClosedFloatingPointRange] with both start and end value increased by [other].
+ */
+public fun ClosedFloatingPointRange<Float>.plus(
+    other: Float
+): ClosedFloatingPointRange<Float> = start + other..endInclusive + other
+
+/**
+ * Returns a new [ClosedFloatingPointRange] with both start and end value increased by [other].
+ */
+public fun ClosedFloatingPointRange<Float>.minus(
+    other: Float
+): ClosedFloatingPointRange<Float> = start - other..endInclusive - other
+
+/**
+ * Returns a new [ClosedFloatingPointRange] with its distance increased by [other].
+ */
+public fun ClosedFloatingPointRange<Float>.inc(
+    other: Float
+): ClosedFloatingPointRange<Float> = start - other..endInclusive + other
+
+/**
+ * Returns a new [ClosedFloatingPointRange] with its distance decreased by [other].
+ */
+public fun ClosedFloatingPointRange<Float>.dec(
+    other: Float
+): ClosedFloatingPointRange<Float> = start + other..endInclusive - other
+
+/**
  * Returns a new [ClosedFloatingPointRange] with start value increased by [other].
  * @throws IllegalArgumentException If increased start value is greater than end value.
  */
 public fun ClosedFloatingPointRange<Float>.incStart(other: Float): ClosedFloatingPointRange<Float> {
-    require(start + other <= endInclusive)
+    require(start + other <= endInclusive) {
+        "Increase start value by $other would result in a value greater than end value."
+    }
     return start + other..endInclusive
 }
 
@@ -39,7 +69,9 @@ public fun ClosedFloatingPointRange<Float>.incStart(other: Float): ClosedFloatin
  * @throws IllegalArgumentException If increased end value is lower than start value.
  */
 public fun ClosedFloatingPointRange<Float>.incEnd(other: Float): ClosedFloatingPointRange<Float> {
-    require(endInclusive + other >= start)
+    require(endInclusive + other >= start) {
+        "Increase end value by $other would result in a value lower than start value."
+    }
     return start..endInclusive + other
 }
 
@@ -48,7 +80,9 @@ public fun ClosedFloatingPointRange<Float>.incEnd(other: Float): ClosedFloatingP
  * @throws IllegalArgumentException If increased start value is greater than end value.
  */
 public fun ClosedFloatingPointRange<Float>.decStart(other: Float): ClosedFloatingPointRange<Float> {
-    require(start - other <= endInclusive)
+    require(start - other <= endInclusive) {
+        "Decrease start value by $other would result in a value greater than end value."
+    }
     return start - other..endInclusive
 }
 
@@ -57,6 +91,8 @@ public fun ClosedFloatingPointRange<Float>.decStart(other: Float): ClosedFloatin
  * @throws IllegalArgumentException If increased end value is lower than start value.
  */
 public fun ClosedFloatingPointRange<Float>.decEnd(other: Float): ClosedFloatingPointRange<Float> {
-    require(endInclusive - other >= start)
+    require(endInclusive - other >= start) {
+        "Decrease end value by $other would result in a value lower than start value."
+    }
     return start..endInclusive - other
 }

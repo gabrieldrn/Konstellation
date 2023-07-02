@@ -10,6 +10,7 @@ import dev.gabrieldrn.konstellation.plotting.by
 import dev.gabrieldrn.konstellation.plotting.datasetOf
 import dev.gabrieldrn.konstellation.plotting.yRange
 import dev.gabrieldrn.konstellation.util.distance
+import dev.gabrieldrn.konstellation.util.inc
 import dev.gabrieldrn.konstellation.util.randomDataSet
 import dev.gabrieldrn.konstellation.util.randomFancyDataSet
 import kotlin.reflect.KProperty1
@@ -44,9 +45,8 @@ class LineChartDemoViewModel(
     )
 
     private fun getWindowFromDataset(dataset: Dataset): ChartWindow {
-        val clearance = dataset.yRange.distance
         return ChartWindow.fromDataset(dataset).copy(
-            yWindow = dataset.yRange.start - clearance..dataset.yRange.endInclusive + clearance,
+            yWindow = dataset.yRange.inc(dataset.yRange.distance/*=clearance*/)
         )
     }
 

@@ -11,6 +11,7 @@ import dev.gabrieldrn.konstellation.math.map
 import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.validate
 import dev.gabrieldrn.konstellation.util.distance
+import dev.gabrieldrn.konstellation.util.plus
 import kotlin.jvm.Throws
 
 /**
@@ -68,8 +69,8 @@ public class LineChartState(
             ?.minus(yReferential)
             ?: 0f
         initialWindow.copy(
-            xWindow = initialWindow.xWindow.start + xPan..initialWindow.xWindow.endInclusive + xPan,
-            yWindow = initialWindow.yWindow.start + yPan..initialWindow.yWindow.endInclusive + yPan
+            xWindow = initialWindow.xWindow.plus(xPan),
+            yWindow = initialWindow.yWindow.plus(yPan)
         )
     }
 
@@ -100,8 +101,8 @@ public class LineChartState(
     }
 
     /**
-     * Registers the new size of the canvas that draws the chart. The chart offsets must be
-     * recomputed when the size changes.
+     * Registers the new size of the canvas that draws the chart. A recalculation of the chart is
+     * necessary after this, therefore the chart will be recomposed.
      */
     public fun updateSize(newSize: IntSize) {
         size = newSize.toSize()
