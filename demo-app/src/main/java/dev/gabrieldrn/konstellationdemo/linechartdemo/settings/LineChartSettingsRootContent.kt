@@ -25,10 +25,12 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartHighlightConfig
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.highlighting.HighlightContentPosition
+import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlin.reflect.KProperty1
 
@@ -41,6 +43,7 @@ private val SettingSurfaceHeight = 148.dp
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ColumnScope.LineChartSettingsContent(
+    dataset: Dataset,
     properties: LineChartProperties,
     styles: LineChartStyles,
     highlightConfig: LineChartHighlightConfig,
@@ -68,10 +71,9 @@ fun ColumnScope.LineChartSettingsContent(
             )
 
             1 -> LineChartPropertiesSetting(
-//                datasetXRange = dataset.xRange,
-//                datasetYRange = dataset.yRange,
                 chartPaddingValues = properties.chartPaddingValues,
-                chartWindow = properties.chartWindow,
+                chartWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset),
+                chartInitialWindow = ChartWindow.fromDataset(dataset),
                 panningEnabled = properties.panningEnabled,
                 onUpdateProperty = onUpdateProperty
             )
@@ -204,10 +206,9 @@ private fun SettingsPreviews() {
             LineChartDatasetSelector({}, {})
 
             LineChartPropertiesSetting(
-//                datasetXRange = 0f..1f,
-//                datasetYRange = 0f..1f,
                 chartPaddingValues = PaddingValues(44.dp),
-                chartWindow = null,
+                chartWindow = ChartWindow(0f..1f, 0f..1f),
+                chartInitialWindow = ChartWindow(0f..1f, 0f..1f),
                 panningEnabled = true,
                 onUpdateProperty = { _, _ -> }
             )

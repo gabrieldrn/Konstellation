@@ -55,6 +55,7 @@ fun LineChartDemo(
             highlightConfig = lineChartHighlightConfig
         )
         LineChartSettingsContent(
+            dataset = viewModel.uiState.dataset,
             properties = viewModel.uiState.properties,
             styles = lineChartStyles,
             highlightConfig = lineChartHighlightConfig,

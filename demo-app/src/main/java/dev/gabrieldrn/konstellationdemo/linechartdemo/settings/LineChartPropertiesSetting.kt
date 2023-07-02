@@ -13,25 +13,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
+import dev.gabrieldrn.konstellation.util.distance
+import dev.gabrieldrn.konstellation.util.inc
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
 import kotlin.reflect.KProperty1
 
 /**
  * This composable will be used to display the settings related to the chart properties.
  */
-@Suppress("MagicNumber", "UNUSED_PARAMETER")
+@Suppress("MagicNumber")
 @Composable
 fun LineChartPropertiesSetting(
-//    datasetXRange: ClosedFloatingPointRange<Float>,
-//    datasetYRange: ClosedFloatingPointRange<Float>,
     chartPaddingValues: PaddingValues,
-    chartWindow: ChartWindow?,
+    chartWindow: ChartWindow,
+    chartInitialWindow: ChartWindow,
     panningEnabled: Boolean,
     onUpdateProperty: (KProperty1<LineChartProperties, Any?>, Any?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val paddingValue = { padding: PaddingValues ->
         padding.calculateTopPadding().value
+    }
+    val xWindowOffset = { window: ChartWindow ->
+       chartInitialWindow.xWindow.start - window.xWindow.start
+    }
+    val yWindowOffset = { window: ChartWindow ->
+        chartInitialWindow.yWindow.start - window.yWindow.start
     }
     SettingSurface(title = "Properties", modifier = modifier) {
         Row(
@@ -41,16 +48,16 @@ fun LineChartPropertiesSetting(
             Column(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
+                    .fillMaxHeight()
                     .padding(horizontal = 16.dp)
                     .weight(1f)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "Padding",
+                        text = "Padding\n${paddingValue(chartPaddingValues).toInt()}dp",
                         style = MaterialTheme.typography.bodySmall,
                     )
                     Slider(
-                        enabled = true,
                         value = paddingValue(chartPaddingValues),
                         valueRange = 0f..120f,
                         onValueChange = {
@@ -64,27 +71,39 @@ fun LineChartPropertiesSetting(
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "X offset\n${0}", // TODO
+                        text = "X offset\n${xWindowOffset(chartWindow).toInt()}",
                         style = MaterialTheme.typography.bodySmall,
                     )
                     Slider(
-                        enabled = false,
-                        value = 0f, // TODO
-                        valueRange = 0f..10f,
-                        onValueChange = { TODO() },
+                        value = xWindowOffset(chartWindow),
+                        valueRange = chartInitialWindow.xWindow,
+                        onValueChange = {
+                            onUpdateProperty(
+                                LineChartProperties::chartWindow,
+                                chartWindow.copy(
+                                    xWindow = chartInitialWindow.xWindow.inc(it)
+                                ),
+                            )
+                        },
                         modifier = Modifier.padding(start = 16.dp)
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "Y offset\n${0}", // TODO
+                        text = "Y offset\n${yWindowOffset(chartWindow).toInt()}",
                         style = MaterialTheme.typography.bodySmall,
                     )
                     Slider(
-                        enabled = false,
-                        value = 0f, // TODO
-                        valueRange = 0f..10f,
-                        onValueChange = { TODO() },
+                        value = yWindowOffset(chartWindow),
+                        valueRange = 0f..chartInitialWindow.yWindow.distance * 2,
+                        onValueChange = {
+                            onUpdateProperty(
+                                LineChartProperties::chartWindow,
+                                chartWindow.copy(
+                                    yWindow = chartInitialWindow.yWindow.inc(it)
+                                ),
+                            )
+                        },
                         modifier = Modifier.padding(start = 16.dp)
                     )
                 }
