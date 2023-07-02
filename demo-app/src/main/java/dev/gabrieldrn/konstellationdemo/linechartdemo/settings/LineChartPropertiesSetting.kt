@@ -31,7 +31,7 @@ fun LineChartPropertiesSetting(
     modifier: Modifier = Modifier
 ) {
     val paddingValue = { padding: PaddingValues ->
-        padding.calculateTopPadding().value.toInt()
+        padding.calculateTopPadding().value
     }
     SettingSurface(title = "Properties", modifier = modifier) {
         Row(
@@ -46,12 +46,13 @@ fun LineChartPropertiesSetting(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "Padding\n${paddingValue(chartPaddingValues)}dp",
+                        text = "Padding",
                         style = MaterialTheme.typography.bodySmall,
                     )
                     Slider(
-                        value = chartPaddingValues.calculateTopPadding().value,
-                        valueRange = 0f..100f,
+                        enabled = true,
+                        value = paddingValue(chartPaddingValues),
+                        valueRange = 0f..120f,
                         onValueChange = {
                             onUpdateProperty(
                                 LineChartProperties::chartPaddingValues,
