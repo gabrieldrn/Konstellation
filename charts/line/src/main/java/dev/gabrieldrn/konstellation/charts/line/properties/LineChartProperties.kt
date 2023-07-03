@@ -13,7 +13,7 @@ import dev.gabrieldrn.konstellation.configuration.properties.ChartProperties
  * the entire chart.**
  *
  * @property chartPaddingValues Paddings applied to the bounds of the chart (from "view" bounds to
- * axes).
+ * axes). This can be interpreted as the "border" of the chart.
  * @property chartWindow The visualization window of the chart. If null, the chart will be drawn
  * with a window that fits all the data.
  * @property panningEnabled Either to enable panning or not.

@@ -31,6 +31,7 @@ import dev.gabrieldrn.konstellation.plotting.ChartAxis
  * @property fillingBrush The brush to apply to the filling content from the bottom of the chart to
  * the data lines. If null, no filling is applied.
  * @property pathInterpolator The interpolator to use when drawing the lines.
+ * @property clipChart Either to clip the chart to the composable paddings or not.
  */
 @Immutable
 public data class LineChartStyles(
@@ -48,4 +49,5 @@ public data class LineChartStyles(
     val textStyle: TextDrawStyle = TextDrawStyle(),
     val fillingBrush: Brush? = null,
     val pathInterpolator: PathInterpolator = MonotoneXPathInterpolator(),
+    val clipChart: Boolean = true,
 ) : ChartStyles

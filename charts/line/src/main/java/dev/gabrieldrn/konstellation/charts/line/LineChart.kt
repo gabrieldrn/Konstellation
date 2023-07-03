@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
@@ -91,6 +92,35 @@ public fun LineChart(
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
 ) {
+    fun DrawScope.renderLineChart(
+        state: LineChartState,
+        styles: LineChartStyles
+    ) {
+        val chartPath = styles.pathInterpolator(state.calculatedDataset)
+
+        // Draw line chart filling before the line itself.
+        styles.fillingBrush?.let { brush ->
+            drawPath(
+                path = Path().apply {
+                    addPath(chartPath)
+                    // Closing path shape with chart bottom
+                    lineTo(state.calculatedDataset.last().xPos, size.height)
+                    lineTo(state.calculatedDataset.first().xPos, size.height)
+                    close()
+                },
+                brush = brush
+            )
+        }
+        if (styles.drawLines) {
+            // Chart line path
+            drawLinePath(chartPath, styles.lineStyle)
+        }
+        // Points
+        if (styles.drawPoints) {
+            state.calculatedDataset.forEach { drawPoint(it, styles.pointStyle) }
+        }
+    }
+
     // This layout helps to compute the offsets for the dataset during the first layout pass.
     Box {
         Canvas(
@@ -98,49 +128,32 @@ public fun LineChart(
                 .padding(state.properties.chartPaddingValues)
                 .onSizeChanged(state::updateSize)
         ) {
+            // region Chart frame and axes
+
             if (styles.drawFrame) {
                 drawFrame()
             }
-
-            val path = styles.pathInterpolator(state.calculatedDataset)
 
             if (styles.drawZeroLines) {
                 drawZeroLines(state.window.xWindow, state.window.yWindow)
             }
 
-            with(styles) {
-                drawScaledAxis(
-                    styles,
-                    state.window.xWindow,
-                    state.window.yWindow
-                )
-                // Background filling
-                styles.fillingBrush?.let { brush ->
-                    drawPath(
-                        path = Path().apply {
-                            addPath(path)
-                            // Closing path shape with chart bottom
-                            lineTo(state.calculatedDataset.last().xPos, size.height)
-                            lineTo(state.calculatedDataset.first().xPos, size.height)
-                            close()
-                        },
-                        brush = brush
-                    )
-                }
+            drawScaledAxis(
+                styles,
+                state.window.xWindow,
+                state.window.yWindow
+            )
 
-                if (styles.drawLines) {
-                    // Chart line path
-                    drawLinePath(
-                        path,
-                        lineStyle
-                    )
-                }
+            // endregion
+            // region Chart content
 
-                // Points
-                if (styles.drawPoints) {
-                    state.calculatedDataset.forEach { drawPoint(it, pointStyle) }
-                }
+            if (styles.clipChart) {
+                clipRect { renderLineChart(state, styles) }
+            } else {
+                renderLineChart(state, styles)
             }
+
+            // endregion
         }
 
         key(state) {
