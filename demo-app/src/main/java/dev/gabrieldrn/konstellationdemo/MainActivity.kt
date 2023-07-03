@@ -10,25 +10,23 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemo
 import dev.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemoViewModel
 import dev.gabrieldrn.konstellationdemo.linechartdemo.getDemoChartProperties
 import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 private const val DarkIconsLuminanceThreshold = 0.5f
 
 /**
- * This is the main activity of the demo app.
+ * Demo app main activity.
  */
 class MainActivity : AppCompatActivity() {
 
@@ -65,10 +63,11 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     Text(
                         text = "Konstellation",
-                        style = MaterialTheme.typography.headlineLarge,
+                        style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
                             .padding(top = 16.dp)
                     )
                     Text(
@@ -77,9 +76,7 @@ class MainActivity : AppCompatActivity() {
                             .padding(start = 16.dp, top = 16.dp),
                         text = "Line chart",
                         color = MaterialTheme.colorScheme.secondary,
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.Bold
-                        ),
+                        style = MaterialTheme.typography.titleLarge,
                     )
                     LineChartDemo(lineChartViewModel)
                 }

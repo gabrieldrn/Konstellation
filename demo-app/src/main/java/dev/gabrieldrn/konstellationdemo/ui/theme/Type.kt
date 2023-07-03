@@ -1,5 +1,3 @@
-@file:Suppress("MagicNumber")
-
 package dev.gabrieldrn.konstellationdemo.ui.theme
 
 import androidx.compose.material3.Typography
@@ -35,17 +33,21 @@ private val FigtreeFamily = FontFamily(
 val Typography = Typography().run {
     copy(
         displayLarge = displayLarge.copy(fontFamily = KronaOneFamily),
-        displayMedium = displayMedium.copy(fontFamily = KronaOneFamily),
-        displaySmall = displaySmall.copy(fontFamily = KronaOneFamily),
+        displayMedium = displayLarge.copy(fontFamily = KronaOneFamily),
+        displaySmall = displayLarge.copy(fontFamily = KronaOneFamily),
+
         headlineLarge = headlineLarge.copy(fontFamily = KronaOneFamily),
         headlineMedium = headlineMedium.copy(fontFamily = KronaOneFamily),
         headlineSmall = headlineSmall.copy(fontFamily = KronaOneFamily),
+
         titleLarge = titleLarge.copy(fontFamily = FigtreeFamily),
         titleMedium = titleMedium.copy(fontFamily = FigtreeFamily),
         titleSmall = titleSmall.copy(fontFamily = FigtreeFamily),
+
         bodyLarge = bodyLarge.copy(fontFamily = FigtreeFamily),
         bodyMedium = bodyMedium.copy(fontFamily = FigtreeFamily),
         bodySmall = bodySmall.copy(fontFamily = FigtreeFamily),
+
         labelLarge = labelLarge.copy(fontFamily = FigtreeFamily),
         labelMedium = labelMedium.copy(fontFamily = FigtreeFamily),
         labelSmall = labelSmall.copy(fontFamily = FigtreeFamily)
