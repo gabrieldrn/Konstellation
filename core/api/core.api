@@ -349,10 +349,14 @@ public final class dev/gabrieldrn/konstellation/util/DataKt {
 
 public final class dev/gabrieldrn/konstellation/util/RangesUtilKt {
 	public static final fun applyDatasetOffsets (Ldev/gabrieldrn/konstellation/configuration/properties/DatasetOffsets;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;)Lkotlin/Pair;
+	public static final fun dec (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
 	public static final fun decEnd (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
 	public static final fun decStart (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
 	public static final fun getDistance (Lkotlin/ranges/ClosedFloatingPointRange;)F
+	public static final fun inc (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
 	public static final fun incEnd (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
 	public static final fun incStart (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
+	public static final fun minus (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
+	public static final fun plus (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
 }
 
