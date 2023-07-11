@@ -94,7 +94,9 @@ fun ColumnScope.LineChartSettingsContent(
 
             4 -> LineChartFillingSetting(
                 brush = styles.fillingBrush,
-                onUpdateBrush = { brush -> onUpdateStyles(styles.copy(fillingBrush = brush)) },
+                onUpdateBrush = { brush ->
+                    onUpdateStyles(styles.copy(fillingBrush = brush))
+                },
             )
 
             // endregion

@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.configuration.styles.AxisDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.ChartStyles
@@ -84,12 +85,14 @@ private const val DefaultLabelXOffset = 20f //TODO Move into style data class
  * Draws a tiny vertical line representing a tick, with a given [label]. The orientation of the tick
  * depends on the type of axis (X or Y).
  */
+@Suppress("CyclomaticComplexMethod")
 internal fun DrawScope.drawTick(
     position: Offset,
     axis: ChartAxis,
     label: String,
     style: AxisDrawStyle
 ) {
+    // Tick line
     drawLine(
         start = when (axis.axis) {
             Axis.X_TOP, Axis.X_BOTTOM -> Offset(position.x, position.y - DefaultTickSize / 2)
@@ -101,10 +104,15 @@ internal fun DrawScope.drawTick(
         },
         lineStyle = style.tickLineStyle.copy(cap = StrokeCap.Square)
     )
+    // Tick label
     drawIntoCanvas {
         tickLabelPaint.apply {
             textAlign = style.tickTextStyle.textAlign
-            textSize = style.tickTextStyle.textSize.value
+            when (style.tickTextStyle.textSize.type) {
+                TextUnitType.Em -> textSize *= style.tickTextStyle.textSize.value
+                TextUnitType.Sp -> textSize = style.tickTextStyle.textSize.toPx()
+                else -> {}
+            }
             color = style.tickTextStyle.color.toInt()
             typeface = style.tickTextStyle.typeface
             flags = Paint.ANTI_ALIAS_FLAG

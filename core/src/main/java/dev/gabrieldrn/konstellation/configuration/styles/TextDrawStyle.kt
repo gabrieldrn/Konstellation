@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 public data class TextDrawStyle(
     override val color: Color = Color.Black,
     val typeface: Typeface = Typeface.DEFAULT,
-    val textSize: TextUnit = 32.sp,
+    val textSize: TextUnit = 12.sp,
     val textAlign: Paint.Align = Paint.Align.LEFT,
     val offsetX: Float = 0f,
     val offsetY: Float = 0f,
