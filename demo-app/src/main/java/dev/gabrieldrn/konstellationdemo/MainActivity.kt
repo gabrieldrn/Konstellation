@@ -13,7 +13,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dev.gabrieldrn.konstellationdemo.linechartdemo.LineChartDemo
@@ -63,7 +65,10 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     Text(
                         text = "Konstellation",
-                        style = MaterialTheme.typography.headlineMedium,
+                        style = MaterialTheme.typography.displaySmall.copy(
+                            fontWeight = FontWeight.ExtraLight,
+                            fontSize = 32.sp
+                        ),
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -76,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                             .padding(start = 16.dp, top = 16.dp),
                         text = "Line chart",
                         color = MaterialTheme.colorScheme.secondary,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.headlineMedium,
                     )
                     LineChartDemo(lineChartViewModel)
                 }
