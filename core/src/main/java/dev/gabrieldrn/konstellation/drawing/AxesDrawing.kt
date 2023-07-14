@@ -6,7 +6,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.graphics.nativeCanvas
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.configuration.styles.AxisDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.ChartStyles
@@ -125,11 +124,7 @@ internal fun DrawScope.drawTick(
     drawIntoCanvas {
         tickLabelPaint.apply {
             textAlign = style.tickTextStyle.textAlign
-            when (style.tickTextStyle.textSize.type) {
-                TextUnitType.Em -> textSize *= style.tickTextStyle.textSize.value
-                TextUnitType.Sp -> textSize = style.tickTextStyle.textSize.toPx()
-                else -> {}
-            }
+            setTextSize(style.tickTextStyle, this@drawTick)
             color = style.tickTextStyle.color.toInt()
             typeface = style.tickTextStyle.typeface
             flags = Paint.ANTI_ALIAS_FLAG
