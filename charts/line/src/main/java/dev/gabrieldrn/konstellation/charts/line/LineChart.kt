@@ -26,6 +26,7 @@ import dev.gabrieldrn.konstellation.drawing.drawZeroLines
 import dev.gabrieldrn.konstellation.drawing.highlightPoint
 import dev.gabrieldrn.konstellation.highlighting.HighlightBox
 import dev.gabrieldrn.konstellation.highlighting.HighlightScope
+import dev.gabrieldrn.konstellation.plotting.ChartAxis
 import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.Point
 import dev.gabrieldrn.konstellation.plotting.by
@@ -42,6 +43,8 @@ import kotlinx.coroutines.withContext
  * @param modifier The modifier to be applied to the chart.
  * @param properties The DNA of your chart. See [LineChartProperties].
  * @param styles Visual styles to be applied to the chart.
+ * @param onDrawTick Callback invoked each time a tick is drawn. This allows to customize the ticks
+ * labels based on a given axis and the tick value.
  * @param highlightConfig Configuration of the highlight feature. See [LineChartHighlightConfig].
  * @param highlightContent Classic Composable scope defining the content to be shown inside
  * highlight popup(s). This is optional.
@@ -55,6 +58,7 @@ public fun LineChart(
     modifier: Modifier = Modifier,
     properties: LineChartProperties = LineChartProperties(),
     styles: LineChartStyles = LineChartStyles(),
+    onDrawTick: (ChartAxis, Float) -> String = { _, t -> t.toString() },
     highlightConfig: LineChartHighlightConfig = LineChartHighlightConfig(),
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
@@ -63,6 +67,7 @@ public fun LineChart(
         state = rememberLineChartState(dataset, properties),
         modifier = modifier,
         styles = styles,
+        onDrawTick = onDrawTick,
         highlightConfig = highlightConfig,
         highlightContent = highlightContent,
         onHighlightChange = onHighlightChange
@@ -76,6 +81,8 @@ public fun LineChart(
  * a recomposition of the chart.
  * @param modifier The modifier to be applied to the chart.
  * @param styles Visual styles to be applied to the chart.
+ * @param onDrawTick Callback invoked each time a tick is drawn. This allows to customize the ticks
+ * labels based on a given axis and the tick value.
  * @param highlightConfig Configuration of the highlight feature. See [LineChartHighlightConfig].
  * @param highlightContent Classic Composable scope defining the content to be shown inside
  * highlight popup(s). This is optional.
@@ -88,6 +95,7 @@ public fun LineChart(
     state: LineChartState,
     modifier: Modifier = Modifier,
     styles: LineChartStyles = LineChartStyles(),
+    onDrawTick: (ChartAxis, Float) -> String = { _, t -> t.toString() },
     highlightConfig: LineChartHighlightConfig = LineChartHighlightConfig(),
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
     onHighlightChange: ((Point?) -> Unit)? = null
@@ -139,9 +147,10 @@ public fun LineChart(
             }
 
             drawScaledAxis(
-                styles,
-                state.window.xWindow,
-                state.window.yWindow
+                styles = styles,
+                xRange = state.window.xWindow,
+                yRange = state.window.yWindow,
+                onDrawTick = onDrawTick
             )
 
             // endregion
