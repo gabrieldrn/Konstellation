@@ -141,8 +141,6 @@ public final class dev/gabrieldrn/konstellation/drawing/AxesDrawingKt {
 	public static synthetic fun drawFrame$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)V
 	public static final fun drawScaledAxis (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/ChartStyles;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/jvm/functions/Function2;)V
 	public static synthetic fun drawScaledAxis$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/ChartStyles;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
-	public static final fun drawZeroLines (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ZZLdev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)V
-	public static synthetic fun drawZeroLines$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ZZLdev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)V
 }
 
 public final class dev/gabrieldrn/konstellation/drawing/HighlightDrawingKt {
@@ -156,6 +154,8 @@ public final class dev/gabrieldrn/konstellation/drawing/LineDrawingKt {
 	public static synthetic fun drawLine-DUneCvk$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;JJLdev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)V
 	public static final fun drawLines (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ljava/util/List;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;Z)V
 	public static synthetic fun drawLines$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ljava/util/List;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/PointDrawStyle;ZILjava/lang/Object;)V
+	public static final fun drawZeroLines (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ZZLdev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)V
+	public static synthetic fun drawZeroLines$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ZZLdev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)V
 }
 
 public final class dev/gabrieldrn/konstellation/drawing/PointDrawingKt {
@@ -166,6 +166,7 @@ public final class dev/gabrieldrn/konstellation/drawing/PointDrawingKt {
 public final class dev/gabrieldrn/konstellation/drawing/TextDrawingKt {
 	public static final fun drawText-ubNVwUQ (Landroidx/compose/ui/graphics/drawscope/DrawScope;JLjava/lang/String;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;)V
 	public static synthetic fun drawText-ubNVwUQ$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;JLjava/lang/String;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;ILjava/lang/Object;)V
+	public static final fun setTextSize (Landroid/graphics/Paint;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;Landroidx/compose/ui/unit/Density;)Landroid/graphics/Paint;
 }
 
 public abstract interface class dev/gabrieldrn/konstellation/highlighting/HighlightConfig {
@@ -267,12 +268,18 @@ public final class dev/gabrieldrn/konstellation/plotting/Axes {
 }
 
 public final class dev/gabrieldrn/konstellation/plotting/Axis : java/lang/Enum {
+	public static final field Companion Ldev/gabrieldrn/konstellation/plotting/Axis$Companion;
 	public static final field X_BOTTOM Ldev/gabrieldrn/konstellation/plotting/Axis;
 	public static final field X_TOP Ldev/gabrieldrn/konstellation/plotting/Axis;
 	public static final field Y_LEFT Ldev/gabrieldrn/konstellation/plotting/Axis;
 	public static final field Y_RIGHT Ldev/gabrieldrn/konstellation/plotting/Axis;
 	public static fun valueOf (Ljava/lang/String;)Ldev/gabrieldrn/konstellation/plotting/Axis;
 	public static fun values ()[Ldev/gabrieldrn/konstellation/plotting/Axis;
+}
+
+public final class dev/gabrieldrn/konstellation/plotting/Axis$Companion {
+	public final fun isHorizontal (Ldev/gabrieldrn/konstellation/plotting/Axis;)Z
+	public final fun isVertical (Ldev/gabrieldrn/konstellation/plotting/Axis;)Z
 }
 
 public final class dev/gabrieldrn/konstellation/plotting/ChartAxis {
