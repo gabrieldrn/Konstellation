@@ -130,11 +130,12 @@ public fun LineChart(
     }
 
     // This layout helps to compute the offsets for the dataset during the first layout pass.
-    Box {
+    Box(modifier = modifier) {
         Canvas(
-            modifier
+            modifier = Modifier
                 .padding(state.properties.chartPaddingValues)
                 .onSizeChanged(state::updateSize)
+                .fillMaxSize()
         ) {
             // region Chart frame and axes
 
@@ -167,7 +168,7 @@ public fun LineChart(
 
         key(state) {
             HighlightCanvas(
-                modifier = modifier,
+                modifier = Modifier.fillMaxSize(),
                 properties = state.properties,
                 dataset = { state.calculatedDataset },
                 highlightConfig = highlightConfig,
