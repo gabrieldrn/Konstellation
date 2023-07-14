@@ -32,11 +32,14 @@ private val tickLabelPaint = Paint()
 
 /**
  * Draws axis and labels of a chart based on its [styles] and axis ranges [xRange], [yRange].
+ * The [onDrawTick] callback is called for each tick of the axis, and it should return the label
+ * (String) to be drawn.
  */
 public fun DrawScope.drawScaledAxis(
     styles: ChartStyles,
     xRange: ClosedFloatingPointRange<Float>,
     yRange: ClosedFloatingPointRange<Float>,
+    onDrawTick: (ChartAxis, Float) -> String = { _, t -> t.toString() }
 ) {
     var range: ClosedFloatingPointRange<Float>
     var style: AxisDrawStyle
@@ -59,11 +62,18 @@ public fun DrawScope.drawScaledAxis(
         var (lineStart, lineEnd) = getAxisDrawingPoints(axis)
 
         //Axis line
-        drawLine(lineStart, lineEnd, style.axisLineStyle)
+        drawLine(
+            start = lineStart,
+            end = lineEnd,
+            lineStyle = style.axisLineStyle
+        )
 
         //Compute starting offsets for drawing
         val (tickSpacingOffset, lineStartOffset) = calculateAxisOffsets(
-            axis, chartScale, range, lineStart
+            axis = axis,
+            chartScale = chartScale,
+            range = range,
+            lineStart = lineStart
         )
 
         lineStart = lineStartOffset
@@ -71,7 +81,14 @@ public fun DrawScope.drawScaledAxis(
         var tickValue = chartScale.niceMin
         //Labels drawing
         while (tickValue <= chartScale.niceMax) {
-            if (tickValue in range) drawTick(lineStart, axis, tickValue.toString(), style)
+            if (tickValue in range) {
+                drawTick(
+                    position = lineStart,
+                    axis = axis,
+                    label = onDrawTick(axis, tickValue),
+                    style = style
+                )
+            }
             lineStart += tickSpacingOffset
             tickValue += chartScale.tickSpacing
         }
