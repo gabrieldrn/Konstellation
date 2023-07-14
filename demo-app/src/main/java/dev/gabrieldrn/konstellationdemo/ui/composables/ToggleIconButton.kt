@@ -8,7 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.ripple.rememberRipple
@@ -61,7 +60,7 @@ fun ToggleIconButton(
             .size(toggleIconButtonSize)
             .background(
                 color = background,
-                shape = CircleShape
+                shape = MaterialTheme.shapes.small
             )
             .toggleable(
                 onValueChange = {

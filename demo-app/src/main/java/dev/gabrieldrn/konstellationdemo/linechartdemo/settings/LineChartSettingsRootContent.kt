@@ -130,7 +130,7 @@ internal fun SettingSurface(
 ) {
     Column {
         Surface(
-            shape = RoundedCornerShape(16.dp),
+            shape = MaterialTheme.shapes.large,
             modifier = modifier
                 .fillMaxWidth()
                 .padding(16.dp)
@@ -159,7 +159,7 @@ internal fun SettingIconButton(
             onClick = onClick,
             Modifier.background(
                 color = MaterialTheme.colorScheme.primary,
-                shape = CircleShape
+                shape = MaterialTheme.shapes.small
             )
         ) {
             Icon(

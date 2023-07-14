@@ -10,12 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.util.distance
 import dev.gabrieldrn.konstellation.util.inc
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
+import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import kotlin.reflect.KProperty1
 
 /**
@@ -35,7 +37,7 @@ fun LineChartPropertiesSetting(
         padding.calculateTopPadding().value
     }
     val xWindowOffset = { window: ChartWindow ->
-       chartInitialWindow.xWindow.start - window.xWindow.start
+        chartInitialWindow.xWindow.start - window.xWindow.start
     }
     val yWindowOffset = { window: ChartWindow ->
         chartInitialWindow.yWindow.start - window.yWindow.start
@@ -124,5 +126,19 @@ fun LineChartPropertiesSetting(
                     .fillMaxHeight()
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun SettingsPreviews() {
+    KonstellationTheme {
+        LineChartPropertiesSetting(
+            chartPaddingValues = PaddingValues(44.dp),
+            chartWindow = ChartWindow(0f..1f, 0f..1f),
+            chartInitialWindow = ChartWindow(0f..1f, 0f..1f),
+            panningEnabled = true,
+            onUpdateProperty = { _, _ -> }
+        )
     }
 }

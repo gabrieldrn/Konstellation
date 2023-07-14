@@ -14,15 +14,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.plotting.Axes
 import dev.gabrieldrn.konstellation.plotting.ChartAxis
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
-import dev.gabrieldrn.konstellationdemo.ui.composables.toggleIconButtonSize
+import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
 /**
  * A setting composable that allows the user to select which axes to draw and whether to draw the
@@ -38,12 +36,14 @@ fun LineChartAxisSelectorSetting(
         Row(
             modifier = Modifier
                 .padding(16.dp)
-                .fillMaxWidth()
+                .fillMaxSize()
         ) {
             AxesSelector(
                 axes = styles.axes,
                 onUpdateAxes = { onUpdateStyles(styles.copy(axes = it)) },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically)
             )
             Box(
                 Modifier
@@ -81,9 +81,9 @@ private fun AxesSelector(
 ) {
     @Composable
     fun AxisToggleButton(
-        modifier: Modifier,
         axis: ChartAxis,
-        imageVector: ImageVector
+        imageVector: ImageVector,
+        modifier: Modifier = Modifier,
     ) {
         ToggleIconButton(
             modifier = modifier,
@@ -103,30 +103,37 @@ private fun AxesSelector(
         )
     }
 
-    Layout(
-        modifier = modifier.fillMaxSize(),
-        content = {
-            AxisToggleButton(Modifier.layoutId("T"), Axes.xTop, Icons.Default.BorderTop)
-            AxisToggleButton(Modifier.layoutId("B"), Axes.xBottom, Icons.Default.BorderBottom)
-            AxisToggleButton(Modifier.layoutId("L"), Axes.yLeft, Icons.Default.BorderLeft)
-            AxisToggleButton(Modifier.layoutId("R"), Axes.yRight, Icons.Default.BorderRight)
-        },
-        measurePolicy = { measurables, constraints ->
-            val bSize = toggleIconButtonSize.roundToPx()
-            val bSizeHalf = bSize / 2
-            val bSizeCons = constraints.copy(bSize, bSize, bSize, bSize)
-            val t = measurables.first { it.layoutId == "T" }.measure(bSizeCons)
-            val b = measurables.first { it.layoutId == "B" }.measure(bSizeCons)
-            val l = measurables.first { it.layoutId == "L" }.measure(bSizeCons)
-            val r = measurables.first { it.layoutId == "R" }.measure(bSizeCons)
-            val layoutSize = 116.dp.roundToPx()
-
-            layout(layoutSize, layoutSize) {
-                t.place(IntOffset(layoutSize / 2 - bSizeHalf, 0))
-                b.place(IntOffset(layoutSize / 2 - bSizeHalf, layoutSize - bSize))
-                l.place(IntOffset(0, layoutSize / 2 - bSizeHalf))
-                r.place(IntOffset(layoutSize - bSize, layoutSize / 2 - bSizeHalf))
-            }
+    Column(modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            AxisToggleButton(Axes.xTop, Icons.Default.BorderTop)
+            AxisToggleButton(Axes.yRight, Icons.Default.BorderRight)
         }
-    )
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.Top
+        ) {
+            AxisToggleButton(Axes.yLeft, Icons.Default.BorderLeft)
+            AxisToggleButton(Axes.xBottom, Icons.Default.BorderBottom)
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun SettingsPreviews() {
+    KonstellationTheme {
+        LineChartAxisSelectorSetting(
+            styles = LineChartStyles(),
+            onUpdateStyles = { _ -> }
+        )
+    }
 }
