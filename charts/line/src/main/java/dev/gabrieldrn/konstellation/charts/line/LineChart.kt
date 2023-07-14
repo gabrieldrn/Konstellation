@@ -9,10 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.*
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import dev.gabrieldrn.konstellation.charts.line.drawing.drawLinePath
@@ -190,7 +192,7 @@ private fun BoxScope.HighlightCanvas(
     onHighlightChange: ((Point?) -> Unit)? = null,
     onUpdateWindowOffsets: ((dragAmount: Offset) -> Unit)
 ) {
-//    val hapticLocal = LocalHapticFeedback.current
+    val hapticLocal = LocalHapticFeedback.current
     val density = LocalDensity.current
 
     var pointerValue by remember {
@@ -230,11 +232,9 @@ private fun BoxScope.HighlightCanvas(
     }
 
     LaunchedEffect(highlightedPoint) {
-        // FIXME The haptic feedback is called on each frame while the chart properties are
-        //   being changed + when a point is highlighted.
-//        if (properties.hapticHighlight && highlightedPoint != null) {
-//            hapticLocal.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-//        }
+        if (highlightConfig.enableHapticFeedback && highlightedPoint != null) {
+            hapticLocal.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+        }
         onHighlightChange?.invoke(highlightedPoint)
     }
 
