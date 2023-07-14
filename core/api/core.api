@@ -139,7 +139,8 @@ public final class dev/gabrieldrn/konstellation/configuration/styles/TextDrawSty
 public final class dev/gabrieldrn/konstellation/drawing/AxesDrawingKt {
 	public static final fun drawFrame (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)V
 	public static synthetic fun drawFrame$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)V
-	public static final fun drawScaledAxis (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/ChartStyles;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;)V
+	public static final fun drawScaledAxis (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/ChartStyles;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/jvm/functions/Function2;)V
+	public static synthetic fun drawScaledAxis$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/ChartStyles;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
 	public static final fun drawZeroLines (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ZZLdev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)V
 	public static synthetic fun drawZeroLines$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;ZZLdev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)V
 }

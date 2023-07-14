@@ -6,8 +6,8 @@ public final class dev/gabrieldrn/konstellation/charts/line/BuildConfig {
 }
 
 public final class dev/gabrieldrn/konstellation/charts/line/LineChartKt {
-	public static final fun LineChart (Ldev/gabrieldrn/konstellation/charts/line/LineChartState;Landroidx/compose/ui/Modifier;Ldev/gabrieldrn/konstellation/charts/line/style/LineChartStyles;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartHighlightConfig;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
-	public static final fun LineChart (Ljava/util/List;Landroidx/compose/ui/Modifier;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartProperties;Ldev/gabrieldrn/konstellation/charts/line/style/LineChartStyles;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartHighlightConfig;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LineChart (Ldev/gabrieldrn/konstellation/charts/line/LineChartState;Landroidx/compose/ui/Modifier;Ldev/gabrieldrn/konstellation/charts/line/style/LineChartStyles;Lkotlin/jvm/functions/Function2;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartHighlightConfig;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun LineChart (Ljava/util/List;Landroidx/compose/ui/Modifier;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartProperties;Ldev/gabrieldrn/konstellation/charts/line/style/LineChartStyles;Lkotlin/jvm/functions/Function2;Ldev/gabrieldrn/konstellation/charts/line/properties/LineChartHighlightConfig;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class dev/gabrieldrn/konstellation/charts/line/LineChartState {
