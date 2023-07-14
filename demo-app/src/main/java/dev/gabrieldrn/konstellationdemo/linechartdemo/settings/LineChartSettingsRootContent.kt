@@ -3,8 +3,6 @@ package dev.gabrieldrn.konstellationdemo.linechartdemo.settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoGraph
@@ -42,7 +40,7 @@ private val SettingSurfaceHeight = 148.dp
  */
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ColumnScope.LineChartSettingsContent(
+fun LineChartSettingsContent(
     dataset: Dataset,
     properties: LineChartProperties,
     styles: LineChartStyles,
@@ -52,74 +50,76 @@ fun ColumnScope.LineChartSettingsContent(
     onUpdateProperty: (KProperty1<LineChartProperties, Any?>, Any?) -> Unit,
     onUpdateStyles: (LineChartStyles) -> Unit,
     onUpdateHighlightConfig: (LineChartHighlightConfig) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val pagerState = rememberPagerState()
+    Column(modifier = modifier) {
+        HorizontalPager(
+            count = 6,
+            state = pagerState,
+            verticalAlignment = Alignment.Top,
+        ) { page ->
+            @Suppress("MagicNumber")
+            when (page) {
 
-    HorizontalPager(
-        count = 6,
-        state = pagerState,
-        verticalAlignment = Alignment.Top
-    ) { page ->
-        @Suppress("MagicNumber")
-        when (page) {
+                // region Properties
 
-            // region Properties
+                0 -> LineChartDatasetSelector(
+                    onGenerateRandomDataset = onGenerateRandomDataset,
+                    onGenerateFancyDataset = onGenerateFancyDataset,
+                )
 
-            0 -> LineChartDatasetSelector(
-                onGenerateRandomDataset = onGenerateRandomDataset,
-                onGenerateFancyDataset = onGenerateFancyDataset,
-            )
+                1 -> LineChartPropertiesSetting(
+                    chartPaddingValues = properties.chartPaddingValues,
+                    chartWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset),
+                    chartInitialWindow = ChartWindow.fromDataset(dataset),
+                    panningEnabled = properties.panningEnabled,
+                    onUpdateProperty = onUpdateProperty
+                )
 
-            1 -> LineChartPropertiesSetting(
-                chartPaddingValues = properties.chartPaddingValues,
-                chartWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset),
-                chartInitialWindow = ChartWindow.fromDataset(dataset),
-                panningEnabled = properties.panningEnabled,
-                onUpdateProperty = onUpdateProperty
-            )
+                // endregion
 
-            // endregion
+                // region Styles
 
-            // region Styles
+                2 -> LineChartAxisSelectorSetting(
+                    styles = styles,
+                    onUpdateStyles = onUpdateStyles,
+                )
 
-            2 -> LineChartAxisSelectorSetting(
-                styles = styles,
-                onUpdateStyles = onUpdateStyles,
-            )
+                3 -> LineChartDataDrawingSetting(
+                    styles = styles,
+                    onUpdateStyles = onUpdateStyles,
+                )
 
-            3 -> LineChartDataDrawingSetting(
-                styles = styles,
-                onUpdateStyles = onUpdateStyles,
-            )
+                4 -> LineChartFillingSetting(
+                    brush = styles.fillingBrush,
+                    onUpdateBrush = { brush ->
+                        onUpdateStyles(styles.copy(fillingBrush = brush))
+                    },
+                )
 
-            4 -> LineChartFillingSetting(
-                brush = styles.fillingBrush,
-                onUpdateBrush = { brush ->
-                    onUpdateStyles(styles.copy(fillingBrush = brush))
-                },
-            )
+                // endregion
 
-            // endregion
+                // region Highlighting
 
-            // region Highlighting
+                5 -> LineChartHighlightSetting(
+                    contentPositions = highlightConfig.contentPositions,
+                    onUpdateHighlightConfig = { positions ->
+                        onUpdateHighlightConfig(highlightConfig.copy(contentPositions = positions))
+                    }
+                )
 
-            5 -> LineChartHighlightSetting(
-                contentPositions = highlightConfig.contentPositions,
-                onUpdateHighlightConfig = { positions ->
-                    onUpdateHighlightConfig(highlightConfig.copy(contentPositions = positions))
-                }
-            )
-
-            // endregion
+                // endregion
+            }
         }
+        HorizontalPagerIndicator(
+            pagerState = pagerState,
+            activeColor = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 4.dp),
+        )
     }
-    HorizontalPagerIndicator(
-        pagerState = pagerState,
-        activeColor = MaterialTheme.colorScheme.secondary,
-        modifier = Modifier
-            .align(Alignment.CenterHorizontally)
-            .padding(top = 4.dp),
-    )
 }
 
 @Composable
@@ -136,7 +136,7 @@ internal fun SettingSurface(
                 .padding(16.dp)
                 .height(SettingSurfaceHeight),
             content = content,
-            color = MaterialTheme.colorScheme.secondaryContainer,
+//            color = MaterialTheme.colorScheme.secondaryContainer,
             tonalElevation = 1.dp
         )
         Text(
