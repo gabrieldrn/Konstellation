@@ -56,7 +56,7 @@ fun LineChartDemo(
             properties = viewModel.uiState.properties,
             styles = lineChartStyles,
             highlightConfig = lineChartHighlightConfig,
-            modifier = modifier
+            modifier = modifier.padding(8.dp)
         )
     }
 
@@ -83,7 +83,7 @@ fun LineChartDemo(
                 Settings(modifier = Modifier.weight(1f))
             }
         } else {
-            Chart(modifier = Modifier.weight(1f))
+            Chart(modifier = Modifier.weight(1f).aspectRatio(1f))
             Settings(modifier = Modifier.padding(top = 8.dp))
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -121,7 +121,7 @@ private fun DemoLineChart(
 @Composable
 private fun HighlightScope.DemoHighlightPopup() {
     HighlightPopup(
-        color = MaterialTheme.colorScheme.inverseSurface,
+        color = MaterialTheme.colorScheme.primary,
         shape = HighlightPopupShape(contentPosition).apply {
             cornersRadius = 0.dp
         }
@@ -146,8 +146,8 @@ private fun DistanceHighlight(dist: Int) {
     ) {
         Text(
             text = "🥾 ${dist}km",
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.inverseOnSurface,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onPrimary,
             textAlign = TextAlign.Start,
         )
     }
@@ -165,8 +165,8 @@ private fun AltitudeHighlight(alt: Int) {
                 alt > 0 -> "⛰️ ${alt}m"
                 else -> "0m"
             },
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.inverseOnSurface,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onPrimary,
             textAlign = TextAlign.Start,
         )
     }

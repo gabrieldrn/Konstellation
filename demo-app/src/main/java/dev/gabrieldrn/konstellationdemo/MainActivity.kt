@@ -12,6 +12,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
@@ -42,8 +43,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lineChartViewModel // Trigger instantiation.
-
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
@@ -55,17 +54,21 @@ class MainActivity : AppCompatActivity() {
                     contentDescription = null,
                     modifier = modifier
                         .padding(horizontal = 16.dp)
+                        .height(24.dp)
                 )
             }
 
             @Composable
             fun Title(modifier: Modifier = Modifier) {
                 Text(
-                    modifier = modifier
-                        .padding(start = 16.dp),
-                    text = "Line chart",
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.primary)
+                        .padding(8.dp)
+                        .padding(start = 8.dp)
+                        .then(modifier),
+                    text = "LINE CHART",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.headlineSmall,
                 )
             }
 
@@ -98,9 +101,13 @@ class MainActivity : AppCompatActivity() {
                             color = MaterialTheme.colorScheme.primary
                         )
                     } else {
-                        Logo(modifier = Modifier.padding(top = 16.dp))
+                        Logo(
+                            modifier = Modifier
+                                .padding(top = 16.dp)
+                                .align(Alignment.CenterHorizontally)
+                        )
                         Divider(
-                            modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
+                            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
                             color = MaterialTheme.colorScheme.primary
                         )
                         Title()

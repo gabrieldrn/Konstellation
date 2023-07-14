@@ -44,6 +44,7 @@ fun LineChartAxisSelectorSetting(
                 modifier = Modifier
                     .weight(1f)
                     .align(Alignment.CenterVertically)
+                    .padding(end = 16.dp)
             )
             Box(
                 Modifier
@@ -52,11 +53,12 @@ fun LineChartAxisSelectorSetting(
                     .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
             )
             Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxSize()
+                    .padding(start = 16.dp)
             ) {
                 ToggleIconButton(
                     toggled = styles.drawFrame,

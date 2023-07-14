@@ -19,11 +19,13 @@ import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import dev.gabrieldrn.konstellationdemo.R
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
+import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
 /**
  * Composable that allows the user to change the filling of the LineChart.
@@ -44,9 +46,9 @@ fun LineChartFillingSetting(
 
     SettingSurface(title = "Filling", modifier = modifier) {
         Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             ToggleIconButton(
                 toggled = brush is SolidColor,
@@ -90,6 +92,17 @@ class DotsBrush(
                 .toBitmap(),
             Shader.TileMode.REPEAT,
             Shader.TileMode.REPEAT
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SettingsPreviews() {
+    KonstellationTheme {
+        LineChartFillingSetting(
+            brush = null,
+            onUpdateBrush = { _ -> }
         )
     }
 }

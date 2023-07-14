@@ -46,7 +46,7 @@ class LineChartDemoViewModel(
 
     private fun getWindowFromDataset(dataset: Dataset): ChartWindow {
         return ChartWindow.fromDataset(dataset).copy(
-            yWindow = dataset.yRange.inc(dataset.yRange.distance/*=clearance*/)
+            yWindow = dataset.yRange.inc(/*clearance=*/ dataset.yRange.distance)
         )
     }
 

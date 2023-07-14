@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.charts.line.math.CubicXPathInterpolator
 import dev.gabrieldrn.konstellation.charts.line.math.CubicYPathInterpolator
@@ -19,6 +20,7 @@ import dev.gabrieldrn.konstellation.charts.line.math.LinearPathInterpolator
 import dev.gabrieldrn.konstellation.charts.line.math.MonotoneXPathInterpolator
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellationdemo.ui.composables.ToggleIconButton
+import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 
 /**
  * A setting composable that allows the user to select whether to draw lines and points and which
@@ -32,9 +34,9 @@ fun LineChartDataDrawingSetting(
 ) {
     SettingSurface(title = "Data drawing", modifier = modifier) {
         Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -50,9 +52,12 @@ fun LineChartDataDrawingSetting(
                 Text(text = "Lines", textAlign = TextAlign.Center)
             }
 
+            Spacer(modifier = Modifier.width(16.dp))
+
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(end = 16.dp)
             ) {
                 ToggleIconButton(
                     toggled = styles.drawPoints,
@@ -65,6 +70,8 @@ fun LineChartDataDrawingSetting(
                 Text(text = "Points", textAlign = TextAlign.Center)
             }
 
+            Spacer(modifier = Modifier.width(16.dp))
+
             Box(
                 Modifier
                     .fillMaxHeight()
@@ -72,9 +79,12 @@ fun LineChartDataDrawingSetting(
                     .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
             )
 
+            Spacer(modifier = Modifier.width(16.dp))
+
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(start = 16.dp)
             ) {
                 val interpolators by remember {
                     mutableStateOf(
@@ -102,5 +112,16 @@ fun LineChartDataDrawingSetting(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun SettingsPreviews() {
+    KonstellationTheme {
+        LineChartDataDrawingSetting(
+            styles = LineChartStyles(),
+            onUpdateStyles = { _ -> }
+        )
     }
 }
