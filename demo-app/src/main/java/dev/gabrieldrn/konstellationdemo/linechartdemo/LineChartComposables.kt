@@ -12,6 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.charts.line.LineChart
+import dev.gabrieldrn.konstellation.charts.line.limitline.LimitLine
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartHighlightConfig
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
@@ -55,6 +56,7 @@ fun LineChartDemo(
             dataset = viewModel.uiState.dataset,
             properties = viewModel.uiState.properties,
             styles = lineChartStyles,
+            limitLines = viewModel.uiState.limitLines,
             highlightConfig = lineChartHighlightConfig,
             modifier = modifier.padding(8.dp)
         )
@@ -95,6 +97,7 @@ private fun DemoLineChart(
     dataset: Dataset,
     properties: LineChartProperties,
     styles: LineChartStyles,
+    limitLines: List<LimitLine>,
     highlightConfig: LineChartHighlightConfig,
     modifier: Modifier = Modifier
 ) {
@@ -103,6 +106,7 @@ private fun DemoLineChart(
         dataset = dataset,
         properties = properties,
         styles = styles,
+        limitLines = limitLines,
         highlightConfig = highlightConfig,
         highlightContent = { DemoHighlightPopup() },
         onDrawTick = { axis, value ->
@@ -193,6 +197,7 @@ private fun LineChartWithCustomPropertiesPreview() {
             ),
             properties = LineChartProperties(),
             styles = getDemoChartStyles(),
+            limitLines = listOf(),
             highlightConfig = LineChartHighlightConfig(),
         )
     }

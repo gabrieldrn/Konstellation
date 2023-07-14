@@ -20,7 +20,9 @@ import dev.gabrieldrn.konstellation.plotting.ChartAxis
  * @property drawLines Either to draw lines (as described by [LineChartStyles.lineStyle]) or not.
  * @property drawPoints Either to draw points (as described by [LineChartStyles.pointStyle]) or not.
  * @property drawFrame Either to draw the lines delimiting the chart or not.
- * @property drawZeroLines Either to draw the lines indicating the zero on X and Y axes or not.
+ * @property drawZeroLines Either to draw the lines indicating the zero on X and Y axes or not. Zero
+ * line are simple limit lines. To customize them, you can disable this property and add your own
+ * limit lines to the chart through the LineChart composable.
  * @property lineStyle Appearance of the lines connecting data points.
  * @property pointStyle Appearance of data points.
  * @property xAxisBottomStyle Appearance of the bottom axis.

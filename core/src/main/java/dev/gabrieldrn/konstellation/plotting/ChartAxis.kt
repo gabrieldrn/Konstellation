@@ -20,7 +20,22 @@ public enum class Axis {
     X_BOTTOM,
     X_TOP,
     Y_LEFT,
-    Y_RIGHT,
+    Y_RIGHT;
+
+    public companion object {
+
+        /**
+         * Returns true if this axis is horizontal.
+         */
+        public val Axis.isHorizontal: Boolean
+            get() = this == X_BOTTOM || this == X_TOP
+
+        /**
+         * Returns true if this axis is vertical.
+         */
+        public val Axis.isVertical: Boolean
+            get() = this == Y_LEFT || this == Y_RIGHT
+    }
 }
 
 /**

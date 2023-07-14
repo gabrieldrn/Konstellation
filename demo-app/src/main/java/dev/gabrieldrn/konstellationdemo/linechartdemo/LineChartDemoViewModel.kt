@@ -3,8 +3,11 @@ package dev.gabrieldrn.konstellationdemo.linechartdemo
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
+import dev.gabrieldrn.konstellation.charts.line.limitline.LimitLine
 import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
+import dev.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
+import dev.gabrieldrn.konstellation.plotting.Axis
 import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.by
 import dev.gabrieldrn.konstellation.plotting.datasetOf
@@ -40,9 +43,21 @@ class LineChartDemoViewModel(
             dataset = initialDataset,
             properties = properties.copy(
                 chartWindow = getWindowFromDataset(initialDataset)
-            )
+            ),
+            limitLines = listOf(
+                LimitLine(
+                    value = 1f,
+                    axis = Axis.X_BOTTOM,
+                    style = LineDrawStyle(dashed = true)
+                ),
+                LimitLine(
+                    value = 1f,
+                    axis = Axis.Y_LEFT,
+                    style = LineDrawStyle(dashed = true)
+                ),
+            ),
         )
-    )
+    ); private set
 
     private fun getWindowFromDataset(dataset: Dataset): ChartWindow {
         return ChartWindow.fromDataset(dataset).copy(
@@ -101,9 +116,11 @@ class LineChartDemoViewModel(
      *
      * @property dataset The dataset to be drawn in the chart.
      * @property properties The properties of the chart.
+     * @property limitLines The limit lines to be drawn in the chart.
      */
     data class UiState(
         val dataset: Dataset,
         val properties: LineChartProperties,
+        val limitLines: List<LimitLine> = listOf(),
     )
 }

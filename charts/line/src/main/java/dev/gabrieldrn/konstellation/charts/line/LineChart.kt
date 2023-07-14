@@ -17,14 +17,16 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
+import dev.gabrieldrn.konstellation.charts.line.drawing.drawLimitLine
 import dev.gabrieldrn.konstellation.charts.line.drawing.drawLinePath
+import dev.gabrieldrn.konstellation.charts.line.limitline.LimitLine
+import dev.gabrieldrn.konstellation.charts.line.limitline.zeroLimitLines
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartHighlightConfig
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.charts.line.style.LineChartStyles
 import dev.gabrieldrn.konstellation.drawing.drawFrame
 import dev.gabrieldrn.konstellation.drawing.drawPoint
 import dev.gabrieldrn.konstellation.drawing.drawScaledAxis
-import dev.gabrieldrn.konstellation.drawing.drawZeroLines
 import dev.gabrieldrn.konstellation.drawing.highlightPoint
 import dev.gabrieldrn.konstellation.highlighting.HighlightBox
 import dev.gabrieldrn.konstellation.highlighting.HighlightScope
@@ -45,6 +47,7 @@ import kotlinx.coroutines.withContext
  * @param modifier The modifier to be applied to the chart.
  * @param properties The DNA of your chart. See [LineChartProperties].
  * @param styles Visual styles to be applied to the chart.
+ * @param limitLines List of limit lines to be drawn on the chart. See [LimitLine].
  * @param onDrawTick Callback invoked each time a tick is drawn. This allows to customize the ticks
  * labels based on a given axis and the tick value.
  * @param highlightConfig Configuration of the highlight feature. See [LineChartHighlightConfig].
@@ -60,6 +63,7 @@ public fun LineChart(
     modifier: Modifier = Modifier,
     properties: LineChartProperties = LineChartProperties(),
     styles: LineChartStyles = LineChartStyles(),
+    limitLines: List<LimitLine> = listOf(),
     onDrawTick: (ChartAxis, Float) -> String = { _, t -> t.toString() },
     highlightConfig: LineChartHighlightConfig = LineChartHighlightConfig(),
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
@@ -69,6 +73,7 @@ public fun LineChart(
         state = rememberLineChartState(dataset, properties),
         modifier = modifier,
         styles = styles,
+        limitLines = limitLines,
         onDrawTick = onDrawTick,
         highlightConfig = highlightConfig,
         highlightContent = highlightContent,
@@ -83,6 +88,7 @@ public fun LineChart(
  * a recomposition of the chart.
  * @param modifier The modifier to be applied to the chart.
  * @param styles Visual styles to be applied to the chart.
+ * @param limitLines List of limit lines to be drawn on the chart. See [LimitLine].
  * @param onDrawTick Callback invoked each time a tick is drawn. This allows to customize the ticks
  * labels based on a given axis and the tick value.
  * @param highlightConfig Configuration of the highlight feature. See [LineChartHighlightConfig].
@@ -97,6 +103,7 @@ public fun LineChart(
     state: LineChartState,
     modifier: Modifier = Modifier,
     styles: LineChartStyles = LineChartStyles(),
+    limitLines: List<LimitLine> = listOf(),
     onDrawTick: (ChartAxis, Float) -> String = { _, t -> t.toString() },
     highlightConfig: LineChartHighlightConfig = LineChartHighlightConfig(),
     highlightContent: (@Composable HighlightScope.() -> Unit)? = null,
@@ -139,14 +146,20 @@ public fun LineChart(
                 .onSizeChanged(state::updateSize)
                 .fillMaxSize()
         ) {
-            // region Chart frame and axes
+            // region Chart frame, axes & limit lines
 
             if (styles.drawFrame) {
                 drawFrame()
             }
 
             if (styles.drawZeroLines) {
-                drawZeroLines(state.window.xWindow, state.window.yWindow)
+                zeroLimitLines.forEach { zeroLine ->
+                    drawLimitLine(zeroLine, state.window)
+                }
+            }
+
+            limitLines.forEach { limitLine ->
+                drawLimitLine(limitLine, state.window)
             }
 
             drawScaledAxis(

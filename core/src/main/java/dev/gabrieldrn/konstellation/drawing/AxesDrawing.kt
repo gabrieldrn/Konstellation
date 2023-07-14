@@ -13,7 +13,6 @@ import dev.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.getAxisStyleByType
 import dev.gabrieldrn.konstellation.math.calculateAxisOffsets
 import dev.gabrieldrn.konstellation.math.getAxisDrawingPoints
-import dev.gabrieldrn.konstellation.math.map
 import dev.gabrieldrn.konstellation.plotting.Axis
 import dev.gabrieldrn.konstellation.plotting.ChartAxis
 import dev.gabrieldrn.konstellation.plotting.NiceScale
@@ -162,30 +161,4 @@ public fun DrawScope.drawFrame(
     drawLine(Offset(size.width, 0f), Offset(size.width, size.height), lineStyle)
     drawLine(Offset(0f, 0f), Offset(0f, size.height), lineStyle)
     drawLine(Offset(0f, size.height), Offset(size.width, size.height), lineStyle)
-}
-
-/**
- * Draws the 0-axis inside the chart.
- */
-public fun DrawScope.drawZeroLines(
-    datasetXRange: ClosedFloatingPointRange<Float>,
-    datasetYRange: ClosedFloatingPointRange<Float>,
-    horizontalLine: Boolean = true,
-    verticalLine: Boolean = true,
-    lineStyle: LineDrawStyle = LineDrawStyle(
-        color = Color.LightGray,
-        strokeWidth = 1.5f.dp,
-        cap = StrokeCap.Square,
-    )
-) {
-    var zero: Float
-
-    if (horizontalLine && 0f in datasetYRange) {
-        zero = 0f map (datasetYRange to size.height..0f)
-        drawLine(Offset(0f, zero), Offset(size.width, zero), lineStyle)
-    }
-    if (verticalLine && 0f in datasetXRange) {
-        zero = 0f map (datasetXRange to 0f..size.width)
-        drawLine(Offset(zero, 0f), Offset(zero, size.height), lineStyle)
-    }
 }
