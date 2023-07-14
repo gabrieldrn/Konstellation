@@ -20,7 +20,7 @@ val appModule = module {
     viewModel { parameters -> LineChartDemoViewModel(parameters.get()) }
     single(QF_MAIN_TEXT_STYLE) {
         TextDrawStyle(
-            typeface = ResourcesCompat.getFont(androidContext(), R.font.tabular_regular)!!
+            typeface = ResourcesCompat.getFont(androidContext(), R.font.inter_medium)!!
         )
     }
 }

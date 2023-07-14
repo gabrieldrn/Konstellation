@@ -3,39 +3,19 @@ package dev.gabrieldrn.konstellationdemo.ui.theme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import dev.gabrieldrn.konstellationdemo.R
 
-private val SoraFamily = FontFamily(
-    Font(R.font.sora_thin, weight = FontWeight.Thin),
-    Font(R.font.sora_thinitalic, weight = FontWeight.Thin, style = FontStyle.Italic),
-    Font(R.font.sora_extralight, weight = FontWeight.ExtraLight),
-    Font(R.font.sora_extralightitalic, weight = FontWeight.ExtraLight, style = FontStyle.Italic),
-    Font(R.font.sora_light, weight = FontWeight.Light),
-    Font(R.font.sora_lightitalic, weight = FontWeight.Light, style = FontStyle.Italic),
-    Font(R.font.sora_regular),
-    Font(R.font.sora_italic, style = FontStyle.Italic),
-    Font(R.font.sora_medium, weight = FontWeight.Medium),
-    Font(R.font.sora_mediumitalic, weight = FontWeight.Medium, style = FontStyle.Italic),
-    Font(R.font.sora_semibold, weight = FontWeight.SemiBold),
-    Font(R.font.sora_semibolditalic, weight = FontWeight.SemiBold, style = FontStyle.Italic),
-    Font(R.font.sora_bold, weight = FontWeight.Bold),
-    Font(R.font.sora_bolditalic, weight = FontWeight.Bold, style = FontStyle.Italic),
-    Font(R.font.sora_extrabold, weight = FontWeight.ExtraBold),
-    Font(R.font.sora_extrabolditalic, weight = FontWeight.ExtraBold, style = FontStyle.Italic),
-)
-
-private val TabularFamily = FontFamily(
-    Font(R.font.tabular_lightitalic, weight = FontWeight.Light, style = FontStyle.Italic),
-    Font(R.font.tabular_regular),
-    Font(R.font.tabular_italic, style = FontStyle.Italic),
-    Font(R.font.tabular_medium, weight = FontWeight.Medium),
-    Font(R.font.tabular_mediumitalic, weight = FontWeight.Medium, style = FontStyle.Italic),
-    Font(R.font.tabular_semibold, weight = FontWeight.SemiBold),
-    Font(R.font.tabular_semibolditalic, weight = FontWeight.SemiBold, style = FontStyle.Italic),
-    Font(R.font.tabular_bold, weight = FontWeight.Bold),
-    Font(R.font.tabular_bolditalic, weight = FontWeight.Bold, style = FontStyle.Italic),
+ private val InterFamily = FontFamily(
+    Font(R.font.inter_thin, weight = FontWeight.Thin),
+    Font(R.font.inter_extralight, weight = FontWeight.ExtraLight),
+    Font(R.font.inter_light, weight = FontWeight.Light),
+    Font(R.font.inter_regular),
+    Font(R.font.inter_medium, weight = FontWeight.Medium),
+    Font(R.font.inter_semibold, weight = FontWeight.SemiBold),
+    Font(R.font.inter_bold, weight = FontWeight.Bold),
+    Font(R.font.inter_extrabold, weight = FontWeight.ExtraBold),
+    Font(R.font.inter_black, weight = FontWeight.Black),
 )
 
 /**
@@ -43,24 +23,60 @@ private val TabularFamily = FontFamily(
  */
 val Typography = Typography().run {
     copy(
-        displayLarge = displayLarge.copy(fontFamily = SoraFamily),
-        displayMedium = displayLarge.copy(fontFamily = SoraFamily),
-        displaySmall = displayLarge.copy(fontFamily = SoraFamily),
+        displayLarge = displayLarge.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.Light
+        ),
+        displayMedium = displayLarge.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.Light
+        ),
+        displaySmall = displayLarge.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.Light
+        ),
 
-        headlineLarge = headlineLarge.copy(fontFamily = TabularFamily),
-        headlineMedium = headlineMedium.copy(fontFamily = TabularFamily),
-        headlineSmall = headlineSmall.copy(fontFamily = TabularFamily),
+        headlineLarge = headlineLarge.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.SemiBold
+        ),
+        headlineMedium = headlineMedium.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.SemiBold
+        ),
+        headlineSmall = headlineSmall.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.SemiBold
+        ),
 
-        titleLarge = titleLarge.copy(fontFamily = TabularFamily),
-        titleMedium = titleMedium.copy(fontFamily = TabularFamily),
-        titleSmall = titleSmall.copy(fontFamily = TabularFamily),
+        titleLarge = titleLarge.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.SemiBold
+        ),
+        titleMedium = titleMedium.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.SemiBold
+        ),
+        titleSmall = titleSmall.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.SemiBold
+        ),
 
-        bodyLarge = bodyLarge.copy(fontFamily = TabularFamily),
-        bodyMedium = bodyMedium.copy(fontFamily = TabularFamily),
-        bodySmall = bodySmall.copy(fontFamily = TabularFamily),
+        bodyLarge = bodyLarge.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.Medium
+        ),
+        bodyMedium = bodyMedium.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.Medium
+        ),
+        bodySmall = bodySmall.copy(
+            fontFamily = InterFamily,
+            fontWeight = FontWeight.Medium
+        ),
 
-        labelLarge = labelLarge.copy(fontFamily = TabularFamily),
-        labelMedium = labelMedium.copy(fontFamily = TabularFamily),
-        labelSmall = labelSmall.copy(fontFamily = TabularFamily)
+        labelLarge = labelLarge.copy(fontFamily = InterFamily),
+        labelMedium = labelMedium.copy(fontFamily = InterFamily),
+        labelSmall = labelSmall.copy(fontFamily = InterFamily)
     )
 }
