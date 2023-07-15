@@ -1,14 +1,18 @@
 package dev.gabrieldrn.konstellationdemo.linechartdemo
 
+import android.graphics.Paint
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import dev.gabrieldrn.konstellation.charts.line.limitline.LimitLine
 import dev.gabrieldrn.konstellation.charts.line.properties.ChartWindow
 import dev.gabrieldrn.konstellation.charts.line.properties.LineChartProperties
 import dev.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
+import dev.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import dev.gabrieldrn.konstellation.plotting.Axis
 import dev.gabrieldrn.konstellation.plotting.Dataset
+import dev.gabrieldrn.konstellation.plotting.Label
 import dev.gabrieldrn.konstellation.plotting.by
 import dev.gabrieldrn.konstellation.plotting.datasetOf
 import dev.gabrieldrn.konstellation.plotting.yRange
@@ -16,6 +20,9 @@ import dev.gabrieldrn.konstellation.util.distance
 import dev.gabrieldrn.konstellation.util.inc
 import dev.gabrieldrn.konstellation.util.randomDataSet
 import dev.gabrieldrn.konstellation.util.randomFancyDataSet
+import dev.gabrieldrn.konstellationdemo.QF_MAIN_TEXT_STYLE
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import kotlin.reflect.KProperty1
 
 private val initialDataset = datasetOf(
@@ -33,7 +40,13 @@ private val initialDataset = datasetOf(
  */
 class LineChartDemoViewModel(
     properties: LineChartProperties = LineChartProperties(),
-) : ViewModel() {
+) : ViewModel(), KoinComponent {
+
+    private val limitLinesColor = Color(0xFFDB8505)
+    private val limitLinesStyle = LineDrawStyle(dashed = true, color = limitLinesColor)
+    private val limitLinesLabelStyle by lazy {
+        get<TextDrawStyle>(QF_MAIN_TEXT_STYLE).copy(color = limitLinesColor)
+    }
 
     /**
      * The current UI state.
@@ -43,25 +56,34 @@ class LineChartDemoViewModel(
             dataset = initialDataset,
             properties = properties.copy(
                 chartWindow = getWindowFromDataset(initialDataset)
-            ),
-            limitLines = listOf(
-                LimitLine(
-                    value = 1f,
-                    axis = Axis.X_BOTTOM,
-                    style = LineDrawStyle(dashed = true)
-                ),
-                LimitLine(
-                    value = 1f,
-                    axis = Axis.Y_LEFT,
-                    style = LineDrawStyle(dashed = true)
-                ),
-            ),
-        )
+            )
+        ).addYAverageLimitLine()
     ); private set
 
     private fun getWindowFromDataset(dataset: Dataset): ChartWindow {
         return ChartWindow.fromDataset(dataset).copy(
             yWindow = dataset.yRange.inc(/*clearance=*/ dataset.yRange.distance)
+        )
+    }
+
+    private fun UiState.addYAverageLimitLine(): UiState {
+        val yAvg = dataset
+            .map { it.y }
+            .average()
+            .toFloat()
+
+        return copy(
+            limitLines = listOf(
+                LimitLine(
+                    value = yAvg,
+                    axis = Axis.Y_RIGHT,
+                    style = limitLinesStyle,
+                    label = Label(
+                        text = "AVG",
+                        style = limitLinesLabelStyle.copy(textAlign = Paint.Align.LEFT)
+                    )
+                ),
+            )
         )
     }
 
@@ -75,7 +97,7 @@ class LineChartDemoViewModel(
             properties = uiState.properties.copy(
                 chartWindow = getWindowFromDataset(newDataset),
             ),
-        )
+        ).addYAverageLimitLine()
     }
 
     /**
@@ -88,7 +110,7 @@ class LineChartDemoViewModel(
             properties = uiState.properties.copy(
                 chartWindow = getWindowFromDataset(newDataset),
             ),
-        )
+        ).addYAverageLimitLine()
     }
 
     /**

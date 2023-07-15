@@ -158,16 +158,16 @@ public fun LineChart(
                 }
             }
 
-            limitLines.forEach { limitLine ->
-                drawLimitLine(limitLine, state.window)
-            }
-
             drawScaledAxis(
                 styles = styles,
                 xRange = state.window.xWindow,
                 yRange = state.window.yWindow,
                 onDrawTick = onDrawTick
             )
+
+            limitLines.forEach { limitLine ->
+                drawLimitLine(limitLine, state.window)
+            }
 
             // endregion
             // region Chart content

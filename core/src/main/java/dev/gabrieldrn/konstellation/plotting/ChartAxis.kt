@@ -56,7 +56,7 @@ public object Axes {
      * Default bottom X-axis style.
      */
     public val xBottomStyle: AxisDrawStyle = AxisDrawStyle(
-        tickTextStyle = TextDrawStyle(
+        tickLabelStyle = TextDrawStyle(
             textAlign = Paint.Align.CENTER
         )
     )
@@ -73,7 +73,7 @@ public object Axes {
      * Default top X-axis style.
      */
     public val xTopStyle: AxisDrawStyle = AxisDrawStyle(
-        tickTextStyle = TextDrawStyle(
+        tickLabelStyle = TextDrawStyle(
             textAlign = Paint.Align.CENTER
         )
     )
@@ -90,7 +90,7 @@ public object Axes {
      * Default left Y-axis style.
      */
     public val yLeftStyle: AxisDrawStyle = AxisDrawStyle(
-        tickTextStyle = TextDrawStyle(
+        tickLabelStyle = TextDrawStyle(
             textAlign = Paint.Align.RIGHT
         )
     )
@@ -107,7 +107,7 @@ public object Axes {
      * Default right Y-axis style.
      */
     public val yRightStyle: AxisDrawStyle = AxisDrawStyle(
-        tickTextStyle = TextDrawStyle(
+        tickLabelStyle = TextDrawStyle(
             textAlign = Paint.Align.LEFT
         )
     )

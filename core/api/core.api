@@ -40,8 +40,8 @@ public final class dev/gabrieldrn/konstellation/configuration/styles/AxisDrawSty
 	public static synthetic fun copy$default (Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;ILjava/lang/Object;)Ldev/gabrieldrn/konstellation/configuration/styles/AxisDrawStyle;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAxisLineStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;
+	public final fun getTickLabelStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;
 	public final fun getTickLineStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;
-	public final fun getTickTextStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -139,6 +139,7 @@ public final class dev/gabrieldrn/konstellation/configuration/styles/TextDrawSty
 public final class dev/gabrieldrn/konstellation/drawing/AxesDrawingKt {
 	public static final fun drawFrame (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;)V
 	public static synthetic fun drawFrame$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/LineDrawStyle;ILjava/lang/Object;)V
+	public static final fun drawLabel-moWRBKg (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/plotting/Label;Ldev/gabrieldrn/konstellation/plotting/Axis;J)V
 	public static final fun drawScaledAxis (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/ChartStyles;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/jvm/functions/Function2;)V
 	public static synthetic fun drawScaledAxis$default (Landroidx/compose/ui/graphics/drawscope/DrawScope;Ldev/gabrieldrn/konstellation/configuration/styles/ChartStyles;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
 }
@@ -310,6 +311,20 @@ public final class dev/gabrieldrn/konstellation/plotting/DatasetKt {
 	public static final fun nearestPointByX (Ljava/util/List;F)Ldev/gabrieldrn/konstellation/plotting/Point;
 	public static final fun toDataset (Ljava/util/Collection;)Ljava/util/List;
 	public static final fun validate (Ljava/util/List;)V
+}
+
+public final class dev/gabrieldrn/konstellation/plotting/Label {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;
+	public final fun copy (Ljava/lang/String;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;)Ldev/gabrieldrn/konstellation/plotting/Label;
+	public static synthetic fun copy$default (Ldev/gabrieldrn/konstellation/plotting/Label;Ljava/lang/String;Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;ILjava/lang/Object;)Ldev/gabrieldrn/konstellation/plotting/Label;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getStyle ()Ldev/gabrieldrn/konstellation/configuration/styles/TextDrawStyle;
+	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class dev/gabrieldrn/konstellation/plotting/NiceScale {

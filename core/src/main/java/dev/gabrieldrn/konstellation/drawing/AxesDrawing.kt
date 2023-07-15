@@ -10,11 +10,13 @@ import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.configuration.styles.AxisDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.ChartStyles
 import dev.gabrieldrn.konstellation.configuration.styles.LineDrawStyle
+import dev.gabrieldrn.konstellation.configuration.styles.TextDrawStyle
 import dev.gabrieldrn.konstellation.configuration.styles.getAxisStyleByType
 import dev.gabrieldrn.konstellation.math.calculateAxisOffsets
 import dev.gabrieldrn.konstellation.math.getAxisDrawingPoints
 import dev.gabrieldrn.konstellation.plotting.Axis
 import dev.gabrieldrn.konstellation.plotting.ChartAxis
+import dev.gabrieldrn.konstellation.plotting.Label
 import dev.gabrieldrn.konstellation.plotting.NiceScale
 import dev.gabrieldrn.konstellation.util.toInt
 
@@ -82,7 +84,7 @@ public fun DrawScope.drawScaledAxis(
             if (tickValue in range) {
                 drawTick(
                     position = lineStart,
-                    axis = axis,
+                    axis = axis.axis,
                     label = onDrawTick(axis, tickValue),
                     style = style
                 )
@@ -98,53 +100,79 @@ private const val DefaultLabelXOffset = 20f //TODO Move into style data class
 
 /**
  * Draws a tiny vertical line representing a tick, with a given [label]. The orientation of the tick
- * depends on the type of axis (X or Y).
+ * depends on the type of axis (X or Y). [position] is the position (Offset) of the tick on the
+ * [axis].
  */
-@Suppress("CyclomaticComplexMethod")
 internal fun DrawScope.drawTick(
     position: Offset,
-    axis: ChartAxis,
+    axis: Axis,
     label: String,
     style: AxisDrawStyle
 ) {
     // Tick line
     drawLine(
-        start = when (axis.axis) {
+        start = when (axis) {
             Axis.X_TOP, Axis.X_BOTTOM -> Offset(position.x, position.y - DefaultTickSize / 2)
             else -> Offset(position.x - DefaultTickSize / 2, position.y)
         },
-        end = when (axis.axis) {
+        end = when (axis) {
             Axis.X_TOP, Axis.X_BOTTOM -> Offset(position.x, position.y + DefaultTickSize / 2)
             else -> Offset(position.x + DefaultTickSize / 2, position.y)
         },
         lineStyle = style.tickLineStyle.copy(cap = StrokeCap.Square)
     )
     // Tick label
+    drawLabel(
+        label = label,
+        style = style.tickLabelStyle,
+        axis = axis,
+        position = position
+    )
+}
+
+internal fun DrawScope.drawLabel(
+    label: String,
+    style: TextDrawStyle,
+    axis: Axis,
+    position: Offset
+) {
     drawIntoCanvas {
         tickLabelPaint.apply {
-            textAlign = style.tickTextStyle.textAlign
-            setTextSize(style.tickTextStyle, this@drawTick)
-            color = style.tickTextStyle.color.toInt()
-            typeface = style.tickTextStyle.typeface
+            textAlign = style.textAlign
+            setTextSize(style, this@drawLabel)
+            color = style.color.toInt()
+            typeface = style.typeface
             flags = Paint.ANTI_ALIAS_FLAG
         }
-        val xMetricsOffset = when (axis.axis) {
+        val xMetricsOffset = when (axis) {
             Axis.Y_LEFT -> -DefaultLabelXOffset
             Axis.Y_RIGHT -> DefaultLabelXOffset
             else -> 0f
         }
-        val yMetricsOffset = when (axis.axis) {
+        val yMetricsOffset = when (axis) {
             Axis.X_BOTTOM -> tickLabelPaint.fontMetrics.descent - tickLabelPaint.fontMetrics.ascent
             Axis.X_TOP -> -(tickLabelPaint.fontMetrics.bottom + tickLabelPaint.fontMetrics.descent)
             else -> -((tickLabelPaint.fontMetrics.ascent + tickLabelPaint.fontMetrics.descent) / 2)
         }
         it.nativeCanvas.drawText(
             label,
-            position.x + style.tickTextStyle.offsetX + xMetricsOffset,
-            position.y + style.tickTextStyle.offsetY + yMetricsOffset,
+            position.x + style.offsetX + xMetricsOffset,
+            position.y + style.offsetY + yMetricsOffset,
             tickLabelPaint
         )
     }
+}
+
+/**
+ * Draws a [label] on a given [axis] at a given [position]. Note that the label will be aligned
+ * in accordance to the [TextDrawStyle.textAlign] property of the label style.
+ */
+public fun DrawScope.drawLabel(
+    label: Label,
+    axis: Axis,
+    position: Offset
+) {
+    drawLabel(label.text, label.style, axis, position)
 }
 
 /**

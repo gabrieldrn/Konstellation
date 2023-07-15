@@ -8,12 +8,12 @@ import androidx.compose.ui.graphics.Color
  *
  * @property axisLineStyle Axis line appearance.
  * @property tickLineStyle Appearance of ticks drawn on the axis.
- * @property tickTextStyle Appearance of ticks text labels.
+ * @property tickLabelStyle Appearance of ticks text labels.
  */
 public data class AxisDrawStyle(
     val axisLineStyle: LineDrawStyle = LineDrawStyle(),
     val tickLineStyle: LineDrawStyle = LineDrawStyle(),
-    val tickTextStyle: TextDrawStyle = TextDrawStyle(),
+    val tickLabelStyle: TextDrawStyle = TextDrawStyle(),
 )
 
 /**
@@ -22,12 +22,12 @@ public data class AxisDrawStyle(
 public fun AxisDrawStyle.updateColor(color: Color): AxisDrawStyle = copy(
     axisLineStyle = axisLineStyle.copy(color = color),
     tickLineStyle = tickLineStyle.copy(color = color),
-    tickTextStyle = tickTextStyle.copy(color = color),
+    tickLabelStyle = tickLabelStyle.copy(color = color),
 )
 
 /**
  * Applies given [typeface] to the text of ticks labels.
  */
 public fun AxisDrawStyle.updateTypeface(typeface: Typeface): AxisDrawStyle = copy(
-    tickTextStyle = tickTextStyle.copy(typeface = typeface),
+    tickLabelStyle = tickLabelStyle.copy(typeface = typeface),
 )
