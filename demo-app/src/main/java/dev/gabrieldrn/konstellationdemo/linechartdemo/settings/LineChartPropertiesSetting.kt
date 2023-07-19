@@ -29,7 +29,7 @@ fun LineChartPropertiesSetting(
     chartPaddingValues: PaddingValues,
     chartWindow: ChartWindow,
     chartInitialWindow: ChartWindow,
-    panningEnabled: Boolean,
+    gesturesEnabled: Boolean,
     onUpdateProperty: (KProperty1<LineChartProperties, Any?>, Any?) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -118,8 +118,8 @@ fun LineChartPropertiesSetting(
                     .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
             )
             ToggleIconButton(
-                toggled = panningEnabled,
-                onToggleChange = { onUpdateProperty(LineChartProperties::panningEnabled, it) },
+                toggled = gesturesEnabled,
+                onToggleChange = { onUpdateProperty(LineChartProperties::gesturesEnabled, it) },
                 imageVector = Icons.Default.PanTool,
                 modifier = Modifier
                     .padding(16.dp)
@@ -137,7 +137,7 @@ private fun SettingsPreviews() {
             chartPaddingValues = PaddingValues(44.dp),
             chartWindow = ChartWindow(0f..1f, 0f..1f),
             chartInitialWindow = ChartWindow(0f..1f, 0f..1f),
-            panningEnabled = true,
+            gesturesEnabled = true,
             onUpdateProperty = { _, _ -> }
         )
     }

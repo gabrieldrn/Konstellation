@@ -33,9 +33,9 @@ public class LineChartState(
     private val initialWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset)
 
     /**
-     * Whether panning is enabled.
+     * Whether gestures are enabled.
      */
-    private val panningEnabled = properties.panningEnabled
+    private val gesturesEnabled = properties.gesturesEnabled
 
     /**
      * Canvas size.
@@ -53,6 +53,8 @@ public class LineChartState(
      */
     private var panningState by mutableStateOf(PANNING_STATE_ZERO)
 
+    private var zoomFactorState by mutableStateOf(ZoomFactorState())
+
     /**
      * The current [ChartWindow] of the chart, taking into account the panning state.
      */
@@ -69,8 +71,12 @@ public class LineChartState(
             ?.minus(yReferential)
             ?: 0f
         initialWindow.copy(
-            xWindow = initialWindow.xWindow.plus(xPan),
-            yWindow = initialWindow.yWindow.plus(yPan)
+            xWindow = initialWindow.xWindow
+                .plus(xPan)
+                .zoomAround(zoomFactorState.x),
+            yWindow = initialWindow.yWindow
+                .plus(yPan)
+                .zoomAround(zoomFactorState.y)
         )
     }
 
@@ -100,24 +106,56 @@ public class LineChartState(
         )
     }
 
+    private fun ClosedFloatingPointRange<Float>.zoomAround(
+        zoomFactor: Float
+    ): ClosedFloatingPointRange<Float> {
+        // FIXME / WIP - The zoom occurs around the middle of the chart (0, 0), but it should be
+        //  around
+        val newStart = start * zoomFactor
+        val newEnd = endInclusive * zoomFactor
+        return newStart..newEnd
+    }
+
     /**
      * Registers the new size of the canvas that draws the chart. A recalculation of the chart is
      * necessary after this, therefore the chart will be recomposed.
      */
     public fun updateSize(newSize: IntSize) {
         size = newSize.toSize()
+        zoomFactorState = ZoomFactorState()
     }
 
     /**
      * Pans the chart by the given amount.
      */
     public fun pan(amount: Offset) {
-        if (!panningEnabled) return
+        if (!gesturesEnabled) return
         panningState = panningState.copy(
             x = panningState.x + amount.x,
             y = panningState.y + amount.y
         )
     }
+
+    /**
+     * Applies panning and zooming gestures to the chart.
+     */
+    public fun applyTransformGestures(pan: Offset, zoom: Float) {
+        if (!gesturesEnabled) return
+        zoomFactorState = ZoomFactorState(
+            x = zoomFactorState.x + (zoom - 1) * -1f,
+            y = zoomFactorState.y + (zoom - 1) * -1f
+        )
+        panningState = panningState.copy(
+            x = panningState.x + pan.x,
+            y = panningState.y + pan.y
+        )
+    }
+
+    @Stable
+    private data class ZoomFactorState(
+        val x: Float = 1f,
+        val y: Float = 1f
+    )
 
     /**
      * State to keep track of the panning offset.

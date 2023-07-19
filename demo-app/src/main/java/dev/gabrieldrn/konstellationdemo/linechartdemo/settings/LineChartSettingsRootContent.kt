@@ -73,7 +73,7 @@ fun LineChartSettingsContent(
                     chartPaddingValues = properties.chartPaddingValues,
                     chartWindow = properties.chartWindow ?: ChartWindow.fromDataset(dataset),
                     chartInitialWindow = ChartWindow.fromDataset(dataset),
-                    panningEnabled = properties.panningEnabled,
+                    gesturesEnabled = properties.gesturesEnabled,
                     onUpdateProperty = onUpdateProperty
                 )
 
@@ -211,7 +211,7 @@ private fun SettingsPreviews() {
                 chartPaddingValues = PaddingValues(44.dp),
                 chartWindow = ChartWindow(0f..1f, 0f..1f),
                 chartInitialWindow = ChartWindow(0f..1f, 0f..1f),
-                panningEnabled = true,
+                gesturesEnabled = true,
                 onUpdateProperty = { _, _ -> }
             )
 

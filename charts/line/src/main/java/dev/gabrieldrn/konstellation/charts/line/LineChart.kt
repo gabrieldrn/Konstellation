@@ -1,12 +1,11 @@
 package dev.gabrieldrn.konstellation.charts.line
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.*
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.*
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -184,12 +183,10 @@ public fun LineChart(
         key(state) {
             HighlightCanvas(
                 modifier = Modifier.fillMaxSize(),
-                properties = state.properties,
-                dataset = { state.calculatedDataset },
+                state = state,
                 highlightConfig = highlightConfig,
                 highlightContent = highlightContent,
                 onHighlightChange = onHighlightChange,
-                onUpdateWindowOffsets = state::pan
             )
         }
     }
@@ -197,16 +194,15 @@ public fun LineChart(
 
 @Composable
 private fun BoxScope.HighlightCanvas(
-    modifier: Modifier,
-    properties: LineChartProperties,
-    dataset: () -> Dataset,
+    modifier: Modifier = Modifier,
+    state: LineChartState,
     highlightConfig: LineChartHighlightConfig,
     highlightContent: @Composable (HighlightScope.() -> Unit)?,
-    onHighlightChange: ((Point?) -> Unit)? = null,
-    onUpdateWindowOffsets: ((dragAmount: Offset) -> Unit)
+    onHighlightChange: ((Point?) -> Unit)?,
 ) {
     val hapticLocal = LocalHapticFeedback.current
     val density = LocalDensity.current
+    val dataset = { state.calculatedDataset }
 
     var pointerValue by remember {
         mutableStateOf<Float?>(null)
@@ -216,30 +212,37 @@ private fun BoxScope.HighlightCanvas(
     }
 
     val chartTopPaddingPx = with(density) {
-        properties.chartPaddingValues.calculateTopPadding().toPx().toInt()
+        state.properties.chartPaddingValues.calculateTopPadding()
+            .toPx()
+            .toInt()
     }
 
     val chartStartPaddingPx = with(density) {
-        properties.chartPaddingValues.calculateStartPadding(LayoutDirection.Ltr).toPx().toInt()
+        state.properties.chartPaddingValues.calculateStartPadding(LayoutDirection.Ltr)
+            .toPx()
+            .toInt()
     }
 
     val gesturesPointerInputScope: suspend PointerInputScope.() -> Unit = {
         withContext(Dispatchers.Main) {
+            // Gestures
+            if (state.properties.gesturesEnabled) {
+                launch {
+                    detectTransformGestures(panZoomLock = true) { _, pan, zoom, _ ->
+                        state.applyTransformGestures(
+                            pan = pan,
+                            zoom = zoom,
+                        )
+                    }
+                }
+            }
+            // Highlighting
             launch {
-                // Highlighting
                 detectDragGesturesAfterLongPress(
                     onDragStart = { pointerValue = it.x },
                     onDragEnd = { pointerValue = null },
                     onDrag = { change, _ -> pointerValue = change.position.x }
                 )
-            }
-            if (properties.panningEnabled) {
-                launch {
-                    // Panning
-                    detectDragGestures { _, dragAmount ->
-                        onUpdateWindowOffsets(dragAmount)
-                    }
-                }
             }
         }
     }
@@ -253,7 +256,7 @@ private fun BoxScope.HighlightCanvas(
 
     Canvas(
         modifier = modifier
-            .padding(properties.chartPaddingValues)
+            .padding(state.properties.chartPaddingValues)
             .pointerInput(Unit, gesturesPointerInputScope)
     ) {
         // Highlight

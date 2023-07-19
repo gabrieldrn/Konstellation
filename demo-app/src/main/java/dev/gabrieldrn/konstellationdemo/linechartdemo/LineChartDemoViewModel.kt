@@ -124,8 +124,8 @@ class LineChartDemoViewModel(
             LineChartProperties::chartWindow -> uiState.properties
                 .copy(chartWindow = newValue as ChartWindow)
 
-            LineChartProperties::panningEnabled -> uiState.properties
-                .copy(panningEnabled = newValue as Boolean)
+            LineChartProperties::gesturesEnabled -> uiState.properties
+                .copy(gesturesEnabled = newValue as Boolean)
 
             else -> null
         }?.let {

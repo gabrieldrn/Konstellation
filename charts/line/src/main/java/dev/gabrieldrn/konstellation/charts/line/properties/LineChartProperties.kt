@@ -16,11 +16,12 @@ import dev.gabrieldrn.konstellation.configuration.properties.ChartProperties
  * axes). This can be interpreted as the "border" of the chart.
  * @property chartWindow The visualization window of the chart. If null, the chart will be drawn
  * with a window that fits all the data.
- * @property panningEnabled Either to enable panning or not.
+ * @property gesturesEnabled Whether the chart should be interactive or not. If true, the user will
+ * be able to pan and zoom the chart.
  */
 @Immutable
 public data class LineChartProperties(
     val chartPaddingValues: PaddingValues = PaddingValues(40.dp),
     val chartWindow: ChartWindow? = null,
-    val panningEnabled: Boolean = true,
+    val gesturesEnabled: Boolean = true,
 ) : ChartProperties
