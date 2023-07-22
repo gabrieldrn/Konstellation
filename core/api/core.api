@@ -381,5 +381,6 @@ public final class dev/gabrieldrn/konstellation/util/RangesUtilKt {
 	public static final fun incStart (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
 	public static final fun minus (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
 	public static final fun plus (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
+	public static final fun zoomAround (Lkotlin/ranges/ClosedFloatingPointRange;F)Lkotlin/ranges/ClosedFloatingPointRange;
 }
 

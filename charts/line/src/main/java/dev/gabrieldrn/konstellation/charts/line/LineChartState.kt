@@ -12,6 +12,7 @@ import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.validate
 import dev.gabrieldrn.konstellation.util.distance
 import dev.gabrieldrn.konstellation.util.plus
+import dev.gabrieldrn.konstellation.util.zoomAround
 import kotlin.jvm.Throws
 
 /**
@@ -49,34 +50,34 @@ public class LineChartState(
     private var yReferential by mutableStateOf(0f)
 
     /**
-     * The current panning state.
+     * Current gestures state to be applied to the chart window.
      */
-    private var panningState by mutableStateOf(PANNING_STATE_ZERO)
-
-    private var zoomFactorState by mutableStateOf(ZoomFactorState())
+    private var gesturesState by mutableStateOf(GESTURES_STATE_INITIAL)
 
     /**
-     * The current [ChartWindow] of the chart, taking into account the panning state.
+     * The current [ChartWindow] of the chart, taking into account [gesturesState] and [size].
      */
     public val window: ChartWindow by derivedStateOf {
-        val xPan = panningState.x
+        val xPan = gesturesState.panning.x
             .takeIf { it != 0f }
             ?.map(0f..size.width, initialWindow.xWindow)
             ?.times(-1)
+            ?.times(gesturesState.zoomFactor) // Keeps the panning consistent with the zoom state.
             ?: 0f
-        val yPan = panningState.y
+        val yPan = gesturesState.panning.y
             .takeIf { it != 0f }
             ?.map(0f..size.height, initialWindow.yWindow)
             // Referential is the middle of the chart, so it needs to be subtracted from the pan.
             ?.minus(yReferential)
+            ?.times(gesturesState.zoomFactor)
             ?: 0f
         initialWindow.copy(
             xWindow = initialWindow.xWindow
                 .plus(xPan)
-                .zoomAround(zoomFactorState.x),
+                .zoomAround(gesturesState.zoomFactor),
             yWindow = initialWindow.yWindow
                 .plus(yPan)
-                .zoomAround(zoomFactorState.y)
+                .zoomAround(gesturesState.zoomFactor)
         )
     }
 
@@ -87,16 +88,18 @@ public class LineChartState(
         check(size != Size.Zero) {
             "Size must be set to calculate the dataset"
         }
-        if (panningState === PANNING_STATE_ZERO) {
+        if (gesturesState === GESTURES_STATE_INITIAL) {
             yReferential = initialWindow.yWindow.distance
                 .div(2f)
                 .plus(initialWindow.yWindow.start)
-            panningState = panningState.copy(
-                x = initialWindow.xWindow.distance
-                    .map(initialWindow.xWindow, size.width..0f)
-                    .times(-1f),
-                y = yReferential
-                    .map(initialWindow.yWindow, 0f..size.height)
+            gesturesState = gesturesState.copy(
+                panning = Offset(
+                    x = initialWindow.xWindow.distance
+                        .map(initialWindow.xWindow, size.width..0f)
+                        .times(-1f),
+                    y = yReferential
+                        .map(initialWindow.yWindow, 0f..size.height)
+                )
             )
         }
         dataset.createOffsets(
@@ -106,34 +109,13 @@ public class LineChartState(
         )
     }
 
-    private fun ClosedFloatingPointRange<Float>.zoomAround(
-        zoomFactor: Float
-    ): ClosedFloatingPointRange<Float> {
-        // FIXME / WIP - The zoom occurs around the middle of the chart (0, 0), but it should be
-        //  around
-        val newStart = start * zoomFactor
-        val newEnd = endInclusive * zoomFactor
-        return newStart..newEnd
-    }
-
     /**
      * Registers the new size of the canvas that draws the chart. A recalculation of the chart is
      * necessary after this, therefore the chart will be recomposed.
      */
     public fun updateSize(newSize: IntSize) {
         size = newSize.toSize()
-        zoomFactorState = ZoomFactorState()
-    }
-
-    /**
-     * Pans the chart by the given amount.
-     */
-    public fun pan(amount: Offset) {
-        if (!gesturesEnabled) return
-        panningState = panningState.copy(
-            x = panningState.x + amount.x,
-            y = panningState.y + amount.y
-        )
+        gesturesState = GESTURES_STATE_INITIAL
     }
 
     /**
@@ -141,35 +123,23 @@ public class LineChartState(
      */
     public fun applyTransformGestures(pan: Offset, zoom: Float) {
         if (!gesturesEnabled) return
-        zoomFactorState = ZoomFactorState(
-            x = zoomFactorState.x + (zoom - 1) * -1f,
-            y = zoomFactorState.y + (zoom - 1) * -1f
-        )
-        panningState = panningState.copy(
-            x = panningState.x + pan.x,
-            y = panningState.y + pan.y
+        gesturesState = gesturesState.copy(
+            panning = gesturesState.panning + pan,
+            zoomFactor = gesturesState.zoomFactor + (zoom - 1) * -1
         )
     }
 
-    @Stable
-    private data class ZoomFactorState(
-        val x: Float = 1f,
-        val y: Float = 1f
-    )
-
     /**
-     * State to keep track of the panning offset.
-     * @property x The x offset.
-     * @property y The y offset.
+     * The transformation gestures applied by the user to the chart.
      */
     @Stable
-    private data class PanningState(
-        val x: Float,
-        val y: Float,
+    private data class TransformGesturesState(
+        val panning: Offset = Offset.Zero,
+        val zoomFactor: Float = 1f
     )
 
     private companion object {
-        private val PANNING_STATE_ZERO = PanningState(0f, 0f)
+        private val GESTURES_STATE_INITIAL = TransformGesturesState()
     }
 }
 

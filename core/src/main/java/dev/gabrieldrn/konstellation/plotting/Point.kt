@@ -23,7 +23,7 @@ public data class Point constructor(
      */
     val offset: Offset = Offset(0f, 0f),
 
-    ): Serializable {
+): Serializable {
 
     /**
      * Returns the x value of [offset].

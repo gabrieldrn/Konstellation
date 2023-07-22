@@ -96,3 +96,11 @@ public fun ClosedFloatingPointRange<Float>.decEnd(other: Float): ClosedFloatingP
     }
     return start..endInclusive - other
 }
+
+/**
+ * Applies a zoom [factor] on the given range, zooming around the middle of the range.
+ */
+public fun ClosedFloatingPointRange<Float>.zoomAround(
+    factor: Float
+): ClosedFloatingPointRange<Float> =
+    ((distance * factor - distance) / 2).let { start - it..endInclusive + it }

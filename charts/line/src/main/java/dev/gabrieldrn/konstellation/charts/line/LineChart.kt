@@ -229,10 +229,7 @@ private fun BoxScope.HighlightCanvas(
             if (state.properties.gesturesEnabled) {
                 launch {
                     detectTransformGestures(panZoomLock = true) { _, pan, zoom, _ ->
-                        state.applyTransformGestures(
-                            pan = pan,
-                            zoom = zoom,
-                        )
+                        state.applyTransformGestures(pan = pan, zoom = zoom)
                     }
                 }
             }
