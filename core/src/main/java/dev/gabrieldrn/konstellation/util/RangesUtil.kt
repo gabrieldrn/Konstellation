@@ -103,4 +103,4 @@ public fun ClosedFloatingPointRange<Float>.decEnd(other: Float): ClosedFloatingP
 public fun ClosedFloatingPointRange<Float>.zoomAround(
     factor: Float
 ): ClosedFloatingPointRange<Float> =
-    ((distance * factor - distance) / 2).let { start - it..endInclusive + it }
+    ((distance * factor - distance) / 2f).let { start - it..endInclusive + it }

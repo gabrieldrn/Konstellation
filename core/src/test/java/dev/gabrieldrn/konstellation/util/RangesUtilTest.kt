@@ -15,7 +15,8 @@ class RangesUtilTest {
     }
 
     @Test
-    fun rangesUtil_zoomAround_increaseZoom_zoomsCorrectly() {
+    fun rangesUtil_zoomAround_zoomOut_zoomsCorrectly() {
+        // Zoom out -> increase range distance.
         val candidate = 5f..10f
         // Applying a 1.5x zoom factor should increase range distance by ~66.67%
         assertEquals(
@@ -25,7 +26,8 @@ class RangesUtilTest {
     }
 
     @Test
-    fun rangesUtil_zoomAround_decreaseZoom_zoomsCorrectly() {
+    fun rangesUtil_zoomAround_zoomIn_zoomsCorrectly() {
+        // Zoom in -> decrease range distance.
         val candidate = 5f..10f
         // Applying a 0.5x zoom factor should decrease range distance by ~50%
         assertEquals(

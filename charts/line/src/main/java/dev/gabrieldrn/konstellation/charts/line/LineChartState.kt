@@ -1,5 +1,6 @@
 package dev.gabrieldrn.konstellation.charts.line
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.*
 import androidx.compose.ui.geometry.*
 import androidx.compose.ui.unit.IntSize
@@ -13,7 +14,7 @@ import dev.gabrieldrn.konstellation.plotting.validate
 import dev.gabrieldrn.konstellation.util.distance
 import dev.gabrieldrn.konstellation.util.plus
 import dev.gabrieldrn.konstellation.util.zoomAround
-import kotlin.jvm.Throws
+import timber.log.Timber
 
 /**
  * State of a line chart. This is the main class used by the composable function, and it stores
@@ -52,32 +53,34 @@ public class LineChartState(
     /**
      * Current gestures state to be applied to the chart window.
      */
-    private var gesturesState by mutableStateOf(GESTURES_STATE_INITIAL)
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal var gesturesState by mutableStateOf(GESTURES_STATE_INITIAL)
 
     /**
-     * The current [ChartWindow] of the chart, taking into account [gesturesState] and [size].
+     * The current [ChartWindow] of the chart, taking into account [gesturesState] and [size]. Any
+     * change in those values will trigger a recalculation of this value.
      */
     public val window: ChartWindow by derivedStateOf {
-        val xPan = gesturesState.panning.x
+        val xPan = gesturesState.pan.x
             .takeIf { it != 0f }
             ?.map(0f..size.width, initialWindow.xWindow)
             ?.times(-1)
-            ?.times(gesturesState.zoomFactor) // Keeps the panning consistent with the zoom state.
+            ?.times(gesturesState.scale) // Keeps the panning consistent with the zoom state.
             ?: 0f
-        val yPan = gesturesState.panning.y
+        val yPan = gesturesState.pan.y
             .takeIf { it != 0f }
             ?.map(0f..size.height, initialWindow.yWindow)
             // Referential is the middle of the chart, so it needs to be subtracted from the pan.
             ?.minus(yReferential)
-            ?.times(gesturesState.zoomFactor)
+            ?.times(gesturesState.scale)
             ?: 0f
         initialWindow.copy(
             xWindow = initialWindow.xWindow
                 .plus(xPan)
-                .zoomAround(gesturesState.zoomFactor),
+                .zoomAround(gesturesState.scale),
             yWindow = initialWindow.yWindow
                 .plus(yPan)
-                .zoomAround(gesturesState.zoomFactor)
+                .zoomAround(gesturesState.scale)
         )
     }
 
@@ -93,7 +96,7 @@ public class LineChartState(
                 .div(2f)
                 .plus(initialWindow.yWindow.start)
             gesturesState = gesturesState.copy(
-                panning = Offset(
+                pan = Offset(
                     x = initialWindow.xWindow.distance
                         .map(initialWindow.xWindow, size.width..0f)
                         .times(-1f),
@@ -121,25 +124,34 @@ public class LineChartState(
     /**
      * Applies panning and zooming gestures to the chart.
      */
-    public fun applyTransformGestures(pan: Offset, zoom: Float) {
+    public fun applyTransformGestures(pan: Offset = Offset.Zero, zoom: Float = 0f) {
         if (!gesturesEnabled) return
         gesturesState = gesturesState.copy(
-            panning = gesturesState.panning + pan,
-            zoomFactor = gesturesState.zoomFactor + (zoom - 1) * -1
-        )
+            pan = gesturesState.pan + pan,
+            scale = (gesturesState.scale + (zoom - 1) * -1).coerceIn(SCALING_MIN, SCALING_MAX)
+        ).also {
+            Timber.d("pan: $pan, zoom: $zoom, state: $it")
+        }
     }
 
     /**
-     * The transformation gestures applied by the user to the chart.
+     * Holds the transformation gestures states applied to the chart.
      */
-    @Stable
-    private data class TransformGesturesState(
-        val panning: Offset = Offset.Zero,
-        val zoomFactor: Float = 1f
+    @Immutable
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal data class TransformGesturesState(
+        val pan: Offset = Offset.Zero,
+        val scale: Float = 1f
     )
 
-    private companion object {
-        private val GESTURES_STATE_INITIAL = TransformGesturesState()
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal companion object {
+        // TODO Make these configurable
+        private const val SCALING_MIN = 0.01f
+        private const val SCALING_MAX = 2f
+
+        @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+        val GESTURES_STATE_INITIAL = TransformGesturesState()
     }
 }
 
