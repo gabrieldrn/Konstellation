@@ -26,7 +26,7 @@ import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.by
 import dev.gabrieldrn.konstellation.plotting.datasetOf
 import dev.gabrieldrn.konstellationdemo.appModule
-import dev.gabrieldrn.konstellationdemo.linechartdemo.settings.LineChartSettingsContent
+import dev.gabrieldrn.konstellationdemo.linechartdemo.settings.LineChartPagedSettingsContent
 import dev.gabrieldrn.konstellationdemo.ui.isLandscape
 import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
 import org.koin.android.ext.koin.androidContext
@@ -64,7 +64,7 @@ fun LineChartDemo(
 
     @Composable
     fun Settings(modifier: Modifier = Modifier) {
-        LineChartSettingsContent(
+        LineChartPagedSettingsContent(
             dataset = viewModel.uiState.dataset,
             properties = viewModel.uiState.properties,
             styles = lineChartStyles,
@@ -112,11 +112,7 @@ private fun DemoLineChart(
         onDrawTick = { axis, value ->
             when (axis.axis) {
                 Axis.X_BOTTOM, Axis.X_TOP -> "${value.toInt()}km"
-                Axis.Y_LEFT, Axis.Y_RIGHT -> when {
-                    value < 0 -> "${value.toInt()}m"
-                    value > 0 -> "${value.toInt()}m"
-                    else -> "🌎"
-                }
+                Axis.Y_LEFT, Axis.Y_RIGHT -> "${value.times(10).toInt()}m"
             }
         }
     )
@@ -149,7 +145,7 @@ private fun DistanceHighlight(dist: Int) {
         modifier = Modifier.padding(8.dp)
     ) {
         Text(
-            text = "🥾 ${dist}km",
+            text = "${dist}km",
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onPrimary,
             textAlign = TextAlign.Start,
@@ -164,11 +160,7 @@ private fun AltitudeHighlight(alt: Int) {
         modifier = Modifier.padding(8.dp)
     ) {
         Text(
-            text = when {
-                alt < 0 -> "🤿 ${alt}m"
-                alt > 0 -> "⛰️ ${alt}m"
-                else -> "0m"
-            },
+            text = "${alt.times(10)}m",
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onPrimary,
             textAlign = TextAlign.Start,
