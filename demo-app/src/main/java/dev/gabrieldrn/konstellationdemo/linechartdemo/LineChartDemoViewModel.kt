@@ -15,6 +15,7 @@ import dev.gabrieldrn.konstellation.plotting.Dataset
 import dev.gabrieldrn.konstellation.plotting.Label
 import dev.gabrieldrn.konstellation.plotting.by
 import dev.gabrieldrn.konstellation.plotting.datasetOf
+import dev.gabrieldrn.konstellation.plotting.xRange
 import dev.gabrieldrn.konstellation.plotting.yRange
 import dev.gabrieldrn.konstellation.util.distance
 import dev.gabrieldrn.konstellation.util.inc
@@ -57,16 +58,17 @@ class LineChartDemoViewModel(
             properties = properties.copy(
                 chartWindow = getWindowFromDataset(initialDataset)
             )
-        ).addYAverageLimitLine()
+        ).withYAverageLimitLine()
     ); private set
 
     private fun getWindowFromDataset(dataset: Dataset): ChartWindow {
         return ChartWindow.fromDataset(dataset).copy(
+            xWindow = dataset.xRange.inc(/*clearance=*/ .25f),
             yWindow = dataset.yRange.inc(/*clearance=*/ dataset.yRange.distance)
         )
     }
 
-    private fun UiState.addYAverageLimitLine(): UiState {
+    private fun UiState.withYAverageLimitLine(): UiState {
         val yAvg = dataset
             .map { it.y }
             .average()
@@ -97,7 +99,7 @@ class LineChartDemoViewModel(
             properties = uiState.properties.copy(
                 chartWindow = getWindowFromDataset(newDataset),
             ),
-        ).addYAverageLimitLine()
+        ).withYAverageLimitLine()
     }
 
     /**
@@ -110,7 +112,7 @@ class LineChartDemoViewModel(
             properties = uiState.properties.copy(
                 chartWindow = getWindowFromDataset(newDataset),
             ),
-        ).addYAverageLimitLine()
+        ).withYAverageLimitLine()
     }
 
     /**
