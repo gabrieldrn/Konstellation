@@ -40,7 +40,7 @@ private val SettingSurfaceHeight = 148.dp
  */
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun LineChartSettingsContent(
+fun LineChartPagedSettingsContent(
     dataset: Dataset,
     properties: LineChartProperties,
     styles: LineChartStyles,
@@ -140,7 +140,7 @@ internal fun SettingSurface(
             tonalElevation = 1.dp
         )
         Text(
-            title,
+            title.uppercase(),
             color = MaterialTheme.colorScheme.secondary,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -152,7 +152,7 @@ internal fun SettingSurface(
 internal fun SettingIconButton(
     onClick: () -> Unit,
     icon: ImageVector,
-    text: String? = null
+    label: String? = null
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         IconButton(
@@ -168,8 +168,8 @@ internal fun SettingIconButton(
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }
-        if (!text.isNullOrEmpty()) {
-            Text(text = text, textAlign = TextAlign.Center)
+        if (!label.isNullOrEmpty()) {
+            Text(text = label, textAlign = TextAlign.Center)
         }
     }
 }
@@ -187,10 +187,10 @@ private fun LineChartDatasetSelector(
             modifier = Modifier.fillMaxWidth()
         ) {
             SettingIconButton(
-                onClick = onGenerateRandomDataset, icon = Icons.Default.Shuffle, text = "Random"
+                onClick = onGenerateRandomDataset, icon = Icons.Default.Shuffle, label = "Random"
             )
             SettingIconButton(
-                onClick = onGenerateFancyDataset, icon = Icons.Default.AutoGraph, text = "Fancy"
+                onClick = onGenerateFancyDataset, icon = Icons.Default.AutoGraph, label = "Fancy"
             )
         }
     }
