@@ -14,6 +14,7 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellationdemo.ui.theme.KonstellationTheme
@@ -40,6 +42,7 @@ fun ToggleIconButton(
     onToggleChange: (Boolean) -> Unit,
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
+    label: String? = null,
     toggledColor: Color = MaterialTheme.colorScheme.primary,
     disabledColor: Color = LocalContentColor.current.copy(alpha = 0.12f),
     toggledImageVectorTint: Color = MaterialTheme.colorScheme.onPrimary,
@@ -55,32 +58,43 @@ fun ToggleIconButton(
     )
     val audioManager = LocalContext.current.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     val buttonScope = rememberCoroutineScope()
-    Box(
-        modifier = modifier
-            .size(toggleIconButtonSize)
-            .background(
-                color = background,
-                shape = MaterialTheme.shapes.small
-            )
-            .toggleable(
-                onValueChange = {
-                    buttonScope.launch {
-                        audioManager.playSoundEffect(AudioManager.FX_KEY_CLICK, 1.0f)
-                    }
-                    onToggleChange(it)
-                },
-                value = toggled,
-                role = Role.Button,
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(bounded = false, radius = 24.dp)
-            ),
-        contentAlignment = Alignment.Center
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Icon(
-            imageVector = imageVector,
-            contentDescription = null,
-            tint = imageVectorTint
-        )
+        Box(
+            modifier = Modifier
+                .size(toggleIconButtonSize)
+                .background(
+                    color = background,
+                    shape = MaterialTheme.shapes.small
+                )
+                .toggleable(
+                    onValueChange = {
+                        buttonScope.launch {
+                            audioManager.playSoundEffect(AudioManager.FX_KEY_CLICK, 1.0f)
+                        }
+                        onToggleChange(it)
+                    },
+                    value = toggled,
+                    role = Role.Button,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = rememberRipple(bounded = false, radius = 24.dp)
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = imageVector,
+                contentDescription = null,
+                tint = imageVectorTint
+            )
+        }
+
+        if (!label.isNullOrEmpty()) {
+            Text(text = label, textAlign = TextAlign.Center)
+        }
     }
 }
 

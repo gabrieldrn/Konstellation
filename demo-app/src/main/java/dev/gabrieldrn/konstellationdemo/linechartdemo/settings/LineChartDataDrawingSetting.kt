@@ -7,11 +7,9 @@ import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.outlined.Commit
 import androidx.compose.material.icons.outlined.ShowChart
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.gabrieldrn.konstellation.charts.line.math.CubicXPathInterpolator
@@ -38,37 +36,27 @@ fun LineChartDataDrawingSetting(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp)
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                ToggleIconButton(
-                    toggled = styles.drawLines,
-                    onToggleChange = {
-                        onUpdateStyles(styles.copy(drawLines = it))
-                    },
-                    imageVector = Icons.Outlined.ShowChart
-                )
-                Text(text = "Lines", textAlign = TextAlign.Center)
-            }
+            ToggleIconButton(
+                toggled = styles.drawLines,
+                onToggleChange = {
+                    onUpdateStyles(styles.copy(drawLines = it))
+                },
+                imageVector = Icons.Outlined.ShowChart,
+                label = "Lines"
+            )
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+            ToggleIconButton(
+                toggled = styles.drawPoints,
+                onToggleChange =
+                {
+                    onUpdateStyles(styles.copy(drawPoints = it))
+                },
+                imageVector = Icons.Outlined.Commit,
+                label = "Points",
                 modifier = Modifier.padding(end = 16.dp)
-            ) {
-                ToggleIconButton(
-                    toggled = styles.drawPoints,
-                    onToggleChange =
-                    {
-                        onUpdateStyles(styles.copy(drawPoints = it))
-                    },
-                    imageVector = Icons.Outlined.Commit
-                )
-                Text(text = "Points", textAlign = TextAlign.Center)
-            }
+            )
 
             Spacer(modifier = Modifier.width(16.dp))
 
@@ -108,7 +96,7 @@ fun LineChartDataDrawingSetting(
                         )
                     },
                     icon = Icons.Default.AutoAwesome,
-                    text = "Smoothing"
+                    label = "Smoothing"
                 )
             }
         }
