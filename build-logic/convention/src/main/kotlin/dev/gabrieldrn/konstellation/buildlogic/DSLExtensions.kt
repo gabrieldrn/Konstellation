@@ -11,7 +11,7 @@ private const val STRICT_API_COMPILER_ARG = "-Xexplicit-api=strict"
 /**
  * Shortcut to configure Kotlin compiler options.
  */
-internal fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
+internal fun CommonExtension<*, *, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
     (this as ExtensionAware).extensions.configure("kotlinOptions", block)
 }
 

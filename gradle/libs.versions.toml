@@ -1,9 +1,12 @@
 [versions]
-minSdk = "21"
-targetSdk = "33"
+androidGradlePlugin = "8.1.1"
 kotlin = "1.8.22"
-buildTools = "31.0.0"
-androidGradlePlugin = "8.0.2"
+
+minSdk = "21"
+compileSdk = "34"
+targetSdk = "33"
+buildTools = "34.0.0"
+
 androidxAppcompat = "1.6.1"
 androidxCore = "1.10.1"
 androidxLifecycle = "2.6.1"
@@ -11,7 +14,7 @@ androidxActivity = "1.7.2"
 #https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
 #https://developer.android.com/jetpack/androidx/releases/compose-kotlin
 androidxComposeCompiler = "1.4.8"
-androidxCompose = "1.4.3"
+androidxCompose = "1.5.0"
 androidxTestCore = "1.5.0"
 androidxTestExtJunit = "1.1.5"
 androidxEspresso = "3.5.1"
@@ -26,6 +29,9 @@ dokka = "1.7.20"
 binaryCompatibilityValidator = "0.13.1"
 
 [libraries]
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
@@ -47,10 +53,6 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 koin = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-
-# Build logic
-android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
-kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

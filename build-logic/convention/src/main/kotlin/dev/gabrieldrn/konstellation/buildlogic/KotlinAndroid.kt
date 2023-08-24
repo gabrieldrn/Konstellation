@@ -7,9 +7,9 @@ import org.gradle.api.Project
  * Configure base Kotlin with Android options.
  */
 internal fun Project.configureKotlinAndroidCommon(
-    commonExtension: CommonExtension<*, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *>,
 ) = with(commonExtension) {
-    compileSdk = libs.getVersion("targetSdk").toInt()
+    compileSdk = libs.getVersion("compileSdk").toInt()
     buildToolsVersion = libs.getVersion("buildTools")
 
     defaultConfig {
