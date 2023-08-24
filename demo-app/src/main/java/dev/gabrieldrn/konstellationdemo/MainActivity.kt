@@ -3,12 +3,10 @@ package dev.gabrieldrn.konstellationdemo
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -17,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -49,33 +46,37 @@ class MainActivity : AppCompatActivity() {
 
             @Composable
             fun Logo(modifier: Modifier = Modifier) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_logo),
-                    contentDescription = null,
-                    modifier = modifier
-                        .padding(horizontal = 16.dp)
-                        .height(24.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = MaterialTheme.colorScheme.primary)
+                        .statusBarsPadding()
+                        .padding(start = 16.dp)
+                        .then(modifier)
+                ) {
+                    Text(
+                        modifier = modifier,
+                        text = "KONSTELLATION",
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             }
 
             @Composable
             fun Title(modifier: Modifier = Modifier) {
                 Text(
-                    modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.primary)
-                        .padding(8.dp)
-                        .padding(start = 8.dp)
-                        .then(modifier),
-                    text = "LINE CHART",
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    modifier = modifier.padding(start = 16.dp, top = 16.dp),
+                    text = "Line chart".uppercase(),
                     style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
 
             KonstellationTheme {
                 val systemUiController = rememberSystemUiController()
                 val useDarkIcons =
-                    MaterialTheme.colorScheme.background.luminance() > DarkIconsLuminanceThreshold
+                    MaterialTheme.colorScheme.primary.luminance() > DarkIconsLuminanceThreshold
 
                 SideEffect {
                     systemUiController.setSystemBarsColor(
@@ -89,35 +90,19 @@ class MainActivity : AppCompatActivity() {
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
                         .background(color = MaterialTheme.colorScheme.background)
-                        .systemBarsPadding(),
+                        .navigationBarsPadding(),
                 ) {
                     if (LocalConfiguration.current.isLandscape) {
-                        Row {
-                            Title(modifier = Modifier.weight(1f))
-                            Logo(modifier = Modifier.height(32.dp))
-                        }
-                        Divider(
-                            modifier = Modifier.padding(vertical = 8.dp),
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        Logo()
+                        Title()
                     } else {
-                        Logo(
-                            modifier = Modifier
-                                .padding(top = 16.dp)
-                                .align(Alignment.CenterHorizontally)
-                        )
-                        Divider(
-                            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                        Logo(modifier = Modifier.align(Alignment.CenterHorizontally))
                         Title()
                     }
 
                     LineChartDemo(
                         viewModel = lineChartViewModel,
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(top = 8.dp)
+                        modifier = Modifier.weight(1f)
                     )
                 }
             }
