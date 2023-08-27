@@ -1,5 +1,5 @@
-![Header](https://user-images.githubusercontent.com/22205373/198927737-e8d7aadf-713f-41c2-a90c-c62b9c24bae8.png#gh-light-mode-only)
-![Header](https://user-images.githubusercontent.com/22205373/198927777-d3c048e6-ab3a-43dd-b69d-bd593e1db058.png#gh-dark-mode-only)
+![Header](pictures/Konstellation_GH_banner_light2.png#gh-light-mode-only)
+![Header](pictures/Konstellation_GH_banner_dark2.png#gh-dark-mode-only)
 
 [![License](https://img.shields.io/badge/License-GNU%20v3.0-white.svg)](LICENSE)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.8.22-blue.svg?logo=kotlin)](http://kotlinlang.org)
