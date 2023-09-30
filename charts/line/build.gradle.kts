@@ -20,9 +20,7 @@ android {
 dependencies {
     api(project(":core"))
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.uiTooling)
-    implementation(libs.androidx.compose.material)
-    implementation(libs.material)
     implementation(libs.timber)
 }
