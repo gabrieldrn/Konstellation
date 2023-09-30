@@ -1,6 +1,9 @@
 plugins {
     id("konstellation.android.library")
+    id("konstellation.android.publication")
 }
+
+version = "${properties["VERSION"]}"
 
 android {
     namespace = "dev.gabrieldrn.konstellation"

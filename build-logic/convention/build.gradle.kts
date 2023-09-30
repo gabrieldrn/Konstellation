@@ -34,7 +34,11 @@ gradlePlugin {
             implementationClass = "KonstellationApplicationConventionPlugin"
         }
 
-        // TODO Publication plugin
+        register("publication") {
+            id = "konstellation.android.publication"
+            implementationClass = "KonstellationPublicationPlugin"
+        }
+
         // TODO Dokka plugin
     }
 }
