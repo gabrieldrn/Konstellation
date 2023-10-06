@@ -9,6 +9,11 @@ android {
     namespace = "dev.gabrieldrn.konstellation.charts.line"
 }
 
+publicationConfig {
+    publicationName = "LineChart"
+    artifactId = "line-chart"
+}
+
 //dokkaHtml.configure {
 //    dokkaSourceSets {
 //        named("main") {

@@ -6,8 +6,6 @@ import org.gradle.api.plugins.ExtensionAware
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-private const val STRICT_API_COMPILER_ARG = "-Xexplicit-api=strict"
-
 /**
  * Shortcut to configure Kotlin compiler options.
  */

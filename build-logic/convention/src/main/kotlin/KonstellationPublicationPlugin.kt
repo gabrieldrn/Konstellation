@@ -1,44 +1,33 @@
-import dev.gabrieldrn.konstellation.buildlogic.Constants
+import dev.gabrieldrn.konstellation.buildlogic.GROUP_ID
+import dev.gabrieldrn.konstellation.buildlogic.MAVEN_REPO_NAME
+import dev.gabrieldrn.konstellation.buildlogic.MAVEN_REPO_PASSWORD_ENV_KEY
+import dev.gabrieldrn.konstellation.buildlogic.MAVEN_REPO_URL
+import dev.gabrieldrn.konstellation.buildlogic.MAVEN_REPO_USERNAME_ENV_KEY
+import dev.gabrieldrn.konstellation.buildlogic.extensions.PublicationConfigExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
-import java.net.URI
 
 class KonstellationPublicationPlugin : Plugin<Project> {
 
     private fun Project.publishing(config: PublishingExtension.() -> Unit) =
         extensions.configure(config)
 
-    override fun apply(target: Project) = with(target) {
+    override fun apply(target: Project): Unit = with(target) {
 
-        val version = (properties["VERSION"] ?: error("Project version is unspecified.")) as String
+        val publicationConfig = extensions.create<PublicationConfigExtension>(
+            name = "publicationConfig",
+            /*args = */ name
+        )
 
-        val mavenRepoUsername = System.getenv(Constants.MAVEN_REPO_USERNAME_ENV_KEY)
-            ?: properties[Constants.MAVEN_REPO_USERNAME_LOCAL_KEY] as String?
+        val mavenRepoUsername = findProperty(MAVEN_REPO_USERNAME_ENV_KEY) as String?
+            ?: System.getenv("GITHUB_ACTOR")
 
-        val artifactId = if (group.toString().contains("charts")) {
-            "${name}-chart"
-        } else {
-            name
-        }
-
-        require(!mavenRepoUsername.isNullOrEmpty()) {
-            "Maven publication: Unable to retrieve the username for the credentials repository." +
-                    "Either '${Constants.MAVEN_REPO_USERNAME_ENV_KEY}' env variable " +
-                    "or '${Constants.MAVEN_REPO_USERNAME_LOCAL_KEY}' local property is not set."
-        }
-
-        val mavenRepoPassword = System.getenv(Constants.MAVEN_REPO_PASSWORD_ENV_KEY)
-            ?: properties[Constants.MAVEN_REPO_PASSWORD_LOCAL_KEY] as String?
-
-        require(!mavenRepoPassword.isNullOrEmpty()) {
-            "Maven publication: Unable to retrieve the password for the credentials repository." +
-                    "Either '${Constants.MAVEN_REPO_PASSWORD_ENV_KEY}' env variable " +
-                    "or '${Constants.MAVEN_REPO_PASSWORD_LOCAL_KEY}' local property is not set."
-        }
+        val mavenRepoPassword = findProperty(MAVEN_REPO_PASSWORD_ENV_KEY) as String?
+            ?: System.getenv("GITHUB_TOKEN")
 
         pluginManager.apply("org.gradle.maven-publish")
 
@@ -50,14 +39,17 @@ class KonstellationPublicationPlugin : Plugin<Project> {
                     .filterNot {
                         it.name.contains("test", ignoreCase = true)
                     }
-//                    .onEach { println(it.name) }
                     .map { it.dependencies }
                     .flatten()
                     .filter { it.group?.trim()?.isNotEmpty() ?: false }
                     .toList()
                     .forEach { dep ->
                         dependenciesNode.appendNode("dependency").apply {
-                            appendNode("groupId", dep.group)
+                            appendNode(
+                                "groupId",
+                                // Replace local group id with the proper project group id.
+                                dep.group.takeIf { it != this@with.group } ?: GROUP_ID
+                            )
                             appendNode("artifactId", dep.name)
                             appendNode("version", dep.version)
                         }
@@ -65,24 +57,36 @@ class KonstellationPublicationPlugin : Plugin<Project> {
             }
         }
 
-        publishing {
-            publications {
-                create<MavenPublication>(name) {
-                    groupId = Constants.GROUP_ID
-                    this.artifactId = artifactId
-                    this.version = version
-                    artifact("$projectDir/build/outputs/aar/$name-release.aar")
-                    configurePom()
+        afterEvaluate {
+            publishing {
+                publications {
+                    create<MavenPublication>(publicationConfig.publicationName.ifEmpty { name }) {
+                        groupId = GROUP_ID
+                        artifactId = publicationConfig.artifactId
+                        version = "${properties["project.version"]}"
+                        file("$projectDir/build/outputs/aar")
+                            .listFiles { f -> f.name.contains("release", ignoreCase = true) }
+                            ?.first()
+                            ?.let { artifact(it) }
+                        configurePom()
+                    }
                 }
-            }
 
-            // Nomad-shared GitHub Maven repo
-            repositories.maven {
-                name = Constants.MAVEN_REPO_NAME
-                url = URI.create(Constants.MAVEN_REPO_URL)
-                credentials {
-                    username = mavenRepoUsername
-                    password = mavenRepoPassword
+                if (!mavenRepoUsername.isNullOrEmpty() && !mavenRepoPassword.isNullOrEmpty()) {
+                    repositories.maven {
+                        name = MAVEN_REPO_NAME
+                        url = uri(MAVEN_REPO_URL)
+                        credentials {
+                            username = mavenRepoUsername
+                            password = mavenRepoPassword
+                        }
+                    }
+                } else {
+                    logger.warn(
+                        "No username or password found for $MAVEN_REPO_NAME. " +
+                                "Please set the '$MAVEN_REPO_USERNAME_ENV_KEY' " +
+                                "and '$MAVEN_REPO_PASSWORD_ENV_KEY' gradle properties."
+                    )
                 }
             }
         }

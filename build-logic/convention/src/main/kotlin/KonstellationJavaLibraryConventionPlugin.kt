@@ -1,5 +1,5 @@
+import dev.gabrieldrn.konstellation.buildlogic.JAVA_VERSION
 import dev.gabrieldrn.konstellation.buildlogic.getPlugin
-import dev.gabrieldrn.konstellation.buildlogic.javaVersion
 import dev.gabrieldrn.konstellation.buildlogic.libs
 import dev.gabrieldrn.konstellation.buildlogic.setupExplicitApi
 import org.gradle.api.Plugin
@@ -21,8 +21,8 @@ class KonstellationJavaLibraryConventionPlugin : Plugin<Project> {
         }
 
         extensions.configure<JavaPluginExtension> {
-            sourceCompatibility = javaVersion
-            targetCompatibility = javaVersion
+            sourceCompatibility = JAVA_VERSION
+            targetCompatibility = JAVA_VERSION
         }
 
         setupExplicitApi()

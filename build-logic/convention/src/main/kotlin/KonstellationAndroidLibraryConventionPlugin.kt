@@ -12,8 +12,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
 /**
- * A plugin used by android libraries modules from Konstellation to configure themselves. It
- * provides a convention to keep consistency across those modules.
+ * Keeps consistent configurations across android libraries modules.
  */
 class KonstellationAndroidLibraryConventionPlugin : Plugin<Project> {
 
@@ -31,7 +30,7 @@ class KonstellationAndroidLibraryConventionPlugin : Plugin<Project> {
 
             setupExplicitApi()
 
-            // TODO Not sure if proguard/R8 is relevant for libraries.
+            // TODO Proguard/R8
 
             defaultConfig {
                 consumerProguardFiles.add(file("consumer-rules.pro"))

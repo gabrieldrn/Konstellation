@@ -7,8 +7,7 @@
 
 [![](https://github.com/gabrieldrn/Konstellation/workflows/CI%20|%20library%20%26%20demo%20app/badge.svg?branch=develop)]()
 
-Konstellation is a Jetpack Compose library that provides a set of components and tools to build
-beautiful and consistent graphs.
+Konstellation is a Jetpack Compose library that provides a set of components and tools to draw graphs.
 
 <p align="center">
   <picture>

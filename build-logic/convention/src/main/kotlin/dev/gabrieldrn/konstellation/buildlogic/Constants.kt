@@ -1,16 +1,13 @@
 package dev.gabrieldrn.konstellation.buildlogic
 
-/**
- * Global constants for the build logic.
- */
-@Suppress("UndocumentedPublicProperty")
-object Constants {
-    const val GROUP_ID = "dev.gabrieldrn.konstellation"
-    const val MAVEN_REPO_NAME = "GitHub"
-    const val MAVEN_REPO_URL =
-        "https://maven.pkg.github.com/gabrieldrn/Konstellation"
-    const val MAVEN_REPO_USERNAME_ENV_KEY = "GPR_USER"
-    const val MAVEN_REPO_PASSWORD_ENV_KEY = "GPR_KEY"
-    const val MAVEN_REPO_USERNAME_LOCAL_KEY = "GITHUB_USER"
-    const val MAVEN_REPO_PASSWORD_LOCAL_KEY = "GITHUB_PERSONAL_ACCESS_TOKEN"
-}
+import org.gradle.api.JavaVersion
+
+internal val JAVA_VERSION = JavaVersion.VERSION_17
+internal const val STRICT_API_COMPILER_ARG = "-Xexplicit-api=strict"
+
+internal const val GROUP_ID = "dev.gabrieldrn.konstellation"
+
+internal const val MAVEN_REPO_NAME = "GitHubPackages"
+internal const val MAVEN_REPO_URL = "https://maven.pkg.github.com/gabrieldrn/Konstellation"
+internal const val MAVEN_REPO_USERNAME_ENV_KEY = "gpr.user"
+internal const val MAVEN_REPO_PASSWORD_ENV_KEY = "gpr.key"
