@@ -1,0 +1,65 @@
+[versions]
+androidGradlePlugin = "8.1.1"
+kotlin = "1.8.22"
+
+minSdk = "21"
+compileSdk = "34"
+targetSdk = "33"
+buildTools = "34.0.0"
+
+androidxAppcompat = "1.6.1"
+androidxCore = "1.10.1"
+androidxLifecycle = "2.6.1"
+androidxActivity = "1.7.2"
+#https://developer.android.com/jetpack/androidx/releases/compose-compiler#declaring_dependencies
+#https://developer.android.com/jetpack/androidx/releases/compose-kotlin
+androidxComposeCompiler = "1.4.8"
+androidxCompose = "1.5.0"
+androidxTestCore = "1.5.0"
+androidxTestExtJunit = "1.1.5"
+androidxEspresso = "3.5.1"
+material = "1.9.0"
+material3 = "1.1.1"
+accompanist = "0.28.0"
+timber = "5.0.1"
+koin = "3.4.2"
+junit = "4.13.2"
+detekt = "1.22.0"
+dokka = "1.7.20"
+binaryCompatibilityValidator = "0.13.1"
+
+[libraries]
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompat" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidxCompose" }
+androidx-compose-uiTooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidxCompose" }
+androidx-compose-material = { module = "androidx.compose.material:material", version.ref = "androidxCompose" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+androidx-compose-material-iconsExtended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidxCompose" }
+androidx-test-core = { module = "androidx.test:core-ktx", version.ref = "androidxTestCore" }
+androidx-test-ext = { module = "androidx.test.ext:junit", version.ref = "androidxTestExtJunit" }
+androidx-test-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxEspresso" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
+accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+koin = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+junit = { module = "junit:junit", version.ref = "junit" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+binaryCompatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binaryCompatibilityValidator" }
