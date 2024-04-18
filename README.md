@@ -1,3 +1,8 @@
+# UNMAINTAINED
+⚠️ Due to a lack of time I'm unable to work on this library anymore. I've created this project to provide charts to Jetpack Compose, there is good alt libraries you can now find around GitHub ;)
+
+---
+
 ![Header](pictures/Konstellation_GH_banner_light2.png#gh-light-mode-only)
 ![Header](pictures/Konstellation_GH_banner_dark2.png#gh-dark-mode-only)
 
